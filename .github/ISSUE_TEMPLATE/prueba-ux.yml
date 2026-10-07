@@ -1,0 +1,20 @@
+name: Hallazgo de prueba UX
+description: Resultado de una sesión de prueba con usuarios
+title: "[UX] "
+labels: ["equipo:implementacion", "ux"]
+body:
+  - type: input
+    id: fecha
+    attributes: { label: Fecha de la sesión }
+  - type: input
+    id: minijuego
+    attributes: { label: Minijuego probado }
+  - type: textarea
+    id: hallazgo
+    attributes: { label: Hallazgo, description: "Qué hizo o dijo el usuario, mareo, confusión, etc." }
+    validations: { required: true }
+  - type: dropdown
+    id: severidad
+    attributes:
+      label: Severidad
+      options: [Bloquea, Molesta, Detalle]

@@ -1,0 +1,41 @@
+# ---- Unity (proyecto en 04-desarrollo/BioVR) ----
+04-desarrollo/BioVR/[Ll]ibrary/
+04-desarrollo/BioVR/[Tt]emp/
+04-desarrollo/BioVR/[Oo]bj/
+04-desarrollo/BioVR/[Bb]uild/
+04-desarrollo/BioVR/[Bb]uilds/
+04-desarrollo/BioVR/[Ll]ogs/
+04-desarrollo/BioVR/[Uu]ser[Ss]ettings/
+04-desarrollo/BioVR/[Mm]emoryCaptures/
+04-desarrollo/BioVR/[Rr]ecordings/
+04-desarrollo/BioVR/Assets/Plugins/Editor/JetBrains*
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.user
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+sysinfo.txt
+*.apk
+*.aab
+*.unitypackage
+crashlytics-build.properties
+# ---- Blender ----
+*.blend1
+*.blend2
+# ---- Sistema ----
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,29 @@
+name: Estructura biológica
+description: Una estructura o proceso que pasará por Investigación → Game Design → Diseño → Desarrollo → Pruebas
+title: "[Estructura] "
+labels: ["estructura"]
+body:
+  - type: input
+    id: nombre
+    attributes: { label: Nombre, placeholder: "ATP sintasa" }
+    validations: { required: true }
+  - type: dropdown
+    id: minijuego
+    attributes:
+      label: Minijuego
+      options: [ATP, Traduccion, ADN, Citoesqueleto, Mitosis, Otro / por definir]
+    validations: { required: true }
+  - type: dropdown
+    id: escala
+    attributes:
+      label: Escala
+      options: [Órgano, Tejido, Célula, Organelo, Molécula]
+  - type: textarea
+    id: funcion
+    attributes: { label: Función biológica (resumen), description: "Qué hace y por qué importa para la homeostasis" }
+  - type: textarea
+    id: visual
+    attributes: { label: Cómo se debería ver, description: "Forma, colores, partes móviles, referencias visuales" }
+  - type: textarea
+    id: refs
+    attributes: { label: Referencias }

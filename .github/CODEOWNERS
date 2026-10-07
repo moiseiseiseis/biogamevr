@@ -1,0 +1,9 @@
+# Quién revisa cada carpeta. Reemplaza los usuarios cuando se asignen integrantes.
+# Formato: /carpeta/  @usuario1 @usuario2
+*                     @moiseiseiseis
+# /01-investigacion/  @usuario
+# /02-game-design/    @usuario
+# /03-diseno/         @usuario
+# /04-desarrollo/     @usuario
+# /05-implementacion/ @usuario
+# /06-management/     @usuario
