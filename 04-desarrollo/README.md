@@ -40,7 +40,8 @@ Assets/
 │   └── Minijuegos/             después de la primera entrega
 ├── Samples/                    XR Interaction Toolkit (importado, no editar)
 ├── Settings/                   URP (no editar sin avisar al rol 1)
-└── XR/                         OpenXR (autogenerado)
+├── XR/                         OpenXR (autogenerado)
+└── XRI/                        ajustes de XR Interaction Toolkit y del simulador (autogenerado)
 ```
 
 Dentro de cada carpeta de rol crea solo las subcarpetas que uses: `Scripts/`, `Prefabs/`, `Materiales/`.
