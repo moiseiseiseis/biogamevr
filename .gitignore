@@ -40,3 +40,13 @@ crashlytics-build.properties
 .DS_Store
 Thumbs.db
 desktop.ini
+/[04-desarrollo]/[BioVR]/Library/
+/[04-desarrollo]/[BioVR]/Temp/
+/[04-desarrollo]/[BioVR]/Obj/
+/[04-desarrollo]/[BioVR]/Logs/
+/[04-desarrollo]/[BioVR]/UserSettings/
+Library/
+Temp/
+Obj/
+Logs/
+UserSettings/
