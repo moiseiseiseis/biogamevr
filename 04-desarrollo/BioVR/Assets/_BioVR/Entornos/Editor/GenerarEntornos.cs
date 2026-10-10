@@ -398,7 +398,8 @@ namespace BioVR.Entornos.Editor
                 // Un poco de brillo propio para que se vea aunque no le llegue la luz (p. ej. dentro de los túneles)
                 mat.EnableKeyword("_EMISSION");
                 mat.SetColor("_EmissionColor", color * emision);
-                mat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
+                // URP solo deja _EMISSION si el flag es Realtime o Baked; con None lo apaga al validar el material
+                mat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
             }
             EditorUtility.SetDirty(mat);
             return mat;
