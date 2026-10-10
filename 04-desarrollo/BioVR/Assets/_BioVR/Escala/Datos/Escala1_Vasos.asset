@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef7b7d26ce3f458e80e1862314e8a1ef, type: 3}
+  m_Name: Escala1_Vasos
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Escala.NivelEscalaData
+  nombreNivel: Vasos sanguíneos
+  tamanoMecha: '~1-5 mm'
+  inercia: 0.8
+  viscosidad: 1
+  intensidadEmpujones: 0.2
+  colorFluido: {r: 0.55, g: 0.05, b: 0.08, a: 1}
