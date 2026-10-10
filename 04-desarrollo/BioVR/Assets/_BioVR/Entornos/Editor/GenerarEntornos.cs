@@ -211,6 +211,7 @@ namespace BioVR.Entornos.Editor
 
             // Interior lleno: ribosomas y enzimas por todas partes
             var moleculas = Grupo("Ribosomas y enzimas", raiz.transform);
+            moleculas.gameObject.AddComponent<BioVR.Escala.EmpujonesMoleculares>(); // tiemblan según intensidadEmpujones (rol 5)
             for (int puestos = 0; puestos < 150;)
             {
                 var p = new Vector3(R(-20, 20), R(-4, 8.5f), R(-8, 40));
