@@ -20,9 +20,20 @@ namespace BioVR.Secuencia
             mat = quad.material;
         }
 
-        public IEnumerator FadeA(float alphaFinal, float duracion)
+        public IEnumerator FadeA(float alphaFinal, float duracion) => FadeA(alphaFinal, duracion, null);
+
+        // color: a qué color se funde (negro en los cambios de estado, blanco en el destello del salto).
+        // Si es null se conserva el color actual (útil para desvanecer de regreso).
+        public IEnumerator FadeA(float alphaFinal, float duracion, Color? color)
         {
             if (mat == null) yield break;
+
+            if (color.HasValue)
+            {
+                var c = color.Value;
+                c.a = mat.color.a;
+                mat.color = c;
+            }
 
             float inicio = mat.color.a, t = 0;
             quad.enabled = true;
