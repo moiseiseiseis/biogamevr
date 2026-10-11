@@ -41,3 +41,8 @@ crashlytics-build.properties
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Comprimidos: se suben descomprimidos (ver 03-diseno/README.md)
+*.zip
+*.rar
+*.7z
