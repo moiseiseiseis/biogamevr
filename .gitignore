@@ -46,3 +46,6 @@ desktop.ini
 *.zip
 *.rar
 *.7z
+
+# Proyecto Unity viejo que no es el del equipo (el bueno está en 04-desarrollo/BioVR)
+/biogamevr/
