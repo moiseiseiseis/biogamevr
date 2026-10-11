@@ -286,6 +286,17 @@ namespace BioVR.Entornos.Editor
         {
             var carpeta = $"{Carpeta}/{nombre}";
             if (!AssetDatabase.IsValidFolder(carpeta)) AssetDatabase.CreateFolder(Carpeta, nombre);
+
+            // Seguro: si el prefab ya tiene un modelo de Diseño, no se sobrescribe
+            var existente = AssetDatabase.LoadAssetAtPath<GameObject>($"{carpeta}/{nombre}.prefab");
+            if (existente != null && existente.GetComponentsInChildren<Transform>(true)
+                    .Any(t => t.name.StartsWith(PonerModelosDiseno.PrefijoModelo)))
+            {
+                Debug.LogWarning($"[Entornos] {nombre}.prefab ya tiene modelos de Diseño: no se sobrescribe.");
+                Object.DestroyImmediate(raiz);
+                return existente;
+            }
+
             var prefab = PrefabUtility.SaveAsPrefabAsset(raiz, $"{carpeta}/{nombre}.prefab");
             Object.DestroyImmediate(raiz);
             return prefab;
