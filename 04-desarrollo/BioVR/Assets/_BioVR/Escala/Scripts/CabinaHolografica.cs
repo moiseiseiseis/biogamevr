@@ -6,8 +6,9 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 namespace BioVR.Escala
 {
     // Protocolo Matrioska: desde la escala celular la cabina ya no es física, es una reconstrucción.
-    // Al llegar al salto indicado cambia el material de las piezas de la cabina por uno holográfico
-    // (semitransparente) y al volver a una escala mayor regresa los materiales originales.
+    // Al llegar al salto indicado, las paredes, el techo y el cristal desaparecen (para ver el escenario sin
+    // estorbos) y lo demás (piso, consola, asiento) cambia a un material holográfico semitransparente.
+    // Al volver a una escala mayor todo regresa como estaba.
     // Los botones y palancas (todo lo que sea interactuable) no se tocan: conservan sus colores de estado.
     // Va en el objeto "Cabina (provisional)".
     public class CabinaHolografica : MonoBehaviour
@@ -17,7 +18,11 @@ namespace BioVR.Escala
         [Tooltip("Desde qué salto la cabina se ve holográfica (3 = Citoplasma).")]
         [SerializeField] int saltoHolograma = 3;
 
+        [Tooltip("Piezas que desaparecen en modo holograma (paredes, techo y cristal). Se compara el inicio del nombre.")]
+        [SerializeField] string[] ocultar = { "CAB_Estructura", "CAB_Cristal", "CAB_Mobiliario" };
+
         readonly Dictionary<Renderer, Material[]> originales = new();
+        readonly List<Renderer> ocultos = new();
         GameManager gm;
         bool activa;
 
@@ -32,8 +37,11 @@ namespace BioVR.Escala
             }
 
             foreach (var r in GetComponentsInChildren<Renderer>(true))
-                if (r.GetComponentInParent<XRBaseInteractable>(true) == null)
-                    originales[r] = r.sharedMaterials;
+            {
+                if (r.GetComponentInParent<XRBaseInteractable>(true) != null) continue; // botones y palanca no cambian
+                if (SeOculta(r.name)) ocultos.Add(r);
+                else originales[r] = r.sharedMaterials;
+            }
 
             gm.OnSaltoCambiado += AlCambiarSalto;
             AlCambiarSalto(gm.Salto);
@@ -42,6 +50,13 @@ namespace BioVR.Escala
         void OnDestroy()
         {
             if (gm != null) gm.OnSaltoCambiado -= AlCambiarSalto;
+        }
+
+        bool SeOculta(string nombre)
+        {
+            foreach (var e in ocultar)
+                if (!string.IsNullOrEmpty(e) && nombre.StartsWith(e)) return true;
+            return false;
         }
 
         void AlCambiarSalto(int salto)
@@ -58,6 +73,8 @@ namespace BioVR.Escala
                 for (int i = 0; i < holo.Length; i++) holo[i] = holograma;
                 r.sharedMaterials = holo;
             }
+            foreach (var r in ocultos)
+                if (r != null) r.enabled = !holografica;
             Debug.Log($"[BioVR - Rol 5] Cabina {(holografica ? "holográfica (reconstrucción)" : "física")}.");
         }
     }

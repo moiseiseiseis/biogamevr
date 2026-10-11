@@ -43,7 +43,7 @@ namespace BioVR.Escala.Editor
                 AssetDatabase.CreateAsset(mat, RutaMaterial);
             }
             mat.shader = shader;
-            var cian = new Color(0.3f, 0.9f, 1f, 0.25f);
+            var cian = new Color(0.3f, 0.9f, 1f, 0.08f); // muy tenue: la cabina de Diseño tiene muchas capas que se suman
             mat.SetColor("_BaseColor", cian);
             // Transparente con mezcla alfa normal
             mat.SetFloat("_Surface", 1f);
@@ -58,7 +58,7 @@ namespace BioVR.Escala.Editor
             mat.renderQueue = (int)RenderQueue.Transparent;
             // Brillo propio (URP exige el flag Realtime para conservar _EMISSION)
             mat.EnableKeyword("_EMISSION");
-            mat.SetColor("_EmissionColor", new Color(0.3f, 0.9f, 1f) * 0.6f);
+            mat.SetColor("_EmissionColor", new Color(0.3f, 0.9f, 1f) * 0.15f);
             mat.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
             EditorUtility.SetDirty(mat);
             AssetDatabase.SaveAssets();
