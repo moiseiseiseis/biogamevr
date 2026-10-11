@@ -72,6 +72,20 @@ namespace BioVR.Secuencia
             }
         }
 
+        // Botón "Iniciar inmersión": solo sirve antes del viaje (Hangar → Abordaje → Viaje)
+        public void IniciarInmersion()
+        {
+            if (Estado == GameState.Hangar || Estado == GameState.Abordaje) Avanzar();
+            else Debug.Log($"[Secuencia] Iniciar inmersión no aplica en {Estado}: usa Salto Matrioska.");
+        }
+
+        // Botón "Salto Matrioska" y palanca: solo sirven durante el viaje (saltos de escala y llegada)
+        public void SaltoMatrioska()
+        {
+            if (Estado == GameState.Viaje) Avanzar();
+            else Debug.Log($"[Secuencia] Salto Matrioska no aplica en {Estado}.");
+        }
+
         public void IrA(GameState nuevo, bool instantaneo = false)
         {
             if (enTransicion) { Debug.Log($"[Secuencia] IrA({nuevo}) ignorado: hay una transición en curso."); return; }

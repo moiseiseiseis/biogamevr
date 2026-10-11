@@ -2,40 +2,41 @@ using UnityEngine;
 using TMPro;
 using BioVR.Escala;
 
-//Namespace
 namespace BioVR.Cabina
 {
+    // Letrero de la cabina que muestra el nivel de escala actual, p. ej. "Vasos sanguíneos · mecha ~1-5 mm".
     public class PantallaEscala : MonoBehaviour
     {
         public TextMeshProUGUI textoPantalla;
 
         void Start()
         {
-            // 1. Dale al like y suscribete para reaccionar a futuros saltos
+            if (textoPantalla == null)
+            {
+                Debug.LogError("[Cabina] PantallaEscala no tiene asignado el texto.", this);
+                enabled = false;
+                return;
+            }
+
+            // 1. Suscribirse para reaccionar a los saltos
             GestorEscala.OnCambioEscala += ActualizarTexto;
 
             // 2. Leer la escala inicial (por si el evento ya pasó antes de que cargara la pantalla)
-            // Nota: Descomentar las siguientes líneas cuando el script GestorEscala exista en el proyecto
-            /*
             var gestor = FindFirstObjectByType<GestorEscala>();
             if (gestor != null && gestor.EscalaActual != null)
-            {
                 ActualizarTexto(gestor.EscalaActual);
-            }
-            */
         }
 
         void OnDestroy()
         {
-            // Dale al dislike y desuscribete
+            // Desuscribirse
             GestorEscala.OnCambioEscala -= ActualizarTexto;
         }
 
-        // Función a partir del trigger
         private void ActualizarTexto(NivelEscalaData datos)
         {
-            //formato
-            textoPantalla.text = $"{datos.nombreNivel} escala ~{datos.tamanoMecha}";
+            // tamanoMecha ya trae su "~" (p. ej. "~1-5 mm")
+            textoPantalla.text = $"{datos.nombreNivel} · mecha {datos.tamanoMecha}";
         }
     }
 }
