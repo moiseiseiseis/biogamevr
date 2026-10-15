@@ -286,6 +286,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Escala.EmpujonesMoleculares
   amplitud: 0.25
   frecuencia: 0.8
+  prefijos: []
 --- !u!1 &105148728075921271
 GameObject:
   m_ObjectHideFlags: 0
@@ -23582,7 +23583,7 @@ Transform:
   - {fileID: 6209237353640833605}
   - {fileID: 5246395746945425493}
   - {fileID: 7724326136004059601}
-  - {fileID: 8739366297406286116}
+  - {fileID: 6300572855272698006}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9194885912258202293
@@ -23675,7 +23676,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1001 &9134089654051622607
+--- !u!1001 &5835144338832758653
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -23730,10 +23731,36 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 573fa7d079704ec4589846081dc2a689, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8051661512903933120}
   m_SourcePrefab: {fileID: 100100000, guid: 573fa7d079704ec4589846081dc2a689, type: 3}
---- !u!4 &8739366297406286116 stripped
+--- !u!4 &6300572855272698006 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 573fa7d079704ec4589846081dc2a689, type: 3}
-  m_PrefabInstance: {fileID: 9134089654051622607}
+  m_PrefabInstance: {fileID: 5835144338832758653}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6646170716965120556 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 573fa7d079704ec4589846081dc2a689, type: 3}
+  m_PrefabInstance: {fileID: 5835144338832758653}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8051661512903933120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6646170716965120556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbb1c823e94aab3458013f0354f5f0a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Escala.EmpujonesMoleculares
+  amplitud: 1.5
+  frecuencia: 0.5
+  prefijos:
+  - Burbuja
+  - Vesicula_Libre
+  - Polirribosoma

@@ -69,13 +69,15 @@ namespace BioVR.Secuencia
                     if (Salto < SaltoMaximo) StartCoroutine(HacerSalto(Salto + 1));
                     else IrA(GameState.Llegada);
                     break;
+                case GameState.Llegada: IrA(GameState.Hangar); break; // reinicio para el siguiente jugador
             }
         }
 
-        // Botón "Iniciar inmersión": solo sirve antes del viaje (Hangar → Abordaje → Viaje)
+        // Botón "Iniciar inmersión": sirve antes del viaje (Hangar → Abordaje → Viaje)
+        // y al final, en Llegada, para volver al Hangar sin teclado (feria)
         public void IniciarInmersion()
         {
-            if (Estado == GameState.Hangar || Estado == GameState.Abordaje) Avanzar();
+            if (Estado == GameState.Hangar || Estado == GameState.Abordaje || Estado == GameState.Llegada) Avanzar();
             else Debug.Log($"[Secuencia] Iniciar inmersión no aplica en {Estado}: usa Salto Matrioska.");
         }
 
@@ -150,6 +152,8 @@ namespace BioVR.Secuencia
         }
 
         // ---- Atajo de depuración: 1-4 = estados, Espacio = avanzar ----
+        // Solo en el editor y en builds de desarrollo; en el APK final no se compila.
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
         void Update()
         {
             var k = Keyboard.current;
@@ -160,5 +164,6 @@ namespace BioVR.Secuencia
             if (k.digit4Key.wasPressedThisFrame) IrA(GameState.Llegada);
             if (k.spaceKey.wasPressedThisFrame) Avanzar();
         }
+#endif
     }
 }
