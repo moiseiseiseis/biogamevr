@@ -29,9 +29,11 @@ namespace BioVR.Comun.Editor
         // Lo que el jugador puede hacer; se muestra abajo de los botones
         public const string TextoControles =
             "<b>Controles</b>\n" +
-            "Gatillo: presionar botones y la palanca\n" +
-            "B / Y: recentrar la vista\n" +
-            "Botón de menú (mando izquierdo): abrir y cerrar este menú";
+            "Stick izquierdo: caminar · Stick derecho: girar\n" +
+            "Botones de la cabina: tócalos con la mano\n" +
+            "Palanca: agárrala con el botón lateral (grip)\n" +
+            "Este menú: apunta y usa el gatillo\n" +
+            "B / Y: volver al asiento · Menú (mando izq.): pausa";
 
         static readonly Color Fondo = new Color(0.05f, 0.09f, 0.14f, 0.92f);
         static readonly Color ColorBoton = new Color(0.16f, 0.45f, 0.7f);
@@ -53,7 +55,7 @@ namespace BioVR.Comun.Editor
             var raiz = new GameObject(NombreMenu);
             var menu = raiz.AddComponent<MenuPausa>();
 
-            // ---- Canvas: 1 unidad = 1 mm, así el panel mide 0.5 × 0.7 m ----
+            // ---- Canvas: 1 unidad = 1 mm, así el panel mide 0.5 × 0.74 m ----
             var panel = new GameObject("Panel", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler),
                                        typeof(TrackedDeviceGraphicRaycaster), typeof(Image));
             panel.transform.SetParent(raiz.transform, false);
@@ -62,7 +64,7 @@ namespace BioVR.Comun.Editor
             canvas.worldCamera = origen.Camera;
             panel.GetComponent<CanvasScaler>().dynamicPixelsPerUnit = 10f; // texto nítido en world space
             var rect = (RectTransform)panel.transform;
-            rect.sizeDelta = new Vector2(500f, 700f);
+            rect.sizeDelta = new Vector2(500f, 740f);
             rect.localScale = Vector3.one * 0.001f;
             panel.GetComponent<Image>().color = Fondo;
 
@@ -79,7 +81,7 @@ namespace BioVR.Comun.Editor
             Boton(panel.transform, "Boton Reiniciar", "Reiniciar", ColorBoton, menu.Reiniciar);
             if (altura != null) FilaAltura(panel.transform, altura);
             Boton(panel.transform, "Boton Salir", "Salir del juego", ColorSalir, menu.Salir);
-            Texto(panel.transform, "Controles", TextoControles, 22f, FontStyles.Normal, 130f).alignment = TextAlignmentOptions.TopLeft;
+            Texto(panel.transform, "Controles", TextoControles, 21f, FontStyles.Normal, 170f).alignment = TextAlignmentOptions.TopLeft;
 
             foreach (var t in panel.GetComponentsInChildren<Transform>(true)) t.gameObject.layer = CapaUI;
             panel.SetActive(false);
