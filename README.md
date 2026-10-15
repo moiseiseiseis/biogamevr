@@ -1,35 +1,34 @@
 # BioGameVR
 
-Videojuego de realidad virtual sobre estructuras biológicas y electrofisiología, para presentarse en una feria de ciencias.
+Videojuego de realidad virtual para una feria de ciencias. Su tema son las estructuras biológicas y la electrofisiología.
 
-El jugador controla un **mecha submarino** que se reduce a distintas escalas del cuerpo humano para **mantener la homeostasis**: mecanismos, estructuras y órganos están "desapareciendo" y el jugador debe sustituirlos. Cada sustitución es un minijuego.
+El jugador pilota un **mecha submarino** que se reduce de escala hasta entrar en el cuerpo humano: pasa del hangar a los vasos sanguíneos, luego a los capilares y por último al interior de una célula. Su misión es **mantener la homeostasis**. Hay mecanismos, estructuras y órganos que están "desapareciendo", y el jugador debe sustituirlos. Cada sustitución es un minijuego.
 
-## Entrega actual — lunes 12 oct 2026
+## Probarlo
 
-**Escena inicial jugable en VR** (todo listo el **sábado 10 oct**):
+| Quiero… | Ve a |
+| --- | --- |
+| Abrir el proyecto en Unity y darle *Play* | [`04-desarrollo/README.md`](04-desarrollo/README.md): versión de Unity, paquetes y simulador sin visor |
+| Instalar el juego en un visor Meta Quest | [`05-implementacion/guia-visor-vr.md`](05-implementacion/guia-visor-vr.md) |
+| Saber cómo se juega | El tutorial dentro del juego. Los controles también están en el menú de pausa |
 
-1. **Hangar** — el submarino visto por fuera
-2. **Abordaje** — la tripulación sube; el jugador queda en la cabina
-3. **Viaje** — reducción de escala y entrada al cuerpo humano
-4. **Llegada** — el submarino llega a un espacio celular *(fin de la entrega)*
+## Cómo está organizado
 
-Plan completo: [`docs/minutas/2026-10-07-minuta-2-primera-entrega.md`](docs/minutas/2026-10-07-minuta-2-primera-entrega.md) · Fechas: [`06-management/roadmap.md`](06-management/roadmap.md)
+Cada equipo tiene una carpeta y trabaja dentro de ella.
 
-**Herramientas:** Unity (C#, OpenXR + XR Interaction Toolkit) y Blender. Recursos externos → [`CREDITOS.md`](CREDITOS.md).
-
-## Equipos y carpetas
-
-| Carpeta | Equipo | Objetivo |
+| Carpeta | Equipo | Qué hay ahí |
 | --- | --- | --- |
-| [`01-investigacion/`](01-investigacion/) | Investigación | Entender las estructuras biológicas y comunicarlas de forma visualizable |
-| [`02-game-design/`](02-game-design/) | Game Design | Sketches, storyboards y cartel para la feria |
-| [`03-diseno/`](03-diseno/) | Diseño | Modelado 3D a partir de sketches y storyboards |
-| [`04-desarrollo/`](04-desarrollo/) | Desarrollo | Programar objetos, funciones y entidades del juego |
-| [`05-implementacion/`](05-implementacion/) | Implementación | Pruebas de UX y dominio del visor VR |
-| [`06-management/`](06-management/) | Management | Coordinación, deadlines y reportes al coordinador |
-| [`docs/`](docs/) | Todos | Minutas, GDD y decisiones |
+| [`01-investigacion/`](01-investigacion/) | Investigación | La biología detrás del juego, explicada para que se pueda visualizar: fichas, escalas y referencias |
+| [`02-game-design/`](02-game-design/) | Game Design | Guía de estilo, sketches, storyboards y cartel para la feria |
+| [`03-diseno/`](03-diseno/) | Diseño | Modelos 3D: las fuentes de Blender en `fuentes/` y los exports para Unity en `exports/` |
+| [`04-desarrollo/`](04-desarrollo/) | Desarrollo | El proyecto de Unity (`BioVR/`), su estructura y las reglas para programar |
+| [`05-implementacion/`](05-implementacion/) | Implementación | Uso del visor, plan de pruebas y reportes de experiencia de usuario |
+| [`06-management/`](06-management/) | Management | Equipos, roadmap con fechas y reportes al coordinador |
+| [`docs/`](docs/) | Todos | Minutas, decisiones y documentos generales |
 
-## Flujo de trabajo
+Las fechas y las entregas están en [`06-management/roadmap.md`](06-management/roadmap.md), y lo que se acordó en cada reunión, en [`docs/minutas/`](docs/minutas/). Este README no cambia con cada entrega.
+
+## Cómo trabajamos
 
 ```
 Investigación ─┐
@@ -38,21 +37,13 @@ Game Design ───┘
           (Management coordina a todos)
 ```
 
-Cada estructura biológica es un **issue** con la plantilla *Estructura biológica* que avanza por el tablero de Projects:
-`Investigación → Game Design → Diseño → Desarrollo → Pruebas → Listo`.
+- El trabajo se reparte en **issues** de GitHub, con la etiqueta del equipo que corresponde.
+- **Nadie sube directo a `main`.** Cada tarea va en su rama (`diseno/ribosoma`, `rol3/botones`) y entra con un Pull Request.
+- Los archivos pesados (`.blend`, `.fbx`, imágenes y audio) van por **Git LFS**.
+- Todo recurso externo (modelos, texturas, sonidos) se registra en [`CREDITOS.md`](CREDITOS.md) **antes** de subirlo.
 
-## Reglas básicas
+El paso a paso para clonar, crear ramas y nombrar archivos y commits está en [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
-1. Nadie sube directo a `main`: trabaja en una rama (`diseno/ribosoma`, `dev/minijuego-atp`) y abre un Pull Request.
-2. Archivos pesados (`.blend`, `.fbx`, `.png`, audio) van por **Git LFS**. Instálalo antes de clonar: `git lfs install`.
-3. Sube solo fuentes y exports finales, no cada versión intermedia.
+## Tecnología
 
-## Minijuegos propuestos (por validar)
-
-| Tema | Mecánica | Carpeta en Unity |
-| --- | --- | --- |
-| Energía y metabolismo | Guiar iones y fosforilar ADP → ATP | `Minijuegos/ATP` |
-| Síntesis de proteínas | Emparejar anticodones (ARNt) con codones (ARNm) | `Minijuegos/Traduccion` |
-| Información genética | Enrollar y liberar cadenas de ADN | `Minijuegos/ADN` |
-| Estructura celular | Conectar actina y microtúbulos | `Minijuegos/Citoesqueleto` |
-| Reproducción y regeneración | Coordinar el huso mitótico | `Minijuegos/Mitosis` |
+Unity con C#, URP, OpenXR y XR Interaction Toolkit, para visores **Meta Quest** (Android). Los modelos se hacen en Blender. Las versiones exactas que todos deben usar están en [`04-desarrollo/README.md`](04-desarrollo/README.md).
