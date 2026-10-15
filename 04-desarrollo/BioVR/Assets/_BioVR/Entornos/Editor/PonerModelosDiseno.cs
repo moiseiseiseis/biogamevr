@@ -8,6 +8,7 @@ namespace BioVR.Entornos.Editor
     // Pone los modelos de Diseño (Assets/_BioVR/Modelos) en lugar de los placeholders (rol 6):
     //   Hangar.prefab          → la nave Seraphim (submarino-exterior) apoyada en el piso; se apaga el submarino de cápsulas
     //   EspacioCelular.prefab  → escenario-celular; se apagan los placeholders (no se borran, por si hay que regresar)
+    //                            y sus burbujas, vesículas libres y polirribosomas tiemblan (EmpujonesMoleculares)
     //   00-EscenaInicial       → submarino-cabina dentro de "Cabina (provisional)" con su ANCLA_Jugador en el origen;
     //                            se apagan los cubos y nuestros controles se mueven encima de los controles del modelo
     // Se puede correr varias veces. Menú: BioVR → Poner modelos de Diseño
@@ -58,7 +59,21 @@ namespace BioVR.Entornos.Editor
             // El escenario de Diseño mide ~500 m: el fondo provisional (esfera de 150 m) lo taparía
             foreach (var nombre in new[] { "Fondo", "Membrana", "Citoesqueleto", "Ribosomas y enzimas", "Golgi", "Mitocondrias", "Cinesina con vesicula" })
                 Apagar(raiz.transform, nombre);
-            Instanciar(Modelos + "EscenarioCelular/escenario-celular.fbx", "Escenario celular", raiz.transform);
+            var escenario = Instanciar(Modelos + "EscenarioCelular/escenario-celular.fbx", "Escenario celular", raiz.transform);
+
+            // El temblor del citoplasma (rol 5) pasa a las piezas sueltas del modelo; el de los placeholders quedó apagado.
+            // Son grandes (burbujas de 2-6 m, polirribosomas de ~20 m) y están lejos, por eso la amplitud es mayor.
+            if (escenario != null)
+            {
+                var empujones = new SerializedObject(escenario.gameObject.AddComponent<BioVR.Escala.EmpujonesMoleculares>());
+                empujones.FindProperty("amplitud").floatValue = 1.5f;
+                empujones.FindProperty("frecuencia").floatValue = 0.5f;
+                var prefijos = empujones.FindProperty("prefijos");
+                var nombres = new[] { "Burbuja", "Vesicula_Libre", "Polirribosoma" };
+                prefijos.arraySize = nombres.Length;
+                for (int i = 0; i < nombres.Length; i++) prefijos.GetArrayElementAtIndex(i).stringValue = nombres[i];
+                empujones.ApplyModifiedPropertiesWithoutUndo();
+            }
             PrefabUtility.SaveAsPrefabAsset(raiz, ruta);
             PrefabUtility.UnloadPrefabContents(raiz);
         }
