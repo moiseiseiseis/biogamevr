@@ -1,4 +1,5 @@
 using System.Linq;
+using BioVR.Jugador;
 using TMPro;
 using Unity.XR.CoreUtils;
 using UnityEditor;
@@ -14,7 +15,9 @@ namespace BioVR.Comun.Editor
 {
     // Arma el menú de pausa en 00-EscenaInicial:
     //   - EventSystem con XRUIInputModule (para que los rayos de los mandos puedan usar la UI)
-    //   - "Menu de pausa" con MenuPausa y un Canvas world space: título, Continuar, Reiniciar, Salir y los controles
+    //   - "Menu de pausa" con MenuPausa y un Canvas world space: título, Continuar, Reiniciar,
+    //     altura del asiento (Bajar / Subir), Salir y los controles
+    //   - AlturaAsiento junto a Recentrar (mismo XR Origin y Punto ojos), si no estaba
     // Se puede correr varias veces: borra el menú anterior y lo vuelve a crear.
     // Menú: BioVR → Agregar menú de pausa
     public static class AgregarMenuPausa
@@ -42,6 +45,7 @@ namespace BioVR.Comun.Editor
             if (origen == null || origen.Camera == null) { Debug.LogError("[Menu] No hay XR Origin con cámara en la escena inicial."); return; }
 
             AsegurarEventSystem();
+            var altura = AsegurarAlturaAsiento();
 
             var viejo = escena.GetRootGameObjects().FirstOrDefault(g => g.name == NombreMenu);
             if (viejo != null) Object.DestroyImmediate(viejo);
@@ -49,7 +53,7 @@ namespace BioVR.Comun.Editor
             var raiz = new GameObject(NombreMenu);
             var menu = raiz.AddComponent<MenuPausa>();
 
-            // ---- Canvas: 1 unidad = 1 mm, así el panel mide 0.5 × 0.6 m ----
+            // ---- Canvas: 1 unidad = 1 mm, así el panel mide 0.5 × 0.7 m ----
             var panel = new GameObject("Panel", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler),
                                        typeof(TrackedDeviceGraphicRaycaster), typeof(Image));
             panel.transform.SetParent(raiz.transform, false);
@@ -58,7 +62,7 @@ namespace BioVR.Comun.Editor
             canvas.worldCamera = origen.Camera;
             panel.GetComponent<CanvasScaler>().dynamicPixelsPerUnit = 10f; // texto nítido en world space
             var rect = (RectTransform)panel.transform;
-            rect.sizeDelta = new Vector2(500f, 600f);
+            rect.sizeDelta = new Vector2(500f, 700f);
             rect.localScale = Vector3.one * 0.001f;
             panel.GetComponent<Image>().color = Fondo;
 
@@ -73,6 +77,7 @@ namespace BioVR.Comun.Editor
             Texto(panel.transform, "Titulo", "Pausa", 52f, FontStyles.Bold, 70f);
             Boton(panel.transform, "Boton Continuar", "Continuar", ColorBoton, menu.Continuar);
             Boton(panel.transform, "Boton Reiniciar", "Reiniciar", ColorBoton, menu.Reiniciar);
+            if (altura != null) FilaAltura(panel.transform, altura);
             Boton(panel.transform, "Boton Salir", "Salir del juego", ColorSalir, menu.Salir);
             Texto(panel.transform, "Controles", TextoControles, 22f, FontStyles.Normal, 130f).alignment = TextAlignmentOptions.TopLeft;
 
@@ -104,6 +109,42 @@ namespace BioVR.Comun.Editor
             if (sistema.GetComponent<XRUIInputModule>() == null) sistema.gameObject.AddComponent<XRUIInputModule>();
         }
 
+        // Pone AlturaAsiento en el mismo objeto que Recentrar y le pasa sus referencias
+        static AlturaAsiento AsegurarAlturaAsiento()
+        {
+            var recentrar = Object.FindFirstObjectByType<Recentrar>();
+            if (recentrar == null) { Debug.LogWarning("[Menu] No hay Recentrar en la escena: el menú queda sin altura del asiento."); return null; }
+            var altura = recentrar.GetComponent<AlturaAsiento>();
+            if (altura == null) altura = recentrar.gameObject.AddComponent<AlturaAsiento>();
+            var so = new SerializedObject(altura);
+            so.FindProperty("origen").objectReferenceValue = recentrar.xrOrigin;
+            so.FindProperty("puntoOjos").objectReferenceValue = recentrar.puntoOjos;
+            so.ApplyModifiedPropertiesWithoutUndo();
+            return altura;
+        }
+
+        // [Bajar]  Altura de los ojos: 1.40 m  [Subir]
+        static void FilaAltura(Transform padre, AlturaAsiento altura)
+        {
+            var fila = new GameObject("Altura del asiento", typeof(RectTransform), typeof(HorizontalLayoutGroup), typeof(LayoutElement));
+            fila.transform.SetParent(padre, false);
+            fila.GetComponent<LayoutElement>().preferredHeight = 80f;
+            var layout = fila.GetComponent<HorizontalLayoutGroup>();
+            layout.spacing = 12f;
+            layout.childControlWidth = layout.childControlHeight = true;
+            layout.childForceExpandWidth = false;
+            layout.childForceExpandHeight = true;
+
+            Boton(fila.transform, "Boton Bajar", "Bajar", ColorBoton, altura.Bajar).GetComponent<LayoutElement>().preferredWidth = 110f;
+            var etiqueta = Texto(fila.transform, "Altura", "Altura de los ojos", 24f, FontStyles.Normal, 80f);
+            etiqueta.GetComponent<LayoutElement>().flexibleWidth = 1f;
+            Boton(fila.transform, "Boton Subir", "Subir", ColorBoton, altura.Subir).GetComponent<LayoutElement>().preferredWidth = 110f;
+
+            var so = new SerializedObject(altura);
+            so.FindProperty("etiqueta").objectReferenceValue = etiqueta;
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
         static TextMeshProUGUI Texto(Transform padre, string nombre, string contenido, float tamano, FontStyles estilo, float alto)
         {
             var go = new GameObject(nombre, typeof(RectTransform), typeof(TextMeshProUGUI), typeof(LayoutElement));
@@ -118,7 +159,7 @@ namespace BioVR.Comun.Editor
             return tmp;
         }
 
-        static void Boton(Transform padre, string nombre, string etiqueta, Color color, UnityAction alPresionar)
+        static GameObject Boton(Transform padre, string nombre, string etiqueta, Color color, UnityAction alPresionar)
         {
             var go = TMP_DefaultControls.CreateButton(new TMP_DefaultControls.Resources());
             go.name = nombre;
@@ -139,6 +180,7 @@ namespace BioVR.Comun.Editor
             colores.pressedColor = new Color(0.6f, 0.6f, 0.6f);
             boton.colors = colores;
             UnityEventTools.AddPersistentListener(boton.onClick, alPresionar);
+            return go;
         }
     }
 }
