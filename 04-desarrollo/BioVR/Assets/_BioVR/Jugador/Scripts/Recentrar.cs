@@ -19,6 +19,9 @@ namespace BioVR.Jugador
                  "Ojo: las acciones del XR Device Simulator solo funcionan en el editor, no en el visor.")]
         public InputActionProperty botonRecentrar = new InputActionProperty(CrearAccionPorDefecto());
 
+        // Avisa cuando el jugador presiona B / Y; lo usa el tutorial
+        public static event System.Action OnRecentrado;
+
         static InputAction CrearAccionPorDefecto()
         {
             var accion = new InputAction("Recentrar", InputActionType.Button);
@@ -64,6 +67,7 @@ namespace BioVR.Jugador
             if (gm != null && gm.Pausado) return; // con el menú abierto no se mueve al jugador
             Centrar();
             Debug.Log("[Jugador] Vista recentrada.");
+            OnRecentrado?.Invoke();
         }
 
         // Al asiento del piloto, mirando al frente (+Z)
