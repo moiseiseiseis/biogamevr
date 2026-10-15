@@ -52,6 +52,7 @@ namespace BioVR.Cabina
             botonSalir.selectEntered.AddListener(AlPresionarSalir);
             botonEntrar.selectEntered.AddListener(AlPresionarEntrar);
             gm.OnEstadoCambiado += AlCambiarEstado;
+            Recentrar.OnRecentrado += AlRecentrar;
             AlCambiarEstado(gm.Estado);
         }
 
@@ -60,6 +61,7 @@ namespace BioVR.Cabina
             if (botonSalir != null) botonSalir.selectEntered.RemoveListener(AlPresionarSalir);
             if (botonEntrar != null) botonEntrar.selectEntered.RemoveListener(AlPresionarEntrar);
             if (gm != null) gm.OnEstadoCambiado -= AlCambiarEstado;
+            Recentrar.OnRecentrado -= AlRecentrar;
         }
 
         void AlPresionarSalir(SelectEnterEventArgs args) => Salir();
@@ -97,10 +99,18 @@ namespace BioVR.Cabina
         // Todo cambio de estado ocurre bajo un fundido y Recentrar sienta al jugador: ya está adentro
         void AlCambiarEstado(GameState estado)
         {
+            QuedoAdentro();
+            if (letreroSalir != null) letreroSalir.SetActive(estado == GameState.Hangar);
+        }
+
+        // B / Y también lo regresa al asiento, aunque esté afuera
+        void AlRecentrar() => QuedoAdentro();
+
+        void QuedoAdentro()
+        {
             if (Afuera) OnAfuera?.Invoke(false);
             Afuera = false;
             botonEntrar.gameObject.SetActive(false);
-            if (letreroSalir != null) letreroSalir.SetActive(estado == GameState.Hangar);
         }
     }
 }

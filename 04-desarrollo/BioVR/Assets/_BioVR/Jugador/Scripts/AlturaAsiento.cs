@@ -52,7 +52,7 @@ namespace BioVR.Jugador
         void Update()
         {
             // El visor tarda unos cuadros en reportar la cabeza; antes de eso la cámara está en el piso
-            if (aplicadaAlInicio || origen.Camera.transform.localPosition.y < 0.2f) return;
+            if (aplicadaAlInicio || origen.CameraInOriginSpaceHeight < 0.2f) return;
             aplicadaAlInicio = true;
             Aplicar();
         }
