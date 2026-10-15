@@ -54,13 +54,16 @@ namespace BioVR.Comun.Editor
         public static void Crear()
         {
             CrearPasosQueFalten();
+            var escena = EditorSceneManager.OpenScene(EscenaInicial, OpenSceneMode.Single);
+
+            // Se cargan DESPUÉS de abrir la escena: al abrirla, Unity descarga los assets que nadie usa
+            // y las referencias cargadas antes quedarían vacías en el componente
             var pasos = AssetDatabase.FindAssets("t:PasoTutorial", new[] { CarpetaPasos })
                 .Select(AssetDatabase.GUIDToAssetPath)
                 .OrderBy(System.IO.Path.GetFileName)
                 .Select(AssetDatabase.LoadAssetAtPath<PasoTutorial>)
                 .ToArray();
 
-            var escena = EditorSceneManager.OpenScene(EscenaInicial, OpenSceneMode.Single);
             var origen = Object.FindFirstObjectByType<XROrigin>();
             if (origen == null || origen.Camera == null) { Debug.LogError("[Tutorial] No hay XR Origin con cámara en la escena inicial."); return; }
             UIVR.AsegurarEventSystem();

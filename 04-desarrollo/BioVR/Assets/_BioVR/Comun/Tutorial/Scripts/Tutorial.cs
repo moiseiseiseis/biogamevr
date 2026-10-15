@@ -56,6 +56,11 @@ namespace BioVR.Comun
 
         void Start()
         {
+            int total = pasos.Length;
+            pasos = System.Array.FindAll(pasos, p => p != null);
+            if (pasos.Length < total)
+                Debug.LogWarning($"[Tutorial] {total - pasos.Length} paso(s) vacío(s) en la lista; vuelve a correr BioVR → Crear tutorial.", this);
+
             if (panel == null || titulo == null || instruccion == null || pasos.Length == 0)
             {
                 Debug.LogError("[Tutorial] Faltan el panel, los textos o los pasos.", this);
