@@ -37,6 +37,13 @@ namespace BioVR.Secuencia
         // El efecto de salto (rol 5) lo usa para arrancar su túnel de partículas.
         public event Action<int> OnSaltoIniciado;
 
+        // Pausa (la pide el menú): congela el tiempo y el audio, y la cabina no responde
+        public bool Pausado { get; private set; }
+        public event Action<bool> OnPausaCambiada;
+
+        // true mientras hay un fundido o un salto en curso (el menú no se abre a la mitad)
+        public bool EnTransicion => enTransicion;
+
         bool enTransicion;
 
         void Awake()
@@ -53,6 +60,7 @@ namespace BioVR.Secuencia
         void OnDestroy()
         {
             if (Instance == this) Instance = null;
+            Pausar(false); // al reiniciar la escena no debe quedar el tiempo congelado
         }
 
         void Start() => IrA(estadoInicial, instantaneo: true);
@@ -60,6 +68,7 @@ namespace BioVR.Secuencia
         // ---- API pública (para los botones del rol 3) ----
         public void Avanzar()
         {
+            if (Pausado) { Debug.Log("[Secuencia] Avanzar ignorado: el juego está en pausa."); return; }
             if (enTransicion) { Debug.Log("[Secuencia] Avanzar ignorado: hay una transición en curso."); return; }
             switch (Estado)
             {
@@ -90,8 +99,19 @@ namespace BioVR.Secuencia
 
         public void IrA(GameState nuevo, bool instantaneo = false)
         {
+            if (Pausado) { Debug.Log($"[Secuencia] IrA({nuevo}) ignorado: el juego está en pausa."); return; }
             if (enTransicion) { Debug.Log($"[Secuencia] IrA({nuevo}) ignorado: hay una transición en curso."); return; }
             StartCoroutine(Transicion(nuevo, instantaneo));
+        }
+
+        public void Pausar(bool pausar)
+        {
+            if (Pausado == pausar) return;
+            Pausado = pausar;
+            Time.timeScale = pausar ? 0f : 1f;
+            AudioListener.pause = pausar;
+            Debug.Log($"[Secuencia] {(pausar ? "Pausa" : "Continuar")}");
+            OnPausaCambiada?.Invoke(pausar);
         }
 
         // ---- Internos ----
