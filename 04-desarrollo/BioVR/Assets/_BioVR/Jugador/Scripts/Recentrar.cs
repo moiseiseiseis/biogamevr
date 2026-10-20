@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.XR.CoreUtils;
+using BioVR.Secuencia;
 
 namespace BioVR.Jugador
 {
     // Regresa la vista al asiento del piloto mirando al frente (+Z) al presionar B o Y.
+    // También lo sienta de nuevo en cada cambio de estado (siempre ocurre bajo un fundido), por si
+    // caminó por la cabina o salió al hangar. Escotilla usa LlevarA para sacarlo de la cabina.
     public class Recentrar : MonoBehaviour
     {
         [Header("Configuración VR")]
@@ -16,6 +19,9 @@ namespace BioVR.Jugador
                  "Ojo: las acciones del XR Device Simulator solo funcionan en el editor, no en el visor.")]
         public InputActionProperty botonRecentrar = new InputActionProperty(CrearAccionPorDefecto());
 
+        // Avisa cuando el jugador presiona B / Y; lo usa el tutorial
+        public static event System.Action OnRecentrado;
+
         static InputAction CrearAccionPorDefecto()
         {
             var accion = new InputAction("Recentrar", InputActionType.Button);
@@ -24,6 +30,21 @@ namespace BioVR.Jugador
             accion.AddBinding("<Keyboard>/home"); // R ya la usa el simulador para rotar
             return accion;
         }
+
+        GameManager gm;
+
+        void Start()
+        {
+            gm = GameManager.Instance;
+            if (gm != null) gm.OnEstadoCambiado += AlCambiarEstado;
+        }
+
+        void OnDestroy()
+        {
+            if (gm != null) gm.OnEstadoCambiado -= AlCambiarEstado;
+        }
+
+        void AlCambiarEstado(GameState estado) => Centrar();
 
         void OnEnable()
         {
@@ -43,14 +64,25 @@ namespace BioVR.Jugador
 
         private void AlPresionarBoton(InputAction.CallbackContext context)
         {
-            if (xrOrigin != null && puntoOjos != null)
-            {
-                // Regresa la cámara física al punto central de la cabina
-                xrOrigin.MoveCameraToWorldLocation(puntoOjos.position);
-                // Alinea el frente del visor con el eje frontal (+Z) del juego
-                xrOrigin.MatchOriginUpCameraForward(Vector3.up, Vector3.forward);
-                Debug.Log("[Jugador] Vista recentrada.");
-            }
+            if (gm != null && gm.Pausado) return; // con el menú abierto no se mueve al jugador
+            Centrar();
+            Debug.Log("[Jugador] Vista recentrada.");
+            OnRecentrado?.Invoke();
+        }
+
+        // Al asiento del piloto, mirando al frente (+Z)
+        public void Centrar()
+        {
+            if (puntoOjos != null) LlevarA(puntoOjos.position, Vector3.forward);
+        }
+
+        // Pone los ojos del jugador sobre "lugar" (a la altura del Punto ojos) mirando hacia "adelante"
+        public void LlevarA(Vector3 lugar, Vector3 adelante)
+        {
+            if (xrOrigin == null || puntoOjos == null) return;
+            xrOrigin.MoveCameraToWorldLocation(new Vector3(lugar.x, puntoOjos.position.y, lugar.z));
+            xrOrigin.MatchOriginUpCameraForward(Vector3.up, adelante); // gira alrededor de la cámara
+            Physics.SyncTransforms(); // el CharacterController del XR Origin debe enterarse del cambio
         }
     }
 }

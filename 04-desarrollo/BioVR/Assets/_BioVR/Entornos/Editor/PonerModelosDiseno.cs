@@ -11,6 +11,7 @@ namespace BioVR.Entornos.Editor
     //                            y sus burbujas, vesículas libres y polirribosomas tiemblan (EmpujonesMoleculares)
     //   00-EscenaInicial       → submarino-cabina dentro de "Cabina (provisional)" con su ANCLA_Jugador en el origen;
     //                            se apagan los cubos y nuestros controles se mueven encima de los controles del modelo
+    // Al final corre "Agregar movimiento y escotilla", que depende de estos modelos (colisiones, escotilla).
     // Se puede correr varias veces. Menú: BioVR → Poner modelos de Diseño
     public static class PonerModelosDiseno
     {
@@ -26,6 +27,7 @@ namespace BioVR.Entornos.Editor
             EspacioCelular();
             Cabina();
             Debug.Log("[ModelosDiseno] Listo: nave en el hangar, escenario celular y cabina de Diseño.");
+            BioVR.Comun.Editor.AgregarMovimientoYEscotilla.Agregar();
         }
 
         // ---------------- Hangar ----------------
