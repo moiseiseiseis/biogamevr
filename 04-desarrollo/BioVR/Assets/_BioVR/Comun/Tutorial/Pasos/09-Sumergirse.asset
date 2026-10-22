@@ -16,3 +16,5 @@ MonoBehaviour:
   instruccion: "Toca Iniciar inmersi\xF3n otra vez para entrar al cuerpo humano."
   clave: estado:Viaje
   opcional: 0
+  resaltar:
+  - Boton Iniciar inmersion

@@ -16,3 +16,5 @@ MonoBehaviour:
   instruccion: "Toca el bot\xF3n Iniciar inmersi\xF3n en la consola."
   clave: estado:Abordaje
   opcional: 0
+  resaltar:
+  - Boton Iniciar inmersion
