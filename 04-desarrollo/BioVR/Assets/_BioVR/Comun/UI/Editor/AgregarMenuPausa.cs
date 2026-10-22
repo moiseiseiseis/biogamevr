@@ -13,6 +13,7 @@ namespace BioVR.Comun.Editor
     //   - EventSystem con XRUIInputModule (para que los rayos de los mandos puedan usar la UI)
     //   - "Menu de pausa" con MenuPausa y un Canvas world space: título, Continuar, Reiniciar,
     //     altura del asiento (Bajar / Subir), Salir y los controles
+    //   - El panel de confirmación "¿Estás seguro?" (Sí / No) que sale antes de Reiniciar y Salir
     //   - AlturaAsiento junto a Recentrar (mismo XR Origin y Punto ojos), si no estaba
     // Se puede correr varias veces: borra el menú anterior y lo vuelve a crear.
     // Menú: BioVR → Agregar menú de pausa
@@ -56,9 +57,12 @@ namespace BioVR.Comun.Editor
             UIVR.CapaDeUI(panel);
             panel.SetActive(false);
 
+            var confirmacion = PanelConfirmacion(raiz.transform, menu, origen.Camera);
+
             // ---- Referencias de MenuPausa ----
             var so = new SerializedObject(menu);
             so.FindProperty("panel").objectReferenceValue = panel;
+            so.FindProperty("panelConfirmacion").objectReferenceValue = confirmacion;
             so.FindProperty("cabeza").objectReferenceValue = origen.Camera.transform;
             var locomocion = origen.GetComponentsInChildren<Transform>(true).FirstOrDefault(t => t.name == "Locomotion");
             var apagar = so.FindProperty("apagarEnPausa");
@@ -83,6 +87,20 @@ namespace BioVR.Comun.Editor
             so.FindProperty("puntoOjos").objectReferenceValue = recentrar.puntoOjos;
             so.ApplyModifiedPropertiesWithoutUndo();
             return altura;
+        }
+
+        // ¿Estás seguro de realizar esta acción?  [Sí] [No]   (lo usan Reiniciar y Salir; diseño de Genaro)
+        static GameObject PanelConfirmacion(Transform padre, MenuPausa menu, Camera camara)
+        {
+            var panel = UIVR.Panel("Panel confirmacion", padre, new Vector2(500f, 260f), camara); // 0.5 × 0.26 m
+            UIVR.Texto(panel.transform, "Pregunta", "¿Estás seguro de realizar esta acción?", 34f, FontStyles.Bold, 100f);
+            var fila = UIVR.Fila("Si o No", panel.transform, 80f);
+            fila.GetComponent<HorizontalLayoutGroup>().childForceExpandWidth = true;
+            UIVR.Boton(fila, "Boton Si", "Sí", UIVR.ColorSalir, menu.ConfirmarAccionSi);
+            UIVR.Boton(fila, "Boton No", "No", UIVR.ColorBoton, menu.CancelarConfirmacionNo);
+            UIVR.CapaDeUI(panel);
+            panel.SetActive(false);
+            return panel;
         }
 
         // [Bajar]  Altura de los ojos: 1.40 m  [Subir]
