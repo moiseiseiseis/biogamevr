@@ -39,6 +39,14 @@ namespace BioVR.Comun
 
         static Tutorial instancia;
 
+        // Avisa qué paso se está mostrando; null = ninguno (completándose, terminado o saltado). Lo usa ResaltadorTutorial.
+        public static event System.Action<PasoTutorial> OnPasoCambiado;
+
+        // El paso que se está mostrando ahora, o null
+        public static PasoTutorial PasoActual =>
+            instancia != null && instancia.enabled && !instancia.completando && !instancia.Terminado
+                ? instancia.pasos[instancia.indice] : null;
+
         public bool Terminado => indice >= pasos.Length;
 
         int indice;
@@ -126,6 +134,7 @@ namespace BioVR.Comun
         IEnumerator Completar(int paso)
         {
             completando = true;
+            OnPasoCambiado?.Invoke(null);
             titulo.text = "¡Bien!";
             botonSiguiente.SetActive(false);
             yield return new WaitForSecondsRealtime(pausaAlCompletar);
@@ -145,6 +154,7 @@ namespace BioVR.Comun
             botonSiguiente.SetActive(conBoton);
             if (textoSiguiente != null) textoSiguiente.text = i == pasos.Length - 1 ? "Terminar" : "Siguiente";
             panel.SetActive(true);
+            OnPasoCambiado?.Invoke(paso);
         }
 
         // Botón "Siguiente" (o "Terminar" en el último paso)
@@ -160,6 +170,7 @@ namespace BioVR.Comun
             completando = false;
             indice = pasos.Length;
             panel.SetActive(false);
+            OnPasoCambiado?.Invoke(null);
             Debug.Log("[Tutorial] Terminado.");
         }
     }

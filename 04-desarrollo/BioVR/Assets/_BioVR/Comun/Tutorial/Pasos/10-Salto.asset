@@ -17,3 +17,6 @@ MonoBehaviour:
     vez.
   clave: salto:2
   opcional: 0
+  resaltar:
+  - Boton Salto Matrioska
+  - Palanca

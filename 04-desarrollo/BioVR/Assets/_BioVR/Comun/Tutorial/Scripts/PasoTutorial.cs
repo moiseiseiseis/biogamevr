@@ -16,5 +16,8 @@ namespace BioVR.Comun
 
         [Tooltip("Muestra también el botón Siguiente, para quien no quiera hacer este paso.")]
         public bool opcional;
+
+        [Tooltip("Nombres de los objetos de la escena que se resaltan mientras este paso está activo, p. ej. \"Boton Salto Matrioska\". Vacío: no se resalta nada.")]
+        public string[] resaltar = new string[0];
     }
 }

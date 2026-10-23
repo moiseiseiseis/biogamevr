@@ -17,3 +17,6 @@ MonoBehaviour:
     Para volver, toca el panel azul junto a la cabina."
   clave: entrar
   opcional: 1
+  resaltar:
+  - INT_Escotilla
+  - Panel volver a la cabina
