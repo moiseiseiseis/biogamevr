@@ -34,6 +34,10 @@ namespace BioVR.Comun.Editor
 
         const float AlturaMesa = 0.72f;
 
+        // Texto oscuro sobre paneles claros: el blanco se perdía con el cielo gris de Unity
+        static readonly Color ColorTexto = new Color(0.08f, 0.1f, 0.15f);
+        static readonly Color ColorPanel = new Color(0.93f, 0.92f, 0.88f);
+
         // (clave, nombre, primitiva, escala del modelo, color)
         static readonly (string, string, PrimitiveType, Vector3, Color)[] Piezas =
         {
@@ -47,6 +51,15 @@ namespace BioVR.Comun.Editor
         static readonly float[] GiroInicial = { 180f, 90f, -90f, 135f };
 
         const int NumRanuras = 3; // cubo, esfera y cilindro; la cápsula sobra a propósito
+
+        const string Leyenda =
+            "<b>Controles</b>\n" +
+            "1. Apunta a una pieza del estante con el rayo.\n" +
+            "2. <b>Grip</b> (botón del costado): mantenlo para atraerla y sujetarla.\n" +
+            "3. Gírala con la muñeca o con el <b>stick</b>.\n" +
+            "4. Llévala a su ranura con la <b>cara blanca hacia ti</b>: se pone amarilla.\n" +
+            "5. Suelta el grip. Verde: encajó. Roja: no va ahí.\n" +
+            "<b>Reiniciar</b>: apunta al botón de la mesa y aprieta el grip.";
 
         [MenuItem("BioVR/Armar escena Expresión Genética")]
         public static void Armar()
@@ -72,7 +85,7 @@ namespace BioVR.Comun.Editor
             // ---- Sala ----
             var piso = Primitiva("Piso", PrimitiveType.Plane, null, Vector3.zero, Vector3.one, Material("Piso", new Color(0.32f, 0.34f, 0.38f)));
             var mesa = Primitiva("Mesa", PrimitiveType.Cube, null, new Vector3(0f, AlturaMesa / 2f, 0.55f),
-                new Vector3(1.1f, AlturaMesa, 0.5f), Material("Mesa", new Color(0.55f, 0.42f, 0.3f)));
+                new Vector3(1.1f, AlturaMesa, 0.5f), Material("Mesa", new Color(0.78f, 0.66f, 0.5f)));
             // El estante queda fuera del alcance: las piezas se atraen con el rayo
             var estante = Primitiva("Estante", PrimitiveType.Cube, null, new Vector3(0f, 0.95f, 1.7f),
                 new Vector3(1.4f, 0.05f, 0.35f), Material("Estante", new Color(0.45f, 0.47f, 0.52f)));
@@ -152,6 +165,24 @@ namespace BioVR.Comun.Editor
             // ---- Letrero y botón ----
             var letrero = Texto("Letrero", juego.transform, "", 0.6f, new Vector2(1.6f, 0.45f));
             letrero.transform.position = new Vector3(0f, 1.35f, 1.6f);
+            var fondoLetrero = Primitiva("Fondo", PrimitiveType.Quad, letrero.transform, Vector3.zero, new Vector3(1.7f, 0.5f, 1f),
+                Material("Panel", ColorPanel), conCollider: false);
+            fondoLetrero.transform.localPosition = new Vector3(0f, 0f, 0.005f);
+
+            // Leyenda fija de controles para la prueba T1 (el tutorial paso a paso será Mo4, con el guion M3)
+            var leyenda = new GameObject("Leyenda de controles");
+            leyenda.transform.SetParent(juego.transform, false);
+            leyenda.transform.position = new Vector3(-0.85f, 1.15f, 0.75f);
+            leyenda.transform.rotation = Quaternion.Euler(-10f, -49f, 0f); // mira al asiento, un poco inclinada
+            var fondo = Primitiva("Fondo", PrimitiveType.Quad, leyenda.transform, Vector3.zero, new Vector3(0.62f, 0.5f, 1f),
+                Material("Panel", ColorPanel), conCollider: false);
+            fondo.transform.localPosition = new Vector3(0f, 0f, 0.005f);
+            fondo.transform.localRotation = Quaternion.identity;
+            var textoLeyenda = Texto("Texto", leyenda.transform, Leyenda, 0.22f, new Vector2(0.56f, 0.44f));
+            textoLeyenda.alignment = TextAlignmentOptions.TopLeft;
+            textoLeyenda.enableAutoSizing = true; // que quepa todo en el panel
+            textoLeyenda.fontSizeMin = 0.15f;
+            textoLeyenda.fontSizeMax = 0.26f;
 
             var boton = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(PrefabBoton), escena);
             if (boton != null)
@@ -199,7 +230,7 @@ namespace BioVR.Comun.Editor
             tmp.text = texto;
             tmp.fontSize = tamano;
             tmp.alignment = TextAlignmentOptions.Center;
-            tmp.color = Color.white;
+            tmp.color = ColorTexto;
             tmp.rectTransform.sizeDelta = caja;
             return tmp;
         }
