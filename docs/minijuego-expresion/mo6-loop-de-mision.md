@@ -22,17 +22,28 @@ Esto es lo que el jugador observa en cada caso. La columna "Paciente" de esta en
 | --- | --- | --- | --- | --- |
 | ¿Cuánto ARN se fabrica en el núcleo? | Normal | **Muy poco** | Normal | Normal |
 | ¿El ARNm maduro tiene el largo correcto? | Sí | Sí (pero hay poco) | **No: sobra un trozo de intrón** | Sí |
-| ¿Cuánto ARNm llega al citoplasma? | Normal | Poco | Poco | **Menos de lo normal** (ver nota) |
+| ¿Cuánto ARNm llega al citoplasma? | Normal | Poco | Sale, pero el ~90% está mal cortado; solo ~10% sirve | **Casi nada** (NMD; ver nota) |
 | ¿Dónde se detiene el ribosoma? | En el paro normal | En el paro normal | Antes: el trozo extra cambia la lectura | **Muy pronto: en el codón 39** |
 | **Etapa afectada** | — | Transcripción | Maduración del ARN | Traducción |
 
-> **Nota de rigor:** en las mutaciones 2 y 3, el ARNm con un paro prematuro se degrada en parte (vía NMD). Por eso el jugador **no** debe ver "ARNm en cantidad normal" en el caso 3. Lo que distingue al caso 3 es que **el largo del ARNm es correcto y el ribosoma se detiene antes de tiempo**. Esto corrige el reporte de G1 (ver la revisión).
+> **Nota de rigor (confirmada en PubMed el 25 oct; fuentes en `g1-reporte-mutaciones.md`):**
+> - **Caso 3:** el paro tan temprano activa la vía NMD. En portadores casi no hay ARNm mutante, así que el jugador **no** debe ver "ARNm en cantidad normal". Lo que distingue al caso 3 es: **largo correcto, muy poco ARNm y paro prematuro en el ribosoma** (decisión D5).
+> - **Caso 2:** el ARNm mal cortado sí sale al citoplasma (Busslinger et al., 1981). Lo que lo distingue es que **es más largo** de lo normal.
 
 ## Cómo se ve en la escena jugable (traducción)
 
 1. **Ciclo de muestra:** el ribosoma traduce solo un ARNm **sano**: AUG (Met) → GGC (Gly) → UUU (Phe) → UAA. En el UAA **entra solo** el factor de liberación y se suelta la cadena de 3 aminoácidos.
 2. **Ciclo guiado:** el jugador atrae, rota y coloca el ARNt cuyo anticodón corresponde a cada codón. Con el ARNt correcto aparece el aminoácido en la cadena. Las pistas están activadas.
-3. **Ciclo del paciente, sin ayuda:** la secuencia didáctica del paciente es **AUG–GGC–UAG**. Después de dos codones aparece UAG antes de lo esperado. Ningún ARNt encaja; el jugador lo **identifica como paro** y entra el factor de liberación. La cadena sale más corta que en el ciclo sano.
+3. **Ciclo del paciente, sin ayuda (P0, decisión D2):** la secuencia didáctica del paciente es **AUG–GGC–UAG**. Después de dos codones aparece UAG antes de lo esperado. Ningún ARNt encaja, tampoco el distractor de Gln (decisión D3). El jugador lo **identifica como paro** y el factor de liberación **entra solo** (decisión D1). La cadena sale más corta que en el ciclo sano.
+
+**Los 4 ARNt de la escena (decisión D3):**
+
+| ARNt | Anticodón (3′ → 5′) | Codón que lee | Uso |
+| --- | --- | --- | --- |
+| Met (iniciador) | UAC | AUG | Inicio |
+| Gly | CCG | GGC | Elongación |
+| Phe | AAA | UUU | Elongación (solo en el ciclo sano) |
+| **Gln** | **GUC** | CAG | **Distractor:** leería el codón 39 sano; en el paciente (UAG) no encaja |
 4. El jugador compara las dos cadenas y diagnostica: **la falla está en la traducción, por un paro prematuro**.
 
 > **Escala didáctica:** la β-globina real tiene 146 aminoácidos y su ARNm no empieza con AUG–GGC–UUU. La secuencia de 4 codones y el paro "en el tercer codón" en vez del 39 son simplificaciones, y la escena debe decirlo con el aviso de escala didáctica (A1).
@@ -40,5 +51,5 @@ Esto es lo que el jugador observa en cada caso. La columna "Paciente" de esta en
 ## Decisiones que necesita este loop
 
 - **Q1–Q3 de la Minuta 4:** quién habla en la cabina y con qué tono, para escribir la alerta y el cierre (G4 y M4).
-- **¿Qué hace el jugador en el codón de paro?** El plan dice "identificar UAA" y que el factor de liberación **entra solo**. El reporte de Genaro propone que el jugador **tome e inserte** el factor de liberación. Propongo seguir el plan: el jugador señala el codón como paro y el factor entra solo. Así no reemplaza a una proteína. Lo decide la tabla de Iker (I2), y se revisa en Mo8.
+- ~~¿Qué hace el jugador en el codón de paro?~~ **Decidido (D1, 25 oct):** el jugador señala el codón como paro y el factor de liberación entra solo.
 - **¿Dónde se elige el diagnóstico?** Propongo tres botones en la cabina (Transcripción, Maduración y Traducción), con el mismo botón de la cabina actual.

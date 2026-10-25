@@ -2,6 +2,8 @@
 
 Minijuego Expresión Genética · Revisión de rigor (Moisés) · 24 de octubre de 2026
 
+> **Estado (25 oct): aplicada.** Las correcciones están en el G1 final, `g1-reporte-mutaciones.md`, que hizo Desarrollo con crédito a Genaro (decisión D4). Los puntos 1 y 3 quedaron confirmados en PubMed. El punto 2 (19 nt) sigue pendiente de confirmar en el texto completo. El punto 4 se decidió en D1.
+
 Reporte revisado: *Reporte de Contexto Patológico y Viabilidad de Mutaciones: β-Talasemia en el Minijuego VR* (Genaro, 23 de octubre).
 
 **En general está muy bien:** el caso está bien elegido, la justificación del eritroblasto es correcta y las tres mutaciones cubren las tres etapas, como pedía G1. Antes de usarlo en las fichas (G2) y en la tabla de Iker (I2) hay que corregir o confirmar estos puntos.

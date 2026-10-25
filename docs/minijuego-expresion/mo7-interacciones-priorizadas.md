@@ -12,7 +12,9 @@ Minijuego Expresión Genética · Desarrollo (Moisés) · Cortes C2–C3, 24 de 
 | 2 | **Sujetar y rotar** el ARNt para ver su anticodón | Mantener el grip + muñeca o stick | El anticodón queda a la vista | Mo2 | Moisés |
 | 3 | **Colocar el ARNt** en el sitio A, frente al codón | Soltarlo en el sitio A | Correcto: encaja y aparece el aminoácido. Incorrecto: se rechaza y regresa | Mo2: `RanuraSeleccion` (clave = codón) | Moisés → Iker |
 | 4 | **Avance de la secuencia**: el ribosoma corre un codón y la cadena crece | Ninguno (lo hace el ribosoma) | Animación simple del ARNm y de la cadena | Nuevo (I4) | Iker |
-| 5 | **Codón de paro** (UAA en sano, UAG en paciente) | Identificarlo como paro (pendiente: ver Mo6) | Entra solo el factor de liberación y se suelta la cadena | Nuevo (I4) | Iker |
+| 5 | **Codón de paro** (UAA en sano, UAG en paciente) | **Señalarlo** con el rayo y el gatillo como paro (D1, D6) | Entra solo el factor de liberación y se suelta la cadena | Nuevo (I4) | Iker |
+| 5b | **Ciclo del paciente** AUG–GGC–UAG (D2) | Los mismos verbos | La cadena sale más corta que en el ciclo sano | I4 (misma escena, otra secuencia) | Iker |
+| 5c | **4 ARNt**: Met, Gly, Phe y el distractor Gln (3′-GUC-5′) (D3) | Atraer, rotar y soltar | El de Gln nunca encaja | Mo2 (la cápsula ya hace de distractor) | Moisés → Albert (A2) |
 | 6 | **Textos de cabina** por paso: alerta, instrucción y cierre (máximo 2 líneas) | Leer | Letrero frente al jugador | `MesaPrueba` (letrero) | Genaro (G4) |
 | 7 | **Tutorial de controles** con objetos neutros (5 pasos de M3) | Atraer, sujetar, rotar y soltar | Paso completado → siguiente | Mesa de prueba + `Tutorial` de BioVR | Moisés (Mo4) |
 
