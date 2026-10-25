@@ -1,0 +1,4 @@
+git checkout rol5/assets-minijuego
+git add .
+git commit -m "feat(assets): agrega proxy low-poly de ARNm"
+git push origin rol5/assets-minijuego
