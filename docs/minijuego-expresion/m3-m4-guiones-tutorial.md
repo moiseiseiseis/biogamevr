@@ -51,7 +51,7 @@ Secuencia de la escena: AUG – GGC – UUU – UAA. El ribosoma trabaja un cicl
 ## Decisiones por confirmar
 
 - ~~**Botones:**~~ Resuelto por D6: el grip agarra y el gatillo selecciona o señala un codón, igual que en la mesa de prueba (Mo2).
-- **UUU automático:** en el paso 6 propongo que el ribosoma pase solo por UUU para no alargar el tutorial. Confirmar con Iker (I4) y Moisés.
+- ~~**UUU automático:**~~ Confirmado como decisión D7 (27 oct): el ribosoma pasa solo por UUU en el paso 6, con el mismo avance automático de I4.
 - **Pistas:** propongo una pista suave si pasan 10 segundos sin acción. El informe pide que las pistas sean opcionales.
 - ~~**Revisión científica:**~~ Hecha (Mo9, 27 oct): se agregó la línea de difusión al paso 3; el texto del paso 5 queda igual. Ver `revision-m3-m4-g2.md`.
 - **Legibilidad:** los textos están contados para no pasar de 2 líneas, pero hay que confirmarlo en el Quest durante T1 y T2.

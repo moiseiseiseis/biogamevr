@@ -20,7 +20,7 @@ Los cambios ya están aplicados en `m3-m4-guiones-tutorial.md` (autor: Marcos) y
 **Respuestas a sus dudas:**
 
 - **Botones:** resuelto por D6.
-- **UUU automático:** de acuerdo; falta que Iker lo confirme en I4.
+- **UUU automático:** aceptado como decisión D7 (27 oct); ya se le avisó a Iker.
 - **Pista a los 10 segundos:** de acuerdo, mientras sea suave y opcional.
 - **Legibilidad:** se confirma en el Quest en T1 y T2.
 

@@ -10,6 +10,7 @@ Registro de lo que se decidió, cuándo y por qué. Si una decisión cambia, se 
 | D4 | 25 oct | **El G1 final lo hace Desarrollo** con las correcciones de rigor, con crédito a Genaro | Para no retrasar G2 | `g1-reporte-mutaciones.md` |
 | D5 | 25 oct | Caso 3: el jugador ve **muy poco ARNm** (NMD), con el largo correcto y un paro prematuro. **No** "ARNm en cantidad normal" | Confirmado en PubMed (Hall y Thein 1994; Inácio et al. 2004; Baserga y Benz 1992) | Mo6, G2, textos de cabina |
 | D6 | 25 oct | Se agarra con el **grip**. El gatillo es para botones, menús y **señalar un codón** con el rayo | Así funciona la mesa de prueba (Mo2). Señalar el codón es el verbo nuevo de las filas 3 y 9 de I1 | M3, I1 |
+| D7 | 27 oct | En el paso 6 del tutorial de conceptos (M4), el ribosoma **pasa solo por UUU** (se agrega Phe) hasta UAA. El jugador acopla solo Met (guiado) y Gly (sin ayuda) | Usa el mismo avance automático de la fila 4 de Mo7 (I4) y repite el ciclo de muestra de Mo6, así que no agrega trabajo. El ARNt de Phe se sigue inspeccionando en el paso 3. Propuesta de Marcos; decidió Desarrollo y se le avisó a Iker | M4, I4 |
 
 ## Pendientes de decidir
 
