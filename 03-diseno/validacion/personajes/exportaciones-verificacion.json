@@ -1,0 +1,103 @@
+{
+  "blender": "5.2.2 LTS",
+  "tested_in_unity": false,
+  "files": [
+    {
+      "file": "exports/explorador-celular.fbx",
+      "reimported_in_blender": true,
+      "mesh_objects": 157,
+      "triangles": 19684,
+      "native_evaluated_triangles": 19684,
+      "triangle_delta": 0,
+      "dimensions_m": [
+        0.7492751479148865,
+        0.5324641913175583,
+        1.699999935797723
+      ],
+      "feet_z0": true,
+      "material_slots": 159,
+      "result": "PASS"
+    },
+    {
+      "file": "exports/explorador-celular.glb",
+      "reimported_in_blender": true,
+      "mesh_objects": 157,
+      "triangles": 19684,
+      "native_evaluated_triangles": 19684,
+      "triangle_delta": 0,
+      "dimensions_m": [
+        0.7492751479148865,
+        0.5324641019105911,
+        1.6999999284744263
+      ],
+      "feet_z0": true,
+      "material_slots": 159,
+      "result": "PASS"
+    },
+    {
+      "file": "exports/investigador.fbx",
+      "reimported_in_blender": true,
+      "mesh_objects": 247,
+      "triangles": 39476,
+      "native_evaluated_triangles": 39476,
+      "triangle_delta": 0,
+      "dimensions_m": [
+        0.7154566943645477,
+        0.42883819341659546,
+        1.7799999784650895
+      ],
+      "feet_z0": true,
+      "material_slots": 248,
+      "result": "PASS"
+    },
+    {
+      "file": "exports/investigador.glb",
+      "reimported_in_blender": true,
+      "mesh_objects": 247,
+      "triangles": 39476,
+      "native_evaluated_triangles": 39476,
+      "triangle_delta": 0,
+      "dimensions_m": [
+        0.7154566943645477,
+        0.4288381040096283,
+        1.7799999713897705
+      ],
+      "feet_z0": true,
+      "material_slots": 248,
+      "result": "PASS"
+    },
+    {
+      "file": "exports/investigador-lectura.fbx",
+      "reimported_in_blender": true,
+      "mesh_objects": 286,
+      "triangles": 42510,
+      "native_evaluated_triangles": 42510,
+      "triangle_delta": 0,
+      "dimensions_m": [
+        0.5552295446395874,
+        0.6014033555984497,
+        1.7799999784650895
+      ],
+      "feet_z0": true,
+      "material_slots": 287,
+      "result": "PASS"
+    },
+    {
+      "file": "exports/investigador-lectura.glb",
+      "reimported_in_blender": true,
+      "mesh_objects": 286,
+      "triangles": 42510,
+      "native_evaluated_triangles": 42510,
+      "triangle_delta": 0,
+      "dimensions_m": [
+        0.5552295446395874,
+        0.6014033555984497,
+        1.7799999713897705
+      ],
+      "feet_z0": true,
+      "material_slots": 287,
+      "result": "PASS"
+    }
+  ],
+  "result": "PASS"
+}

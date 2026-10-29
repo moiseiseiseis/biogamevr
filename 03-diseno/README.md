@@ -32,3 +32,13 @@ Desarrollo (rol 6) copia los `.fbx` de `exports/` a Unity y sustituye los placeh
 
 ## Versiones
 - Blender: _por definir (todos la misma)_
+
+## Personajes — entrega del 29 de octubre de 2026
+
+Se incorporan el **Explorador Celular** y **El Investigador**, este último con revisión de cara y hombros y dos variantes estáticas (lectura y brazos separados). Fuentes editables en Blender 5.2.2 LTS, exportaciones FBX/GLB, vistas, referencias, scripts e informes se describen en la [guía de entrega](entrega-personajes.md).
+
+- [Explorador Celular](fuentes/explorador-celular.blend) y [El Investigador](fuentes/investigador.blend).
+- [Bitácora en PDF](documentacion/personajes/bitacora-personajes.pdf), [Word](documentacion/personajes/bitacora-personajes.docx) y [Markdown](documentacion/personajes/bitacora-personajes.md).
+- [Comprobación de las seis exportaciones](validacion/personajes/exportaciones-verificacion.json).
+
+Descargar los binarios con Git LFS. La entrega establece proporciones, materiales planos y geometría estática; rig, texturas finales e integración y rendimiento en Unity/VR quedan pendientes.

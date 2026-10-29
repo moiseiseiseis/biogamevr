@@ -37,6 +37,9 @@ crashlytics-build.properties
 # ---- Blender ----
 *.blend1
 *.blend2
+# ---- Scripts Python de modelado ----
+__pycache__/
+*.py[cod]
 # ---- Sistema ----
 .DS_Store
 Thumbs.db

@@ -1,0 +1,1565 @@
+{
+  "project": "School Redemption Game",
+  "character": "Explorador Celular",
+  "phase": "Blockout 01",
+  "blender": "5.2.2 LTS",
+  "units": "METRIC, 1 Blender unit = 1 meter",
+  "orientation": "front -Y, up +Z",
+  "bounding_min_m": [
+    -0.3750990033149719,
+    -0.19300000369548798,
+    0.0
+  ],
+  "bounding_max_m": [
+    0.3750990033149719,
+    0.33946409821510315,
+    1.6999999284744263
+  ],
+  "dimensions_m": [
+    0.7501980066299438,
+    0.5324641019105911,
+    1.6999999284744263
+  ],
+  "mesh_objects": 157,
+  "base_triangles": 9408,
+  "evaluated_triangles": 19684,
+  "base_vertices": 5077,
+  "collections": {
+    "BODY": {
+      "objects": 9,
+      "base_triangles": 956,
+      "evaluated_triangles": 1052
+    },
+    "HELMET": {
+      "objects": 23,
+      "base_triangles": 2684,
+      "evaluated_triangles": 4996
+    },
+    "BACKPACK": {
+      "objects": 26,
+      "base_triangles": 992,
+      "evaluated_triangles": 3020
+    },
+    "SUIT": {
+      "objects": 25,
+      "base_triangles": 2156,
+      "evaluated_triangles": 3340
+    },
+    "GLOVES": {
+      "objects": 28,
+      "base_triangles": 1224,
+      "evaluated_triangles": 2568
+    },
+    "BOOTS": {
+      "objects": 18,
+      "base_triangles": 840,
+      "evaluated_triangles": 1928
+    },
+    "ACCESSORIES": {
+      "objects": 29,
+      "base_triangles": 556,
+      "evaluated_triangles": 2780
+    },
+    "REFERENCES": {
+      "objects": 3,
+      "base_triangles": 0,
+      "evaluated_triangles": 0
+    }
+  },
+  "objects": [
+    {
+      "object": "BODY_Torso_Base",
+      "collection": "BODY",
+      "base_vertices": 48,
+      "base_triangles": 92,
+      "evaluated_triangles": 92,
+      "modifiers": []
+    },
+    {
+      "object": "BODY_Pelvis_Base",
+      "collection": "BODY",
+      "base_vertices": 36,
+      "base_triangles": 68,
+      "evaluated_triangles": 68,
+      "modifiers": []
+    },
+    {
+      "object": "BODY_Cuello_Sellado",
+      "collection": "BODY",
+      "base_vertices": 48,
+      "base_triangles": 92,
+      "evaluated_triangles": 188,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "BODY_Cabeza_Proxy",
+      "collection": "BODY",
+      "base_vertices": 114,
+      "base_triangles": 224,
+      "evaluated_triangles": 224,
+      "modifiers": []
+    },
+    {
+      "object": "BODY_Hombro_R",
+      "collection": "BODY",
+      "base_vertices": 62,
+      "base_triangles": 120,
+      "evaluated_triangles": 120,
+      "modifiers": []
+    },
+    {
+      "object": "BODY_Codo_R",
+      "collection": "BODY",
+      "base_vertices": 62,
+      "base_triangles": 120,
+      "evaluated_triangles": 120,
+      "modifiers": []
+    },
+    {
+      "object": "BODY_Hombro_L",
+      "collection": "BODY",
+      "base_vertices": 62,
+      "base_triangles": 120,
+      "evaluated_triangles": 120,
+      "modifiers": []
+    },
+    {
+      "object": "BODY_Codo_L",
+      "collection": "BODY",
+      "base_vertices": 62,
+      "base_triangles": 120,
+      "evaluated_triangles": 120,
+      "modifiers": []
+    },
+    {
+      "object": "HELMET_Junta_Cuello",
+      "collection": "HELMET",
+      "base_vertices": 64,
+      "base_triangles": 124,
+      "evaluated_triangles": 252,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "HELMET_Collar_Soporte",
+      "collection": "HELMET",
+      "base_vertices": 96,
+      "base_triangles": 188,
+      "evaluated_triangles": 188,
+      "modifiers": []
+    },
+    {
+      "object": "HELMET_Collar_Placa",
+      "collection": "HELMET",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 76,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "HELMET_Collar_Naranja",
+      "collection": "HELMET",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 76,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "HELMET_Calota_Con_Abertura",
+      "collection": "HELMET",
+      "base_vertices": 321,
+      "base_triangles": 600,
+      "evaluated_triangles": 1280,
+      "modifiers": [
+        "SOLIDIFY"
+      ]
+    },
+    {
+      "object": "HELMET_Visor_Curvo",
+      "collection": "HELMET",
+      "base_vertices": 161,
+      "base_triangles": 280,
+      "evaluated_triangles": 280,
+      "modifiers": []
+    },
+    {
+      "object": "HELMET_Junta_Perimetral_Visor",
+      "collection": "HELMET",
+      "base_vertices": 246,
+      "base_triangles": 488,
+      "evaluated_triangles": 488,
+      "modifiers": []
+    },
+    {
+      "object": "HELMET_Comunicador_Base_R",
+      "collection": "HELMET",
+      "base_vertices": 56,
+      "base_triangles": 108,
+      "evaluated_triangles": 220,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "HELMET_Comunicador_Aro_R",
+      "collection": "HELMET",
+      "base_vertices": 56,
+      "base_triangles": 108,
+      "evaluated_triangles": 220,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "HELMET_Comunicador_Centro_R",
+      "collection": "HELMET",
+      "base_vertices": 48,
+      "base_triangles": 92,
+      "evaluated_triangles": 188,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "HELMET_Comunicador_Lente_R",
+      "collection": "HELMET",
+      "base_vertices": 48,
+      "base_triangles": 92,
+      "evaluated_triangles": 188,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "HELMET_Cierre_Inferior_R",
+      "collection": "HELMET",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "HELMET_Comunicador_Base_L",
+      "collection": "HELMET",
+      "base_vertices": 56,
+      "base_triangles": 108,
+      "evaluated_triangles": 220,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "HELMET_Comunicador_Aro_L",
+      "collection": "HELMET",
+      "base_vertices": 56,
+      "base_triangles": 108,
+      "evaluated_triangles": 220,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "HELMET_Comunicador_Centro_L",
+      "collection": "HELMET",
+      "base_vertices": 48,
+      "base_triangles": 92,
+      "evaluated_triangles": 188,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "HELMET_Comunicador_Lente_L",
+      "collection": "HELMET",
+      "base_vertices": 48,
+      "base_triangles": 92,
+      "evaluated_triangles": 188,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "HELMET_Cierre_Inferior_L",
+      "collection": "HELMET",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "HELMET_Puente_Frente",
+      "collection": "HELMET",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "HELMET_Marca_Superior",
+      "collection": "HELMET",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "HELMET_Placa_Posterior",
+      "collection": "HELMET",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "HELMET_Antena_Base",
+      "collection": "HELMET",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "HELMET_Antena",
+      "collection": "HELMET",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 28,
+      "modifiers": []
+    },
+    {
+      "object": "HELMET_Antena_Punta",
+      "collection": "HELMET",
+      "base_vertices": 26,
+      "base_triangles": 48,
+      "evaluated_triangles": 48,
+      "modifiers": []
+    },
+    {
+      "object": "PACK_Base_Rigida",
+      "collection": "BACKPACK",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Carcasa_Verde",
+      "collection": "BACKPACK",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Panel_Posterior",
+      "collection": "BACKPACK",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Panel_Centro",
+      "collection": "BACKPACK",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Base_Inferior",
+      "collection": "BACKPACK",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Cartucho_Lateral_R",
+      "collection": "BACKPACK",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Abrazadera_R_0.982",
+      "collection": "BACKPACK",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Abrazadera_R_1.235",
+      "collection": "BACKPACK",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Cinta_Posterior_R",
+      "collection": "BACKPACK",
+      "base_vertices": 8,
+      "base_triangles": 6,
+      "evaluated_triangles": 76,
+      "modifiers": [
+        "SOLIDIFY",
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Pasador_R",
+      "collection": "BACKPACK",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Asa_Soporte_R",
+      "collection": "BACKPACK",
+      "base_vertices": 24,
+      "base_triangles": 44,
+      "evaluated_triangles": 44,
+      "modifiers": []
+    },
+    {
+      "object": "PACK_Cartucho_Lateral_L",
+      "collection": "BACKPACK",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Abrazadera_L_0.982",
+      "collection": "BACKPACK",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Abrazadera_L_1.235",
+      "collection": "BACKPACK",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Cinta_Posterior_L",
+      "collection": "BACKPACK",
+      "base_vertices": 8,
+      "base_triangles": 6,
+      "evaluated_triangles": 76,
+      "modifiers": [
+        "SOLIDIFY",
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Pasador_L",
+      "collection": "BACKPACK",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Asa_Soporte_L",
+      "collection": "BACKPACK",
+      "base_vertices": 24,
+      "base_triangles": 44,
+      "evaluated_triangles": 44,
+      "modifiers": []
+    },
+    {
+      "object": "PACK_Puerto_Circular_Base",
+      "collection": "BACKPACK",
+      "base_vertices": 56,
+      "base_triangles": 108,
+      "evaluated_triangles": 220,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Puerto_Circular_Aro",
+      "collection": "BACKPACK",
+      "base_vertices": 56,
+      "base_triangles": 108,
+      "evaluated_triangles": 220,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Puerto_Circular_Centro",
+      "collection": "BACKPACK",
+      "base_vertices": 48,
+      "base_triangles": 92,
+      "evaluated_triangles": 188,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Puerto_Interior",
+      "collection": "BACKPACK",
+      "base_vertices": 144,
+      "base_triangles": 288,
+      "evaluated_triangles": 288,
+      "modifiers": []
+    },
+    {
+      "object": "PACK_Luz_Estado",
+      "collection": "BACKPACK",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Ventilacion_0",
+      "collection": "BACKPACK",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Ventilacion_1",
+      "collection": "BACKPACK",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Ventilacion_2",
+      "collection": "BACKPACK",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "PACK_Manguera_Cuello",
+      "collection": "BACKPACK",
+      "base_vertices": 32,
+      "base_triangles": 60,
+      "evaluated_triangles": 60,
+      "modifiers": []
+    },
+    {
+      "object": "SUIT_Torso_Marfil",
+      "collection": "SUIT",
+      "base_vertices": 112,
+      "base_triangles": 220,
+      "evaluated_triangles": 220,
+      "modifiers": []
+    },
+    {
+      "object": "SUIT_Panel_Abdominal",
+      "collection": "SUIT",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "SUIT_Cadera_Pantalon",
+      "collection": "SUIT",
+      "base_vertices": 64,
+      "base_triangles": 124,
+      "evaluated_triangles": 124,
+      "modifiers": []
+    },
+    {
+      "object": "SUIT_Pantalon_R",
+      "collection": "SUIT",
+      "base_vertices": 132,
+      "base_triangles": 260,
+      "evaluated_triangles": 260,
+      "modifiers": []
+    },
+    {
+      "object": "SUIT_Rodillera_R",
+      "collection": "SUIT",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "SUIT_Rodillera_Centro_R",
+      "collection": "SUIT",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "SUIT_Rodillera_Fijacion_R_a",
+      "collection": "SUIT",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "SUIT_Rodillera_Fijacion_R_b",
+      "collection": "SUIT",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "SUIT_Manga_Superior_R",
+      "collection": "SUIT",
+      "base_vertices": 60,
+      "base_triangles": 116,
+      "evaluated_triangles": 116,
+      "modifiers": []
+    },
+    {
+      "object": "SUIT_Manga_Inferior_R",
+      "collection": "SUIT",
+      "base_vertices": 60,
+      "base_triangles": 116,
+      "evaluated_triangles": 116,
+      "modifiers": []
+    },
+    {
+      "object": "SUIT_Puno_Sellado_R",
+      "collection": "SUIT",
+      "base_vertices": 32,
+      "base_triangles": 60,
+      "evaluated_triangles": 124,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "SUIT_Parche_Hombro_Naranja_R",
+      "collection": "SUIT",
+      "base_vertices": 40,
+      "base_triangles": 76,
+      "evaluated_triangles": 156,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "SUIT_Parche_Hombro_Marfil_R",
+      "collection": "SUIT",
+      "base_vertices": 40,
+      "base_triangles": 76,
+      "evaluated_triangles": 156,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "SUIT_Parche_Hombro_Centro_R",
+      "collection": "SUIT",
+      "base_vertices": 40,
+      "base_triangles": 76,
+      "evaluated_triangles": 156,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "SUIT_Pantalon_L",
+      "collection": "SUIT",
+      "base_vertices": 132,
+      "base_triangles": 260,
+      "evaluated_triangles": 260,
+      "modifiers": []
+    },
+    {
+      "object": "SUIT_Rodillera_L",
+      "collection": "SUIT",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "SUIT_Rodillera_Centro_L",
+      "collection": "SUIT",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "SUIT_Rodillera_Fijacion_L_a",
+      "collection": "SUIT",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "SUIT_Rodillera_Fijacion_L_b",
+      "collection": "SUIT",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "SUIT_Manga_Superior_L",
+      "collection": "SUIT",
+      "base_vertices": 60,
+      "base_triangles": 116,
+      "evaluated_triangles": 116,
+      "modifiers": []
+    },
+    {
+      "object": "SUIT_Manga_Inferior_L",
+      "collection": "SUIT",
+      "base_vertices": 60,
+      "base_triangles": 116,
+      "evaluated_triangles": 116,
+      "modifiers": []
+    },
+    {
+      "object": "SUIT_Puno_Sellado_L",
+      "collection": "SUIT",
+      "base_vertices": 32,
+      "base_triangles": 60,
+      "evaluated_triangles": 124,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "SUIT_Parche_Hombro_Naranja_L",
+      "collection": "SUIT",
+      "base_vertices": 40,
+      "base_triangles": 76,
+      "evaluated_triangles": 156,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "SUIT_Parche_Hombro_Marfil_L",
+      "collection": "SUIT",
+      "base_vertices": 40,
+      "base_triangles": 76,
+      "evaluated_triangles": 156,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "SUIT_Parche_Hombro_Centro_L",
+      "collection": "SUIT",
+      "base_vertices": 40,
+      "base_triangles": 76,
+      "evaluated_triangles": 156,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "GLOVE_Muneca_R",
+      "collection": "GLOVES",
+      "base_vertices": 24,
+      "base_triangles": 44,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "GLOVE_Palma_R",
+      "collection": "GLOVES",
+      "base_vertices": 62,
+      "base_triangles": 120,
+      "evaluated_triangles": 120,
+      "modifiers": []
+    },
+    {
+      "object": "GLOVE_Dedo_1_R",
+      "collection": "GLOVES",
+      "base_vertices": 18,
+      "base_triangles": 32,
+      "evaluated_triangles": 32,
+      "modifiers": []
+    },
+    {
+      "object": "GLOVE_Nudillo_1_R",
+      "collection": "GLOVES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "GLOVE_Dedo_2_R",
+      "collection": "GLOVES",
+      "base_vertices": 18,
+      "base_triangles": 32,
+      "evaluated_triangles": 32,
+      "modifiers": []
+    },
+    {
+      "object": "GLOVE_Nudillo_2_R",
+      "collection": "GLOVES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "GLOVE_Dedo_3_R",
+      "collection": "GLOVES",
+      "base_vertices": 18,
+      "base_triangles": 32,
+      "evaluated_triangles": 32,
+      "modifiers": []
+    },
+    {
+      "object": "GLOVE_Nudillo_3_R",
+      "collection": "GLOVES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "GLOVE_Dedo_4_R",
+      "collection": "GLOVES",
+      "base_vertices": 18,
+      "base_triangles": 32,
+      "evaluated_triangles": 32,
+      "modifiers": []
+    },
+    {
+      "object": "GLOVE_Nudillo_4_R",
+      "collection": "GLOVES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "GLOVE_Pulgar_R",
+      "collection": "GLOVES",
+      "base_vertices": 24,
+      "base_triangles": 44,
+      "evaluated_triangles": 44,
+      "modifiers": []
+    },
+    {
+      "object": "GLOVE_Sensor_Aro_R",
+      "collection": "GLOVES",
+      "base_vertices": 40,
+      "base_triangles": 76,
+      "evaluated_triangles": 156,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "GLOVE_Sensor_Centro_R",
+      "collection": "GLOVES",
+      "base_vertices": 40,
+      "base_triangles": 76,
+      "evaluated_triangles": 156,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "GLOVE_Sensor_Lente_R",
+      "collection": "GLOVES",
+      "base_vertices": 40,
+      "base_triangles": 76,
+      "evaluated_triangles": 156,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "GLOVE_Muneca_L",
+      "collection": "GLOVES",
+      "base_vertices": 24,
+      "base_triangles": 44,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "GLOVE_Palma_L",
+      "collection": "GLOVES",
+      "base_vertices": 62,
+      "base_triangles": 120,
+      "evaluated_triangles": 120,
+      "modifiers": []
+    },
+    {
+      "object": "GLOVE_Dedo_1_L",
+      "collection": "GLOVES",
+      "base_vertices": 18,
+      "base_triangles": 32,
+      "evaluated_triangles": 32,
+      "modifiers": []
+    },
+    {
+      "object": "GLOVE_Nudillo_1_L",
+      "collection": "GLOVES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "GLOVE_Dedo_2_L",
+      "collection": "GLOVES",
+      "base_vertices": 18,
+      "base_triangles": 32,
+      "evaluated_triangles": 32,
+      "modifiers": []
+    },
+    {
+      "object": "GLOVE_Nudillo_2_L",
+      "collection": "GLOVES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "GLOVE_Dedo_3_L",
+      "collection": "GLOVES",
+      "base_vertices": 18,
+      "base_triangles": 32,
+      "evaluated_triangles": 32,
+      "modifiers": []
+    },
+    {
+      "object": "GLOVE_Nudillo_3_L",
+      "collection": "GLOVES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "GLOVE_Dedo_4_L",
+      "collection": "GLOVES",
+      "base_vertices": 18,
+      "base_triangles": 32,
+      "evaluated_triangles": 32,
+      "modifiers": []
+    },
+    {
+      "object": "GLOVE_Nudillo_4_L",
+      "collection": "GLOVES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "GLOVE_Pulgar_L",
+      "collection": "GLOVES",
+      "base_vertices": 24,
+      "base_triangles": 44,
+      "evaluated_triangles": 44,
+      "modifiers": []
+    },
+    {
+      "object": "GLOVE_Sensor_Aro_L",
+      "collection": "GLOVES",
+      "base_vertices": 40,
+      "base_triangles": 76,
+      "evaluated_triangles": 156,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "GLOVE_Sensor_Centro_L",
+      "collection": "GLOVES",
+      "base_vertices": 40,
+      "base_triangles": 76,
+      "evaluated_triangles": 156,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "GLOVE_Sensor_Lente_L",
+      "collection": "GLOVES",
+      "base_vertices": 40,
+      "base_triangles": 76,
+      "evaluated_triangles": 156,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "BOOT_Suela_R",
+      "collection": "BOOTS",
+      "base_vertices": 48,
+      "base_triangles": 92,
+      "evaluated_triangles": 92,
+      "modifiers": []
+    },
+    {
+      "object": "BOOT_Carcasa_R",
+      "collection": "BOOTS",
+      "base_vertices": 72,
+      "base_triangles": 140,
+      "evaluated_triangles": 140,
+      "modifiers": []
+    },
+    {
+      "object": "BOOT_Puntera_Marfil_R",
+      "collection": "BOOTS",
+      "base_vertices": 36,
+      "base_triangles": 68,
+      "evaluated_triangles": 68,
+      "modifiers": []
+    },
+    {
+      "object": "BOOT_Proteccion_Talon_R",
+      "collection": "BOOTS",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "BOOT_Lengua_R",
+      "collection": "BOOTS",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "BOOT_Correa_Tobillo_R",
+      "collection": "BOOTS",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "BOOT_Correa_Empeine_R",
+      "collection": "BOOTS",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "BOOT_Cierre_Empeine_R",
+      "collection": "BOOTS",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "BOOT_Bisagra_R",
+      "collection": "BOOTS",
+      "base_vertices": 32,
+      "base_triangles": 60,
+      "evaluated_triangles": 124,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "BOOT_Suela_L",
+      "collection": "BOOTS",
+      "base_vertices": 48,
+      "base_triangles": 92,
+      "evaluated_triangles": 92,
+      "modifiers": []
+    },
+    {
+      "object": "BOOT_Carcasa_L",
+      "collection": "BOOTS",
+      "base_vertices": 72,
+      "base_triangles": 140,
+      "evaluated_triangles": 140,
+      "modifiers": []
+    },
+    {
+      "object": "BOOT_Puntera_Marfil_L",
+      "collection": "BOOTS",
+      "base_vertices": 36,
+      "base_triangles": 68,
+      "evaluated_triangles": 68,
+      "modifiers": []
+    },
+    {
+      "object": "BOOT_Proteccion_Talon_L",
+      "collection": "BOOTS",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "BOOT_Lengua_L",
+      "collection": "BOOTS",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "BOOT_Correa_Tobillo_L",
+      "collection": "BOOTS",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "BOOT_Correa_Empeine_L",
+      "collection": "BOOTS",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "BOOT_Cierre_Empeine_L",
+      "collection": "BOOTS",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "BOOT_Bisagra_L",
+      "collection": "BOOTS",
+      "base_vertices": 32,
+      "base_triangles": 60,
+      "evaluated_triangles": 124,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "SUIT_Cinturon",
+      "collection": "ACCESSORIES",
+      "base_vertices": 32,
+      "base_triangles": 60,
+      "evaluated_triangles": 60,
+      "modifiers": []
+    },
+    {
+      "object": "ACC_Hebilla_Cinturon",
+      "collection": "ACCESSORIES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Hebilla_Interior",
+      "collection": "ACCESSORIES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Cinta_Muslo_R",
+      "collection": "ACCESSORIES",
+      "base_vertices": 8,
+      "base_triangles": 6,
+      "evaluated_triangles": 76,
+      "modifiers": [
+        "SOLIDIFY",
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Pasador_Muslo_R",
+      "collection": "ACCESSORIES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Bolsa_Cadera_R",
+      "collection": "ACCESSORIES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Bolsa_Tapa_R",
+      "collection": "ACCESSORIES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Tirante_Hombro_R",
+      "collection": "ACCESSORIES",
+      "base_vertices": 12,
+      "base_triangles": 10,
+      "evaluated_triangles": 124,
+      "modifiers": [
+        "SOLIDIFY",
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Cierre_Tirante_R",
+      "collection": "ACCESSORIES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Cierre_Tirante_Interior_R",
+      "collection": "ACCESSORIES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Cinta_Muslo_L",
+      "collection": "ACCESSORIES",
+      "base_vertices": 8,
+      "base_triangles": 6,
+      "evaluated_triangles": 76,
+      "modifiers": [
+        "SOLIDIFY",
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Pasador_Muslo_L",
+      "collection": "ACCESSORIES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Bolsa_Cadera_L",
+      "collection": "ACCESSORIES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Bolsa_Tapa_L",
+      "collection": "ACCESSORIES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Tirante_Hombro_L",
+      "collection": "ACCESSORIES",
+      "base_vertices": 12,
+      "base_triangles": 10,
+      "evaluated_triangles": 124,
+      "modifiers": [
+        "SOLIDIFY",
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Cierre_Tirante_L",
+      "collection": "ACCESSORIES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Cierre_Tirante_Interior_L",
+      "collection": "ACCESSORIES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Placa_Pectoral_Base",
+      "collection": "ACCESSORIES",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Placa_Pectoral_Marfil",
+      "collection": "ACCESSORIES",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Emblema_Triangulo",
+      "collection": "ACCESSORIES",
+      "base_vertices": 6,
+      "base_triangles": 6,
+      "evaluated_triangles": 6,
+      "modifiers": []
+    },
+    {
+      "object": "ACC_Placa_Fijacion_-0.065_1.151",
+      "collection": "ACCESSORIES",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Placa_Fijacion_-0.065_1.258",
+      "collection": "ACCESSORIES",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Placa_Fijacion_0.065_1.151",
+      "collection": "ACCESSORIES",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Placa_Fijacion_0.065_1.258",
+      "collection": "ACCESSORIES",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Brazalete_Correa",
+      "collection": "ACCESSORIES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Brazalete_Carcasa",
+      "collection": "ACCESSORIES",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Brazalete_Pantalla",
+      "collection": "ACCESSORIES",
+      "base_vertices": 16,
+      "base_triangles": 28,
+      "evaluated_triangles": 92,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Brazalete_Boton",
+      "collection": "ACCESSORIES",
+      "base_vertices": 8,
+      "base_triangles": 12,
+      "evaluated_triangles": 108,
+      "modifiers": [
+        "BEVEL"
+      ]
+    },
+    {
+      "object": "ACC_Brazalete_Traza",
+      "collection": "ACCESSORIES",
+      "base_vertices": 35,
+      "base_triangles": 66,
+      "evaluated_triangles": 66,
+      "modifiers": []
+    }
+  ],
+  "checks": {
+    "feet_z0": true,
+    "height_1_70m": true,
+    "centered_x": true,
+    "references_packed": true,
+    "no_armature": true,
+    "no_animation": true
+  }
+}

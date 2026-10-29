@@ -1,0 +1,30 @@
+{
+  "file_reopened": true,
+  "only_one_scene": true,
+  "collections": [
+    "BODY",
+    "HELMET",
+    "BACKPACK",
+    "SUIT",
+    "GLOVES",
+    "BOOTS",
+    "ACCESSORIES",
+    "REFERENCES"
+  ],
+  "mesh_objects": 157,
+  "base_triangles": 9408,
+  "evaluated_triangles": 19684,
+  "min_m": [
+    -0.37463757395744324,
+    -0.19300000369548798,
+    0.0
+  ],
+  "max_m": [
+    0.37463757395744324,
+    0.33946409821510315,
+    1.6999999284744263
+  ],
+  "editable_modifiers": 118,
+  "packed_references": 3,
+  "result": "PASS"
+}
