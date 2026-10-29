@@ -11,8 +11,9 @@ using UnityEngine.XR.Interaction.Toolkit.Locomotion.Turning;
 namespace BioVR.Comun
 {
     // Tutorial por pasos en un panel junto a la consola. Cada paso (PasoTutorial) dice qué hacer y qué "clave"
-    // lo completa. Al recibir esa clave muestra "¡Bien!" y pasa al siguiente. Si llega la clave de un paso
-    // posterior (el jugador se adelantó), salta hasta ahí en lugar de quedarse atorado.
+    // lo completa. Al recibir esa clave muestra "¡Bien!" y pasa al siguiente. Las acciones de práctica (recentrar,
+    // caminar, girar…) solo cuentan en su propio paso: girar en el paso 1 no debe brincar al 5. Solo los avances del
+    // juego (estado:… y salto:…), que no tienen vuelta atrás, pueden adelantar el tutorial hasta su paso.
     //
     // Claves que ya existen (este script escucha los eventos del juego y las traduce):
     //   recentrar         B / Y (Recentrar)
@@ -123,7 +124,9 @@ namespace BioVR.Comun
         void AlNotificar(string clave)
         {
             if (Terminado || completando || string.IsNullOrEmpty(clave)) return;
-            for (int i = indice; i < pasos.Length; i++)
+            bool esAvance = clave.StartsWith("estado:") || clave.StartsWith("salto:");
+            int hasta = esAvance ? pasos.Length : indice + 1;
+            for (int i = indice; i < hasta; i++)
             {
                 if (pasos[i] == null || pasos[i].clave != clave) continue;
                 StartCoroutine(Completar(i));
