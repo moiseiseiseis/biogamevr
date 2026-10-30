@@ -390,13 +390,14 @@ plate('ACC_Brazalete_Pantalla',.304,-.104,.928,.079,.070,.006,'ACCESSORIES','scr
 box('ACC_Brazalete_Boton',(.304,-.107,.886),(.026,.008,.010),'ACCESSORIES','ivory',.002)
 tube('ACC_Brazalete_Traza',[(.274,-.109,.926),(.283,-.109,.926),(.290,-.109,.943),(.297,-.109,.912),(.305,-.109,.936),(.315,-.109,.926),(.333,-.109,.926)],.0013,'ACCESSORIES','cyan',5)
 
-# References are packed into the .blend. No need for the original clipboard paths.
+# Referencias locales opcionales; la entrega publica se genera sin imagenes empaquetadas.
+REF_DIR = Path(ARGS[ARGS.index('--references-dir')+1]) if '--references-dir' in ARGS else None
 ref_names = [
  ('REF_01_Explorador_Celular','explorador-celular-concepto.png'),
  ('REF_02_Investigador_Otro_Personaje','investigador-referencia-inicial.png'),
  ('REF_03_Investigadora_Estilo_Sencillo','investigadora-estilo.png')]
 for i,(name,filename) in enumerate(ref_names):
-    candidates = [ROOT/'referencias'/'personajes'/filename]
+    candidates = [REF_DIR/filename] if REF_DIR else []
     path=next((p for p in candidates if p.exists()),None)
     if path:
         img=bpy.data.images.load(str(path),check_existing=True)
@@ -465,7 +466,7 @@ mins=[min(p[i] for p in coords) for i in range(3)];maxs=[max(p[i] for p in coord
 report={'project':'School Redemption Game','character':'Explorador Celular','phase':'Blockout 01','blender':bpy.app.version_string,'units':'METRIC, 1 Blender unit = 1 meter','orientation':'front -Y, up +Z','bounding_min_m':mins,'bounding_max_m':maxs,'dimensions_m':[maxs[i]-mins[i] for i in range(3)],'mesh_objects':len(characters),'base_triangles':sum(s['base_triangles'] for s in stats),'evaluated_triangles':sum(s['evaluated_triangles'] for s in stats),'base_vertices':sum(s['base_vertices'] for s in stats),'collections':{},'objects':stats}
 for name in ['BODY','HELMET','BACKPACK','SUIT','GLOVES','BOOTS','ACCESSORIES','REFERENCES']:
     report['collections'][name]={'objects':len(COL[name].objects),'base_triangles':sum(s['base_triangles'] for s in stats if s['collection']==COL[name].name),'evaluated_triangles':sum(s['evaluated_triangles'] for s in stats if s['collection']==COL[name].name)}
-report['checks']={'feet_z0':abs(mins[2])<1e-5,'height_1_70m':abs(maxs[2]-1.70)<.002,'centered_x':abs(maxs[0]+mins[0])<.005,'references_packed':len(COL['REFERENCES'].objects)==3 and all(o.data and o.data.packed_file for o in COL['REFERENCES'].objects),'no_armature':not any(o.type=='ARMATURE' for o in scene.objects),'no_animation':not any(o.animation_data for o in scene.objects)}
+report['checks']={'feet_z0':abs(mins[2])<1e-5,'height_1_70m':abs(maxs[2]-1.70)<.002,'centered_x':abs(maxs[0]+mins[0])<.005,'reference_policy_ok':all(o.data and o.data.packed_file for o in COL['REFERENCES'].objects) if REF_DIR else len(COL['REFERENCES'].objects)==0,'no_armature':not any(o.type=='ARMATURE' for o in scene.objects),'no_animation':not any(o.animation_data for o in scene.objects)}
 (DATA/'explorador-celular-informe.json').write_text(json.dumps(report,indent=2,ensure_ascii=False),encoding='utf-8')
 
 # Save with friendly material preview and a three-quarter view, character selected.
@@ -482,11 +483,11 @@ for screen in bpy.data.screens:
             a.spaces.active.overlay.show_floor=True
             a.spaces.active.overlay.show_relationship_lines=False
 readme=bpy.data.texts.new('LEEME_Blockout')
-readme.write('EXPLORADOR CELULAR / SCHOOL REDEMPTION GAME\nFase 01: blockout editable. Frente -Y, arriba +Z.\n8 colecciones de personaje/referencias + PRESENTATION (solo estudio).\nReferencias empaquetadas: activar REFERENCES en Outliner.\nCamaras CAM_01/02/03 para revisar frente, lado y espalda.\nColores planos de identificacion; sin texturas, UV, rig ni animaciones.\nSeleccionar CTRL_Explorador_Origen para mover el conjunto.\nPiezas independientes; modificadores de bisel y espesor conservados.\nLa topologia actual no se considera final para deformacion o VR.\n')
+readme.write('EXPLORADOR CELULAR / SCHOOL REDEMPTION GAME\nFase 01: blockout editable. Frente -Y, arriba +Z.\n8 colecciones de personaje/referencias + PRESENTATION (solo estudio).\nEntrega publica sin referencias. Uso privado opcional con --references-dir.\nCamaras CAM_01/02/03 para revisar frente, lado y espalda.\nColores planos de identificacion; sin texturas, UV, rig ni animaciones.\nSeleccionar CTRL_Explorador_Origen para mover el conjunto.\nPiezas independientes; modificadores de bisel y espesor conservados.\nLa topologia actual no se considera final para deformacion o VR.\n')
 try:
     script_text=bpy.data.texts.new('crear_explorador.py');script_text.write(Path(__file__).read_text(encoding='utf-8'))
 except (NameError,OSError):pass
-bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'explorador-celular.blend'))
+bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'explorador-celular.blend'),compress=True)
 print('BLOCKOUT_REPORT',json.dumps({k:report[k] for k in ['dimensions_m','mesh_objects','base_triangles','evaluated_triangles','checks']}))
 if '--render' in ARGS:
     for view,cam in cams.items():

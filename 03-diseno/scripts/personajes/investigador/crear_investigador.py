@@ -603,12 +603,15 @@ for r in [.011,.021,.029]:
     tablet_local(tube('TABLET_UI_Celula_'+str(r),coords,.0007,'TABLET','cyan',4))
 tablet_local(box('TABLET_UI_Encabezado',(-.062,-.017,.071),(.119,.001,.003),'TABLET','cyan',.0002))
 
-# Packed reference and scene-only studio setup.
-refpath=ROOT/'referencias'/'personajes'/'investigador-concepto.png'
-if not refpath.exists():raise FileNotFoundError('Falta referencias/personajes/investigador-concepto.png en la entrega')
-img=bpy.data.images.load(str(refpath),check_existing=True);img.pack()
-ref=bpy.data.objects.new('REF_Investigador_Concepto',None);ref.empty_display_type='IMAGE';ref.data=img;COL['REFERENCES'].objects.link(ref)
-ref.empty_display_size=1.78;ref.location=(2.0,.6,.89);ref.rotation_euler=(math.pi/2,0,0);ref.hide_render=True
+# Referencia local opcional; no se necesita para construir el modelo.
+img=None
+refdir=Path(ARGS[ARGS.index('--references-dir')+1]) if '--references-dir' in ARGS else None
+if refdir:
+    refpath=refdir/'investigador-concepto.png'
+    if not refpath.exists():raise FileNotFoundError(refpath)
+    img=bpy.data.images.load(str(refpath),check_existing=True);img.pack()
+    ref=bpy.data.objects.new('REF_Investigador_Concepto',None);ref.empty_display_type='IMAGE';ref.data=img;COL['REFERENCES'].objects.link(ref)
+    ref.empty_display_size=1.78;ref.location=(2.0,.6,.89);ref.rotation_euler=(math.pi/2,0,0);ref.hide_render=True
 COL['REFERENCES'].hide_viewport=True;COL['REFERENCES'].hide_render=True
 studio=mat('MAT_Studio_Investigador',(.024,.033,.042),.95)
 bpy.ops.mesh.primitive_plane_add(size=200,location=(0,0,-.002))
@@ -679,8 +682,8 @@ def statistics(sc):
         item=collections.setdefault(row['collection'],{'mesh_objects':0,'base_triangles':0,'evaluated_triangles':0})
         item['mesh_objects']+=1;item['base_triangles']+=row['base_triangles'];item['evaluated_triangles']+=row['evaluated_triangles']
     return {'scene':sc.name,'mesh_objects':len(obs),'base_triangles':sum(s['base_triangles'] for s in stats),'evaluated_triangles':sum(s['evaluated_triangles'] for s in stats),'base_vertices':sum(s['vertices'] for s in stats),'min_m':lo,'max_m':hi,'dimensions_m':[hi[i]-lo[i] for i in range(3)],'collections':collections,'objects':stats}
-report={'project':'School Redemption Game','character':'El Investigador','phase':'Refinamiento de cara y hombros v03','blender':bpy.app.version_string,'reading':statistics(scene),'a_pose':statistics(technical),'reference_packed':bool(img.packed_file)}
-report['checks']={'feet_z0':abs(report['reading']['min_m'][2])<1e-5,'height_1_78m':abs(report['reading']['max_m'][2]-1.78)<.004,'reference_packed':bool(img.packed_file),'no_rig':not any(o.type=='ARMATURE' for o in scene.objects),'no_animation':not any(o.animation_data for o in scene.objects)}
+report={'project':'School Redemption Game','character':'El Investigador','phase':'Refinamiento de cara y hombros v03','blender':bpy.app.version_string,'reading':statistics(scene),'a_pose':statistics(technical),'reference_packed':bool(img and img.packed_file)}
+report['checks']={'feet_z0':abs(report['reading']['min_m'][2])<1e-5,'height_1_78m':abs(report['reading']['max_m'][2]-1.78)<.004,'reference_policy_ok':bool(img and img.packed_file) if refdir else img is None,'no_rig':not any(o.type=='ARMATURE' for o in scene.objects),'no_animation':not any(o.animation_data for o in scene.objects)}
 (DATA/'investigador-informe.json').write_text(json.dumps(report,indent=2,ensure_ascii=False),encoding='utf8')
 bpy.context.window.scene=scene
 for o in bpy.context.selected_objects:o.select_set(False)
@@ -692,8 +695,8 @@ for screen in bpy.data.screens:
 for filename in ['crear_investigador.py','cabeza_investigador.py']:
     text=bpy.data.texts.new(filename);text.write((HERE/filename).read_text(encoding='utf8'))
 readme=bpy.data.texts.new('LEEME_Investigador')
-readme.write('EL INVESTIGADOR / SCHOOL REDEMPTION GAME\nEscena Investigador_Blockout: tableta sostenida y accesorios de la lamina.\nEscena Investigador_Pose_A: variante de brazos separados sin rig.\nFrente -Y; altura1.78m; pies Z=0.\nReferencias empaquetadas; activar REFERENCES en el Outliner.\nSin UV, texturas, rig ni animaciones. Materiales planos y geometria independiente.\n')
-bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'investigador.blend'))
+readme.write('EL INVESTIGADOR / SCHOOL REDEMPTION GAME\nEscena Investigador_Blockout: tableta sostenida y accesorios de la lamina.\nEscena Investigador_Pose_A: variante de brazos separados sin rig.\nFrente -Y; altura1.78m; pies Z=0.\nEntrega publica sin referencias. Uso privado opcional con --references-dir.\nSin UV, texturas, rig ni animaciones. Materiales planos y geometria independiente.\n')
+bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'investigador.blend'),compress=True)
 print('INVESTIGADOR_REPORT',json.dumps({k:report[k] for k in ['checks']}))
 print('INVESTIGADOR_COUNTS',report['reading']['mesh_objects'],report['reading']['base_triangles'],report['reading']['evaluated_triangles'],report['reading']['dimensions_m'])
 if '--render' in ARGS:

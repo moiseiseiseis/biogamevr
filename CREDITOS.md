@@ -8,7 +8,8 @@ Todo modelo, textura, sonido o música que no hayamos hecho nosotros se registra
 
 ## Referencias visuales de personajes
 
-Las imágenes de `03-diseno/referencias/personajes/` fueron proporcionadas para el desarrollo del Explorador Celular y El Investigador. Los archivos recibidos no especifican autor ni licencia; se conserva su procedencia como referencias facilitadas para el proyecto. No se incorporaron modelos 3D descargados de terceros en esta entrega.
+Las láminas ilustradas del Explorador Celular y El Investigador fueron facilitadas por Chris Rojas. Chris indicó que se generaron con IA y que prepararía su declaración, según su [respuesta en el PR 44](https://github.com/moiseiseiseis/biogamevr/pull/44#issuecomment-6509476579). En esa misma respuesta identifica los diseños de Mireya como guía para el Explorador; esto no establece una licencia de las imágenes.
 
+La herramienta, la fecha de generación y la declaración completa no se han aportado. La captura `investigadora-estilo.png` tampoco tiene una procedencia completa documentada. Por ello se conservan las cuatro referencias solo en la copia local y se retiran del árbol actual del PR y de sus fuentes Blender empaquetadas. Los renders de revisión incluidos son vistas de las mallas de esta entrega. No se incorporaron modelos 3D descargados de terceros.
 
-
+La documentación de procedencia puede completarse cuando Chris entregue su declaración. Esta nota registra la información conocida y no constituye una declaración firmada ni atribuye una licencia que no se haya acreditado.

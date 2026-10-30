@@ -3,8 +3,12 @@
   "assets": [
     {
       "asset": "explorador-celular",
+      "source_file": "fuentes/explorador-celular.blend",
       "scene": "Explorador_Celular_Blockout",
+      "source_mesh_objects": 157,
       "mesh_objects": 157,
+      "material_slots": 159,
+      "consolidated_by_part": false,
       "evaluated_triangles": 19684,
       "min_m": [
         -0.37463757395744324,
@@ -30,7 +34,7 @@
       "files": [
         {
           "path": "exports/explorador-celular.fbx",
-          "bytes": 701164
+          "bytes": 701148
         },
         {
           "path": "exports/explorador-celular.glb",
@@ -40,8 +44,12 @@
     },
     {
       "asset": "investigador",
+      "source_file": "fuentes/investigador.blend",
       "scene": "Investigador_Pose_A",
+      "source_mesh_objects": 247,
       "mesh_objects": 247,
+      "material_slots": 248,
+      "consolidated_by_part": false,
       "evaluated_triangles": 39476,
       "min_m": [
         -0.3573722541332245,
@@ -77,8 +85,12 @@
     },
     {
       "asset": "investigador-lectura",
+      "source_file": "fuentes/investigador.blend",
       "scene": "Investigador_Blockout",
+      "source_mesh_objects": 286,
       "mesh_objects": 286,
+      "material_slots": 287,
+      "consolidated_by_part": false,
       "evaluated_triangles": 42510,
       "min_m": [
         -0.2776147723197937,
@@ -109,6 +121,88 @@
         {
           "path": "exports/investigador-lectura.glb",
           "bytes": 1356772
+        }
+      ]
+    },
+    {
+      "asset": "investigador-ligero",
+      "source_file": "fuentes/investigador-ligero.blend",
+      "scene": "Investigador_Pose_A",
+      "source_mesh_objects": 247,
+      "mesh_objects": 14,
+      "material_slots": 66,
+      "consolidated_by_part": true,
+      "evaluated_triangles": 24214,
+      "min_m": [
+        -0.3573722541332245,
+        -0.18433809280395508,
+        0.0
+      ],
+      "max_m": [
+        0.35808444023132324,
+        0.2434612512588501,
+        1.7799999713897705
+      ],
+      "dimensions_m": [
+        0.7154566943645477,
+        0.4277993440628052,
+        1.7799999713897705
+      ],
+      "static": true,
+      "transforms_applied": true,
+      "fbx_axes": {
+        "forward": "-Z",
+        "up": "Y"
+      },
+      "files": [
+        {
+          "path": "exports/investigador-ligero.fbx",
+          "bytes": 703548
+        },
+        {
+          "path": "exports/investigador-ligero.glb",
+          "bytes": 855508
+        }
+      ]
+    },
+    {
+      "asset": "investigador-lectura-ligero",
+      "source_file": "fuentes/investigador-ligero.blend",
+      "scene": "Investigador_Blockout",
+      "source_mesh_objects": 286,
+      "mesh_objects": 15,
+      "material_slots": 72,
+      "consolidated_by_part": true,
+      "evaluated_triangles": 27060,
+      "min_m": [
+        -0.2776147723197937,
+        -0.3569033443927765,
+        0.0
+      ],
+      "max_m": [
+        0.2776147723197937,
+        0.2434612512588501,
+        1.7799999713897705
+      ],
+      "dimensions_m": [
+        0.5552295446395874,
+        0.6003645956516266,
+        1.7799999713897705
+      ],
+      "static": true,
+      "transforms_applied": true,
+      "fbx_axes": {
+        "forward": "-Z",
+        "up": "Y"
+      },
+      "files": [
+        {
+          "path": "exports/investigador-lectura-ligero.fbx",
+          "bytes": 790140
+        },
+        {
+          "path": "exports/investigador-lectura-ligero.glb",
+          "bytes": 995556
         }
       ]
     }

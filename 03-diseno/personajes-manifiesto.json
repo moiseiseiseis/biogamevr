@@ -1,33 +1,40 @@
 {
   "project": "School Redemption Game",
-  "date": "2026-10-29",
+  "project_name_status": "nombre de trabajo",
+  "date": "2026-10-30",
   "branch": "Chris_Desing",
   "hash_algorithm": "SHA-256",
+  "references_public": false,
   "files": [
     {
       "path": "documentacion/personajes/bitacora-personajes.docx",
-      "bytes": 4272503,
-      "sha256": "7dab32c7cd3f83e53646b12253b985a7be71ef8850f68045c53d93c2dd43f174"
+      "bytes": 4272557,
+      "sha256": "5a6b10c184809c484ca26c0208241a2745cdc0b514300019ed8f1a3db2d1b19d"
     },
     {
       "path": "documentacion/personajes/bitacora-personajes.md",
-      "bytes": 11409,
-      "sha256": "8bdde28f85364be7b05adcd7c5c013690eca149e4452d7b6454b9f5b2e1766db"
+      "bytes": 11535,
+      "sha256": "7f0d5d4aa03885f12b7c962a4c956dc354ef7d64a39a29c5ed2adcafdd7e67cf"
     },
     {
       "path": "documentacion/personajes/bitacora-personajes.pdf",
-      "bytes": 599451,
-      "sha256": "24f64f31a26c6467d125798bb8f6085c91f57d6dd59299e0562e8b30bfac0c1d"
+      "bytes": 599650,
+      "sha256": "80f0e33b85593fcb26f61ecbbd974a8cd8daf3ac8e950a61e191d06ccfe17a34"
     },
     {
-      "path": "entrega-personajes.md",
-      "bytes": 5834,
-      "sha256": "7b0c7f9ba34baad00199d5ff235e589f36e2833c5b57ffa1119694ae47d421ba"
+      "path": "documentacion/personajes/entrega-personajes.md",
+      "bytes": 7251,
+      "sha256": "d5ef3b003c56ba13cbb6d590396b8d7608f2a16a25ddd6fb83858394d8154005"
+    },
+    {
+      "path": "documentacion/personajes/revision-pr44-personajes.md",
+      "bytes": 7507,
+      "sha256": "7875cc19385cb5a908ae0feff97a1c1816097859abd0832abc68b5cd0c5fafc3"
     },
     {
       "path": "exports/explorador-celular.fbx",
-      "bytes": 701164,
-      "sha256": "92956709c8863f3cc93f97f7999058f124185a295b748c90aca8e16169447368"
+      "bytes": 701148,
+      "sha256": "a1aa9833f7c2e06777816ec74528c0d15757ac0d0852eb5d02d0b9cdf1945465"
     },
     {
       "path": "exports/explorador-celular.glb",
@@ -35,9 +42,19 @@
       "sha256": "f879a162ff5e503d0e38a823bd01395385faca943e5d79c9bc53d5110a979051"
     },
     {
+      "path": "exports/investigador-lectura-ligero.fbx",
+      "bytes": 790140,
+      "sha256": "c751ebeb67c414582de5e36d28f3bda06ef6432335a58b3d48b41cb494b928b8"
+    },
+    {
+      "path": "exports/investigador-lectura-ligero.glb",
+      "bytes": 995556,
+      "sha256": "384c34570b00dca5df1a23f67f7f40edb21bf1a5ef72aa80bb477cc767743f94"
+    },
+    {
       "path": "exports/investigador-lectura.fbx",
       "bytes": 1370076,
-      "sha256": "72c849706db6f563a9ee59c91137c851ec79865c688cc4bedccca6028592b93c"
+      "sha256": "49108b6a1e253429fb59937a57405fa76a9ce142aaba0894ec1dbdc86389a6ee"
     },
     {
       "path": "exports/investigador-lectura.glb",
@@ -45,9 +62,19 @@
       "sha256": "629bb29de23e24fabb65480a59f7c561a686e3517ce5c0e71ec570da81af5c26"
     },
     {
+      "path": "exports/investigador-ligero.fbx",
+      "bytes": 703548,
+      "sha256": "70c6056f3d5d777c848156526abfce35c9c416ebd8b25a2737a3de7d76836126"
+    },
+    {
+      "path": "exports/investigador-ligero.glb",
+      "bytes": 855508,
+      "sha256": "253bfc7924bb711fefbb884f2927989a47cae066388d91c0292848c79e4ea06e"
+    },
+    {
       "path": "exports/investigador.fbx",
       "bytes": 1228428,
-      "sha256": "4e6532c90f9eae38ee3e913eb3f9244e13b88f80a28b87961e8a570346707d07"
+      "sha256": "18f345f61f6c8fb83c849c71c739c012550299901c867b36a8145d6688796796"
     },
     {
       "path": "exports/investigador.glb",
@@ -56,48 +83,38 @@
     },
     {
       "path": "fuentes/explorador-celular.blend",
-      "bytes": 5258933,
-      "sha256": "3a1b5beb13710748ee23cd501a4164c52bdb40c685bbdf859874266fa4c5edaa"
+      "bytes": 249696,
+      "sha256": "469adabc323782043a28dbdcfe76edad4f020f693becaa611bec71f68e1831c9"
+    },
+    {
+      "path": "fuentes/investigador-ligero.blend",
+      "bytes": 469075,
+      "sha256": "3e588be5bfd2f9cd0916e3d0d4c0c549a6a9183e1ea2fa60a226221b120db396"
     },
     {
       "path": "fuentes/investigador.blend",
-      "bytes": 2149657,
-      "sha256": "5497848573b24724f920003e940f7130f4544d820450d460f49a002a87670612"
+      "bytes": 466231,
+      "sha256": "3efc46e76f31c87660ab82aae9691719653072cbb8b3e5fa2dbc2a9aeeb6210c"
     },
     {
-      "path": "referencias/personajes/explorador-celular-concepto.png",
-      "bytes": 2074727,
-      "sha256": "3b800583675986e25af6b8ec33a57a46cce4ebd63f9c7b30a4079cacc74ed27f"
-    },
-    {
-      "path": "referencias/personajes/investigador-concepto.png",
-      "bytes": 1682894,
-      "sha256": "84d4c6002da13d62e9ee199b008d12a70fd61460026b73a57727acd7db3599e5"
-    },
-    {
-      "path": "referencias/personajes/investigador-referencia-inicial.png",
-      "bytes": 2044552,
-      "sha256": "989aa2eb8b5a8ad9f4fc52356c674e44d4f81903242c70a114fbac766d853f6b"
-    },
-    {
-      "path": "referencias/personajes/investigadora-estilo.png",
-      "bytes": 886907,
-      "sha256": "6a9f4589392ea844e9d0938af3694c875f87131ac0fa3790c81d5613d07ab8fe"
+      "path": "referencias/personajes/README.md",
+      "bytes": 975,
+      "sha256": "1205e664da8fcc2bd103a0da4295d04ca5a72a780396e235cc04e33697649e08"
     },
     {
       "path": "scripts/personajes/explorador/crear_explorador.py",
-      "bytes": 29450,
-      "sha256": "2d0ad36e161729f825698fa61f64d0a4a551aa7186d872719b8135897b9e15e3"
+      "bytes": 29593,
+      "sha256": "73616bf6ab69d3373e5a47a2656abc46f697b35f2a969232e47f73be52034eae"
     },
     {
       "path": "scripts/personajes/explorador/validar_explorador.py",
-      "bytes": 2191,
-      "sha256": "574c725fbf7889b98c9b2e127d8d39048f140f9569580f4ce6f376491a534b33"
+      "bytes": 2334,
+      "sha256": "c5acaf417e3900b028bf30b6cfa74a72aae72fba313f8b890aaa50275e27a1c1"
     },
     {
       "path": "scripts/personajes/exportar_personajes.py",
-      "bytes": 3414,
-      "sha256": "1b46db70b4fa94f3c6a070baeb4234e1e2a77eae86e76692eb6b1b3f45df05ca"
+      "bytes": 5336,
+      "sha256": "8f4c96493d2ef422360cef54c31f066da2df2ba4f395ab5858f807f0d50453ab"
     },
     {
       "path": "scripts/personajes/investigador/cabeza_investigador.py",
@@ -106,13 +123,18 @@
     },
     {
       "path": "scripts/personajes/investigador/crear_investigador.py",
-      "bytes": 43921,
-      "sha256": "4688ef2a4946f5a4229f147cdcfa225d7ba9aafda793778b7fc500a608f526e8"
+      "bytes": 44062,
+      "sha256": "826afcf53537429c2f292645b4b34eb499afff98aad487fa1066884f5922a3c6"
     },
     {
       "path": "scripts/personajes/investigador/validar_investigador.py",
-      "bytes": 4269,
-      "sha256": "8d2fa6838a1caa528745839b44f75e1eccfd4bfe67faee5bff0a6a44e3251046"
+      "bytes": 4829,
+      "sha256": "fed532bf3007f5f719c2761d84f750d9f05f4585df498bf57df238e5e7f30330"
+    },
+    {
+      "path": "scripts/personajes/optimizar_investigador.py",
+      "bytes": 5562,
+      "sha256": "6280b47a67e7cce588f8a1f47af4eede9fad5cd94e619db7ae5a99e1a4de2f61"
     },
     {
       "path": "scripts/personajes/validar_exportaciones.py",
@@ -121,33 +143,53 @@
     },
     {
       "path": "validacion/personajes/explorador-celular-informe.json",
-      "bytes": 34827,
-      "sha256": "731f5794647f176834cc42f847a332e32146a243762a2248e5c2ea4e4562318e"
+      "bytes": 34861,
+      "sha256": "3eb8d7f9097e12c8f74b3e083a0f9ba91ef35becf03b457ed860a568b642ca4b"
     },
     {
       "path": "validacion/personajes/explorador-celular-verificacion.json",
-      "bytes": 519,
-      "sha256": "9d87aa544c4005d17a3309db4bf7b8e68e940493f5799183df4930e52d7d7391"
+      "bytes": 569,
+      "sha256": "4c7313fbea00cf22860f22f30b0d7932221055bfa8df161baad0a2b1f2a7ff2b"
     },
     {
       "path": "validacion/personajes/exportaciones-verificacion.json",
-      "bytes": 2557,
-      "sha256": "62e0c42fba4c8754c1453fd5601059a08527021c05016bda75d4526767ffdab5"
+      "bytes": 4218,
+      "sha256": "38cf6bbc87b5a5576f2491ecabeb29c8b570fa0376da8407cfa1ec3712b45dba"
     },
     {
       "path": "validacion/personajes/exportaciones.json",
-      "bytes": 2522,
-      "sha256": "79c7c02e90ab27de3a4c66318de2d91549b729f480ea8896c0344dea6a55c316"
+      "bytes": 4969,
+      "sha256": "5b4516fde66b0d4175cf7a71d9cd2ee1ff98a5511c2b0abb3a172760f1fe9bf9"
+    },
+    {
+      "path": "validacion/personajes/fuentes-publicas.json",
+      "bytes": 589,
+      "sha256": "e38c2513ec0726904048d1db41aad3ce22f92748bef8aec05bed4ccd6e7af816"
     },
     {
       "path": "validacion/personajes/investigador-informe.json",
-      "bytes": 117474,
-      "sha256": "c5355493d4943fe76feda03faf860bda59bd62e41fb619788660fc317f643743"
+      "bytes": 117478,
+      "sha256": "ce95a121fd8eaa42b7b823415344b8be2711a10c5aaeaf3a5f5abf3fa9f9ffb5"
+    },
+    {
+      "path": "validacion/personajes/investigador-ligero-verificacion.json",
+      "bytes": 1520,
+      "sha256": "ffb148bb1789be59f181b3f1ed0ff8ca3e609a6ec529e5a84686d75eae2a8e66"
+    },
+    {
+      "path": "validacion/personajes/investigador-optimizacion.json",
+      "bytes": 20373,
+      "sha256": "2779cb7ea7189a8b5fae45da8b3d0bc5b1281d46f2cf0c8ba67d9c980002faf7"
     },
     {
       "path": "validacion/personajes/investigador-verificacion.json",
-      "bytes": 1448,
-      "sha256": "89b70daab5877e4124eba29a9103ba2e979548ae131ba233480b658810489882"
+      "bytes": 1524,
+      "sha256": "c108353377a06f22644c77358a4228a9272563f480cdc5492cf21b1b592439cc"
+    },
+    {
+      "path": "validacion/personajes/reproduccion-sin-referencias.json",
+      "bytes": 1157,
+      "sha256": "f0cdeabd96c96188fe0db858b3641b1ef0874c632d5d26b46bbd98be0c20eb55"
     },
     {
       "path": "vistas/personajes/explorador/explorador-celular-vistas.png",
@@ -233,6 +275,71 @@
       "path": "vistas/personajes/investigador/investigador-tres-cuartos.png",
       "bytes": 1024175,
       "sha256": "0faffae48f9387c5f745cc4d57264c8f99db99c97177943aa8def7a1da469bb9"
+    },
+    {
+      "path": "vistas/personajes/investigador/revision-ligera/comparacion-detalles.png",
+      "bytes": 985902,
+      "sha256": "631c442e28e57915c46391846dab354975718f6d41523936febbd10d15658275"
+    },
+    {
+      "path": "vistas/personajes/investigador/revision-ligera/comparacion-vistas.png",
+      "bytes": 872466,
+      "sha256": "c09d7af2cb5efe8d6025de5498f0324384b4dd2654c084fbb8e75da2ec33aa36"
+    },
+    {
+      "path": "vistas/personajes/investigador/revision-ligera/glb-reimportado-hombros.png",
+      "bytes": 483606,
+      "sha256": "f276edc8829e359ca575abc886cf69770926ff2507a9b37a35683ffff31b24ae"
+    },
+    {
+      "path": "vistas/personajes/investigador/revision-ligera/ligero-frente.png",
+      "bytes": 309674,
+      "sha256": "083c507149733471832975c4960b558105e3577dde0e4465d8368b82d31ae109"
+    },
+    {
+      "path": "vistas/personajes/investigador/revision-ligera/ligero-hombros.png",
+      "bytes": 483152,
+      "sha256": "846a5d1d75defb86a14af530efd386ded2b7770f45daaaa1cda95e48c17b5f6d"
+    },
+    {
+      "path": "vistas/personajes/investigador/revision-ligera/ligero-lateral.png",
+      "bytes": 288254,
+      "sha256": "b02c2d950b1a7892be0fb3ba234e3d9501f024c0ac2be44115daf0027375bc49"
+    },
+    {
+      "path": "vistas/personajes/investigador/revision-ligera/ligero-posterior.png",
+      "bytes": 297524,
+      "sha256": "a39278dd7dbafa64ae44f7188c07d442326fc1a4b7dba31c50d57cdce72659b7"
+    },
+    {
+      "path": "vistas/personajes/investigador/revision-ligera/ligero-rostro.png",
+      "bytes": 441554,
+      "sha256": "173773e5be7ffd43ba70050d574f5dbaefdc38a3a85e427db498ee94e4f18b48"
+    },
+    {
+      "path": "vistas/personajes/investigador/revision-ligera/original-frente.png",
+      "bytes": 309728,
+      "sha256": "dbb8cb4cbad07ff1dce4d602173dc0347a8c2a46a81ff0d900edc725f089865d"
+    },
+    {
+      "path": "vistas/personajes/investigador/revision-ligera/original-hombros.png",
+      "bytes": 483798,
+      "sha256": "602497160ec31e1bee1629db95535ecef552a546564c395a7db6d54ea390db66"
+    },
+    {
+      "path": "vistas/personajes/investigador/revision-ligera/original-lateral.png",
+      "bytes": 287970,
+      "sha256": "b9908d4bd949a953f64046592fe0b1989ba685ca6e05e4c8865e3319c3539422"
+    },
+    {
+      "path": "vistas/personajes/investigador/revision-ligera/original-posterior.png",
+      "bytes": 297420,
+      "sha256": "28e4774f21fa72412efcf2496b2a9487ecb654cd78a235559b5943aff0443b32"
+    },
+    {
+      "path": "vistas/personajes/investigador/revision-ligera/original-rostro.png",
+      "bytes": 441439,
+      "sha256": "3fc0afd6d288b31e05fb9c4144beede259aa21a065811b3131d879ebeda26df7"
     }
   ]
 }

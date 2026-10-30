@@ -55,9 +55,11 @@
   },
   "result": "PASS",
   "file_reopened": true,
-  "packed_reference": true,
+  "packed_reference": false,
+  "public_source_without_reference_images": true,
   "pose_variants_separated": true,
   "static_geometry_shared": true,
   "editable_modifiers": 109,
-  "blender": "5.2.2 LTS"
+  "blender": "5.2.2 LTS",
+  "variant": "original"
 }

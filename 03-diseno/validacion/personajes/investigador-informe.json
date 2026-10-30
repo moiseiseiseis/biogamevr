@@ -4814,12 +4814,12 @@
       }
     ]
   },
-  "reference_packed": true,
+  "reference_packed": false,
   "checks": {
     "feet_z0": true,
     "height_1_78m": true,
-    "reference_packed": true,
     "no_rig": true,
-    "no_animation": true
+    "no_animation": true,
+    "reference_policy_ok": true
   }
 }

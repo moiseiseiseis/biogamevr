@@ -1,0 +1,25 @@
+{
+  "result": "PASS",
+  "assets": [
+    {
+      "asset": "explorador-celular",
+      "removed_reference_objects": [
+        "REF_01_Explorador_Celular",
+        "REF_02_Investigador_Otro_Personaje",
+        "REF_03_Investigadora_Estilo_Sencillo"
+      ],
+      "image_datablocks_remaining": 2,
+      "bytes_before": 5258933,
+      "bytes_after": 249696
+    },
+    {
+      "asset": "investigador",
+      "removed_reference_objects": [
+        "REF_Investigador_Concepto"
+      ],
+      "image_datablocks_remaining": 2,
+      "bytes_before": 2149657,
+      "bytes_after": 466231
+    }
+  ]
+}

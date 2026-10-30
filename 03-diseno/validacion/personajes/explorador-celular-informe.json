@@ -61,7 +61,7 @@
       "evaluated_triangles": 2780
     },
     "REFERENCES": {
-      "objects": 3,
+      "objects": 0,
       "base_triangles": 0,
       "evaluated_triangles": 0
     }
@@ -1558,8 +1558,9 @@
     "feet_z0": true,
     "height_1_70m": true,
     "centered_x": true,
-    "references_packed": true,
     "no_armature": true,
-    "no_animation": true
-  }
+    "no_animation": true,
+    "reference_policy_ok": true
+  },
+  "public_reference_images": 0
 }

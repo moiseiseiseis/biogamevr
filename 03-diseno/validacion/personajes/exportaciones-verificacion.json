@@ -97,6 +97,70 @@
       "feet_z0": true,
       "material_slots": 287,
       "result": "PASS"
+    },
+    {
+      "file": "exports/investigador-ligero.fbx",
+      "reimported_in_blender": true,
+      "mesh_objects": 14,
+      "triangles": 24214,
+      "native_evaluated_triangles": 24214,
+      "triangle_delta": 0,
+      "dimensions_m": [
+        0.7154566943645477,
+        0.42779943346977234,
+        1.7799999784650895
+      ],
+      "feet_z0": true,
+      "material_slots": 66,
+      "result": "PASS"
+    },
+    {
+      "file": "exports/investigador-ligero.glb",
+      "reimported_in_blender": true,
+      "mesh_objects": 14,
+      "triangles": 24214,
+      "native_evaluated_triangles": 24214,
+      "triangle_delta": 0,
+      "dimensions_m": [
+        0.7154566943645477,
+        0.4277993440628052,
+        1.7799999713897705
+      ],
+      "feet_z0": true,
+      "material_slots": 66,
+      "result": "PASS"
+    },
+    {
+      "file": "exports/investigador-lectura-ligero.fbx",
+      "reimported_in_blender": true,
+      "mesh_objects": 15,
+      "triangles": 27060,
+      "native_evaluated_triangles": 27060,
+      "triangle_delta": 0,
+      "dimensions_m": [
+        0.5552295446395874,
+        0.6003645956516266,
+        1.7799999784650895
+      ],
+      "feet_z0": true,
+      "material_slots": 72,
+      "result": "PASS"
+    },
+    {
+      "file": "exports/investigador-lectura-ligero.glb",
+      "reimported_in_blender": true,
+      "mesh_objects": 15,
+      "triangles": 27060,
+      "native_evaluated_triangles": 27060,
+      "triangle_delta": 0,
+      "dimensions_m": [
+        0.5552295446395874,
+        0.6003645956516266,
+        1.7799999713897705
+      ],
+      "feet_z0": true,
+      "material_slots": 72,
+      "result": "PASS"
     }
   ],
   "result": "PASS"

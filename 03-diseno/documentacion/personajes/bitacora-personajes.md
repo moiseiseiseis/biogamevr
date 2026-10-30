@@ -5,7 +5,7 @@ School Redemption Game
 Trabajo registrado el 28 de octubre de 2026
 Entrega documental del 29 de octubre de 2026
 
-Se desarrollaron dos personajes tridimensionales estilizados para el proyecto School Redemption Game: el Explorador Celular y El Investigador. La entrega conserva archivos editables de Blender, referencias visuales, materiales planos, vistas de revisión y scripts reproducibles en Python mediante bpy. Esta bitácora registra la construcción inicial, las correcciones y el estado técnico alcanzado.
+Se desarrollaron dos personajes tridimensionales estilizados para el proyecto School Redemption Game: el Explorador Celular y El Investigador. La entrega conserva archivos editables de Blender, materiales planos, vistas de revisión y scripts reproducibles en Python mediante bpy. Las referencias se mantienen en la copia local. Esta bitácora registra la construcción inicial, las correcciones y el estado técnico alcanzado.
 
 ## Alcance del trabajo
 
@@ -41,7 +41,7 @@ La inspección de frente, perfil y espalda permitió corregir normales de la cal
 
 *Figura 1. Blockout del Explorador Celular con vistas frontal, lateral y posterior a escala compartida.*
 
-El archivo quedó dividido en BODY, HELMET, BACKPACK, SUIT, GLOVES, BOOTS, ACCESSORIES y REFERENCES. PRESENTATION agrupa únicamente cámaras, luces y suelo. Las tres imágenes de referencia quedaron empaquetadas en el archivo.
+El archivo quedó dividido en BODY, HELMET, BACKPACK, SUIT, GLOVES, BOOTS, ACCESSORIES y REFERENCES. PRESENTATION agrupa únicamente cámaras, luces y suelo. En la revisión del PR 44 se retiraron las referencias de las fuentes públicas y se conservaron en la copia local.
 
 ## Desarrollo de El Investigador
 
@@ -95,21 +95,21 @@ En los hombros se suavizó la pendiente entre cuello, clavícula y manga. Se sus
 
 ## Comprobaciones de los archivos
 
-Los archivos guardados se reabrieron en Blender 5.2.2 LTS y se contrastaron con los informes de inventario. Se comprobaron unidades, altura, apoyo en Z = 0, vértices finitos, referencias empaquetadas, número de mallas y triángulos, y ausencia de armature y animaciones.
+Los archivos guardados se reabrieron en Blender 5.2.2 LTS y se contrastaron con los informes de inventario. Se comprobaron unidades, altura, apoyo en Z = 0, vértices finitos, número de mallas y triángulos, y ausencia de armature y animaciones. Las fuentes públicas excluyen imágenes de referencia.
 
 En las dos variantes del investigador, cada chaqueta forma un componente conectado. La validación no encontró vértices sueltos ni bordes con más de dos caras. Tras evaluar subdivisión y espesor, el resultado presentó cero bordes no manifold. Los registros de verificación de ambos personajes finalizaron con resultado PASS.
 
 ## Organización de la entrega
 
-Las fuentes editables se entregan como fuentes/explorador-celular.blend y fuentes/investigador.blend. Las acompañan scripts de construcción y validación, referencias, vistas e informes de inventario. El investigador corresponde a la revisión 03 de cara y hombros. Las piezas y los modificadores se conservan en los archivos nativos.
+Las fuentes editables se entregan como fuentes/explorador-celular.blend y fuentes/investigador.blend. Las acompañan scripts de construcción y validación, vistas e informes de inventario. El investigador corresponde a la revisión 03 de cara y hombros. Las piezas y los modificadores se conservan en los archivos nativos.
 
 Las exportaciones estáticas FBX y GLB se conservan en exports. investigador corresponde a la variante con brazos separados e investigador-lectura conserva la tableta. Estos archivos facilitan el intercambio de las poses, pero su existencia no sustituye la integración ni las pruebas dentro del motor de juego. El estudio y las referencias se separan de la geometría del personaje.
 
 ### Reproducción y consulta
 
-Para reproducir los modelos se utiliza Blender con los archivos de scripts/personajes/explorador y scripts/personajes/investigador. El investigador utiliza también el módulo cabeza_investigador.py. Las imágenes se conservan en referencias/personajes. Las instrucciones de la entrega describen las rutas, los parámetros, las escenas y las cámaras de revisión.
+Para reproducir los modelos se utiliza Blender con los archivos de scripts/personajes/explorador y scripts/personajes/investigador. El investigador utiliza también el módulo cabeza_investigador.py. Los constructores funcionan sin las imágenes; su uso local es opcional. Las instrucciones de la entrega describen las rutas, los parámetros, las escenas y las cámaras de revisión.
 
-Los scripts de validación generan registros JSON con medidas, conteos y comprobaciones. Estos informes permiten contrastar la geometría guardada con la documentación sin depender únicamente de una imagen del personaje.
+Los scripts de validación generan registros JSON con medidas, conteos y comprobaciones. El informe revision-pr44-personajes.md documenta las variantes ligeras, sus medidas y las decisiones de integración posteriores a esta bitácora base.
 
 ### Control de versiones
 

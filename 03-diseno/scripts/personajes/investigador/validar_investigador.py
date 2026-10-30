@@ -10,6 +10,8 @@ from pathlib import Path
 
 out=Path(bpy.data.filepath).parent.parent/'validacion'/'personajes'
 report=json.loads((out/'investigador-informe.json').read_text(encoding='utf8'))
+is_light=Path(bpy.data.filepath).stem=='investigador-ligero'
+optimization=json.loads((out/'investigador-optimizacion.json').read_text(encoding='utf8')) if is_light else None
 checks={}
 scene_names={'reading':'Investigador_Blockout','a_pose':'Investigador_Pose_A'}
 for key,name in scene_names.items():
@@ -30,7 +32,8 @@ for key,name in scene_names.items():
     assert abs(lo[2])<1e-5,(key,lo)
     assert abs(hi[2]-1.78)<.004,(key,hi)
     assert len(obs)==report[key]['mesh_objects'],(key,len(obs))
-    assert base==report[key]['base_triangles'] and evaluated==report[key]['evaluated_triangles']
+    expected_evaluated=optimization['after'][name]['triangles'] if is_light else report[key]['evaluated_triangles']
+    assert base==report[key]['base_triangles'] and evaluated==expected_evaluated
     assert not any(o.type=='ARMATURE' or o.animation_data for o in s.objects)
     coat=s.objects['JACKET_Chaqueta_Sisas_Continuas'+('' if key=='reading' else '_A')]
     bm=bmesh.new();bm.from_mesh(coat.data)
@@ -58,8 +61,10 @@ assert not technical.collection.children.get('ARMS_LECTURA')
 for name in ['HEAD','HAIR','GLASSES','JACKET','PANTS','BOOTS','BACKPACK','ACCESSORIES']:
     assert read.collection.children[name]==technical.collection.children[name]
 refs=read.collection.children['REFERENCES']
-assert len(refs.objects)==1 and refs.objects[0].data.packed_file
+assert len(refs.objects)==0, 'La fuente publica debe excluir referencias locales'
+assert not any(i.source=='FILE' for i in bpy.data.images), 'Imagen externa o empaquetada en fuente publica'
 assert bpy.data.objects['CTRL_Investigador_Origen'].location.length<1e-6
-checks.update({'result':'PASS','file_reopened':True,'packed_reference':True,'pose_variants_separated':True,'static_geometry_shared':True,'editable_modifiers':sum(len(o.modifiers) for o in read.objects),'blender':bpy.app.version_string})
-(out/'investigador-verificacion.json').write_text(json.dumps(checks,indent=2,ensure_ascii=False),encoding='utf8')
+checks.update({'result':'PASS','file_reopened':True,'packed_reference':False,'public_source_without_reference_images':True,'pose_variants_separated':True,'static_geometry_shared':True,'editable_modifiers':sum(len(o.modifiers) for o in read.objects),'blender':bpy.app.version_string})
+checks['variant']='ligero' if is_light else 'original'
+(out/('investigador-ligero-verificacion.json' if is_light else 'investigador-verificacion.json')).write_text(json.dumps(checks,indent=2,ensure_ascii=False),encoding='utf8')
 print('INVESTIGADOR_VALIDATION_PASS',json.dumps(checks))

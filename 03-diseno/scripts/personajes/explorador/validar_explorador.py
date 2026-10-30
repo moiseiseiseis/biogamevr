@@ -27,12 +27,12 @@ assert abs(hi[2]-1.7)<.001,(lo,hi)
 assert abs(lo[0]+hi[0])<.001
 assert not invalid,invalid
 assert not any(o.type=='ARMATURE' or o.animation_data for o in s.objects)
-assert len(cs['REFERENCES'].objects)==3
-assert all(o.data.packed_file for o in cs['REFERENCES'].objects)
+assert len(cs['REFERENCES'].objects)==0, 'La fuente publica debe excluir referencias locales'
+assert not any(i.source=='FILE' for i in bpy.data.images), 'Imagen externa o empaquetada en fuente publica'
 report=json.loads((DATA/'explorador-celular-informe.json').read_text())
 assert base==report['base_triangles'] and evaluated==report['evaluated_triangles']
 assert len(objects)==report['mesh_objects']
 assert len(bpy.data.scenes)==1,len(bpy.data.scenes)
-checks={'file_reopened':True,'only_one_scene':True,'collections':required,'mesh_objects':len(objects),'base_triangles':base,'evaluated_triangles':evaluated,'min_m':lo,'max_m':hi,'editable_modifiers':sum(len(o.modifiers) for o in objects),'packed_references':3,'result':'PASS'}
+checks={'file_reopened':True,'only_one_scene':True,'collections':required,'mesh_objects':len(objects),'base_triangles':base,'evaluated_triangles':evaluated,'min_m':lo,'max_m':hi,'editable_modifiers':sum(len(o.modifiers) for o in objects),'packed_references':0,'public_source_without_reference_images':True,'result':'PASS'}
 (DATA/'explorador-celular-verificacion.json').write_text(json.dumps(checks,indent=2),encoding='utf8')
 print('VERIFICACION_PASS',json.dumps(checks))
