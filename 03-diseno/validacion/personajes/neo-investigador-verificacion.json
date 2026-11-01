@@ -1,0 +1,42 @@
+{
+ "neo-investigador.fbx": {
+  "mallas": 26,
+  "armaduras": 1,
+  "huesos": 111,
+  "triangulos": 55551,
+  "vertices_sin_peso": 0,
+  "altura_m": 1.801,
+  "z_min": 0.0,
+  "materiales": 27
+ },
+ "neo-investigador.glb": {
+  "mallas": 26,
+  "armaduras": 1,
+  "huesos": 111,
+  "triangulos": 55551,
+  "vertices_sin_peso": 0,
+  "altura_m": 1.801,
+  "z_min": -0.0,
+  "materiales": 27
+ },
+ "neo-investigador.vrm": {
+  "mallas": 26,
+  "armaduras": 1,
+  "huesos": 111,
+  "triangulos": 55551,
+  "vertices_sin_peso": 0,
+  "altura_m": 1.801,
+  "z_min": -0.0,
+  "materiales": 27
+ },
+ "neo-investigador-tableta.fbx": {
+  "mallas": 1,
+  "armaduras": 0,
+  "huesos": 0,
+  "triangulos": 2050,
+  "vertices_sin_peso": null,
+  "altura_m": 0.168,
+  "z_min": -0.0841,
+  "materiales": 5
+ }
+}

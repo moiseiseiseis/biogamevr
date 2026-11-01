@@ -1,11 +1,26 @@
 {
   "project": "School Redemption Game",
   "project_name_status": "nombre de trabajo",
-  "date": "2026-10-30",
-  "branch": "Chris_Desing",
+  "date": "2026-11-01",
+  "branch": "Modelado-Diseño",
   "hash_algorithm": "SHA-256",
   "references_public": false,
   "files": [
+    {
+      "path": "documentacion/personajes/bitacora-neo-investigador.docx",
+      "bytes": 3514473,
+      "sha256": "1a4efb19b84e9f15efc6a000e437f02847fe8b63f01f4ad9aaa6369c7a5ebaed"
+    },
+    {
+      "path": "documentacion/personajes/bitacora-neo-investigador.md",
+      "bytes": 6031,
+      "sha256": "1e17dfb64be63876984b8c65e435d9601d8c4c50c18ef16db6689ee736d3ea6d"
+    },
+    {
+      "path": "documentacion/personajes/bitacora-neo-investigador.pdf",
+      "bytes": 422334,
+      "sha256": "5a7fed744ee21330ff2ca8075a97bb2555b7b42ad71fb4cf509442e693d2a480"
+    },
     {
       "path": "documentacion/personajes/bitacora-personajes.docx",
       "bytes": 4272557,
@@ -20,6 +35,11 @@
       "path": "documentacion/personajes/bitacora-personajes.pdf",
       "bytes": 599650,
       "sha256": "80f0e33b85593fcb26f61ecbbd974a8cd8daf3ac8e950a61e191d06ccfe17a34"
+    },
+    {
+      "path": "documentacion/personajes/entrega-neo-investigador.md",
+      "bytes": 4938,
+      "sha256": "df32261592e2177e60028a54e95f0753c5712dfdd61c0de8aba36aaa897e4a1c"
     },
     {
       "path": "documentacion/personajes/entrega-personajes.md",
@@ -82,6 +102,21 @@
       "sha256": "5a079a2c3d18b49baa36e555e824bd5a3e0e6d327dc49a72abe5e17d49a1c5c1"
     },
     {
+      "path": "exports/neo-investigador-tableta.fbx",
+      "bytes": 59932,
+      "sha256": "cd2700c039e6e558125539e4630c86563a11e2571b8fead753cc6b183bb7587e"
+    },
+    {
+      "path": "exports/neo-investigador.fbx",
+      "bytes": 7683724,
+      "sha256": "ea9917d663ee3ce60f433a41c14253dcd56f9074779c782f119d98f00a32d6d3"
+    },
+    {
+      "path": "exports/neo-investigador.glb",
+      "bytes": 7560456,
+      "sha256": "32c2048eca3f83f571c76e6da597987cb51b70e26bd15c3fe742a271ef1ae271"
+    },
+    {
       "path": "fuentes/explorador-celular.blend",
       "bytes": 249696,
       "sha256": "469adabc323782043a28dbdcfe76edad4f020f693becaa611bec71f68e1831c9"
@@ -95,6 +130,11 @@
       "path": "fuentes/investigador.blend",
       "bytes": 466231,
       "sha256": "3efc46e76f31c87660ab82aae9691719653072cbb8b3e5fa2dbc2a9aeeb6210c"
+    },
+    {
+      "path": "fuentes/neo-investigador.blend",
+      "bytes": 6182599,
+      "sha256": "0e76381961f935d765a25126eb49b95ddabaee8daa60cd9bf116223981a5b1ea"
     },
     {
       "path": "referencias/personajes/README.md",
@@ -130,6 +170,106 @@
       "path": "scripts/personajes/investigador/validar_investigador.py",
       "bytes": 4829,
       "sha256": "fed532bf3007f5f719c2761d84f750d9f05f4585df498bf57df238e5e7f30330"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/01_importar_vrm.py",
+      "bytes": 766,
+      "sha256": "7dfb286d2a892cfcf16b95ad2d9f8c3e9b04ab300a61ad1224f804dbd181620e"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/02_piezas_anteriores.py",
+      "bytes": 2070,
+      "sha256": "dc7041327bb2970b59ee9e43ea860a8975456588eee67fa43d720b5209512c77"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/03_prendas.py",
+      "bytes": 9681,
+      "sha256": "fb10fab03af4b5e319af9b70322a2dda3c78f0a01e7c6b8142e263a8d5d608c6"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/04_equipo.py",
+      "bytes": 9323,
+      "sha256": "e230b75c102f16af094234e939ff63fd785122c79e2a5a3af86bccd4def6b0c9"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/05_accesorios.py",
+      "bytes": 6316,
+      "sha256": "e131686a323760030f5ee4235a3044742316590ecbe79554bf45f16320ba58d0"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/06_cuerpo_y_colores.py",
+      "bytes": 3644,
+      "sha256": "52c1fc7b2d73fe861c235b80540ed81b535761a2e326b0307f98d1e5d89961de"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/07_sombreado.py",
+      "bytes": 1149,
+      "sha256": "fc1cc06a0f12d6bd15ba73e449ec957d7e43ec919fb0d3f8b289f6a563bcd5e9"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/08a_pesos_origen.py",
+      "bytes": 856,
+      "sha256": "fa5d6fa3aed0639f362a555b0a90899d0b34f7291ac87e93ba8b96aa5f8175ee"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/08b_pesos_transferir.py",
+      "bytes": 1710,
+      "sha256": "60f0998926c2c7e60df32b06ea88d7550754379eaa12ff3d549a1f61c3b72a2b"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/08c_funda_rigida.py",
+      "bytes": 388,
+      "sha256": "563047ba97bba4896aaecea5d8b5d37413879f2ccee721a81741c574dd1fd648"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/09_lente.py",
+      "bytes": 466,
+      "sha256": "227304df39cc66e3b64c22495aa9d28d237d64c8fb901fc484527dda98324a3b"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/10_base_final.py",
+      "bytes": 3847,
+      "sha256": "8a20012668567a66f17be17da20e9cf79f294ccdfca5eb74420a29de001282c0"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/11_limpieza.py",
+      "bytes": 2079,
+      "sha256": "ff7ffe2e9f1490ae383f28bd09118fc5a3934d2a0f83f07bccd04f6016349cd6"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/12_texturas.py",
+      "bytes": 728,
+      "sha256": "040fc2f879bc9221904bd81817c4d21dc08dcea8e5e0559d9ba4c22a70185123"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/13_exportar.py",
+      "bytes": 2971,
+      "sha256": "d914846a5355fc0d6d6fdbc1f92dff4b22f7f84401f882f7bcd3f9dab3c0f31d"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/14_verificar.py",
+      "bytes": 1282,
+      "sha256": "9082bcfa4845dd32530e6fbfadd0307b5c71e1318dfbf0f181bc07f014d441d8"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/15_renders.py",
+      "bytes": 2189,
+      "sha256": "e224de2b96a5ddead51af79dd365d50a968acec9cca84d7739520fcd9f5ab107"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/herramientas.py",
+      "bytes": 8026,
+      "sha256": "f19c0c7a094c4ed19e433786afc1f2a64de993c440545db0f2f25d260a20a3b8"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/render_vistas.py",
+      "bytes": 1869,
+      "sha256": "4bd14cdd5b1e6a8d153869784ca92631f63268afc7df8e951aca85e06a1a24fe"
+    },
+    {
+      "path": "scripts/personajes/neo-investigador/rutas.py",
+      "bytes": 1143,
+      "sha256": "0311a96ea0e836e618ff4aa50c2721b914d45ad4fc5ec3943ef58b6dd08c2496"
     },
     {
       "path": "scripts/personajes/optimizar_investigador.py",
@@ -185,6 +325,16 @@
       "path": "validacion/personajes/investigador-verificacion.json",
       "bytes": 1524,
       "sha256": "c108353377a06f22644c77358a4228a9272563f480cdc5492cf21b1b592439cc"
+    },
+    {
+      "path": "validacion/personajes/neo-investigador-geometria.json",
+      "bytes": 861,
+      "sha256": "0af76b4b4167ad799f58019a63ed32676d9dd347c997517d21a3e90ee79d4ed4"
+    },
+    {
+      "path": "validacion/personajes/neo-investigador-verificacion.json",
+      "bytes": 762,
+      "sha256": "195b1fd5debb9917ad63140f802aa5ea9c70c908a268e20193970596cfaaa9de"
     },
     {
       "path": "validacion/personajes/reproduccion-sin-referencias.json",
@@ -340,6 +490,41 @@
       "path": "vistas/personajes/investigador/revision-ligera/original-rostro.png",
       "bytes": 441439,
       "sha256": "3fc0afd6d288b31e05fb9c4144beede259aa21a065811b3131d879ebeda26df7"
+    },
+    {
+      "path": "vistas/personajes/neo-investigador/neo-investigador-frente.png",
+      "bytes": 630653,
+      "sha256": "c668bbd8f83d58ed17ccdf045263f0b12ff798f5b419690c2fccb41c5849cade"
+    },
+    {
+      "path": "vistas/personajes/neo-investigador/neo-investigador-lateral.png",
+      "bytes": 600809,
+      "sha256": "b5be74c1e353dc2932ec09491f78e266d392f537cbfb7096bac07bf9006616c2"
+    },
+    {
+      "path": "vistas/personajes/neo-investigador/neo-investigador-pose-relajada.png",
+      "bytes": 1160101,
+      "sha256": "79838bc0ff106bac646c45899152af11a4aa25cfa25b27344f62a305c84555dc"
+    },
+    {
+      "path": "vistas/personajes/neo-investigador/neo-investigador-posterior.png",
+      "bytes": 603180,
+      "sha256": "ee4ed47f3817b82496784651bbfd971be00469f24c70a658fe92dfefe1b60296"
+    },
+    {
+      "path": "vistas/personajes/neo-investigador/neo-investigador-rostro.png",
+      "bytes": 1083351,
+      "sha256": "a7199aff709422c28b8f3a6037105b8109bb8d9cd69df3258dd3266b2d9e1a90"
+    },
+    {
+      "path": "vistas/personajes/neo-investigador/neo-investigador-tres-cuartos.png",
+      "bytes": 645659,
+      "sha256": "8ffe2c6025aad06daf597b02de8749a402d5b4145d1f58b8d4ed9df7613a4afc"
+    },
+    {
+      "path": "vistas/personajes/neo-investigador/neo-investigador-vistas.png",
+      "bytes": 1338591,
+      "sha256": "ab14a709e1906d9d53b7fa91cf2c3552a7dee8a7907938c038097e649e20eb6e"
     }
   ]
 }
