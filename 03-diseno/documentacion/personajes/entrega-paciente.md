@@ -2,7 +2,7 @@
 
 2 de noviembre de 2026 · Blender 5.2.2 LTS · rama `Modelado-Diseño`
 
-El Paciente se construyó a partir del [Neo Investigador](entrega-neo-investigador.md): conserva su esqueleto (111 huesos), su cara con las 58 expresiones y su cuerpo de VRoid, y viste la ropa de la lámina de Diseño. La camilla es un modelo aparte. Ninguno trae animaciones. El modelado se hizo con apoyo de Claude (IA), conforme al acuerdo del equipo.
+El Paciente se construyó a partir del [Neo Investigador](entrega-neo-investigador.md): conserva su esqueleto (111 huesos), su cara con las 58 expresiones y su cuerpo de VRoid, y viste la ropa de la lámina de Diseño. La camilla es un modelo aparte. Ninguno trae animaciones.
 
 ![Vistas](../../vistas/personajes/paciente/paciente-vistas.png)
 
