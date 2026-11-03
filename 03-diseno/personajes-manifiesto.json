@@ -493,38 +493,38 @@
     },
     {
       "path": "vistas/personajes/neo-investigador/neo-investigador-frente.png",
-      "bytes": 630653,
-      "sha256": "c668bbd8f83d58ed17ccdf045263f0b12ff798f5b419690c2fccb41c5849cade"
+      "bytes": 636423,
+      "sha256": "c4729d041a1310cd68ef8434491890e26835e627fccef2b6bc9925e90961f610"
     },
     {
       "path": "vistas/personajes/neo-investigador/neo-investigador-lateral.png",
-      "bytes": 600809,
-      "sha256": "b5be74c1e353dc2932ec09491f78e266d392f537cbfb7096bac07bf9006616c2"
+      "bytes": 606579,
+      "sha256": "84dd2eab99587dd25f56a619344899daa05ddb59a47372b00a060a53806fae05"
     },
     {
       "path": "vistas/personajes/neo-investigador/neo-investigador-pose-relajada.png",
-      "bytes": 1160101,
-      "sha256": "79838bc0ff106bac646c45899152af11a4aa25cfa25b27344f62a305c84555dc"
+      "bytes": 1165871,
+      "sha256": "dc670f551090c4b58b23abd5edfc9520594864f6632d3501b363e5f3d5cf4167"
     },
     {
       "path": "vistas/personajes/neo-investigador/neo-investigador-posterior.png",
-      "bytes": 603180,
-      "sha256": "ee4ed47f3817b82496784651bbfd971be00469f24c70a658fe92dfefe1b60296"
+      "bytes": 608950,
+      "sha256": "ada13d1bcb65db345b62ad0403545629321cb0f9ab6cc51360463e044ec266f3"
     },
     {
       "path": "vistas/personajes/neo-investigador/neo-investigador-rostro.png",
-      "bytes": 1083351,
-      "sha256": "a7199aff709422c28b8f3a6037105b8109bb8d9cd69df3258dd3266b2d9e1a90"
+      "bytes": 1089121,
+      "sha256": "dc1d8b57eba6be900eccd8542ceb02d2ee414a3f46622da601299f9bfe2aa9a8"
     },
     {
       "path": "vistas/personajes/neo-investigador/neo-investigador-tres-cuartos.png",
-      "bytes": 645659,
-      "sha256": "8ffe2c6025aad06daf597b02de8749a402d5b4145d1f58b8d4ed9df7613a4afc"
+      "bytes": 651429,
+      "sha256": "efc0ae5a61219fb9c053b9daa741c1556c8f8b6d56312ab356ca78766b93d048"
     },
     {
       "path": "vistas/personajes/neo-investigador/neo-investigador-vistas.png",
-      "bytes": 1338591,
-      "sha256": "ab14a709e1906d9d53b7fa91cf2c3552a7dee8a7907938c038097e649e20eb6e"
+      "bytes": 1344361,
+      "sha256": "b8908aea112b6f8afa5fa4faa7c427370af4982399af55bce07b6ee687b36fb3"
     }
   ]
 }
