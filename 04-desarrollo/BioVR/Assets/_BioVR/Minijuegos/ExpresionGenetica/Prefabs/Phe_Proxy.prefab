@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 624089f805474824e804afcb98970ed8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.78416
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 624089f805474824e804afcb98970ed8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -18,7 +18,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 624089f805474824e804afcb98970ed8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.61
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 624089f805474824e804afcb98970ed8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -48,6 +48,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 624089f805474824e804afcb98970ed8, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 9536548b26bb5d343b2267f57eb34164, type: 2}
     - target: {fileID: 919132149155446097, guid: 624089f805474824e804afcb98970ed8, type: 3}
       propertyPath: m_Name
       value: Phe_Proxy
