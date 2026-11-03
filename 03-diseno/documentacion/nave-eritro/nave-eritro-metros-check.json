@@ -1,0 +1,154 @@
+{
+ "escala_m_por_um": 8.0,
+ "escalas_tras_aplicar": [
+  [
+   1.0,
+   1.0,
+   1.0
+  ]
+ ],
+ "aviso_modificadores": [
+  "pose.bones[\"Flagelo_01\"].rotation_quaternion",
+  "pose.bones[\"Flagelo_01\"].rotation_quaternion",
+  "pose.bones[\"Flagelo_01\"].rotation_quaternion",
+  "pose.bones[\"Flagelo_01\"].rotation_quaternion",
+  "pose.bones[\"Flagelo_02\"].rotation_quaternion",
+  "pose.bones[\"Flagelo_02\"].rotation_quaternion",
+  "pose.bones[\"Flagelo_02\"].rotation_quaternion",
+  "pose.bones[\"Flagelo_02\"].rotation_quaternion",
+  "pose.bones[\"Flagelo_03\"].rotation_quaternion",
+  "pose.bones[\"Flagelo_03\"].rotation_quaternion",
+  "pose.bones[\"Flagelo_03\"].rotation_quaternion",
+  "pose.bones[\"Flagelo_03\"].rotation_quaternion",
+  "pose.bones[\"Flagelo_04\"].rotation_quaternion",
+  "pose.bones[\"Flagelo_04\"].rotation_quaternion",
+  "pose.bones[\"Flagelo_04\"].rotation_quaternion",
+  "pose.bones[\"Flagelo_04\"].rotation_quaternion",
+  "pose.bones[\"Flagelo_05\"].rotation_quaternion",
+  "pose.bones[\"Flagelo_05\"].rotation_quaternion",
+  "pose.bones[\"Flagelo_05\"].rotation_quaternion",
+  "pose.bones[\"Flagelo_05\"].rotation_quaternion",
+  "pose.bones[\"Motor_Rotor\"].rotation_quaternion",
+  "pose.bones[\"Motor_Rotor\"].rotation_quaternion",
+  "pose.bones[\"Motor_Rotor\"].rotation_quaternion",
+  "pose.bones[\"Motor_Rotor\"].rotation_quaternion",
+  "pose.bones[\"Motor_Rotor\"].location",
+  "pose.bones[\"Motor_Rotor\"].location",
+  "pose.bones[\"Motor_Rotor\"].location",
+  "pose.bones[\"Motor_Rotor\"].scale",
+  "pose.bones[\"Motor_Rotor\"].scale",
+  "pose.bones[\"Motor_Rotor\"].scale"
+ ],
+ "curvas_location_escaladas": 612,
+ "blend_metros_error_max_m": {
+  "Desplegado": 2e-06,
+  "Patas_Contraer": 5e-06,
+  "Brazos_Contraer": 4e-06,
+  "Petalos_Cerrar": 5e-06,
+  "Flagelo_Nadar": 2e-06,
+  "Demo_Completa": 5e-06
+ },
+ "fbx_MB": 9.74,
+ "glb_MB": 9.15,
+ "fbx_huesos": 41,
+ "fbx_escala_raiz": [
+  [
+   1.0,
+   1.0,
+   1.0
+  ]
+ ],
+ "fbx_tomas": {
+  "Eritro_Rig|Eritro_Rig|Brazos_Contraer": [
+   1.0,
+   31.0
+  ],
+  "Eritro_Rig|Eritro_Rig|Demo_Completa": [
+   1.0,
+   301.0
+  ],
+  "Eritro_Rig|Eritro_Rig|Desplegado": [
+   1.0,
+   2.0
+  ],
+  "Eritro_Rig|Eritro_Rig|Flagelo_Nadar": [
+   1.0,
+   25.0
+  ],
+  "Eritro_Rig|Eritro_Rig|Patas_Contraer": [
+   1.0,
+   31.0
+  ],
+  "Eritro_Rig|Eritro_Rig|Petalos_Cerrar": [
+   1.0,
+   61.0
+  ]
+ },
+ "fbx_tris": 20142,
+ "fbx_tris_sin_piel": 19790,
+ "fbx_imagenes": [
+  "Eritro_base_color 1024x1024",
+  "Eritro_base_color.001 1024x1024",
+  "Eritro_normal 1024x1024",
+  "Eritrocito_base 1024x1024",
+  "Eritrocito_normal 1024x1024"
+ ],
+ "fbx_error_max_m": {
+  "Desplegado": 5e-06,
+  "Patas_Contraer": 1.1e-05,
+  "Brazos_Contraer": 1.3e-05,
+  "Petalos_Cerrar": 1.4e-05,
+  "Flagelo_Nadar": 6e-06,
+  "Demo_Completa": 1.4e-05
+ },
+ "fbx_offset_cuadros": {
+  "Desplegado": 1,
+  "Patas_Contraer": 1,
+  "Brazos_Contraer": 1,
+  "Petalos_Cerrar": 1,
+  "Flagelo_Nadar": 1,
+  "Demo_Completa": 1
+ },
+ "fbx_Desplegado_caja_m_sin_piel": [
+  [
+   26.913,
+   34.688,
+   9.677
+  ],
+  [
+   -13.532,
+   -15.375,
+   -4.757
+  ],
+  [
+   13.381,
+   19.312,
+   4.92
+  ]
+ ],
+ "fbx_Petalos_Cerrar_final_caja_piel_m": [
+  [
+   60.0,
+   60.0,
+   21.595
+  ],
+  [
+   -30.0,
+   -30.0,
+   -9.66
+  ],
+  [
+   30.0,
+   30.0,
+   11.935
+  ]
+ ],
+ "glb_animaciones": [
+  "Brazos_Contraer",
+  "Demo_Completa",
+  "Desplegado",
+  "Flagelo_Nadar",
+  "Patas_Contraer",
+  "Petalos_Cerrar"
+ ]
+}

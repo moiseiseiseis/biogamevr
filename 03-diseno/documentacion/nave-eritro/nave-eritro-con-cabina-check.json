@@ -1,0 +1,49 @@
+{
+ "objetos_exportados": 40,
+ "raices_antes": {
+  "NAVE_Hangar": [
+   8.0,
+   8.0,
+   8.0
+  ],
+  "CABINA_Interior": [
+   0.01,
+   0.01,
+   0.01
+  ]
+ },
+ "escala_mundo_armature": 8.0,
+ "curvas_location_escaladas": 123,
+ "escalas_tras_aplicar": [
+  [
+   1.0,
+   1.0,
+   1.0
+  ]
+ ],
+ "error_blend_m": 2e-06,
+ "fbx_MB": 6.15,
+ "glb_MB": 7.11,
+ "fbx_error_m": 6e-06,
+ "fbx_raices": {
+  "CABINA_Interior": [
+   1.0,
+   1.0,
+   1.0
+  ],
+  "NAVE_Hangar": [
+   1.0,
+   1.0,
+   1.0
+  ]
+ },
+ "fbx_tris": 32572,
+ "fbx_tomas": [
+  "Eritro_Rig|Eritro_Rig|Desplegado"
+ ],
+ "fbx_caja_m": [
+  26.913,
+  34.688,
+  9.677
+ ]
+}
