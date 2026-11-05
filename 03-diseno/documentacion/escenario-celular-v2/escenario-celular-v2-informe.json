@@ -1,0 +1,201 @@
+{
+    "escala_m_por_um":  32.5,
+    "unidades":  "metros",
+    "ejes":  "-Z Forward, Y Up",
+    "blender":  "5.2",
+    "tris_dibujados_con_lod":  {
+                                   "metodo":  "LOD elegido por tamano en pantalla (FOV 100 grados, umbrales del LEEME)",
+                                   "v1_desde_la_pista":  234374,
+                                   "v2":  {
+                                              "pista":  294895,
+                                              "sobre_nucleo":  302880,
+                                              "junto_golgi":  296656,
+                                              "centro_celula":  298876,
+                                              "bajo_el_re":  293663
+                                          }
+                               },
+    "archivos":  {
+                     "v1":  {
+                                "blend_mb":  179.9,
+                                "fbx_mb":  10.3,
+                                "texturas":  41
+                            },
+                     "v2":  {
+                                "blend_mb":  82,
+                                "fbx_mb":  28.8,
+                                "texturas":  49,
+                                "textura_max_px":  2048
+                            }
+                 },
+    "v1":  {
+               "archivo":  "03-diseno/fuentes/escenario-celular.blend",
+               "tris_todos_los_niveles":  497394,
+               "tris_lod0":  349654,
+               "objetos_malla":  417,
+               "objetos_total":  528,
+               "membrana_dims_m":  [
+                                       500.7,
+                                       502.5,
+                                       499.3
+                                   ],
+               "tris_por_coleccion_lod0":  {
+                                               "RER_Terrazas":  82220,
+                                               "Actina_Cortical":  39856,
+                                               "Virus":  38264,
+                                               "Nucleo":  35800,
+                                               "Mitocondrias":  34800,
+                                               "Lisosomas_Peroxisomas":  27180,
+                                               "Vesiculas_Ribosomas":  23700,
+                                               "Centrosoma_Citoesqueleto":  18500,
+                                               "REL":  16800,
+                                               "Golgi":  13050,
+                                               "Membrana_Celular":  11040,
+                                               "Ambiente":  8444
+                                           },
+               "grupos_por_nombre":  {
+                                         "Actina":  6,
+                                         "Bacteriofago":  4,
+                                         "Bacteriofago_01.001":  1,
+                                         "Bacteriofago_02.001":  1,
+                                         "Bacteriofago_03.001":  1,
+                                         "Bacteriofago_04.001":  1,
+                                         "Canales_Ionicos":  1,
+                                         "Centrosoma":  1,
+                                         "E_Coli":  1,
+                                         "Filamento_Intermedio":  4,
+                                         "Golgi":  2,
+                                         "Lisosoma":  6,
+                                         "Lisosoma_B":  4,
+                                         "Microtubulo":  5,
+                                         "Mitocondria":  4,
+                                         "Mitocondria_B":  4,
+                                         "Nucleo":  1,
+                                         "Nucleosoma":  2,
+                                         "Peroxisoma":  4,
+                                         "Polirribosoma":  8,
+                                         "REL":  5,
+                                         "RER_Pista_Principal":  1,
+                                         "RER_Plataforma":  4,
+                                         "Vesicula":  6,
+                                         "Vesicula_Libre":  6,
+                                         "Virus":  10,
+                                         "Virus_B":  4
+                                     },
+               "imagenes":  41,
+               "imagenes_4096":  12,
+               "menciones_seraphim":  [
+
+                                      ],
+               "escenas":  [
+                               "Scene"
+                           ]
+           },
+    "v2":  {
+               "archivo":  "03-diseno/fuentes/escenario-celular-v2.blend",
+               "tris_todos_los_niveles":  717004,
+               "tris_lod0":  467071,
+               "objetos_malla":  5677,
+               "objetos_total":  5885,
+               "membrana_dims_m":  [
+                                       1126.5,
+                                       1081.6,
+                                       883.1
+                                   ],
+               "tris_por_coleccion_lod0":  {
+                                               "Citoesqueleto":  132258,
+                                               "Mitocondrias":  81200,
+                                               "Microtubulos":  68321,
+                                               "RE_Rugoso":  45000,
+                                               "Citosol":  33708,
+                                               "Lisosomas_Peroxisomas_Vesiculas":  26636,
+                                               "Nucleo":  25000,
+                                               "Membrana":  20480,
+                                               "E_Coli_Bacteriofagos":  20468,
+                                               "Golgi_Centrosoma":  14000
+                                           },
+               "grupos_por_nombre":  {
+                                         "Actina_Cortical_Bloques":  1,
+                                         "Citosol_Proteinas_Bloques":  1,
+                                         "E_Coli":  1,
+                                         "Endosoma_Tardio":  4,
+                                         "Endosoma_Temprano":  10,
+                                         "Filamentos_Intermedios":  4,
+                                         "Filamentos_Intermedios_Telarana":  1,
+                                         "Golgi_Centrosoma":  1,
+                                         "Kinesina":  45,
+                                         "Lisosoma":  12,
+                                         "Lisosoma_Fusionandose":  2,
+                                         "Microtubulos_Bloques":  1,
+                                         "Mitocondria":  70,
+                                         "Mitocondria_Red":  10,
+                                         "Nucleo":  1,
+                                         "Peroxisoma":  8,
+                                         "Polirribosoma":  10,
+                                         "RE_Completo_Rugoso_y_Liso":  1,
+                                         "Ribosomas_Libres_Bloques":  1,
+                                         "Telarana_Fina_Bloques":  1,
+                                         "Telarana_Gruesa_Bloques":  1,
+                                         "Vesicula_Golgi":  8,
+                                         "Virus":  4
+                                     },
+               "imagenes":  53,
+               "imagenes_4096":  22,
+               "menciones_seraphim":  [
+
+                                      ],
+               "escenas":  [
+                               "Scene"
+                           ]
+           },
+    "texturas_v2":  [
+                        "actina_meshy_color.jpg",
+                        "actina_meshy_normal.jpg",
+                        "endosoma_meshy_color.jpg",
+                        "endosoma_meshy_metal.png",
+                        "endosoma_meshy_normal.jpg",
+                        "endosoma_meshy_rugosidad.png",
+                        "filamentos_if_bake_color.png",
+                        "filamentos_if_bake_normal.png",
+                        "golgi_centrosoma_bake_color.png",
+                        "golgi_centrosoma_bake_normal.png",
+                        "kinesina_meshy_color.jpg",
+                        "kinesina_meshy_metal.png",
+                        "kinesina_meshy_normal.jpg",
+                        "kinesina_meshy_rugosidad.png",
+                        "lisosoma_meshy_color.jpg",
+                        "lisosoma_meshy_metal.png",
+                        "lisosoma_meshy_normal.jpg",
+                        "lisosoma_meshy_rugosidad.png",
+                        "membrana_bicapa_color.png",
+                        "membrana_bicapa_emision.png",
+                        "membrana_bicapa_normal.png",
+                        "microtubulo_meshy_color.jpg",
+                        "microtubulo_meshy_normal.jpg",
+                        "mitocondria_red_meshy_color.jpg",
+                        "mitocondria_red_meshy_metal.png",
+                        "mitocondria_red_meshy_normal.jpg",
+                        "mitocondria_red_meshy_rugosidad.png",
+                        "mitocondria_v2_bake_color.png",
+                        "mitocondria_v2_bake_normal.png",
+                        "nucleo_meshy_color.jpg",
+                        "nucleo_meshy_metal.png",
+                        "nucleo_meshy_normal.jpg",
+                        "nucleo_meshy_rugosidad.png",
+                        "peroxisoma_bake_color.png",
+                        "peroxisoma_bake_normal.png",
+                        "polirribosoma_meshy_color.jpg",
+                        "polirribosoma_meshy_metal.png",
+                        "polirribosoma_meshy_normal.jpg",
+                        "polirribosoma_meshy_rugosidad.png",
+                        "re_completo_bake_color.png",
+                        "re_completo_bake_normal.png",
+                        "telarana_filamentos_color.jpg",
+                        "telarana_filamentos_normal.jpg",
+                        "vesicula_bake_color.png",
+                        "vesicula_bake_normal.png",
+                        "virus_meshy_color.jpg",
+                        "virus_meshy_metal.png",
+                        "virus_meshy_normal.jpg",
+                        "virus_meshy_rugosidad.png"
+                    ]
+}
