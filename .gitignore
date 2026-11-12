@@ -37,6 +37,9 @@ crashlytics-build.properties
 # ---- Blender ----
 *.blend1
 *.blend2
+# ---- Scripts Python de modelado ----
+__pycache__/
+*.py[cod]
 # ---- Sistema ----
 .DS_Store
 Thumbs.db
@@ -49,3 +52,7 @@ desktop.ini
 
 # Proyecto Unity viejo que no es el del equipo (el bueno está en 04-desarrollo/BioVR)
 /biogamevr/
+
+# Metadatos de macOS en discos externos
+._*
+.Rhistory
