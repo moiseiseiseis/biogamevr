@@ -1,0 +1,19 @@
+{
+ "triangulos": 13512,
+ "materiales": [
+  "CAM_Oscuro",
+  "CAM_Grafito",
+  "CAM_Casco",
+  "CAM_Casco_Claro",
+  "CAM_Luz_Naranja",
+  "CAM_Colchon",
+  "CAM_Almohada",
+  "CAM_Tubo",
+  "CAM_Metal"
+ ],
+ "dimensiones_m": [
+  0.93,
+  2.268,
+  0.851
+ ]
+}

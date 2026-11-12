@@ -1,0 +1,65 @@
+{
+  "reading": {
+    "scene": "Investigador_Blockout",
+    "mesh_objects": 286,
+    "base_triangles": 18025,
+    "evaluated_triangles": 27060,
+    "min_m": [
+      -0.2776147723197937,
+      -0.3569033443927765,
+      0.0
+    ],
+    "max_m": [
+      0.2776147723197937,
+      0.2434612512588501,
+      1.7799999713897705
+    ],
+    "dimensions_m": [
+      0.5552295446395874,
+      0.6003645956516266,
+      1.7799999713897705
+    ],
+    "finite_vertices": true,
+    "feet_z0": true,
+    "height_1_78m": true,
+    "no_rig_or_animation": true,
+    "coat_connected_components": 1,
+    "coat_evaluated_nonmanifold_edges": 0
+  },
+  "a_pose": {
+    "scene": "Investigador_Pose_A",
+    "mesh_objects": 247,
+    "base_triangles": 16463,
+    "evaluated_triangles": 24214,
+    "min_m": [
+      -0.3573722541332245,
+      -0.18433809280395508,
+      0.0
+    ],
+    "max_m": [
+      0.35808444023132324,
+      0.2434612512588501,
+      1.7799999713897705
+    ],
+    "dimensions_m": [
+      0.7154566943645477,
+      0.4277993440628052,
+      1.7799999713897705
+    ],
+    "finite_vertices": true,
+    "feet_z0": true,
+    "height_1_78m": true,
+    "no_rig_or_animation": true,
+    "coat_connected_components": 1,
+    "coat_evaluated_nonmanifold_edges": 0
+  },
+  "result": "PASS",
+  "file_reopened": true,
+  "packed_reference": false,
+  "public_source_without_reference_images": true,
+  "pose_variants_separated": true,
+  "static_geometry_shared": true,
+  "editable_modifiers": 201,
+  "blender": "5.2.2 LTS",
+  "variant": "ligero"
+}
