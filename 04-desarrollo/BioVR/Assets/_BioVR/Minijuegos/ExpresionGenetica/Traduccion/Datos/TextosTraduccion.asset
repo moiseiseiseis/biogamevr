@@ -36,14 +36,11 @@ MonoBehaviour:
   esperaInspeccion: Primero inspecciona los 4 ARNt.
   paroSinARNt: "Ning\xFAn ARNt encaja en este cod\xF3n. \xBFQu\xE9 tipo de cod\xF3n
     es?"
-  continuar: Toca Continuar para traducir el ARNm del paciente.
-  alertaPaciente: "Alerta: al paciente le falta beta-globina. Traduce su ARNm y mira
-    d\xF3nde se detiene."
+  continuar: "Toca Continuar para leer un ARNm que trae un error."
+  alertaPaciente: "Alerta: esta c\xE9lula arma una prote\xEDna que sale mal. Traduce su ARNm y mira qu\xE9 pasa."
   pacienteBuscar: Busca el ARNt que encaja con {0}.
   pacienteAcierto: 'Encaja: se suma {0} a la cadena.'
   pacienteParo: "El ribosoma lleg\xF3 a {0}. Si ning\xFAn ARNt encaja, se\xF1\xE1lalo
     como paro."
-  cierrePaciente: "La cadena del paciente tiene {0} amino\xE1cidos; la sana ten\xEDa
-    {1}. El paro lleg\xF3 antes."
-  diagnostico: "Diagn\xF3stico: la falla est\xE1 en la traducci\xF3n, por un cod\xF3n
-    de paro prematuro."
+  cierrePaciente: "Esta cadena tiene {0} amino\xE1cidos; la normal ten\xEDa {1}. El paro lleg\xF3 antes."
+  diagnostico: "Ah\xED est\xE1 la falla: un cambio en el ARNm cambi\xF3 la cadena de amino\xE1cidos."

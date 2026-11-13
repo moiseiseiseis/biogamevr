@@ -10,13 +10,16 @@ namespace BioVR.Comun.Editor
     // Desde el editor: menú BioVR → Build APK.
     // Desde la terminal: Unity -batchmode -buildTarget Android -executeMethod BioVR.Comun.Editor.BuildAndroid.Construir
     // BioVR → Build APK Expresión Genética genera solo la escena del minijuego, con otro nombre de paquete
-    // para que se instale junto a BioVR sin reemplazarlo.
+    // para que se instale junto a BioVR sin reemplazarlo. BioVR → Build APK Fase A hace lo mismo con la escena de traducción.
     public static class BuildAndroid
     {
         const string RutaApk = "Builds/BioVR.apk";
         const string RutaApkExpresion = "Builds/ExpresionGenetica.apk";
         const string PaqueteExpresion = "com.biogamevr.expresiongenetica";
         const string NombreExpresion = "BioVR Expresión Genética";
+        const string RutaApkFaseA = "Builds/FaseA.apk";
+        const string PaqueteFaseA = "com.biogamevr.fasea";
+        const string NombreFaseA = "BioVR Fase A";
 
         [MenuItem("BioVR/Build APK")]
         public static void Construir()
@@ -26,33 +29,40 @@ namespace BioVR.Comun.Editor
         }
 
         [MenuItem("BioVR/Build APK Expresión Genética")]
-        public static void ConstruirExpresion()
+        public static void ConstruirExpresion() =>
+            Terminar(GenerarAparte(ArmarEscenaExpresionGenetica.Escena, "BioVR → Armar escena Expresión Genética",
+                PaqueteExpresion, NombreExpresion, RutaApkExpresion));
+
+        // Fase A de "Construye la proteína": la secuencia de traducción de Iker (Rol3_Traduccion), sola.
+        [MenuItem("BioVR/Build APK Fase A (Construye la proteína)")]
+        public static void ConstruirFaseA() =>
+            Terminar(GenerarAparte(BioVR.Minijuegos.ExpresionGenetica.Herramientas.ArmarPruebaTraduccion.Escena,
+                "BioVR → Armar prueba Traducción (Rol 3)", PaqueteFaseA, NombreFaseA, RutaApkFaseA));
+
+        // Compila una sola escena con otro paquete y otro nombre, para que se instale junto a BioVR sin reemplazarlo.
+        static bool GenerarAparte(string escena, string armador, string paqueteNuevo, string nombreNuevo, string ruta)
         {
-            var escena = ArmarEscenaExpresionGenetica.Escena;
             if (AssetDatabase.LoadAssetAtPath<SceneAsset>(escena) == null)
             {
-                Debug.LogError($"[BuildAndroid] No existe {escena}. Corre primero BioVR → Armar escena Expresión Genética.");
-                Terminar(false);
-                return;
+                Debug.LogError($"[BuildAndroid] No existe {escena}. Corre primero {armador}.");
+                return false;
             }
 
             // Se cambian el paquete y el nombre solo durante la compilación y luego se regresan
             var android = NamedBuildTarget.Android;
             var paquete = PlayerSettings.GetApplicationIdentifier(android);
             var nombre = PlayerSettings.productName;
-            bool ok;
             try
             {
-                PlayerSettings.SetApplicationIdentifier(android, PaqueteExpresion);
-                PlayerSettings.productName = NombreExpresion;
-                ok = Generar(new[] { escena }, RutaApkExpresion);
+                PlayerSettings.SetApplicationIdentifier(android, paqueteNuevo);
+                PlayerSettings.productName = nombreNuevo;
+                return Generar(new[] { escena }, ruta);
             }
             finally
             {
                 PlayerSettings.SetApplicationIdentifier(android, paquete);
                 PlayerSettings.productName = nombre;
             }
-            Terminar(ok);
         }
 
         static bool Generar(string[] escenas, string ruta)
