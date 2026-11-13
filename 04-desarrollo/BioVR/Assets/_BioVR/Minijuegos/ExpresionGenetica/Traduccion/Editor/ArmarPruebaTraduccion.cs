@@ -1,6 +1,8 @@
 using System.Linq;
+using BioVR.Jugador;
 using BioVR.Minijuegos.ExpresionGenetica;
 using TMPro;
+using Unity.XR.CoreUtils;
 using UnityEditor;
 using UnityEditor.Events;
 using UnityEditor.SceneManagement;
@@ -16,12 +18,13 @@ namespace BioVR.Minijuegos.ExpresionGenetica.Herramientas
     // No toca la escena del minijuego de Moisés ni su armador; cuando esto funcione, Moisés lo integra (Mo3).
     //
     //   - Datos (solo si faltan, para no borrar cambios de G4): codones, secuencias Sana y Paciente, textos
-    //   - XR Origin sentado (igual que la escena de Moisés) y una mesa con Reiniciar y Continuar
+    //   - XR Origin sin locomoción y una "Estacion" (mesa, ribosoma, ARNt, botones Reiniciar, Continuar y Recentrar)
+    //     que se acomoda a la cabeza del jugador al iniciar (AnclarAlJugador)
     //   - Ribosoma PROVISIONAL de 2 cajas (P3: arranca armado; se cambia por el de Alberto, F6)
     //   - Cinta de ARNm (se arma en el juego), sitio de lectura (RanuraSeleccion de Mo2), cadena y factor de liberación
     //   - 4 ARNt con los proxies del repo (Met, Gly, Phe y el distractor Gln, D3), cada uno con su aminoácido y su anticodón
     //
-    // Se puede correr varias veces: la escena se vuelve a generar desde cero.
+    // Se puede correr varias veces: la escena se vuelve a generar desde cero (también la Estacion).
     // Menú: BioVR → Armar prueba Traducción (Rol 3)
     public static class ArmarPruebaTraduccion
     {
@@ -38,6 +41,9 @@ namespace BioVR.Minijuegos.ExpresionGenetica.Herramientas
 
         // Medidas (m). Escala didáctica: nada de esto es real.
         const float AlturaMesa = 0.72f;
+        // Ojos del jugador con los que se arma todo. En el juego la estación se mueve para que este punto
+        // quede en la cabeza real (AnclarAlJugador): mesa 53 cm abajo de los ojos, codón 25 cm abajo y 62 cm al frente.
+        static readonly Vector3 OjosDeReferencia = new Vector3(0f, 1.25f, 0f);
         const float AlturaARNt = 0.16f;
         const float TamanoAminoacido = 0.045f;
         const float TamanoFactor = 0.17f;
@@ -91,10 +97,18 @@ namespace BioVR.Minijuegos.ExpresionGenetica.Herramientas
 
             // ---- Sala ----
             Primitiva("Piso", PrimitiveType.Plane, null, Vector3.zero, Vector3.one, Material("Piso", new Color(0.32f, 0.34f, 0.38f)));
-            Primitiva("Mesa", PrimitiveType.Cube, null, new Vector3(0f, AlturaMesa / 2f, 0.42f),
+
+            // ---- Estación: todo lo que el jugador usa. Se arma con el jugador en OjosDeReferencia y en el juego
+            // se acomoda a su cabeza real (AnclarAlJugador). El piso se queda fijo, igual que el piso real. ----
+            var estacion = new GameObject("Estacion");
+            var puntoOjos = new GameObject("Punto ojos").transform;
+            puntoOjos.SetParent(estacion.transform, false);
+            puntoOjos.position = OjosDeReferencia;
+            Primitiva("Mesa", PrimitiveType.Cube, estacion.transform, new Vector3(0f, AlturaMesa / 2f, 0.42f),
                 new Vector3(1.0f, AlturaMesa, 0.36f), Material("Mesa", new Color(0.78f, 0.66f, 0.5f)));
 
             var raiz = new GameObject("Traduccion");
+            raiz.transform.SetParent(estacion.transform, false);
             var secuencia = raiz.AddComponent<SecuenciaTraduccion>();
 
             // ---- Ribosoma provisional (P3: armado desde el inicio) ----
@@ -160,7 +174,7 @@ namespace BioVR.Minijuegos.ExpresionGenetica.Herramientas
             // ---- Factor de liberación (entra solo, D1) ----
             var factor = new GameObject("Factor de liberacion").transform;
             factor.SetParent(raiz.transform, false);
-            factor.position = new Vector3(0.78f, 1.05f, 0.8f);
+            factor.position = new Vector3(0.62f, 1.12f, 0.6f); // a la derecha, cerca y a la vista, sin tapar el ARNt Gln
             var modeloFactor = new GameObject("Modelo").transform;
             modeloFactor.SetParent(factor, false);
             modeloFactor.localPosition = new Vector3(0f, TamanoFactor / 2f, 0f);
@@ -177,8 +191,8 @@ namespace BioVR.Minijuegos.ExpresionGenetica.Herramientas
             // ---- Aviso fijo de escala didáctica (Mo7 #12, M4) ----
             var aviso = new GameObject("Aviso escala didactica").transform;
             aviso.SetParent(raiz.transform, false);
-            aviso.position = new Vector3(-0.75f, 0.95f, 0.75f);
-            aviso.rotation = Quaternion.Euler(0f, -40f, 0f);
+            aviso.position = new Vector3(-0.62f, 1.2f, 0.55f); // a la izquierda, cerca y casi a la altura de los ojos, sin tapar el ARNt Met
+            aviso.rotation = Quaternion.Euler(0f, -48f, 0f); // de frente al jugador
             var fondoAviso = Primitiva("Fondo", PrimitiveType.Quad, aviso, Vector3.zero, new Vector3(0.38f, 0.13f, 1f),
                 Material("Panel", ColorPanel), conCollider: false);
             fondoAviso.transform.localPosition = new Vector3(0f, 0f, 0.005f);
@@ -191,6 +205,20 @@ namespace BioVR.Minijuegos.ExpresionGenetica.Herramientas
             if (reiniciar.Item2 != null) UnityEventTools.AddVoidPersistentListener(reiniciar.Item2.selectEntered, secuencia.Reiniciar);
             var continuar = Boton(escena, raiz.transform, "Continuar", new Vector3(-0.38f, AlturaMesa + 0.005f, 0.33f));
             if (continuar.Item2 != null) UnityEventTools.AddVoidPersistentListener(continuar.Item2.selectEntered, secuencia.Continuar);
+
+            // ---- Anclaje a la cabeza y recentrado (B / Y o el botón de la mesa) ----
+            var xrOrigin = origen.GetComponent<XROrigin>();
+            var anclar = origen.AddComponent<AnclarAlJugador>();
+            var anso = new SerializedObject(anclar);
+            anso.FindProperty("origen").objectReferenceValue = xrOrigin;
+            anso.FindProperty("estacion").objectReferenceValue = estacion;
+            anso.FindProperty("puntoOjos").objectReferenceValue = puntoOjos;
+            anso.ApplyModifiedPropertiesWithoutUndo();
+            var recentrar = origen.AddComponent<Recentrar>();
+            recentrar.xrOrigin = xrOrigin;
+            recentrar.puntoOjos = puntoOjos;
+            var botonRecentrar = Boton(escena, raiz.transform, "Recentrar", new Vector3(0f, AlturaMesa + 0.005f, 0.3f));
+            if (botonRecentrar.Item2 != null) UnityEventTools.AddVoidPersistentListener(botonRecentrar.Item2.selectEntered, recentrar.Centrar);
 
             // ---- Referencias de la secuencia ----
             var so = new SerializedObject(secuencia);
@@ -210,6 +238,8 @@ namespace BioVR.Minijuegos.ExpresionGenetica.Herramientas
             lista.arraySize = arnts.Length;
             for (int i = 0; i < arnts.Length; i++) lista.GetArrayElementAtIndex(i).objectReferenceValue = arnts[i];
             so.ApplyModifiedPropertiesWithoutUndo();
+
+            estacion.SetActive(false); // la enciende AnclarAlJugador cuando ya sabe dónde está la cabeza
 
             if (!EditorSceneManager.SaveScene(escena, Escena)) { Debug.LogError("[Traduccion] No se pudo guardar la escena."); return; }
             AssetDatabase.SaveAssets();
