@@ -32,14 +32,15 @@ namespace BioVR.Minijuegos.ExpresionGenetica
         [TextArea(1, 3)] public string noEncaja = "No encaja. Mira su anticodón y prueba otro.";
         [TextArea(1, 3)] public string esperaInspeccion = "Primero inspecciona los 4 ARNt."; // [PROV]
         [TextArea(1, 3)] public string paroSinARNt = "Ningún ARNt encaja en este codón. ¿Qué tipo de codón es?"; // [PROV]
-        [TextArea(1, 3)] public string continuar = "Toca Continuar para traducir el ARNm del paciente."; // [PROV]
+        [TextArea(1, 3)] public string continuar = "Toca Continuar para leer un ARNm que trae un error."; // [PROV]
 
-        [Header("Ciclo del paciente (Mo6, D2) · [PROV]")]
-        [TextArea(1, 3)] public string alertaPaciente = "Alerta: al paciente le falta beta-globina. Traduce su ARNm y mira dónde se detiene.";
+        // Sin diagnóstico clínico (plan de la directora, 9 nov). "diagnostico" conserva el nombre para no romper el asset.
+        [Header("Ciclo con error (Mo6, D2) · [PROV]")]
+        [TextArea(1, 3)] public string alertaPaciente = "Alerta: esta célula arma una proteína que sale mal. Traduce su ARNm y mira qué pasa.";
         [TextArea(1, 3)] public string pacienteBuscar = "Busca el ARNt que encaja con {0}.";
         [TextArea(1, 3)] public string pacienteAcierto = "Encaja: se suma {0} a la cadena.";
         [TextArea(1, 3)] public string pacienteParo = "El ribosoma llegó a {0}. Si ningún ARNt encaja, señálalo como paro.";
-        [TextArea(1, 3)] public string cierrePaciente = "La cadena del paciente tiene {0} aminoácidos; la sana tenía {1}. El paro llegó antes.";
-        [TextArea(1, 3)] public string diagnostico = "Diagnóstico: la falla está en la traducción, por un codón de paro prematuro.";
+        [TextArea(1, 3)] public string cierrePaciente = "Esta cadena tiene {0} aminoácidos; la normal tenía {1}. El paro llegó antes.";
+        [TextArea(1, 3)] public string diagnostico = "Ahí está la falla: un cambio en el ARNm cambió la cadena de aminoácidos.";
     }
 }

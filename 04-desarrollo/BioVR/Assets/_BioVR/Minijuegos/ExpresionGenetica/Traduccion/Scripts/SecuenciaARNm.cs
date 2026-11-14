@@ -3,7 +3,7 @@ using UnityEngine;
 namespace BioVR.Minijuegos.ExpresionGenetica
 {
     // Un ARNm didáctico: los codones en orden de 5' a 3'.
-    // Sana: AUG–GGC–UUU–UAA. Paciente (β-talasemia, paro prematuro; decisión D2): AUG–GGC–UAG.
+    // Sana: AUG–GGC–UUU–UAA. Con error (paro prematuro, decisión D2): AUG–GGC–UAG. Sin diagnóstico clínico (9 nov).
     [CreateAssetMenu(fileName = "Secuencia", menuName = "BioVR/Expresión Genética/Secuencia de ARNm")]
     public class SecuenciaARNm : ScriptableObject
     {
