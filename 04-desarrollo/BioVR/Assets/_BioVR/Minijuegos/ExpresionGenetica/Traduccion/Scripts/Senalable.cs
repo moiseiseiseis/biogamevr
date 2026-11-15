@@ -11,6 +11,8 @@ namespace BioVR.Minijuegos.ExpresionGenetica
     // Lo usan el ribosoma, la cinta de ARNm y los codones (AUG y el codón de paro, filas 3 y 9 de I1).
     // También acepta el grip, para que nadie se atore si aprieta el botón equivocado.
     // Solo responde mientras está Habilitado; así la secuencia decide qué se puede señalar en cada paso.
+    // Sus colliders también se apagan mientras no está Habilitado: así un objeto grande (el ribosoma de Diseño,
+    // que envuelve la cinta) no le tapa el rayo a los codones cuando no toca señalarlo.
     [RequireComponent(typeof(XRSimpleInteractable))]
     public class Senalable : MonoBehaviour
     {
@@ -19,6 +21,7 @@ namespace BioVR.Minijuegos.ExpresionGenetica
         static InputAction gatilloIzquierdo, gatilloDerecho;
 
         XRSimpleInteractable interactable;
+        Collider[] colliders;
         readonly List<IXRHoverInteractor> apuntando = new List<IXRHoverInteractor>();
         bool habilitado;
 
@@ -28,6 +31,8 @@ namespace BioVR.Minijuegos.ExpresionGenetica
             set
             {
                 habilitado = value;
+                if (colliders == null) colliders = GetComponents<Collider>();
+                foreach (var c in colliders) if (c != null && !c.isTrigger) c.enabled = value;
                 if (interactable != null) interactable.enabled = value;
                 if (!value) apuntando.Clear();
             }
@@ -36,6 +41,8 @@ namespace BioVR.Minijuegos.ExpresionGenetica
         void Awake()
         {
             interactable = GetComponent<XRSimpleInteractable>();
+            if (colliders == null) colliders = GetComponents<Collider>();
+            foreach (var c in colliders) if (c != null && !c.isTrigger) c.enabled = habilitado;
             if (gatilloIzquierdo == null)
             {
                 gatilloIzquierdo = new InputAction("Señalar (izq)", InputActionType.Button, "<XRController>{LeftHand}/{TriggerButton}");

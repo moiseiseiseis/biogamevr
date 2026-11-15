@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7a1f380051e75a4691c37be641108dc, type: 3}
   m_Name: TextosTraduccion
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.ExpresionGenetica.TextosTraduccion
-  paso1Llegar: Este es un ribosoma. Lee la copia de la receta (ARNm) de tres en tres
-    letras.
-  paso1Ribosoma: "Ahora se\xF1ala la cinta de ARNm."
+  paso1Llegar: "Este es un ribosoma: lee el ARNm de tres en tres letras. Ap\xFAntale y aprieta el gatillo."
+  paso1Ribosoma: "Ahora apunta a la cinta de ARNm y aprieta el gatillo."
   paso1Acertar: Muy bien. La receta se lee en orden, de un extremo al otro.
-  paso2Llegar: "Tres letras forman un cod\xF3n. Este es AUG: la se\xF1al de inicio."
+  paso2Llegar: "Tres letras forman un cod\xF3n. Este es AUG, la se\xF1al de inicio: ap\xFAntale y aprieta el gatillo."
   paso2Acertar: "Casi cada cod\xF3n pide un amino\xE1cido; algunos son se\xF1ales
     de paro."
   paso3Llegar: "Cada ARNt trae un amino\xE1cido. Su anticod\xF3n encaja con el cod\xF3n
@@ -29,7 +28,7 @@ MonoBehaviour:
   paso5Llegar: "Ahora t\xFA: busca el ARNt que encaja con GGC."
   paso5Acertar: "El ribosoma une Gly a Met con un enlace pept\xEDdico."
   paso6Automatico: 'El ribosoma sigue solo: UUU pide Phe.'
-  paso6Paro: "UAA es una se\xF1al de paro. Ning\xFAn ARNt encaja aqu\xED."
+  paso6Paro: "UAA es una se\xF1al de paro: ning\xFAn ARNt encaja. Ap\xFAntale y aprieta el gatillo."
   liberacion: "Entra un factor de liberaci\xF3n y la cadena se suelta."
   cierreGuiado: "As\xED se lee una receta y se arma una cadena de amino\xE1cidos."
   noEncaja: "No encaja. Mira su anticod\xF3n y prueba otro."
@@ -40,7 +39,6 @@ MonoBehaviour:
   alertaPaciente: "Alerta: esta c\xE9lula arma una prote\xEDna que sale mal. Traduce su ARNm y mira qu\xE9 pasa."
   pacienteBuscar: Busca el ARNt que encaja con {0}.
   pacienteAcierto: 'Encaja: se suma {0} a la cadena.'
-  pacienteParo: "El ribosoma lleg\xF3 a {0}. Si ning\xFAn ARNt encaja, se\xF1\xE1lalo
-    como paro."
+  pacienteParo: "El ribosoma lleg\xF3 a {0}. Si ning\xFAn ARNt encaja, ap\xFAntale y aprieta el gatillo."
   cierrePaciente: "Esta cadena tiene {0} amino\xE1cidos; la normal ten\xEDa {1}. El paro lleg\xF3 antes."
-  diagnostico: "Ah\xED est\xE1 la falla: un cambio en el ARNm cambi\xF3 la cadena de amino\xE1cidos."
+  diagnostico: "Ah\xED est\xE1 la falla: un cambio convirti\xF3 UUU en UAG, una se\xF1al de paro, y la cadena se cort\xF3 antes."
