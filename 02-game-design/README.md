@@ -4,6 +4,7 @@ Sketches, storyboards y el cartel para la feria de ciencias.
 - `sketches/` — `minijuego-<nombre>_<tema>_v1.png`
 - `storyboards/` — una carpeta por minijuego
 - `cartel-feria/` — fuentes editables y versión final para imprimir
+- `sonido/` — dónde está la música y el sonido del juego (carpeta de Drive) y cómo se organiza ([`musica-y-sonido.md`](sonido/musica-y-sonido.md))
 
 ## Minijuegos propuestos (por validar)
 
