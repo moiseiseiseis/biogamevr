@@ -1,0 +1,74 @@
+{
+ "altura_m": 1.626,
+ "triangulos_exportacion": 20562,
+ "por_malla_exportacion": {
+  "Operador_Cara": 5216,
+  "Operador_Cabello_Piel": 4853,
+  "Operador_Ropa_Equipo": 10493
+ },
+ "triangulos_piezas_blend": 20562,
+ "huesos": 59,
+ "materiales": [
+  "OPM_Cabello_Piel",
+  "OPM_Cara",
+  "OPM_Ropa_Equipo"
+ ],
+ "expresiones": 57,
+ "triangulos_panel": 4,
+ "texturas": {
+  "operador-mecha_cara.png": {
+   "px": [
+    2048,
+    2048
+   ],
+   "bytes_antes": 839347,
+   "bytes_despues": 490429,
+   "pixeles_identicos": true
+  },
+  "operador-mecha_cara_sombra.png": {
+   "px": [
+    2048,
+    2048
+   ],
+   "bytes_antes": 743383,
+   "bytes_despues": 386091,
+   "pixeles_identicos": true
+  },
+  "operador-mecha_cuerpo.png": {
+   "px": [
+    2048,
+    2048
+   ],
+   "bytes_antes": 847984,
+   "bytes_despues": 457054,
+   "pixeles_identicos": true
+  },
+  "operador-mecha_cuerpo_sombra.png": {
+   "px": [
+    2048,
+    2048
+   ],
+   "bytes_antes": 764171,
+   "bytes_despues": 365630,
+   "pixeles_identicos": true
+  },
+  "operador-mecha_emision.png": {
+   "px": [
+    512,
+    512
+   ],
+   "bytes_antes": 5896,
+   "bytes_despues": 172,
+   "pixeles_identicos": true
+  },
+  "operador-mecha_panel.png": {
+   "px": [
+    1024,
+    1024
+   ],
+   "bytes_antes": 153580,
+   "bytes_despues": 119752,
+   "pixeles_identicos": true
+  }
+ }
+}
