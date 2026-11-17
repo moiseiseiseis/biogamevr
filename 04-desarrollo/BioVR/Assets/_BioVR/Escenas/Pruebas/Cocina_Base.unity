@@ -119,7 +119,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &22930433
+--- !u!1 &346990056
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,8 +127,339 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 22930435}
-  - component: {fileID: 22930434}
+  - component: {fileID: 346990057}
+  - component: {fileID: 346990058}
+  m_Layer: 0
+  m_Name: Ribosoma lejano
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &346990057
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346990056}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.04012145, y: 0.9518835, z: -0.2684589, w: -0.14225993}
+  m_LocalPosition: {x: 0.5555062, y: 1.3, z: 1.816979}
+  m_LocalScale: {x: 2.1, y: 2.1, z: 2.1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1579637552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &346990058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346990056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
+  nota: "-17\xB0 \xB7 1.9 m \xB7 1.3 m de alto. M4. Escala \xD72.1, inclinado 0.55
+    rad. Plataforma a 1.04 m con anillo magenta"
+  color: {r: 1, g: 0.24, b: 0.65, a: 1}
+  radio: 0.05
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &374076246
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 374076247}
+  - component: {fileID: 374076248}
+  m_Layer: 0
+  m_Name: Tablero del pedido
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &374076247
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374076246}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.034899496, z: -0, w: 0.99939084}
+  m_LocalPosition: {x: -0.13951294, y: 1.95, z: 1.9951282}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1579637552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &374076248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374076246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
+  nota: "4\xB0 \xB7 2 m \xB7 1.95 m de alto. M8. Panel de 0.80 \xD7 0.26 m sobre
+    tablero-pedido.fbx. Orientado para un Canvas"
+  color: {r: 0.5, g: 0.9, b: 1, a: 1}
+  radio: 0.05
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1001 &471223017
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1175130374}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.00000004371139
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_Name
+      value: Mesa curva
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+--- !u!4 &471223018 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+  m_PrefabInstance: {fileID: 471223017}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &484356570
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 484356574}
+  - component: {fileID: 484356573}
+  - component: {fileID: 484356572}
+  - component: {fileID: 484356571}
+  m_Layer: 0
+  m_Name: Piso
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!23 &484356571
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484356570}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 7d3a36c7cb146ce4183ef98fe504fe13, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &484356572
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484356570}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!33 &484356573
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484356570}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &484356574
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484356570}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &828759581
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 828759582}
+  - component: {fileID: 828759583}
+  m_Layer: 0
+  m_Name: Holograma
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &828759582
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 828759581}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.91706014, z: 0, w: -0.39874902}
+  m_LocalPosition: {x: 0.62165064, y: 0.78, z: 0.5796986}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1579637552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &828759583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 828759581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
+  nota: "-47\xB0 \xB7 0.85 m \xB7 0.78 m de alto. M7. proyector-holograma.fbx"
+  color: {r: 1, g: 0.24, b: 0.65, a: 1}
+  radio: 0.05
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &898920874
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 898920877}
+  - component: {fileID: 898920876}
+  - component: {fileID: 898920875}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -136,13 +467,42 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!108 &22930434
+--- !u!114 &898920875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 898920874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
+--- !u!108 &898920876
 Light:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 22930433}
+  m_GameObject: {fileID: 898920874}
   m_Enabled: 1
   serializedVersion: 12
   m_Type: 1
@@ -201,13 +561,13 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
---- !u!4 &22930435
+--- !u!4 &898920877
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 22930433}
+  m_GameObject: {fileID: 898920874}
   serializedVersion: 2
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
   m_LocalPosition: {x: 0, y: 3, z: 0}
@@ -216,7 +576,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &57158552
+--- !u!1 &941926329
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -224,78 +584,52 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 57158553}
-  - component: {fileID: 57158554}
+  - component: {fileID: 941926330}
+  - component: {fileID: 941926331}
   m_Layer: 0
-  m_Name: Panel de mensajes
+  m_Name: ControlCocina
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &57158553
+--- !u!4 &941926330
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 57158552}
+  m_GameObject: {fileID: 941926329}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.32556817, z: -0, w: 0.9455186}
-  m_LocalPosition: {x: -0.8927092, y: 1.64, z: 1.1426157}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1210458879}
+  m_Father: {fileID: 1175130374}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &57158554
+--- !u!114 &941926331
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 57158552}
+  m_GameObject: {fileID: 941926329}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
+  m_Script: {fileID: 11500000, guid: c643a22459a8d554daf88c9e95a3d3fc, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
-  nota: "38\xB0 \xB7 1.45 m \xB7 1.64 m de alto. M8. Panel de 0.70 \xD7 0.34 m. Orientado
-    para un Canvas (su +Z se aleja del jugador)"
-  color: {r: 0.5, g: 0.9, b: 1, a: 1}
-  radio: 0.05
---- !u!1 &320669156
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 320669157}
-  m_Layer: 0
-  m_Name: Punto ojos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &320669157
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 320669156}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1930273094}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &325950871
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.ControlCocina
+  config: {fileID: 11400000, guid: d95169dcabfa4824cb605704485b3855, type: 2}
+  codigo: {fileID: 11400000, guid: 5f86281b763d1184b854bf79b5dea8f7, type: 2}
+  textos: {fileID: 11400000, guid: 753b574308b9d394bb5b78ef9308151f, type: 2}
+  turnos:
+  - {fileID: 11400000, guid: 38b4f40bf24fcc1459a5077414984882, type: 2}
+  - {fileID: 11400000, guid: a47fa1aaf434dc040b17e862be149f2d, type: 2}
+  - {fileID: 11400000, guid: 70266fcf92402b242ae8ca382122e4d9, type: 2}
+  turnoInicial: 0
+  semilla: 0
+--- !u!1001 &1060790046
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -385,53 +719,53 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 325950875}
+      addedObject: {fileID: 1060790050}
     - targetCorrespondingSourceObject: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 325950874}
+      addedObject: {fileID: 1060790049}
   m_SourcePrefab: {fileID: 100100000, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
---- !u!1 &325950872 stripped
+--- !u!1 &1060790047 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-  m_PrefabInstance: {fileID: 325950871}
+  m_PrefabInstance: {fileID: 1060790046}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &325950873 stripped
+--- !u!114 &1060790048 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1178791450436251564, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-  m_PrefabInstance: {fileID: 325950871}
+  m_PrefabInstance: {fileID: 1060790046}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325950872}
+  m_GameObject: {fileID: 1060790047}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e0cb9aa70a22847b5925ee5f067c10a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &325950874
+--- !u!114 &1060790049
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325950872}
+  m_GameObject: {fileID: 1060790047}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f7e1333adc5815c498a764b82fe1463b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Jugador.Recentrar
-  xrOrigin: {fileID: 325950873}
-  puntoOjos: {fileID: 320669157}
+  xrOrigin: {fileID: 1060790048}
+  puntoOjos: {fileID: 2101267057}
   botonRecentrar:
     m_UseReference: 0
     m_Action:
       m_Name: Recentrar
       m_Type: 1
       m_ExpectedControlType: 
-      m_Id: 362fd548-536b-4f7b-be04-a28d3d615ab5
+      m_Id: f0c2d7b7-116d-41f7-931f-efdfec528844
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: 4604abc5-3193-465f-b0ce-ad0e33bb71a7
+        m_Id: dc08564d-905f-4696-8095-4551f03da8d1
         m_Path: <XRController>{RightHand}/secondaryButton
         m_Interactions: 
         m_Processors: 
@@ -439,7 +773,7 @@ MonoBehaviour:
         m_Action: Recentrar
         m_Flags: 0
       - m_Name: 
-        m_Id: dd373e7c-975f-4dc1-99ab-ff45ca7352ed
+        m_Id: 61f7b5ef-d519-4caa-a9cc-1261c8d04805
         m_Path: <XRController>{LeftHand}/secondaryButton
         m_Interactions: 
         m_Processors: 
@@ -447,7 +781,7 @@ MonoBehaviour:
         m_Action: Recentrar
         m_Flags: 0
       - m_Name: 
-        m_Id: a2a314e0-3297-43e7-94b0-4ea87d9b1401
+        m_Id: 3f5175e2-ded9-4519-8527-42db81e7165c
         m_Path: <Keyboard>/home
         m_Interactions: 
         m_Processors: 
@@ -457,23 +791,23 @@ MonoBehaviour:
       m_Flags: 0
       m_Priority: 0
     m_Reference: {fileID: 0}
---- !u!114 &325950875
+--- !u!114 &1060790050
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 325950872}
+  m_GameObject: {fileID: 1060790047}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9aaa68a4ef1475f4bacc64e8bd311be8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Jugador.AnclarAlJugador
-  origen: {fileID: 325950873}
-  estacion: {fileID: 1930273093}
-  puntoOjos: {fileID: 320669157}
+  origen: {fileID: 1060790048}
+  estacion: {fileID: 1175130373}
+  puntoOjos: {fileID: 2101267057}
   esperaMaxima: 2
---- !u!1 &493991225
+--- !u!1 &1109481235
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -481,47 +815,50 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 493991226}
-  - component: {fileID: 493991227}
+  - component: {fileID: 1109481236}
+  - component: {fileID: 1109481237}
   m_Layer: 0
-  m_Name: Proteasoma (26S)
+  m_Name: Salida
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &493991226
+--- !u!4 &1109481236
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 493991225}
+  m_GameObject: {fileID: 1109481235}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.9659259, z: 0, w: -0.25881907}
-  m_LocalPosition: {x: 0.25, y: 0.78, z: 0.4330127}
+  m_LocalPosition: {x: 0.26, y: 0.78, z: 0.45033318}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1210458879}
+  m_Father: {fileID: 1579637552}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &493991227
+--- !u!114 &1109481237
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 493991225}
+  m_GameObject: {fileID: 1109481235}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
-  nota: "-30\xB0 \xB7 0.5 m \xB7 0.78 m de alto. M10. Solo en la fase B, donde estaba
-    la salida"
+  nota: "-30\xB0 \xB7 0.52 m \xB7 0.78 m de alto. M5. bandeja-salida.fbx"
   color: {r: 1, g: 0.24, b: 0.65, a: 1}
   radio: 0.05
---- !u!1 &551498334
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &1175130373
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -529,46 +866,34 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 551498335}
-  - component: {fileID: 551498336}
+  - component: {fileID: 1175130374}
   m_Layer: 0
-  m_Name: Holograma
+  m_Name: AnclaCocina
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &551498335
+  m_IsActive: 0
+--- !u!4 &1175130374
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 551498334}
+  m_GameObject: {fileID: 1175130373}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.91706014, z: 0, w: -0.39874902}
-  m_LocalPosition: {x: 0.62165064, y: 0.78, z: 0.5796986}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1210458879}
+  m_Children:
+  - {fileID: 2101267057}
+  - {fileID: 471223018}
+  - {fileID: 1579637552}
+  - {fileID: 941926330}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &551498336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 551498334}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
-  nota: "-47\xB0 \xB7 0.85 m \xB7 0.78 m de alto. M7. proyector-holograma.fbx"
-  color: {r: 1, g: 0.24, b: 0.65, a: 1}
-  radio: 0.05
---- !u!1 &889872173
+--- !u!1 &1331460106
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -576,47 +901,50 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 889872174}
-  - component: {fileID: 889872175}
+  - component: {fileID: 1331460107}
+  - component: {fileID: 1331460108}
   m_Layer: 0
-  m_Name: Ribosoma lejano
+  m_Name: Corriente fin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &889872174
+--- !u!4 &1331460107
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 889872173}
+  m_GameObject: {fileID: 1331460106}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.04012145, y: 0.9518835, z: -0.2684589, w: -0.14225993}
-  m_LocalPosition: {x: 0.5555062, y: 1.3, z: 1.816979}
-  m_LocalScale: {x: 2.1, y: 2.1, z: 2.1}
+  m_LocalRotation: {x: 0, y: 0.99254614, z: 0, w: 0.12186935}
+  m_LocalPosition: {x: -0.17418377, y: 1.06, z: 0.6986129}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1210458879}
+  m_Father: {fileID: 1579637552}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &889872175
+--- !u!114 &1331460108
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 889872173}
+  m_GameObject: {fileID: 1331460106}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
-  nota: "-17\xB0 \xB7 1.9 m \xB7 1.3 m de alto. M4. Escala \xD72.1, inclinado 0.55
-    rad. Plataforma a 1.04 m con anillo magenta"
+  nota: "14\xB0 \xB7 0.72 m \xB7 1.06 m de alto. M2. Fin de la corriente"
   color: {r: 1, g: 0.24, b: 0.65, a: 1}
   radio: 0.05
---- !u!1 &969663377
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &1356255547
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -624,8 +952,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 969663378}
-  - component: {fileID: 969663379}
+  - component: {fileID: 1356255548}
+  - component: {fileID: 1356255549}
   m_Layer: 0
   m_Name: Sintetasa
   m_TagString: Untagged
@@ -633,28 +961,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &969663378
+--- !u!4 &1356255548
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 969663377}
+  m_GameObject: {fileID: 1356255547}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.92050487, z: 0, w: 0.3907311}
   m_LocalPosition: {x: -0.4747643, y: 0.88, z: 0.45847455}
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1210458879}
+  m_Father: {fileID: 1579637552}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &969663379
+--- !u!114 &1356255549
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 969663377}
+  m_GameObject: {fileID: 1356255547}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
@@ -664,7 +992,11 @@ MonoBehaviour:
     debajo, a 0.78 m"
   color: {r: 1, g: 0.24, b: 0.65, a: 1}
   radio: 0.05
---- !u!1 &1210458878
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &1359918727
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -672,104 +1004,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1210458879}
+  - component: {fileID: 1359918729}
+  - component: {fileID: 1359918728}
   m_Layer: 0
-  m_Name: Puntos
+  m_Name: XR Interaction Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1210458879
+--- !u!114 &1359918728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1359918727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83e4e6cca11330d4088d729ab4fc9d9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.XRInteractionManager
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+--- !u!4 &1359918729
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1210458878}
+  m_GameObject: {fileID: 1359918727}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1396438391}
-  - {fileID: 889872174}
-  - {fileID: 1293078097}
-  - {fileID: 1625258805}
-  - {fileID: 969663378}
-  - {fileID: 1927368760}
-  - {fileID: 1646917943}
-  - {fileID: 551498335}
-  - {fileID: 1753509031}
-  - {fileID: 493991226}
-  - {fileID: 57158553}
-  - {fileID: 2090242233}
-  m_Father: {fileID: 1930273094}
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1248591726
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1930273094}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.00000004371139
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: d79d9b61340ec674291907d89725ab39, type: 3}
-      propertyPath: m_Name
-      value: Mesa curva
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d79d9b61340ec674291907d89725ab39, type: 3}
---- !u!4 &1248591727 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
-  m_PrefabInstance: {fileID: 1248591726}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1293078096
+--- !u!1 &1551890619
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -777,8 +1050,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1293078097}
-  - component: {fileID: 1293078098}
+  - component: {fileID: 1551890620}
+  - component: {fileID: 1551890621}
   m_Layer: 0
   m_Name: Corriente inicio
   m_TagString: Untagged
@@ -786,28 +1059,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1293078097
+--- !u!4 &1551890620
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1293078096}
+  m_GameObject: {fileID: 1551890619}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.83867055, z: 0, w: 0.54463905}
   m_LocalPosition: {x: -0.65775275, y: 1.06, z: 0.29285038}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1210458879}
+  m_Father: {fileID: 1579637552}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1293078098
+--- !u!114 &1551890621
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1293078096}
+  m_GameObject: {fileID: 1551890619}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
@@ -817,7 +1090,11 @@ MonoBehaviour:
     +14\xB0, radio 0.72, altura 1.06 \xB1 0.035. Tubo magenta de 0.06 m de radio"
   color: {r: 1, g: 0.24, b: 0.65, a: 1}
   radio: 0.05
---- !u!1 &1396438390
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &1579637551
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -825,8 +1102,154 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1396438391}
-  - component: {fileID: 1396438392}
+  - component: {fileID: 1579637552}
+  m_Layer: 0
+  m_Name: Puntos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1579637552
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579637551}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1914171728}
+  - {fileID: 346990057}
+  - {fileID: 1551890620}
+  - {fileID: 1331460107}
+  - {fileID: 1356255548}
+  - {fileID: 1109481236}
+  - {fileID: 1849663972}
+  - {fileID: 828759582}
+  - {fileID: 2021479176}
+  - {fileID: 1710827887}
+  - {fileID: 2078575663}
+  - {fileID: 374076247}
+  m_Father: {fileID: 1175130374}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1710827886
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1710827887}
+  - component: {fileID: 1710827888}
+  m_Layer: 0
+  m_Name: Proteasoma (26S)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1710827887
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710827886}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.9659259, z: 0, w: -0.25881907}
+  m_LocalPosition: {x: 0.25, y: 0.78, z: 0.4330127}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1579637552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1710827888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710827886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
+  nota: "-30\xB0 \xB7 0.5 m \xB7 0.78 m de alto. M10. Solo en la fase B, donde estaba
+    la salida"
+  color: {r: 1, g: 0.24, b: 0.65, a: 1}
+  radio: 0.05
+  subirEtiqueta: 0.07
+  detalle: fase B
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &1849663971
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1849663972}
+  - component: {fileID: 1849663973}
+  m_Layer: 0
+  m_Name: Regreso al citoplasma
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1849663972
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849663971}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.95105654, z: 0, w: -0.30901697}
+  m_LocalPosition: {x: 0.9404564, y: 1.68, z: 1.2944273}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1579637552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1849663973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849663971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
+  nota: "-36\xB0 \xB7 1.6 m \xB7 1.68 m de alto. M5. Embudo con aro naranja"
+  color: {r: 1, g: 0.24, b: 0.65, a: 1}
+  radio: 0.05
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &1914171727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1914171728}
+  - component: {fileID: 1914171729}
   m_Layer: 0
   m_Name: Ribosoma de mesa
   m_TagString: Untagged
@@ -834,28 +1257,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1396438391
+--- !u!4 &1914171728
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1396438390}
+  m_GameObject: {fileID: 1914171727}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.993961, z: -0.10973431, w: 0}
   m_LocalPosition: {x: -0, y: 0.86, z: 0.62}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1210458879}
+  m_Father: {fileID: 1579637552}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1396438392
+--- !u!114 &1914171729
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1396438390}
+  m_GameObject: {fileID: 1914171727}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
@@ -865,7 +1288,11 @@ MonoBehaviour:
     con un pie debajo"
   color: {r: 1, g: 0.24, b: 0.65, a: 1}
   radio: 0.05
---- !u!1 &1625258804
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &2021479175
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -873,102 +1300,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1625258805}
-  - component: {fileID: 1625258806}
-  m_Layer: 0
-  m_Name: Corriente fin
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1625258805
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1625258804}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.99254614, z: 0, w: 0.12186935}
-  m_LocalPosition: {x: -0.17418377, y: 1.06, z: 0.6986129}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1210458879}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1625258806
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1625258804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
-  nota: "14\xB0 \xB7 0.72 m \xB7 1.06 m de alto. M2. Fin de la corriente"
-  color: {r: 1, g: 0.24, b: 0.65, a: 1}
-  radio: 0.05
---- !u!1 &1646917942
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1646917943}
-  - component: {fileID: 1646917944}
-  m_Layer: 0
-  m_Name: Regreso al citoplasma
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1646917943
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1646917942}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.95105654, z: 0, w: -0.30901697}
-  m_LocalPosition: {x: 0.9404564, y: 1.68, z: 1.2944273}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1210458879}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1646917944
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1646917942}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
-  nota: "-36\xB0 \xB7 1.6 m \xB7 1.68 m de alto. M5. Embudo con aro naranja"
-  color: {r: 1, g: 0.24, b: 0.65, a: 1}
-  radio: 0.05
---- !u!1 &1753509030
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1753509031}
-  - component: {fileID: 1753509032}
+  - component: {fileID: 2021479176}
+  - component: {fileID: 2021479177}
   m_Layer: 0
   m_Name: Chaperona (BiP)
   m_TagString: Untagged
@@ -976,28 +1309,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1753509031
+--- !u!4 &2021479176
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1753509030}
+  m_GameObject: {fileID: 2021479175}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.9659259, z: 0, w: 0.25881907}
   m_LocalPosition: {x: -0.25, y: 0.78, z: 0.4330127}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1210458879}
+  m_Father: {fileID: 1579637552}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1753509032
+--- !u!114 &2021479177
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1753509030}
+  m_GameObject: {fileID: 2021479175}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
@@ -1006,7 +1339,11 @@ MonoBehaviour:
   nota: "30\xB0 \xB7 0.5 m \xB7 0.78 m de alto. M10. Solo en la fase B"
   color: {r: 1, g: 0.24, b: 0.65, a: 1}
   radio: 0.05
---- !u!1 &1762890363
+  subirEtiqueta: 0.07
+  detalle: fase B
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &2078575662
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1014,346 +1351,87 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1762890364}
-  - component: {fileID: 1762890365}
+  - component: {fileID: 2078575663}
+  - component: {fileID: 2078575664}
   m_Layer: 0
-  m_Name: ControlCocina
+  m_Name: Panel de mensajes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1762890364
+--- !u!4 &2078575663
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1762890363}
+  m_GameObject: {fileID: 2078575662}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: -0.32556817, z: -0, w: 0.9455186}
+  m_LocalPosition: {x: -0.8927092, y: 1.64, z: 1.1426157}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1930273094}
+  m_Father: {fileID: 1579637552}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1762890365
+--- !u!114 &2078575664
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1762890363}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c643a22459a8d554daf88c9e95a3d3fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.ControlCocina
-  config: {fileID: 11400000, guid: d95169dcabfa4824cb605704485b3855, type: 2}
-  codigo: {fileID: 11400000, guid: 5f86281b763d1184b854bf79b5dea8f7, type: 2}
-  textos: {fileID: 11400000, guid: 753b574308b9d394bb5b78ef9308151f, type: 2}
-  turnos:
-  - {fileID: 11400000, guid: 38b4f40bf24fcc1459a5077414984882, type: 2}
-  - {fileID: 11400000, guid: a47fa1aaf434dc040b17e862be149f2d, type: 2}
-  - {fileID: 11400000, guid: 70266fcf92402b242ae8ca382122e4d9, type: 2}
-  turnoInicial: 0
-  semilla: 0
---- !u!1 &1927368759
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1927368760}
-  - component: {fileID: 1927368761}
-  m_Layer: 0
-  m_Name: Salida
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1927368760
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1927368759}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.9659259, z: 0, w: -0.25881907}
-  m_LocalPosition: {x: 0.26, y: 0.78, z: 0.45033318}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1210458879}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1927368761
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1927368759}
+  m_GameObject: {fileID: 2078575662}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
-  nota: "-30\xB0 \xB7 0.52 m \xB7 0.78 m de alto. M5. bandeja-salida.fbx"
-  color: {r: 1, g: 0.24, b: 0.65, a: 1}
-  radio: 0.05
---- !u!1 &1930273093
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1930273094}
-  m_Layer: 0
-  m_Name: AnclaCocina
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1930273094
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1930273093}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 320669157}
-  - {fileID: 1248591727}
-  - {fileID: 1210458879}
-  - {fileID: 1762890364}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1946796957
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1946796961}
-  - component: {fileID: 1946796960}
-  - component: {fileID: 1946796959}
-  - component: {fileID: 1946796958}
-  m_Layer: 0
-  m_Name: Piso
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!23 &1946796958
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1946796957}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 7d3a36c7cb146ce4183ef98fe504fe13, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1946796959
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1946796957}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!33 &1946796960
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1946796957}
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1946796961
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1946796957}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2014644271
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2014644273}
-  - component: {fileID: 2014644272}
-  m_Layer: 0
-  m_Name: XR Interaction Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2014644272
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2014644271}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83e4e6cca11330d4088d729ab4fc9d9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.XRInteractionManager
-  m_StartingHoverFilters: []
-  m_StartingSelectFilters: []
---- !u!4 &2014644273
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2014644271}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2090242232
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2090242233}
-  - component: {fileID: 2090242234}
-  m_Layer: 0
-  m_Name: Tablero del pedido
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2090242233
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2090242232}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.034899496, z: -0, w: 0.99939084}
-  m_LocalPosition: {x: -0.13951294, y: 1.95, z: 1.9951282}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1210458879}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2090242234
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2090242232}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
-  nota: "4\xB0 \xB7 2 m \xB7 1.95 m de alto. M8. Panel de 0.80 \xD7 0.26 m sobre
-    tablero-pedido.fbx. Orientado para un Canvas"
+  nota: "38\xB0 \xB7 1.45 m \xB7 1.64 m de alto. M8. Panel de 0.70 \xD7 0.34 m. Orientado
+    para un Canvas (su +Z se aleja del jugador)"
   color: {r: 0.5, g: 0.9, b: 1, a: 1}
   radio: 0.05
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &2101267056
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2101267057}
+  m_Layer: 0
+  m_Name: Punto ojos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2101267057
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101267056}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1175130374}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 22930435}
-  - {fileID: 2014644273}
-  - {fileID: 325950871}
-  - {fileID: 1946796961}
-  - {fileID: 1930273094}
+  - {fileID: 898920877}
+  - {fileID: 1359918729}
+  - {fileID: 1060790046}
+  - {fileID: 484356574}
+  - {fileID: 1175130374}

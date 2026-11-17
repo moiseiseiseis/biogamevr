@@ -79,6 +79,7 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
 
             Mesa(ancla.transform);
 
+            var matMarca = MaterialMarca();
             var puntos = new GameObject("Puntos").transform;
             puntos.SetParent(ancla.transform, false);
             foreach (var (nombre, angulo, radio, altura, inclinacion, escala, panel, nota) in Puntos)
@@ -91,6 +92,13 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
                 var marca = p.AddComponent<PuntoCocina>();
                 marca.nota = $"{angulo}° · {radio} m · {altura} m de alto. {nota}";
                 if (panel) marca.color = new Color(0.5f, 0.9f, 1f);
+                marca.material = matMarca;
+                // La BiP y el proteasoma ocupan el lugar de la sintetasa y la salida en la fase B: su nombre va más arriba
+                if (nombre.StartsWith("Chaperona") || nombre.StartsWith("Proteasoma"))
+                {
+                    marca.subirEtiqueta = 0.07f;
+                    marca.detalle = "fase B";
+                }
             }
 
             // ---- ControlCocina ----
@@ -156,6 +164,18 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             var b = rs[0].bounds;
             foreach (var r in rs) b.Encapsulate(r.bounds);
             return b;
+        }
+
+        // Unlit translúcido para las esferas que PuntoCocina muestra en Play (el color lo pone cada marca)
+        static Material MaterialMarca()
+        {
+            string ruta = CrearDatosCocina.Raiz + "/Materiales/Cocina_Marca.mat";
+            var m = AssetDatabase.LoadAssetAtPath<Material>(ruta);
+            if (m != null) return m;
+            CrearDatosCocina.Carpeta(CrearDatosCocina.Raiz + "/Materiales");
+            m = PuntoCocina.Transparente(new Material(Shader.Find("Universal Render Pipeline/Unlit")));
+            AssetDatabase.CreateAsset(m, ruta);
+            return m;
         }
 
         static Material Material(string nombre, Color color)
