@@ -22,6 +22,21 @@
       "sha256": "5a7fed744ee21330ff2ca8075a97bb2555b7b42ad71fb4cf509442e693d2a480"
     },
     {
+      "path": "documentacion/personajes/bitacora-operador-mecha.docx",
+      "bytes": 451923,
+      "sha256": "a6258bd00089ef04ca8cf3dfdb1edf26074cb774aaaedd468e78e8aa78fec54a"
+    },
+    {
+      "path": "documentacion/personajes/bitacora-operador-mecha.md",
+      "bytes": 8345,
+      "sha256": "ee8824bb4ca16bbcf495e6790fc7932d7dc9d99e1e1caeb2ab1b830e57b30667"
+    },
+    {
+      "path": "documentacion/personajes/bitacora-operador-mecha.pdf",
+      "bytes": 553058,
+      "sha256": "3b0fed8a4fee107315b7e70348fbbc0377bd0f766b47957e7ed31e400f5f3ae9"
+    },
+    {
       "path": "documentacion/personajes/bitacora-personajes.docx",
       "bytes": 4272557,
       "sha256": "5a6b10c184809c484ca26c0208241a2745cdc0b514300019ed8f1a3db2d1b19d"
@@ -40,6 +55,11 @@
       "path": "documentacion/personajes/entrega-neo-investigador.md",
       "bytes": 4938,
       "sha256": "df32261592e2177e60028a54e95f0753c5712dfdd61c0de8aba36aaa897e4a1c"
+    },
+    {
+      "path": "documentacion/personajes/entrega-operador-mecha.md",
+      "bytes": 5558,
+      "sha256": "71d2d2b3486db5a18eaf3392bb444b139390784da7d5ddb7a8753b6136fb1775"
     },
     {
       "path": "documentacion/personajes/entrega-personajes.md",
@@ -117,6 +137,56 @@
       "sha256": "32c2048eca3f83f571c76e6da597987cb51b70e26bd15c3fe742a271ef1ae271"
     },
     {
+      "path": "exports/operador-mecha-panel.fbx",
+      "bytes": 173788,
+      "sha256": "a997ce346aeee8543a358199998b96d6ec12a3eecc2c547b910c4cb5225193d4"
+    },
+    {
+      "path": "exports/operador-mecha-panel.glb",
+      "bytes": 155500,
+      "sha256": "9d9400025ce53c9458e93f8b4360b1c3b7494acb00c417f590e071a911ddf65f"
+    },
+    {
+      "path": "exports/operador-mecha.fbx",
+      "bytes": 3724476,
+      "sha256": "9ef2b69c3e273b7c349ebb238a44dc06358c66e91b7d1257b01093791ac10123"
+    },
+    {
+      "path": "exports/operador-mecha.glb",
+      "bytes": 4093076,
+      "sha256": "4a90997c56eb3df680e5f09119ba1a3e4e6092302bc7d94721833e86f156a600"
+    },
+    {
+      "path": "exports/texturas/operador-mecha/operador-mecha_cara.png",
+      "bytes": 490429,
+      "sha256": "6960be512c0600a2370d49e808d0d4b4c20598166b6460adfaaf17a2aace1b9e"
+    },
+    {
+      "path": "exports/texturas/operador-mecha/operador-mecha_cara_sombra.png",
+      "bytes": 386091,
+      "sha256": "cb992adae9515e683117a30e0dd233bae3ba6872fbed6c54949c124440424a25"
+    },
+    {
+      "path": "exports/texturas/operador-mecha/operador-mecha_cuerpo.png",
+      "bytes": 457054,
+      "sha256": "189061fa005a38982eefb4dbf2e59f8d634115a752ddb58a9a444ce62127f20e"
+    },
+    {
+      "path": "exports/texturas/operador-mecha/operador-mecha_cuerpo_sombra.png",
+      "bytes": 365630,
+      "sha256": "8b2d7945dfe60afbdf5274180d15234b4a681b737a0b852d3632565e947c95f5"
+    },
+    {
+      "path": "exports/texturas/operador-mecha/operador-mecha_emision.png",
+      "bytes": 172,
+      "sha256": "a8527ee59a04ec9f2c1ce5d18998580b168e817bff685b170949f82158be9fc4"
+    },
+    {
+      "path": "exports/texturas/operador-mecha/operador-mecha_panel.png",
+      "bytes": 119752,
+      "sha256": "8f1edf08dae18cb9b8af175d5add7b634145af0215e8905137065039913cba45"
+    },
+    {
       "path": "fuentes/explorador-celular.blend",
       "bytes": 249696,
       "sha256": "469adabc323782043a28dbdcfe76edad4f020f693becaa611bec71f68e1831c9"
@@ -135,6 +205,11 @@
       "path": "fuentes/neo-investigador.blend",
       "bytes": 6182599,
       "sha256": "0e76381961f935d765a25126eb49b95ddabaee8daa60cd9bf116223981a5b1ea"
+    },
+    {
+      "path": "fuentes/operador-mecha.blend",
+      "bytes": 5956127,
+      "sha256": "984c31cd7a2a29864e40adf87b3f310eb5220a9f33bba34d0346aaa732514483"
     },
     {
       "path": "referencias/personajes/README.md",
@@ -272,6 +347,91 @@
       "sha256": "0311a96ea0e836e618ff4aa50c2721b914d45ad4fc5ec3943ef58b6dd08c2496"
     },
     {
+      "path": "scripts/personajes/operador-mecha/01_importar_vrm.py",
+      "bytes": 895,
+      "sha256": "72e764e716fce6b041d2aada4485df5eba8b0b60d03a7c0c04636a1f10cde9fe"
+    },
+    {
+      "path": "scripts/personajes/operador-mecha/02_separar.py",
+      "bytes": 2429,
+      "sha256": "e97f4fabd66e270bfbbd271a048e8daf330e7288113974e9a66e97305cda77bf"
+    },
+    {
+      "path": "scripts/personajes/operador-mecha/03_prendas.py",
+      "bytes": 8781,
+      "sha256": "92ca1c8bf976fd8bc415e0124686de345f58b5aca451425d283fb24efa020d0d"
+    },
+    {
+      "path": "scripts/personajes/operador-mecha/04_equipo.py",
+      "bytes": 16772,
+      "sha256": "5834f610c95dec17e686547a6d31b587fd0b315f8e676caf0a1a8d24d61af487"
+    },
+    {
+      "path": "scripts/personajes/operador-mecha/05_pesos.py",
+      "bytes": 5349,
+      "sha256": "77a2ebb00dfaa5da77767d2aa573247611a484febdb6592cca24005169b9506d"
+    },
+    {
+      "path": "scripts/personajes/operador-mecha/06_prueba_pose.py",
+      "bytes": 976,
+      "sha256": "da2451760cef28fcbd7085047414f9998ef70eb50c67c0af7a7e954de4c6ea0b"
+    },
+    {
+      "path": "scripts/personajes/operador-mecha/07_optimizar.py",
+      "bytes": 3141,
+      "sha256": "b6d3df7ba15e6e2b10a4dff22d75ddc64771419112a5941156aaf732ffa14689"
+    },
+    {
+      "path": "scripts/personajes/operador-mecha/08_materiales.py",
+      "bytes": 7487,
+      "sha256": "072e11f9d34f65c55077fc6533473d515cea44e029b4a02ef669296a6303887b"
+    },
+    {
+      "path": "scripts/personajes/operador-mecha/09_exportar.py",
+      "bytes": 7734,
+      "sha256": "a27634376c75b564c8f1bc4a424cc2596b53311b822e68f5714f61a629e03099"
+    },
+    {
+      "path": "scripts/personajes/operador-mecha/10_verificar.py",
+      "bytes": 2874,
+      "sha256": "b724ca5a43ba003970670e8d27926b409bd7c9c21e2ca15f396267ef302afd97"
+    },
+    {
+      "path": "scripts/personajes/operador-mecha/11_vistas.py",
+      "bytes": 2325,
+      "sha256": "0a46809869e898d465b2e912afff1d5702983f84a672acc1897e3ccb40f24d16"
+    },
+    {
+      "path": "scripts/personajes/operador-mecha/12_entregar.py",
+      "bytes": 1809,
+      "sha256": "c5b20bb17571e0b8b64ce6d7fe38df43352af2a566b64c9067e6aba13640075b"
+    },
+    {
+      "path": "scripts/personajes/operador-mecha/componer_vistas.py",
+      "bytes": 1181,
+      "sha256": "60796ace059ded348dadd5cef9c772298fb9101f87e2adb5da5812392dc4d169"
+    },
+    {
+      "path": "scripts/personajes/operador-mecha/emblema_adn.py",
+      "bytes": 3501,
+      "sha256": "1602644a9d37a8fb094c48c1a7603a5e1a0c62adceed8864ea47ca868aa610a4"
+    },
+    {
+      "path": "scripts/personajes/operador-mecha/opm_util.py",
+      "bytes": 9298,
+      "sha256": "f86442023e3fcdfeca6709c93dc505e0a3ed0f47ee6b175eb97a24c960386aa0"
+    },
+    {
+      "path": "scripts/personajes/operador-mecha/panel_holografico_tex.py",
+      "bytes": 3084,
+      "sha256": "58dd820c9ad3add6aefd119aaea6424c1f8189f33f46ac158d9b81a6d7a5c6f7"
+    },
+    {
+      "path": "scripts/personajes/operador-mecha/rutas.py",
+      "bytes": 1313,
+      "sha256": "621528fb7bb4d85fd20e35e4ff54849dfb6f74328a5d9968f56f2880aa877433"
+    },
+    {
       "path": "scripts/personajes/optimizar_investigador.py",
       "bytes": 5562,
       "sha256": "6280b47a67e7cce588f8a1f47af4eede9fad5cd94e619db7ae5a99e1a4de2f61"
@@ -335,6 +495,16 @@
       "path": "validacion/personajes/neo-investigador-verificacion.json",
       "bytes": 762,
       "sha256": "195b1fd5debb9917ad63140f802aa5ea9c70c908a268e20193970596cfaaa9de"
+    },
+    {
+      "path": "validacion/personajes/operador-mecha-geometria.json",
+      "bytes": 1312,
+      "sha256": "f2b99ceb2ec2e9ee63be585364ffcf7bf1a20e66d8297e480344d03f2bbf6fb1"
+    },
+    {
+      "path": "validacion/personajes/operador-mecha-verificacion.json",
+      "bytes": 1245,
+      "sha256": "3adebd48c9f3d8ff0c202bc93145e1581ef664f86875e0b88023151c557ecaa1"
     },
     {
       "path": "validacion/personajes/reproduccion-sin-referencias.json",
@@ -525,6 +695,46 @@
       "path": "vistas/personajes/neo-investigador/neo-investigador-vistas.png",
       "bytes": 1344361,
       "sha256": "b8908aea112b6f8afa5fa4faa7c427370af4982399af55bce07b6ee687b36fb3"
+    },
+    {
+      "path": "vistas/personajes/operador-mecha/operador-mecha-frente.png",
+      "bytes": 628081,
+      "sha256": "1b7c97b5c16918a97d81540430e7b6e566afc1c3bb7da5479a0ed842889bd31b"
+    },
+    {
+      "path": "vistas/personajes/operador-mecha/operador-mecha-lateral.png",
+      "bytes": 591507,
+      "sha256": "0ce6e5bdf6cb8e74a826c5e87b929fb534cfe78d27af3a738bb9a1d7655ec7fa"
+    },
+    {
+      "path": "vistas/personajes/operador-mecha/operador-mecha-panel.png",
+      "bytes": 511858,
+      "sha256": "952cd401aa54713e42c3ed72b04df07f60bdd046c9695d2c88708498e1d4e90b"
+    },
+    {
+      "path": "vistas/personajes/operador-mecha/operador-mecha-pose-relajada.png",
+      "bytes": 1089923,
+      "sha256": "53f77b65c82b35e4a1d721faabc069a13e31e97106edeb32592f3ca784afd081"
+    },
+    {
+      "path": "vistas/personajes/operador-mecha/operador-mecha-posterior.png",
+      "bytes": 602295,
+      "sha256": "efd04e22c2c2e82b803ddfd4a5ee2ed4f8a1a1f200e505d55f051119d39f008d"
+    },
+    {
+      "path": "vistas/personajes/operador-mecha/operador-mecha-rostro.png",
+      "bytes": 948699,
+      "sha256": "c08dadab71b05060a1831023fe834961bf3e6c824376dc7eb3f21f16a2052c24"
+    },
+    {
+      "path": "vistas/personajes/operador-mecha/operador-mecha-tres-cuartos.png",
+      "bytes": 621156,
+      "sha256": "a50c692aefb0234cc2a7b02b86704d98f004185abdd5987aae02a22fec43088c"
+    },
+    {
+      "path": "vistas/personajes/operador-mecha/operador-mecha-vistas.png",
+      "bytes": 1265401,
+      "sha256": "49a35b40fd009b33a537b25d8ba1e7886ff8351567139f77dd477cf88a26349a"
     }
   ]
 }
