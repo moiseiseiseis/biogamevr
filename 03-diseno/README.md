@@ -56,3 +56,13 @@ Nueva versión de El Investigador sobre un avatar de VRoid Studio: conserva su c
 - [Vistas](vistas/personajes/neo-investigador/neo-investigador-vistas.png) y [verificación de exportaciones](validacion/personajes/neo-investigador-verificacion.json).
 
 El FBX sale sin *Apply Transform*, porque esa opción falla con armaduras; el motivo está en la guía. Rendimiento en el visor, animaciones y sujeción de la tableta quedan pendientes.
+
+## Operador del Mecha — entrega del 17 de noviembre de 2026
+
+Personaje nuevo sobre un avatar de VRoid Studio, según la lámina «Mecha Operator» de Game Design (`02-game-design/sketches/personajes/08-operador-mecha/`). Viste la túnica, el arnés y el equipo de la lámina y queda **riggeado y pesado, listo para animar** (sin animaciones). Se preparó para Meta Quest.
+
+- [Fuente editable](fuentes/operador-mecha.blend) y exportaciones [FBX](exports/operador-mecha.fbx), [GLB](exports/operador-mecha.glb) y [panel holográfico](exports/operador-mecha-panel.fbx): 20.562 triángulos, 3 materiales, texturas de 2048 px, 59 huesos y 57 expresiones faciales.
+- [Guía de entrega](documentacion/personajes/entrega-operador-mecha.md) y bitácora en [PDF](documentacion/personajes/bitacora-operador-mecha.pdf), [Word](documentacion/personajes/bitacora-operador-mecha.docx) y [Markdown](documentacion/personajes/bitacora-operador-mecha.md).
+- [Vistas](vistas/personajes/operador-mecha/operador-mecha-vistas.png) y [verificación de exportaciones](validacion/personajes/operador-mecha-verificacion.json).
+
+El FBX sale sin *Apply Transform*, como el del Neo Investigador. La guía recomienda los materiales de Unity (URP) y falta confirmar con Desarrollo el shader toon. Quedan pendientes la prueba en el visor, las animaciones y la sujeción del panel a la mano.
