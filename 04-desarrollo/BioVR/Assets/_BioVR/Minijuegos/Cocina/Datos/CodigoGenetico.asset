@@ -1,0 +1,173 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb283b05aa951bf49ba364b5c86697c8, type: 3}
+  m_Name: CodigoGenetico
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.CodigoGenetico
+  aminoacidos:
+  - aminoacido: {fileID: 11400000, guid: 7d00711d00666e24d8c4c87d75bd0978, type: 2}
+    preferido: GCC
+    codones:
+    - GCU
+    - GCC
+    - GCA
+    - GCG
+  - aminoacido: {fileID: 11400000, guid: ec7d07c4cdd3f5a4fb495744ad7672d8, type: 2}
+    preferido: CGC
+    codones:
+    - CGU
+    - CGC
+    - CGA
+    - CGG
+    - AGA
+    - AGG
+  - aminoacido: {fileID: 11400000, guid: 7160d577457fb6a41a686c966ff670d9, type: 2}
+    preferido: AAC
+    codones:
+    - AAU
+    - AAC
+  - aminoacido: {fileID: 11400000, guid: 35476faf46b97d8488ef466ddfa641ef, type: 2}
+    preferido: GAC
+    codones:
+    - GAU
+    - GAC
+  - aminoacido: {fileID: 11400000, guid: d49346f0d863fab46aca33a3e4f05807, type: 2}
+    preferido: UGC
+    codones:
+    - UGU
+    - UGC
+  - aminoacido: {fileID: 11400000, guid: 370de8822425785428bebff26fdad30e, type: 2}
+    preferido: CAG
+    codones:
+    - CAA
+    - CAG
+  - aminoacido: {fileID: 11400000, guid: 2b86857989f38394a86d2b194626f96b, type: 2}
+    preferido: GAG
+    codones:
+    - GAA
+    - GAG
+  - aminoacido: {fileID: 11400000, guid: e1e7b149997945c49b3954d3091d616f, type: 2}
+    preferido: GGC
+    codones:
+    - GGU
+    - GGC
+    - GGA
+    - GGG
+  - aminoacido: {fileID: 11400000, guid: 7cd633e3ef430b04094b8bdaf121f041, type: 2}
+    preferido: CAC
+    codones:
+    - CAU
+    - CAC
+  - aminoacido: {fileID: 11400000, guid: e37a3d289ef2c8046aadff487a13410b, type: 2}
+    preferido: AUC
+    codones:
+    - AUU
+    - AUC
+    - AUA
+  - aminoacido: {fileID: 11400000, guid: f4841773251c36148a22f8ced3c61b9d, type: 2}
+    preferido: CUG
+    codones:
+    - UUA
+    - UUG
+    - CUU
+    - CUC
+    - CUA
+    - CUG
+  - aminoacido: {fileID: 11400000, guid: c125cf3661daeaf4b9abe6f382c0a9dc, type: 2}
+    preferido: AAG
+    codones:
+    - AAA
+    - AAG
+  - aminoacido: {fileID: 11400000, guid: 3fabdfd409d99ca40812d4ef54f9a883, type: 2}
+    preferido: AUG
+    codones:
+    - AUG
+  - aminoacido: {fileID: 11400000, guid: ce5ac43701656a44ead3bb04118178a6, type: 2}
+    preferido: UUU
+    codones:
+    - UUU
+    - UUC
+  - aminoacido: {fileID: 11400000, guid: cefa3f2224c5bd04c91a5c81783a28ca, type: 2}
+    preferido: CCC
+    codones:
+    - CCU
+    - CCC
+    - CCA
+    - CCG
+  - aminoacido: {fileID: 11400000, guid: e476b79168c88834a9ab0b38fdfd02dd, type: 2}
+    preferido: AGC
+    codones:
+    - UCU
+    - UCC
+    - UCA
+    - UCG
+    - AGU
+    - AGC
+  - aminoacido: {fileID: 11400000, guid: 3e3cbf2fe1f79e144a0d9be810e30556, type: 2}
+    preferido: ACC
+    codones:
+    - ACU
+    - ACC
+    - ACA
+    - ACG
+  - aminoacido: {fileID: 11400000, guid: 1e439c21fae7030468b10a0c0a8fde7a, type: 2}
+    preferido: UGG
+    codones:
+    - UGG
+  - aminoacido: {fileID: 11400000, guid: 6c47b238459a71742a467ae449652968, type: 2}
+    preferido: UAC
+    codones:
+    - UAU
+    - UAC
+  - aminoacido: {fileID: 11400000, guid: b2fc1cd1fc116dd4a9523fa478080582, type: 2}
+    preferido: GUG
+    codones:
+    - GUU
+    - GUC
+    - GUA
+    - GUG
+  codonesParo:
+  - UAA
+  - UAG
+  - UGA
+  parecidos:
+  - de: {fileID: 11400000, guid: e37a3d289ef2c8046aadff487a13410b, type: 2}
+    a: {fileID: 11400000, guid: b2fc1cd1fc116dd4a9523fa478080582, type: 2}
+  - de: {fileID: 11400000, guid: b2fc1cd1fc116dd4a9523fa478080582, type: 2}
+    a: {fileID: 11400000, guid: e37a3d289ef2c8046aadff487a13410b, type: 2}
+  - de: {fileID: 11400000, guid: e476b79168c88834a9ab0b38fdfd02dd, type: 2}
+    a: {fileID: 11400000, guid: 3e3cbf2fe1f79e144a0d9be810e30556, type: 2}
+  - de: {fileID: 11400000, guid: 3e3cbf2fe1f79e144a0d9be810e30556, type: 2}
+    a: {fileID: 11400000, guid: e476b79168c88834a9ab0b38fdfd02dd, type: 2}
+  - de: {fileID: 11400000, guid: 7160d577457fb6a41a686c966ff670d9, type: 2}
+    a: {fileID: 11400000, guid: 370de8822425785428bebff26fdad30e, type: 2}
+  - de: {fileID: 11400000, guid: 370de8822425785428bebff26fdad30e, type: 2}
+    a: {fileID: 11400000, guid: 7160d577457fb6a41a686c966ff670d9, type: 2}
+  - de: {fileID: 11400000, guid: c125cf3661daeaf4b9abe6f382c0a9dc, type: 2}
+    a: {fileID: 11400000, guid: ec7d07c4cdd3f5a4fb495744ad7672d8, type: 2}
+  - de: {fileID: 11400000, guid: ec7d07c4cdd3f5a4fb495744ad7672d8, type: 2}
+    a: {fileID: 11400000, guid: c125cf3661daeaf4b9abe6f382c0a9dc, type: 2}
+  - de: {fileID: 11400000, guid: f4841773251c36148a22f8ced3c61b9d, type: 2}
+    a: {fileID: 11400000, guid: e37a3d289ef2c8046aadff487a13410b, type: 2}
+  - de: {fileID: 11400000, guid: ce5ac43701656a44ead3bb04118178a6, type: 2}
+    a: {fileID: 11400000, guid: 6c47b238459a71742a467ae449652968, type: 2}
+  - de: {fileID: 11400000, guid: 6c47b238459a71742a467ae449652968, type: 2}
+    a: {fileID: 11400000, guid: ce5ac43701656a44ead3bb04118178a6, type: 2}
+  - de: {fileID: 11400000, guid: 7d00711d00666e24d8c4c87d75bd0978, type: 2}
+    a: {fileID: 11400000, guid: e1e7b149997945c49b3954d3091d616f, type: 2}
+  - de: {fileID: 11400000, guid: e1e7b149997945c49b3954d3091d616f, type: 2}
+    a: {fileID: 11400000, guid: 7d00711d00666e24d8c4c87d75bd0978, type: 2}
+  - de: {fileID: 11400000, guid: d49346f0d863fab46aca33a3e4f05807, type: 2}
+    a: {fileID: 11400000, guid: e476b79168c88834a9ab0b38fdfd02dd, type: 2}
+  - de: {fileID: 11400000, guid: 7cd633e3ef430b04094b8bdaf121f041, type: 2}
+    a: {fileID: 11400000, guid: 7160d577457fb6a41a686c966ff670d9, type: 2}
+  - de: {fileID: 11400000, guid: 3fabdfd409d99ca40812d4ef54f9a883, type: 2}
+    a: {fileID: 11400000, guid: f4841773251c36148a22f8ced3c61b9d, type: 2}

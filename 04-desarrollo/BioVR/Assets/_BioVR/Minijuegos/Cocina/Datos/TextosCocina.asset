@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d637354f8727f5e459671a3a9629bd81, type: 3}
+  m_Name: TextosCocina
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.TextosCocina
+  textos:
+  - clave: intro_turno1
+    texto: "Pedido de pr\xE1ctica: una cadenita de 3 amino\xE1cidos. Atrapa con la
+      pinza un ARNt de la corriente que encaje con el cod\xF3n del ribosoma."
+  - clave: intro_turno2
+    texto: "La c\xE9lula pide 2 amilinas. Dos ribosomas leen el mismo mensaje a la
+      vez (un polirribosoma). Al lejano tienes que aventarle los ARNt."
+  - clave: intro_turno3
+    texto: 'Otro pedido de 2 amilinas. Atento: algo raro trae este mensaje.'
+  - clave: rechazo_ya_cargado
+    texto: "Ese ya tiene su amino\xE1cido: ll\xE9valo al ribosoma que lo pide."
+  - clave: rechazo_sacudir_primero
+    texto: "Primero sac\xFAdelo para quitarle el amino\xE1cido equivocado."
+  - clave: rechazo_horquilla
+    texto: "La horquilla del ARNm no deja avanzar al ribosoma: golp\xE9ala 3 veces
+      con la pinza para desenrollarla."
+  - clave: rechazo_fin
+    texto: "Ese ribosoma ya lleg\xF3 al final: toca su bot\xF3n FIN."
+  - clave: rechazo_no_pide
+    texto: "Ese ribosoma no est\xE1 pidiendo nada ahora."
+  - clave: rechazo_llave_ocupada
+    texto: "Primero termina de girar el que ya est\xE1 en el ribosoma."
+  - clave: rechazo_sin_carga
+    texto: "Le falta su amino\xE1cido: primero c\xE1rgalo en la sintetasa."
+  - clave: rechazo_no_encaja
+    texto: "\xA1No encaja! Compara las piezas de abajo del ARNt con el cod\xF3n."
+  - clave: rechazo_salida_llena
+    texto: "\xA1La salida est\xE1 llena! El ribosoma no puede soltar m\xE1s usados:
+      avienta los usados al regreso al citoplasma."
+  - clave: llave_girar
+    texto: "\xA1Entr\xF3! Ahora g\xEDralo como llave: gira la mu\xF1eca hasta que
+      haga clic."
+  - clave: acierto_mesa
+    texto: "\xA1Clic! El amino\xE1cido se sum\xF3 a la cadena."
+  - clave: acierto_lejano
+    texto: "\xA1Le atinaste al ribosoma lejano!"
+  - clave: malo_entro
+    texto: "\xA1Ojo! El ribosoma solo revisa que las piezas encajen, no qu\xE9 amino\xE1cido
+      trae. Entr\xF3 uno equivocado y la prote\xEDna lleva un error (la cuenta roja).
+      Por eso hay que corregir en la sintetasa."
+  - clave: sintetasa_error
+    texto: "\xA1Uy! La sintetasa le puso un amino\xE1cido equivocado (tiene \"!\").
+      S\xE1calo y sac\xFAdelo."
+  - clave: sacudido_equivocado
+    texto: "\xA1Bien! Le quitaste el amino\xE1cido equivocado. Ahora vuelve a cargarlo
+      en la sintetasa."
+  - clave: sacudido_bueno
+    texto: "Le quitaste su amino\xE1cido. Vuelve a cargarlo en la sintetasa."
+  - clave: reciclado
+    texto: "\xA1De regreso! El ARNt vuelve al citoplasma para recargarse y usarse
+      otra vez."
+  - clave: cadena_lista_sigue
+    texto: "\xA1Una amilina lista! El holograma la muestra dobl\xE1ndose. Sigue con
+      el otro ribosoma."
+  - clave: plegando
+    texto: "Se solt\xF3 la \xFAltima cadena. Mira el holograma: se dobla sola."
+  - clave: final_practica
+    texto: "\xA1Tu primera cadena! Las prote\xEDnas de verdad son mucho m\xE1s largas
+      y se doblan solas."
+  - clave: final_pedido
+    texto: "\xA1Pedido listo! Las dos amilinas salieron con la secuencia correcta."
+  - clave: busca
+    texto: "Se dobl\xF3 distinto: esta versi\xF3n se pega m\xE1s f\xE1cil a otras
+      amilinas. Una letra ven\xEDa cambiada desde el ADN del gen, y el ARNm solo
+      la copi\xF3. Toca en el holograma la cuenta que es diferente."
+  - clave: busca_error
+    texto: Esa no. Busca la cuenta que es diferente.
+  - clave: busca_pista
+    texto: "F\xEDjate en la cuenta que parpadea."
+  - clave: cuenta_encontrada
+    texto: "\xA1Esa! Ah\xED iba Ser (serina) y qued\xF3 Gly (glicina), porque el
+      mensaje dec\xEDa GGC en lugar de AGC. En laboratorio, la amilina S20G forma
+      fibras amiloides m\xE1s r\xE1pido que la normal. \xBFChaperona o proteasoma?"
+  - clave: chaperona
+    texto: "La chaperona (BiP) abre, sujeta y suelta la cadena para darle otra oportunidad
+      de doblarse, pero no siempre lo logra: el cambio viene del mensaje. M\xE1ndala
+      al proteasoma."
+  - clave: proteasoma
+    texto: "El proteasoma degrad\xF3 la cadena marcada con ubiquitina y recicl\xF3
+      sus amino\xE1cidos."
+  - clave: horquilla
+    texto: "\xA1El ARNm se dobl\xF3 y form\xF3 una horquilla! El ribosoma no puede
+      avanzar: golp\xE9ala 3 veces con la pinza para desenrollarla."
+  - clave: horquilla_abierta
+    texto: "\xA1Desenrollada! El ribosoma puede seguir leyendo."
+  - clave: raro
+    texto: "\xA1Cod\xF3n raro! El ARNt que encaja con \xE9l casi no hay en la c\xE9lula:
+      b\xFAscalo bien en la corriente."
