@@ -4,6 +4,7 @@ Sketches, storyboards y el cartel para la feria de ciencias.
 - `sketches/` — `minijuego-<nombre>_<tema>_v1.png`
 - `storyboards/` — una carpeta por minijuego
 - `cartel-feria/` — fuentes editables y versión final para imprimir
+- `narrativa/` — historia del juego: prólogo y guion de cada escena ([`historia-del-juego.md`](narrativa/historia-del-juego.md))
 
 ## Minijuegos propuestos (por validar)
 
