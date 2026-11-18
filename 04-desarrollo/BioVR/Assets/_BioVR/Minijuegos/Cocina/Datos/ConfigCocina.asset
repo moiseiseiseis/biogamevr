@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f645a7638994b438ae0d2c1a1380a8, type: 3}
+  m_Name: ConfigCocina
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.ConfigCocina
+  avanceAutomatico: 0.13
+  retrasoSalida: 1.4
+  retrasoSalidaMalo: 0.6
+  esperaPlegado: 2.4
+  esperaFinal: 3
+  esperaProteasoma: 2.8
+  intervaloRelleno: 0.8
+  arntIniciales: 5
+  maxEnCorriente: 5
+  maxEnCorrienteRaro: 9
+  velocidadCorriente: 0.055
+  esperaPista: 9
+  codonesAdelantados: 2
+  diferenciaSenuelo: 2
+  vueltasManivela: 2
+  ranurasSintetasa: 2
+  primerImprevisto: 22
+  intervaloImprevisto: {x: 20, y: 32}
+  duracionRaro: 12
+  golpesHorquilla: 3
+  vueloCerca: 0.45
+  vueloLejos: 0.75
+  alturaArcoVuelo: 0.35
+  puntosAcierto: 100
+  puntosPorRacha: 10
+  rachaMaxima: 10
+  puntosMaloEntro: -50
+  puntosReciclado: 50
+  puntosSacudida: 30
+  puntosHorquilla: 40
+  puntosCuenta: 100
+  puntosProteasoma: 250
+  puntosProteasomaConChaperona: 150
+  erroresBuscaParaPista: 2

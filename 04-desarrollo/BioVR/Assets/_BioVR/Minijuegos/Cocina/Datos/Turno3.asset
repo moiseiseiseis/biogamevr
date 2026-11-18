@@ -1,0 +1,74 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71232360996c8d94ebf27e6690eebcf4, type: 3}
+  m_Name: Turno3
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.TurnoData
+  nombre: "Turno 3 \xB7 Mensaje con una letra cambiada"
+  claveIntro: intro_turno3
+  secuencia: KCNTATCATQRLANFLVHSSNNFGAILSSTNVGSNTY
+  codones:
+  - AUG
+  - AAA
+  - UGC
+  - AAC
+  - ACU
+  - GCC
+  - ACA
+  - UGU
+  - GCA
+  - ACG
+  - CAG
+  - CGC
+  - CUG
+  - GCA
+  - AAU
+  - UUU
+  - UUA
+  - GUU
+  - CAU
+  - UCC
+  - GGC
+  - AAC
+  - AAC
+  - UUU
+  - GGU
+  - GCC
+  - AUU
+  - CUC
+  - UCA
+  - UCU
+  - ACC
+  - AAC
+  - GUG
+  - GGA
+  - UCC
+  - AAU
+  - ACA
+  - UAU
+  - UAG
+  mutacion: 19
+  ribosomas:
+  - lejano: 0
+    todoManual: 0
+    manualDesde: 16
+    manualHasta: 20
+  - lejano: 1
+    todoManual: 0
+    manualDesde: 20
+    manualHasta: 24
+  capacidadSalida: 4
+  errorSintetasa: 0.3
+  imprevistos: 1
+  mesaGira: 1
+  estrellas: {x: 180, y: 280}
+  tutoriales:
+  - mesa
