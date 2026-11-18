@@ -20,9 +20,11 @@ namespace BioVR.Minijuegos.ExpresionGenetica.Herramientas
     //   - Datos (solo si faltan, para no borrar cambios de G4): codones, secuencias Sana y Paciente, textos
     //   - XR Origin sin locomoción y una "Estacion" (mesa, ribosoma, ARNt, botones Reiniciar, Continuar y Recentrar)
     //     que se acomoda a la cabeza del jugador al iniciar (AnclarAlJugador)
-    //   - Ribosoma PROVISIONAL de 2 cajas (P3: arranca armado; se cambia por el de Alberto, F6)
+    //   - Ribosoma 80S de Diseño (Diego, PR #60, PDB 4UG0), semitransparente para ver el ARNt adentro.
+    //     Si falta el FBX, queda el ribosoma provisional de 2 cajas (P3: arranca armado)
     //   - Cinta de ARNm (se arma en el juego), sitio de lectura (RanuraSeleccion de Mo2), cadena y factor de liberación
-    //   - 4 ARNt con los proxies del repo (Met, Gly, Phe y el distractor Gln, D3), cada uno con su aminoácido y su anticodón
+    //   - 4 ARNt (Met, Gly, Phe y el distractor Gln, D3), cada uno con su aminoácido y su anticodón. El cuerpo es el
+    //     ARNt de Diego (PR #60, PDB 1EHZ) para los 4; si falta, los proxies del repo
     //
     // Se puede correr varias veces: la escena se vuelve a generar desde cero (también la Estacion).
     // Menú: BioVR → Armar prueba Traducción (Rol 3)
@@ -33,6 +35,11 @@ namespace BioVR.Minijuegos.ExpresionGenetica.Herramientas
         const string Datos = Carpeta + "/Datos";
         const string Materiales = Carpeta + "/Materiales";
         const string Prefabs = Minijuego + "/Prefabs";
+        // Modelos de Diseño (Diego, PR #60; copias de 03-diseno/exports/)
+        const string ModeloRibosoma = Minijuego + "/Modelos/Diseno/ribosoma_80S_4ug0.fbx";
+        const string ModeloARNt = Minijuego + "/Modelos/Diseno/arnt_modelo.fbx";
+        const float AnchoRibosoma = 0.45f;     // escala didáctica: cabe en la mesa sin tapar los ARNt
+        const float OpacidadRibosoma = 0.3f;   // deja ver el ARNt y el codón dentro del ribosoma
         public const string Escena = "Assets/_BioVR/Escenas/Pruebas/Rol3_Traduccion.unity";
         const string PrefabOrigen = "Assets/Samples/XR Interaction Toolkit/3.6.1/Starter Assets/Prefabs/XR Origin (XR Rig).prefab";
         const string PrefabBoton = "Assets/_BioVR/Cabina/Button1.prefab";
@@ -111,14 +118,18 @@ namespace BioVR.Minijuegos.ExpresionGenetica.Herramientas
             raiz.transform.SetParent(estacion.transform, false);
             var secuencia = raiz.AddComponent<SecuenciaTraduccion>();
 
-            // ---- Ribosoma provisional (P3: armado desde el inicio) ----
-            var ribosoma = new GameObject("Ribosoma (provisional)").transform;
-            ribosoma.SetParent(raiz.transform, false);
-            var matRibosoma = Material("Ribosoma", new Color(0.55f, 0.45f, 0.75f));
-            var mayor = Primitiva("Subunidad mayor", PrimitiveType.Cube, ribosoma,
-                PosicionSitio + new Vector3(0f, 0.09f, 0.1f), new Vector3(0.34f, 0.2f, 0.1f), matRibosoma);
-            var menor = Primitiva("Subunidad menor", PrimitiveType.Cube, ribosoma,
-                PosicionSitio + new Vector3(0f, -0.045f, 0.01f), new Vector3(0.28f, 0.05f, 0.12f), matRibosoma, conCollider: false);
+            // ---- Ribosoma: el de Diseño o, si falta, el provisional (P3: armado desde el inicio) ----
+            var (mayor, menor) = RibosomaDiseno(raiz.transform);
+            if (mayor == null)
+            {
+                var ribosoma = new GameObject("Ribosoma (provisional)").transform;
+                ribosoma.SetParent(raiz.transform, false);
+                var matRibosoma = Material("Ribosoma", new Color(0.55f, 0.45f, 0.75f));
+                mayor = Primitiva("Subunidad mayor", PrimitiveType.Cube, ribosoma,
+                    PosicionSitio + new Vector3(0f, 0.09f, 0.1f), new Vector3(0.34f, 0.2f, 0.1f), matRibosoma);
+                menor = Primitiva("Subunidad menor", PrimitiveType.Cube, ribosoma,
+                    PosicionSitio + new Vector3(0f, -0.045f, 0.01f), new Vector3(0.28f, 0.05f, 0.12f), matRibosoma, conCollider: false);
+            }
             var senalRibosoma = mayor.AddComponent<Senalable>();
 
             // ---- Cinta de ARNm (los codones se crean en el juego) ----
@@ -137,7 +148,7 @@ namespace BioVR.Minijuegos.ExpresionGenetica.Herramientas
             sitio.transform.position = PosicionSitio + Vector3.up * MitadCodon; // el ARNt se para sobre el codón
             var zona = sitio.AddComponent<SphereCollider>();
             zona.isTrigger = true;
-            zona.radius = 0.09f;
+            zona.radius = 0.13f; // antes 0.09: Met "a veces no encaja" (prueba de Marcos, 13 nov)
             zona.center = new Vector3(0f, AlturaARNt / 2f, 0f);
             var socket = sitio.AddComponent<XRSocketInteractor>();
             socket.showInteractableHoverMeshes = false;
@@ -182,9 +193,11 @@ namespace BioVR.Minijuegos.ExpresionGenetica.Herramientas
             Etiqueta(factor, "Factor de\nliberación", new Vector3(0f, TamanoFactor + 0.03f, 0f), 0.14f, new Vector2(0.2f, 0.06f));
 
             // ---- Letrero de la cabina ----
-            var letrero = Texto("Letrero", raiz.transform, "", 0.42f, new Vector2(1.3f, 0.3f));
-            letrero.transform.position = new Vector3(0f, 1.5f, 1.25f);
-            var fondo = Primitiva("Fondo", PrimitiveType.Quad, letrero.transform, Vector3.zero, new Vector3(1.4f, 0.38f, 1f),
+            // Más cerca y un poco más abajo que antes (y 1.5 m, a 1.25 m): Marcos no encontraba las instrucciones.
+            // Mismo tamaño aparente; queda detrás y arriba del ribosoma.
+            var letrero = Texto("Letrero", raiz.transform, "", 0.34f, new Vector2(1.05f, 0.25f));
+            letrero.transform.position = new Vector3(0f, 1.45f, 1.0f);
+            var fondo = Primitiva("Fondo", PrimitiveType.Quad, letrero.transform, Vector3.zero, new Vector3(1.12f, 0.31f, 1f),
                 Material("Panel", ColorPanel), conCollider: false);
             fondo.transform.localPosition = new Vector3(0f, 0f, 0.005f);
 
@@ -257,12 +270,14 @@ namespace BioVR.Minijuegos.ExpresionGenetica.Herramientas
             var modelo = new GameObject("Modelo").transform;
             modelo.SetParent(raiz.transform, false);
             modelo.localPosition = new Vector3(0f, AlturaARNt / 2f, 0f);
-            var cuerpo3D = Proxy(proxy, modelo, AlturaARNt, PrimitiveType.Capsule, "ARNt " + aminoacido);
+            var cuerpo3D = ARNtDiseno(modelo, out var puntaAceptora)
+                ?? Proxy(proxy, modelo, AlturaARNt, PrimitiveType.Capsule, "ARNt " + aminoacido);
 
             // Aminoácido que trae cargado (ficha 4), arriba
             var aa = new GameObject("Aminoacido " + aminoacido).transform;
             aa.SetParent(modelo, false);
             aa.localPosition = new Vector3(0f, AlturaARNt / 2f + TamanoAminoacido / 2f + 0.005f, 0f);
+            if (puntaAceptora.HasValue) aa.position = puntaAceptora.Value; // donde el ARNt de Diseño trae su aminoácido
             if (proxyAminoacido != null) Proxy(proxyAminoacido, aa, TamanoAminoacido, PrimitiveType.Sphere, aminoacido);
             else
             {
@@ -300,6 +315,115 @@ namespace BioVR.Minijuegos.ExpresionGenetica.Herramientas
             arnt.codon = codon;
             arnt.aminoacido = aa;
             return arnt;
+        }
+
+        // ---- Modelos de Diseño (Diego, PR #60) ----
+
+        // Ribosoma 80S (PDB 4UG0). Se escala a AnchoRibosoma y se acomoda con sus marcadores: la línea del ARNm
+        // (ARNm_5prima) pasa por el codón en lectura y el Sitio_A queda sobre el sitio de lectura.
+        // Devuelve (subunidad mayor 60S, subunidad menor 40S), o (null, null) si falta el modelo.
+        static (GameObject, GameObject) RibosomaDiseno(Transform padre)
+        {
+            var fbx = AssetDatabase.LoadAssetAtPath<GameObject>(ModeloRibosoma);
+            if (fbx == null) { Debug.LogWarning($"[Traduccion] No está {ModeloRibosoma}; uso el ribosoma provisional."); return (null, null); }
+            var go = (GameObject)PrefabUtility.InstantiatePrefab(fbx, padre);
+            go.name = "Ribosoma 80S (Diseño)";
+            var t = go.transform;
+            t.localPosition = Vector3.zero;
+            // Unity invierte X al importar: con el giro de 180° el extremo 5' queda a la izquierda, como la cinta
+            t.localRotation = Quaternion.Euler(0f, 180f, 0f);
+            t.localScale = Vector3.one;
+
+            var s60 = Hijo(t, "Ribosoma_60S");
+            var s40 = Hijo(t, "Ribosoma_40S");
+            var sitioA = Hijo(t, "Sitio_A");
+            var arnm = Hijo(t, "ARNm_5prima");
+            if (s60 == null || s40 == null || sitioA == null || arnm == null)
+            {
+                Debug.LogWarning("[Traduccion] El ribosoma de Diseño no trae Ribosoma_60S/40S, Sitio_A o ARNm_5prima; uso el provisional.");
+                Object.DestroyImmediate(go);
+                return (null, null);
+            }
+
+            float ancho = Limites(go).size.x;
+            if (ancho > 0.0001f) t.localScale = Vector3.one * (AnchoRibosoma / ancho);
+            var ancla = new Vector3(sitioA.position.x, arnm.position.y, sitioA.position.z);
+            t.position += PosicionSitio - ancla;
+
+            foreach (var r in go.GetComponentsInChildren<Renderer>())
+            {
+                r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                r.sharedMaterials = r.sharedMaterials.Select(Transparente).ToArray();
+            }
+            // Collider para señalarlo (paso 1). Senalable lo apaga mientras no toca, para no tapar los codones
+            var filtro = s60.GetComponent<MeshFilter>();
+            var col = s60.gameObject.AddComponent<MeshCollider>();
+            if (filtro != null) col.sharedMesh = filtro.sharedMesh;
+            return (s60.gameObject, s40.gameObject);
+        }
+
+        // ARNt (PDB 1EHZ, viene con Phe). Se usa el mismo cuerpo para los 4: se oculta su aminoácido (cada ARNt
+        // lleva el suyo, que es el que pasa a la cadena) y las bases van del color del esqueleto, porque los colores
+        // de su anticodón (el de Phe) contradirían la etiqueta de los otros tres.
+        // puntaAceptora: dónde traía su aminoácido (extremo 3' aceptor), para poner ahí el de cada ARNt.
+        static GameObject ARNtDiseno(Transform padre, out Vector3? puntaAceptora)
+        {
+            puntaAceptora = null;
+            var fbx = AssetDatabase.LoadAssetAtPath<GameObject>(ModeloARNt);
+            if (fbx == null) return null;
+            var go = (GameObject)PrefabUtility.InstantiatePrefab(fbx, padre);
+            go.name = "ARNt (Diseño)";
+            var t = go.transform;
+            t.localPosition = Vector3.zero;
+            t.localRotation = Quaternion.identity;
+            t.localScale = Vector3.one;
+
+            Material matEsqueleto = null;
+            var esqueleto = Hijo(t, "ARNt_Esqueleto");
+            if (esqueleto != null && esqueleto.TryGetComponent<Renderer>(out var rEsqueleto)) matEsqueleto = rEsqueleto.sharedMaterial;
+
+            var b = Limites(go);
+            float mayor = Mathf.Max(b.size.x, b.size.y, b.size.z);
+            if (mayor > 0.0001f) t.localScale = Vector3.one * (AlturaARNt / mayor);
+            b = Limites(go);
+            t.position += padre.position - b.center;
+
+            foreach (var r in go.GetComponentsInChildren<Renderer>())
+            {
+                r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                if (r.name.StartsWith("ARNt_Aminoacido"))
+                {
+                    puntaAceptora = r.bounds.center;
+                    r.gameObject.SetActive(false);
+                }
+                else if (r.name == "ARNt_Bases" && matEsqueleto != null)
+                    r.sharedMaterials = Enumerable.Repeat(matEsqueleto, r.sharedMaterials.Length).ToArray();
+            }
+            return go;
+        }
+
+        static Transform Hijo(Transform raiz, string nombre) =>
+            raiz.GetComponentsInChildren<Transform>(true).FirstOrDefault(x => x.name == nombre);
+
+        // Copia transparente (URP Lit) de un material del FBX, guardada en Materiales/ para no tocar el FBX
+        static Material Transparente(Material original)
+        {
+            var nombre = "Ribosoma " + (original != null ? original.name : "sin material");
+            var color = new Color(0.6f, 0.5f, 0.75f);
+            if (original != null && original.HasProperty("_BaseColor")) color = original.GetColor("_BaseColor");
+            else if (original != null && original.HasProperty("_Color")) color = original.GetColor("_Color");
+            color.a = OpacidadRibosoma;
+            var mat = Material(nombre, color);
+            mat.SetFloat("_Surface", 1f);   // Transparent
+            mat.SetFloat("_Blend", 0f);     // Alpha
+            mat.SetFloat("_ZWrite", 0f);
+            mat.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            mat.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            mat.SetOverrideTag("RenderType", "Transparent");
+            mat.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+            mat.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+            EditorUtility.SetDirty(mat);
+            return mat;
         }
 
         static void ConfigurarAgarre(XRGrabInteractable agarre)
