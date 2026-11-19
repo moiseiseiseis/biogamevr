@@ -216,9 +216,10 @@ namespace BioVR.Minijuegos.Cocina
             if (Control.EnParo(mesa.Estado)) { Debug.Log("[M4 prueba] La mesa está en el codón de paro: toca FIN (o Enter)."); return; }
             var pide = Control.PideAhora(mesa.Estado);
             if (!pide.HasValue) return;
+            // Si hay uno equivocado (tecla M) lo pone primero, para probar la cuenta roja
             ARNtCocina t = null;
             foreach (var a in arnts)
-                if (a != null && a.Lugar == LugarARNt.Corriente && a.CodonQueLee == pide.Value.tripleta) { t = a; break; }
+                if (a != null && a.Lugar == LugarARNt.Corriente && a.CodonQueLee == pide.Value.tripleta && (t == null || a.Equivocado)) t = a;
             if (t == null) { Debug.Log("[M4 prueba] Todavía no hay en el estante un ARNt para " + pide.Value.tripleta); return; }
             Control.Agarrar(t);
             mesa.Recibir(t);
