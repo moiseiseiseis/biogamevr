@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 9146945912120898919}
   - component: {fileID: 4552453050154209928}
   m_Layer: 0
-  m_Name: Cuenta_Prefab
+  m_Name: Cocina_Cuenta
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
