@@ -244,7 +244,11 @@ namespace BioVR.Minijuegos.Cocina
         void Luego(float segundos, Action accion) => tareas.Add(new Tarea { faltan = segundos, accion = accion });
 
         void Decir(string clave) => EventosCocina.Mensaje(clave);
-        void Sonar(string clave) => EventosCocina.Sonido(clave);
+
+        // Los módulos piden aquí los sonidos que son solo de animación (el tic de la llave, la manivela, el vuelo),
+        // porque solo ControlCocina lanza eventos. Los sonidos de las reglas (acierto, error, pop…) ya los pone M1.
+        // Las claves están en la especificación 10.6; M8 los reproduce si hay clip.
+        public void Sonar(string clave) => EventosCocina.Sonido(clave);
 
         void Rechazar(string clave, string sonido = null)
         {

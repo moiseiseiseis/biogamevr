@@ -13,6 +13,7 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
     //      reciclar, sacudir, FIN y final. Revisa puntos, racha, contadores y fases
     //   C. Turno 2: avance automático hasta los codones manuales, Necesarios, señuelos y la horquilla
     //   D. Turno 3 completo con los dos ribosomas, la búsqueda de la cuenta 20, chaperona y proteasoma
+    //   E. Imprevistos (M6): cuándo salen, que nunca haya dos horquillas y que la pausa detenga el reloj
     //
     // Escribe cada revisión en la consola con OK o FALLA y al final el total.
     public static class PruebasNucleo
@@ -44,6 +45,7 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
                 ProbarTurno1(control, codigo, basura);
                 ProbarTurno2(control, codigo, basura);
                 ProbarTurno3(control, codigo, basura);
+                ProbarImprevistos(control, go);
             }
             catch (System.Exception e)
             {
@@ -259,6 +261,69 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
         }
 
         // ---------------- ayudantes ----------------
+        // ---------------- E. Imprevistos (M6) ----------------
+        static void ProbarImprevistos(ControlCocina c, GameObject go)
+        {
+            Seccion("E. Imprevistos (M6)");
+            var gestor = go.AddComponent<GestorImprevistos>();
+            const float dt = 0.1f;
+
+            c.IniciarTurno(0);
+            gestor.Reiniciar(c, semillaFija: 99);
+            for (int i = 0; i < 1000; i++) { c.Paso(dt); gestor.Avanzar(c, dt); }
+            Revisar(gestor.Ocurridos == 0 && !c.HorquillaActiva && !c.CodonRaroActivo, "Turno 1: en 100 s no hay imprevistos");
+
+            c.IniciarTurno(1);
+            gestor.Reiniciar(c, semillaFija: 99);
+            int horquillas = 0, raros = 0, abiertas = 0;
+            bool dosHorquillas = false;
+            System.Action<bool> alHorquilla = aparece =>
+            {
+                if (aparece) { if (abiertas < horquillas) dosHorquillas = true; horquillas++; }
+                else abiertas++;
+            };
+            System.Action<bool> alRaro = activo => { if (activo) raros++; };
+            EventosCocina.OnHorquilla += alHorquilla;
+            EventosCocina.OnCodonRaro += alRaro;
+            try
+            {
+                var tiempos = new List<float>();
+                float t = 0f;
+                int antes = 0;
+                for (int i = 0; i < 4000; i++) // 400 s
+                {
+                    c.Paso(dt);
+                    gestor.Avanzar(c, dt);
+                    t += dt;
+                    if (gestor.Ocurridos != antes) { antes = gestor.Ocurridos; tiempos.Add(t); }
+                    // A veces el jugador la abre luego luego y a veces la deja: así se prueba que no se encimen
+                    if (c.HorquillaActiva && tiempos.Count % 2 == 0) { c.GolpearHorquilla(); c.GolpearHorquilla(); c.GolpearHorquilla(); }
+                }
+                Revisar(tiempos.Count > 0 && Mathf.Abs(tiempos[0] - 22f) < 0.15f, $"Turno 2: el primer imprevisto sale a los 22 s ({(tiempos.Count > 0 ? tiempos[0] : -1f):F1})");
+                bool intervalos = true;
+                for (int i = 1; i < tiempos.Count; i++)
+                {
+                    float d = tiempos[i] - tiempos[i - 1];
+                    if (d < 20f - 0.15f || d > 32f + 0.15f) intervalos = false;
+                }
+                Revisar(tiempos.Count >= 12 && intervalos, $"Después, cada 20 a 32 s ({tiempos.Count} en 400 s)");
+                Revisar(horquillas > 0 && raros > 0, $"Salen de los dos tipos ({horquillas} horquillas, {raros} codones raros)");
+                Revisar(!dosHorquillas, "Nunca hay dos horquillas a la vez");
+
+                float faltan = gestor.Faltan;
+                int ocurridos = gestor.Ocurridos;
+                c.PonerPausa(true);
+                for (int i = 0; i < 600; i++) gestor.Avanzar(c, dt);
+                Revisar(gestor.Faltan == faltan && gestor.Ocurridos == ocurridos, "En pausa el reloj de imprevistos no corre");
+                c.PonerPausa(false);
+            }
+            finally
+            {
+                EventosCocina.OnHorquilla -= alHorquilla;
+                EventosCocina.OnCodonRaro -= alRaro;
+            }
+        }
+
         static ARNtCocina ARNt(string codon, CodigoGenetico codigo, List<GameObject> basura)
         {
             var go = new GameObject($"ARNt {codon}") { hideFlags = HideFlags.HideAndDontSave };
