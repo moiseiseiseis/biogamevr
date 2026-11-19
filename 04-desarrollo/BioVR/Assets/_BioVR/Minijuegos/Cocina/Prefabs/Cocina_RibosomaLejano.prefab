@@ -722,7 +722,7 @@ Transform:
   m_LocalScale: {x: 0.07, y: 0.012, z: 0.07}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1490396422357886266}
+  m_Father: {fileID: 187897300460413987}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &9211514069395968713
 MeshFilter:
@@ -1368,7 +1368,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1490396422357886266}
+  m_Father: {fileID: 187897300460413987}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1750,39 +1750,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 5307249273382769307}
   m_maskType: 0
---- !u!1 &7513013102929198554
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1490396422357886266}
-  m_Layer: 0
-  m_Name: Visual
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1490396422357886266
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7513013102929198554}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6296093322276656679}
-  - {fileID: 7145558493012080558}
-  m_Father: {fileID: 4655730103483468809}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8775985617651945639
 GameObject:
   m_ObjectHideFlags: 0
@@ -1816,7 +1783,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1490396422357886266}
+  - {fileID: 187897300460413987}
   m_Father: {fileID: 7914450062556867152}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &98270029247957366
@@ -1939,7 +1906,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.BotonFin
   ribosoma: {fileID: 1502552995974311739}
-  visual: {fileID: 7513013102929198554}
+  visual: {fileID: 8949919589692176835}
   pulso: 0.12
 --- !u!1 &8844502219900706138
 GameObject:
@@ -1985,6 +1952,39 @@ Transform:
   - {fileID: 5872679260348636640}
   - {fileID: 427976915322636511}
   m_Father: {fileID: 6156496214916445030}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8949919589692176835
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 187897300460413987}
+  m_Layer: 0
+  m_Name: Visual
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &187897300460413987
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8949919589692176835}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6296093322276656679}
+  - {fileID: 7145558493012080558}
+  m_Father: {fileID: 4655730103483468809}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3522751728794545326
 PrefabInstance:
@@ -2053,23 +2053,23 @@ PrefabInstance:
     - target: {fileID: -5126779505417469674, guid: 4febc74094ea2624bbdf3d13df5adaf4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 1010f4f819d412748aec820e789bfc1c, type: 2}
+      objectReference: {fileID: 2100000, guid: 4adb013c90b484d49ab1e4d8c941a75f, type: 2}
     - target: {fileID: -5126779505417469674, guid: 4febc74094ea2624bbdf3d13df5adaf4, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: eeb00b6370d538c4a871bf3dd2f52c18, type: 2}
+      objectReference: {fileID: 2100000, guid: 7bc52cb86d7575b40a84e6bb4e607bc2, type: 2}
     - target: {fileID: -5126779505417469674, guid: 4febc74094ea2624bbdf3d13df5adaf4, type: 3}
       propertyPath: 'm_Materials.Array.data[2]'
       value: 
-      objectReference: {fileID: 2100000, guid: 0c9c5f00774308b45afb7b1071fda052, type: 2}
+      objectReference: {fileID: 2100000, guid: 244c28be698467e48a1275f445cbc52f, type: 2}
     - target: {fileID: -5126779505417469674, guid: 4febc74094ea2624bbdf3d13df5adaf4, type: 3}
       propertyPath: 'm_Materials.Array.data[3]'
       value: 
-      objectReference: {fileID: 2100000, guid: cafc52d0058af2e4c9c88a49c4eb488f, type: 2}
+      objectReference: {fileID: 2100000, guid: acd2d4d089de88e4fa2be959938ad89e, type: 2}
     - target: {fileID: -5126779505417469674, guid: 4febc74094ea2624bbdf3d13df5adaf4, type: 3}
       propertyPath: 'm_Materials.Array.data[4]'
       value: 
-      objectReference: {fileID: 2100000, guid: 194d389273e6d454cbfa776b1b286c24, type: 2}
+      objectReference: {fileID: 2100000, guid: 8f5a13a0af4a4ea489c199cf7963c7d8, type: 2}
     - target: {fileID: 919132149155446097, guid: 4febc74094ea2624bbdf3d13df5adaf4, type: 3}
       propertyPath: m_Name
       value: Ribosoma 80S 4UG0 (Diego)
@@ -2081,23 +2081,23 @@ PrefabInstance:
     - target: {fileID: 4566197666980265720, guid: 4febc74094ea2624bbdf3d13df5adaf4, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: d32d6701871cb6f409f2487775c45cb3, type: 2}
+      objectReference: {fileID: 2100000, guid: 5f2309af11a8ac04889464952bfccd9e, type: 2}
     - target: {fileID: 4566197666980265720, guid: 4febc74094ea2624bbdf3d13df5adaf4, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: 7f8c7ea75210a9b49b2b9b12224b1dc3, type: 2}
+      objectReference: {fileID: 2100000, guid: 66dc54ebebe94ad4b8bb9fb76399f838, type: 2}
     - target: {fileID: 4566197666980265720, guid: 4febc74094ea2624bbdf3d13df5adaf4, type: 3}
       propertyPath: 'm_Materials.Array.data[2]'
       value: 
-      objectReference: {fileID: 2100000, guid: eeb00b6370d538c4a871bf3dd2f52c18, type: 2}
+      objectReference: {fileID: 2100000, guid: 7bc52cb86d7575b40a84e6bb4e607bc2, type: 2}
     - target: {fileID: 4566197666980265720, guid: 4febc74094ea2624bbdf3d13df5adaf4, type: 3}
       propertyPath: 'm_Materials.Array.data[3]'
       value: 
-      objectReference: {fileID: 2100000, guid: 0c9c5f00774308b45afb7b1071fda052, type: 2}
+      objectReference: {fileID: 2100000, guid: 244c28be698467e48a1275f445cbc52f, type: 2}
     - target: {fileID: 4566197666980265720, guid: 4febc74094ea2624bbdf3d13df5adaf4, type: 3}
       propertyPath: 'm_Materials.Array.data[4]'
       value: 
-      objectReference: {fileID: 2100000, guid: cafc52d0058af2e4c9c88a49c4eb488f, type: 2}
+      objectReference: {fileID: 2100000, guid: acd2d4d089de88e4fa2be959938ad89e, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

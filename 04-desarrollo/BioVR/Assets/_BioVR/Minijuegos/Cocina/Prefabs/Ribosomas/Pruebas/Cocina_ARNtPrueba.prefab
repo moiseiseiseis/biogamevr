@@ -98,7 +98,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ff1ec530a45902f41a5f5e1e5be34f94, type: 2}
+  - {fileID: 2100000, guid: b7272ae54cd44984f98a012b89b017e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -878,7 +878,7 @@ PrefabInstance:
     - target: {fileID: 6291736722513277180, guid: 4e4b79742bbb99c40a3f58bfe165fe52, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 6dbde4ab4514b0648822e2aa35fae414, type: 2}
+      objectReference: {fileID: 2100000, guid: 505f900436a90654396372ad8b83872a, type: 2}
     - target: {fileID: 8964643695382353222, guid: 4e4b79742bbb99c40a3f58bfe165fe52, type: 3}
       propertyPath: m_Name
       value: Aminoacido

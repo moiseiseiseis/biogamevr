@@ -543,6 +543,7 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
         // Material URP Lit guardado como asset (Cocina_M4_<nombre>.mat)
         static Material Material(string nombre, Color color, bool transparente)
         {
+            nombre = nombre.Replace(' ', '_'); // sin espacios en los nombres de archivo
             string ruta = $"{CarpetaMateriales}/Cocina_M4_{nombre}.mat";
             var m = AssetDatabase.LoadAssetAtPath<Material>(ruta);
             if (m == null)
