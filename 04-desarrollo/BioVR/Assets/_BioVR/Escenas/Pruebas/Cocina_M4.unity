@@ -119,6 +119,57 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &241611471
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 241611472}
+  - component: {fileID: 241611473}
+  m_Layer: 0
+  m_Name: '[M4] Prueba ribosomas (ARNt de prueba)'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &241611472
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241611471}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1175130374}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &241611473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 241611471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b907dab184cc2748ad951304e6d108a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PruebaRibosomas
+  prefabARNt: {fileID: 3167920724171075498, guid: 8b4d27d83d66f4940bf9979eaf93af8f, type: 3}
+  maximo: 7
+  anguloInicio: 62
+  pasoAngulo: 8
+  radio: 0.55
+  altura: 1
+  intervalo: 0.5
 --- !u!1 &346990056
 GameObject:
   m_ObjectHideFlags: 0
@@ -148,7 +199,8 @@ Transform:
   m_LocalPosition: {x: 0.5555062, y: 1.3, z: 1.816979}
   m_LocalScale: {x: 2.1, y: 2.1, z: 2.1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 439195269}
   m_Father: {fileID: 1579637552}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &346990058
@@ -169,8 +221,70 @@ MonoBehaviour:
   radio: 0.05
   subirEtiqueta: 0
   detalle: 
-  mostrarEnJuego: 1
+  mostrarEnJuego: 0
   material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1001 &355097921
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1914171728}
+    m_Modifications:
+    - target: {fileID: 4543235484297845554, guid: a96e91acb91fed24881c2de3cd564ce1, type: 3}
+      propertyPath: m_Name
+      value: Cocina_Ribosoma
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825193004340969239, guid: a96e91acb91fed24881c2de3cd564ce1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825193004340969239, guid: a96e91acb91fed24881c2de3cd564ce1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825193004340969239, guid: a96e91acb91fed24881c2de3cd564ce1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825193004340969239, guid: a96e91acb91fed24881c2de3cd564ce1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825193004340969239, guid: a96e91acb91fed24881c2de3cd564ce1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825193004340969239, guid: a96e91acb91fed24881c2de3cd564ce1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825193004340969239, guid: a96e91acb91fed24881c2de3cd564ce1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825193004340969239, guid: a96e91acb91fed24881c2de3cd564ce1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825193004340969239, guid: a96e91acb91fed24881c2de3cd564ce1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7825193004340969239, guid: a96e91acb91fed24881c2de3cd564ce1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a96e91acb91fed24881c2de3cd564ce1, type: 3}
+--- !u!4 &355097922 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7825193004340969239, guid: a96e91acb91fed24881c2de3cd564ce1, type: 3}
+  m_PrefabInstance: {fileID: 355097921}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &374076246
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,6 +337,68 @@ MonoBehaviour:
   detalle: 
   mostrarEnJuego: 1
   material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1001 &439195268
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 346990057}
+    m_Modifications:
+    - target: {fileID: 4282373304302369375, guid: dce97bec8ea8e494191cab5f4f12626b, type: 3}
+      propertyPath: m_Name
+      value: Cocina_RibosomaLejano
+      objectReference: {fileID: 0}
+    - target: {fileID: 6156496214916445030, guid: dce97bec8ea8e494191cab5f4f12626b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6156496214916445030, guid: dce97bec8ea8e494191cab5f4f12626b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6156496214916445030, guid: dce97bec8ea8e494191cab5f4f12626b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6156496214916445030, guid: dce97bec8ea8e494191cab5f4f12626b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6156496214916445030, guid: dce97bec8ea8e494191cab5f4f12626b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6156496214916445030, guid: dce97bec8ea8e494191cab5f4f12626b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6156496214916445030, guid: dce97bec8ea8e494191cab5f4f12626b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6156496214916445030, guid: dce97bec8ea8e494191cab5f4f12626b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6156496214916445030, guid: dce97bec8ea8e494191cab5f4f12626b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6156496214916445030, guid: dce97bec8ea8e494191cab5f4f12626b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dce97bec8ea8e494191cab5f4f12626b, type: 3}
+--- !u!4 &439195269 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6156496214916445030, guid: dce97bec8ea8e494191cab5f4f12626b, type: 3}
+  m_PrefabInstance: {fileID: 439195268}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &471223017
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -891,6 +1067,7 @@ Transform:
   - {fileID: 471223018}
   - {fileID: 1579637552}
   - {fileID: 941926330}
+  - {fileID: 241611472}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1331460106
@@ -1269,7 +1446,8 @@ Transform:
   m_LocalPosition: {x: -0, y: 0.86, z: 0.62}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 355097922}
   m_Father: {fileID: 1579637552}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1914171729
@@ -1290,7 +1468,7 @@ MonoBehaviour:
   radio: 0.05
   subirEtiqueta: 0
   detalle: 
-  mostrarEnJuego: 1
+  mostrarEnJuego: 0
   material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
 --- !u!1 &2021479175
 GameObject:
