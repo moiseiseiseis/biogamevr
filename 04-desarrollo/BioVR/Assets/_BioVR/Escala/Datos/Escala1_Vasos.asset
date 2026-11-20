@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Escala1_Vasos
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Escala.NivelEscalaData
   nombreNivel: Vasos sanguíneos
-  tamanoMecha: '~1-5 mm'
+  tamanoMecha: 3 µm
   inercia: 0.8
   viscosidad: 1
   intensidadEmpujones: 0.2

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Escala3_Citoplasma
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Escala.NivelEscalaData
   nombreNivel: Citoplasma
-  tamanoMecha: '~200-500 nm'
+  tamanoMecha: 50 nm
   inercia: 0
   viscosidad: 8
   intensidadEmpujones: 1
