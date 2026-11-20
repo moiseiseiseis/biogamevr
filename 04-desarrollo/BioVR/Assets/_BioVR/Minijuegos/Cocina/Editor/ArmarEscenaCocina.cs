@@ -18,7 +18,10 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
     //   - Sin cabina: en la Cocina el jugador solo ve las pinzas del Mecha en primera persona (decisión del 20-nov).
     //   - Fondo 360° (Skybox Panoramic) y el escenario celular low poly de Diseño (#59).
     //   - M10 (fase B): la BiP y el proteasoma de BioVR → Cocina → Armar fase B (M10), si ya se corrió.
-    //   - M5 y M8 todavía no existen: sus marcas se quedan visibles en Play para saber dónde van.
+    //   - M8 (Marcos): panel de mensajes, tablero del pedido, tutorial (con sus objetivos en las marcas),
+    //     pantalla final y sonidos, donde los puso en Cocina_M8; y el menú de pausa de la escena inicial,
+    //     con Reiniciar turno y Reiniciar tutorial.
+    //   - M5 todavía no existe: su marca se queda visible en Play para saber dónde va.
     //
     // Se puede correr varias veces: la escena se vuelve a hacer desde Cocina_Base y conserva su GUID.
     public static class ArmarEscenaCocina
@@ -65,6 +68,9 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             Imprevistos(a);
             Holograma(a);
             FaseB(a);
+            Interfaz(a);
+            MusicaYAmbiente(a);
+            BioVR.Comun.Editor.AgregarMenuPausa.ArmarEn(escena, BioVR.Comun.Editor.AgregarMenuPausa.TextoControlesCocina, botonesCocina: true);
             new GameObject("Conexiones (M9)", typeof(ConexionCorrienteRibosomas)).transform.SetParent(a, false);
 
             if (escenario != null) Escenario(a, escenario);
@@ -78,7 +84,7 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             EditorSceneManager.MarkSceneDirty(escena);
             EditorSceneManager.SaveScene(escena);
             AssetDatabase.SaveAssets();
-            Debug.Log($"[Cocina] Listo: {Escena}. Faltan M5 (salida) y M8 (mensajes, tutorial y final): sus marcas se ven en Play.");
+            Debug.Log($"[Cocina] Listo: {Escena}. Falta M5 (salida): su marca se ve en Play.");
         }
 
         // ---------------- Módulos ----------------
@@ -183,6 +189,79 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             }
             PonerEnMarca(bip, ancla, "Chaperona (BiP)");
             PonerEnMarca(proteasoma, ancla, "Proteasoma (26S)");
+        }
+
+        // M8: donde Marcos los puso en Cocina_M8 (posición respecto a AnclaCocina; los Canvas miran al jugador sin girarlos)
+        static readonly (string prefab, Vector3 posicion)[] PiezasInterfaz =
+        {
+            ("Cocina_Sonidos", Vector3.zero),
+            ("CocinaMarcaTutorial", Vector3.zero),
+            ("Cocina_PanelMensajes", new Vector3(-0.9f, 1.4f, 1.3f)),
+            ("Cocina_TableroPedido", new Vector3(0f, 2f, 1.5f)),
+            ("CocinaTutorial", new Vector3(0.9f, 1.4f, 1.3f)),
+            ("Cocina_PantallaFinal", new Vector3(0f, 1.4f, 1.2f)),
+        };
+
+        // A qué marca señala cada ventana del tutorial (las que no aparecen aquí no señalan nada)
+        static readonly (string clave, string marca)[] ObjetivosTutorial =
+        {
+            ("ribosoma_mesa", "Ribosoma de mesa"), ("corriente", "Corriente inicio"), ("sintetasa", "Sintetasa"),
+            ("llave", "Ribosoma de mesa"), ("boton_fin", "Ribosoma de mesa"), ("sintetasa_error", "Sintetasa"),
+            ("salida", "Salida"), ("reciclaje", "Regreso al citoplasma"), ("ribosoma_lejano", "Ribosoma lejano"),
+            ("horquilla", "Ribosoma de mesa"), ("codon_raro", "Corriente inicio"), ("fase_b", "Holograma"),
+            ("busca", "Holograma"), ("chaperona", "Chaperona (BiP)"), ("decide", "Proteasoma (26S)"),
+        };
+
+        static void Interfaz(Transform ancla)
+        {
+            GameObject tutorial = null, marca = null;
+            foreach (var (nombre, posicion) in PiezasInterfaz)
+            {
+                var prefab = Prefab(nombre);
+                if (prefab == null) continue;
+                var go = (GameObject)PrefabUtility.InstantiatePrefab(prefab, ancla);
+                go.transform.localPosition = posicion;
+                go.transform.localRotation = Quaternion.identity;
+                if (nombre == "CocinaTutorial") tutorial = go;
+                if (nombre == "CocinaMarcaTutorial") marca = go;
+            }
+            OcultarMarca(ancla, "Panel de mensajes");
+            OcultarMarca(ancla, "Tablero del pedido");
+            if (tutorial == null) return;
+
+            var so = new SerializedObject(tutorial.GetComponent<TutorialCocina>());
+            if (marca != null) so.FindProperty("marcaTutorial").objectReferenceValue = marca.GetComponent<MarcaTutorial>();
+            var lista = so.FindProperty("objetivos");
+            lista.arraySize = ObjetivosTutorial.Length;
+            for (int i = 0; i < ObjetivosTutorial.Length; i++)
+            {
+                var e = lista.GetArrayElementAtIndex(i);
+                e.FindPropertyRelative("clave").stringValue = ObjetivosTutorial[i].clave;
+                e.FindPropertyRelative("objetivo").objectReferenceValue = Marca(ancla, ObjetivosTutorial[i].marca);
+            }
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        // Música del minijuego y ambiente celular en loop, en 2D. El ambiente va 6 dB abajo (fila AMB-MIN-01 de
+        // la plantilla de Sonido) para que no tape los efectos.
+        static void MusicaYAmbiente(Transform ancla)
+        {
+            var go = new GameObject("Musica y ambiente");
+            go.transform.SetParent(ancla, false);
+            Loop(go, Raiz + "/Audio/MUS/MUS-MIN-01_traduccion-loop_v01.wav", 0.6f);
+            Loop(go, Raiz + "/Audio/AMB/AMB-CEL-01_interior-celular-loop_v01.wav", 0.6f * 0.5f); // −6 dB
+        }
+
+        static void Loop(GameObject go, string ruta, float volumen)
+        {
+            var clip = AssetDatabase.LoadAssetAtPath<AudioClip>(ruta);
+            if (clip == null) { Debug.LogWarning($"[Cocina] Falta {ruta}."); return; }
+            var fuente = go.AddComponent<AudioSource>();
+            fuente.clip = clip;
+            fuente.loop = true;
+            fuente.playOnAwake = true;
+            fuente.spatialBlend = 0f;
+            fuente.volume = volumen;
         }
 
         // ---------------- Escenario y fondo ----------------
