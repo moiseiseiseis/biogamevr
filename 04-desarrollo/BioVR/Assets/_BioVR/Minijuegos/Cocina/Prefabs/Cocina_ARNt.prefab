@@ -1224,8 +1224,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.14, y: 0.24, z: 0.14}
+  m_Center: {x: 0, y: 0.08, z: 0}
 --- !u!114 &8197313417944876751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1239,7 +1239,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.Interactables.XRGrabInteractable
   m_InteractionManager: {fileID: 0}
-  m_Colliders: []
+  m_Colliders:
+  - {fileID: 7878245916572450039}
   m_InteractionLayers:
     m_Bits: 1
   m_DistanceCalculationMode: 1

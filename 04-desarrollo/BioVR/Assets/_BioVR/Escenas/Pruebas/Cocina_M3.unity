@@ -627,7 +627,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 38b4f40bf24fcc1459a5077414984882, type: 2}
   - {fileID: 11400000, guid: a47fa1aaf434dc040b17e862be149f2d, type: 2}
   - {fileID: 11400000, guid: 70266fcf92402b242ae8ca382122e4d9, type: 2}
-  turnoInicial: 0
+  turnoInicial: 1
   semilla: 0
 --- !u!1 &972182140
 GameObject:
