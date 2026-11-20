@@ -357,6 +357,9 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             var cuerpo = raiz.AddComponent<Rigidbody>();
             cuerpo.mass = 0.2f;
             cuerpo.useGravity = false;
+            // Kinemático como el ARNt de M2: dinámico, al moverlo con la mano empujaba a los del estante
+            // y al soltarlo encimado en el ribosoma salía disparado.
+            cuerpo.isKinematic = true;
             cuerpo.linearDamping = 4f;
             cuerpo.angularDamping = 4f;
             var agarre = raiz.AddComponent<XRGrabInteractable>();
