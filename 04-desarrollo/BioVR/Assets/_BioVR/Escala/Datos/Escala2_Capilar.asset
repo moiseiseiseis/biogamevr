@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Escala2_Capilar
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Escala.NivelEscalaData
   nombreNivel: Capilar
-  tamanoMecha: '~1 µm'
+  tamanoMecha: 1 µm
   inercia: 0.4
   viscosidad: 4
   intensidadEmpujones: 0.4

@@ -4,7 +4,7 @@ using BioVR.Escala;
 
 namespace BioVR.Cabina
 {
-    // Letrero de la cabina que muestra el nivel de escala actual, p. ej. "Vasos sanguíneos · mecha ~1-5 mm".
+    // Monitor de reducción de la cabina: el nivel de escala actual, p. ej. "Vasos sanguíneos · nave de 3 µm".
     public class PantallaEscala : MonoBehaviour
     {
         public TextMeshProUGUI textoPantalla;
@@ -35,8 +35,7 @@ namespace BioVR.Cabina
 
         private void ActualizarTexto(NivelEscalaData datos)
         {
-            // tamanoMecha ya trae su "~" (p. ej. "~1-5 mm")
-            textoPantalla.text = $"{datos.nombreNivel} · mecha {datos.tamanoMecha}";
+            textoPantalla.text = $"{datos.nombreNivel} · nave de {datos.tamanoMecha}";
         }
     }
 }

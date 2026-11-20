@@ -229,6 +229,9 @@ namespace BioVR.Minijuegos.Cocina
                 return;
             }
 
+            // Dentro del sitio A lo recibe el ribosoma (M4, ZonaSitioA); si lo rechaza, él lo regresa al tubo
+            if (ZonaSitioA.AlgunaContiene(datos)) return;
+
             // Verificar si se soltó sobre la sintetasa (M3)
             var sint = FindFirstObjectByType<EstacionSintetasa>();
             if (sint != null && sint.IntentarColocar(datos))

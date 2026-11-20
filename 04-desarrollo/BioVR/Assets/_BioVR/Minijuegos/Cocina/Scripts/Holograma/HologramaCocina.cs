@@ -390,6 +390,21 @@ namespace BioVR.Minijuegos.Cocina
             metCortada = false;
         }
 
+        // M10 (proteasoma): el holograma deja de mover, girar y unir con la línea a sus cuentas y se las entrega
+        // a quien las va a destruir. Sin la Met si ya se cortó. Devuelve la lista vacía si no hay cadena.
+        public List<CuentaHolograma> EntregarCuentas()
+        {
+            var entregadas = new List<CuentaHolograma>();
+            foreach (var c in cuentas)
+                if (c != null && c.gameObject.activeSelf) entregadas.Add(c);
+            cuentas.Clear();
+            destinos.Clear();
+            if (lineaColumna != null) lineaColumna.positionCount = 0;
+            animandoDoblez = false;
+            cortandoMet = false;
+            return entregadas;
+        }
+
         // ================= Utilidades de prueba rápida en Cocina_M7 =================
 
         public void NotificarToquePrueba(int indiceResiduo)

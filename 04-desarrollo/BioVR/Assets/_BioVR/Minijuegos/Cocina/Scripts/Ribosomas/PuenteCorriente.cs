@@ -21,7 +21,10 @@ namespace BioVR.Minijuegos.Cocina
             if (t == null) return;
             Soltar(t);
             PermitirAgarre(t, true);
-            if (ControlCocina.Instancia != null) ControlCocina.Instancia.DevolverACorriente(t);
+            // Con M2 en la escena, la corriente lo pone en su lugar del tubo (u = 0.35); sin ella, solo se avisa a M1
+            var corriente = UnityEngine.Object.FindFirstObjectByType<CorrienteARNt>();
+            if (corriente != null) corriente.DevolverAlTubo(t);
+            else if (ControlCocina.Instancia != null) ControlCocina.Instancia.DevolverACorriente(t);
             OnDevolver?.Invoke(t);
         }
 

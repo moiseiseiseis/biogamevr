@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Escala0_Hangar
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Escala.NivelEscalaData
   nombreNivel: Hangar
-  tamanoMecha: 'Tamaño real'
+  tamanoMecha: tamaño real
   inercia: 1
   viscosidad: 0
   intensidadEmpujones: 0
