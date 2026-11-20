@@ -12,7 +12,7 @@ namespace BioVR.Comun.Editor
     // Arma el menú de pausa en 00-EscenaInicial:
     //   - EventSystem con XRUIInputModule (para que los rayos de los mandos puedan usar la UI)
     //   - "Menu de pausa" con MenuPausa y un Canvas world space: título, Continuar, Reiniciar,
-    //     altura del asiento (Bajar / Subir), Salir y los controles
+    //     Reiniciar turno, Reiniciar tutorial, altura del asiento (Bajar / Subir), Salir y los controles
     //   - El panel de confirmación "¿Estás seguro?" (Sí / No) que sale antes de Reiniciar y Salir
     //   - AlturaAsiento junto a Recentrar (mismo XR Origin y Punto ojos), si no estaba
     // Se puede correr varias veces: borra el menú anterior y lo vuelve a crear.
@@ -47,10 +47,12 @@ namespace BioVR.Comun.Editor
             var raiz = new GameObject(NombreMenu);
             var menu = raiz.AddComponent<MenuPausa>();
 
-            var panel = UIVR.Panel("Panel", raiz.transform, new Vector2(500f, 740f), origen.Camera); // 0.5 × 0.74 m
+            var panel = UIVR.Panel("Panel", raiz.transform, new Vector2(500f, 920f), origen.Camera); // 0.5 × 0.92 m
             UIVR.Texto(panel.transform, "Titulo", "Pausa", 52f, FontStyles.Bold, 70f);
             UIVR.Boton(panel.transform, "Boton Continuar", "Continuar", UIVR.ColorBoton, menu.Continuar);
             UIVR.Boton(panel.transform, "Boton Reiniciar", "Reiniciar", UIVR.ColorBoton, menu.Reiniciar);
+            UIVR.Boton(panel.transform, "Boton Reiniciar Turno", "Reiniciar turno", UIVR.ColorBoton, menu.ReiniciarTurno);
+            UIVR.Boton(panel.transform, "Boton Reiniciar Tutorial", "Reiniciar tutorial", UIVR.ColorBoton, menu.ReiniciarTutorial);
             if (altura != null) FilaAltura(panel.transform, altura);
             UIVR.Boton(panel.transform, "Boton Salir", "Salir del juego", UIVR.ColorSalir, menu.Salir);
             UIVR.Texto(panel.transform, "Controles", TextoControles, 21f, FontStyles.Normal, 170f).alignment = TextAlignmentOptions.TopLeft;

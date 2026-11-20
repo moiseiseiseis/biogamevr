@@ -1,0 +1,123 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35db672a478bbec40a51d5904ef770f6, type: 3}
+  m_Name: TutorialesCocina
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.TutorialesCocina
+  entradas:
+  - clave: bienvenida
+    turno: 0
+    titulo: Bienvenido a la Cocina Celular
+    cuerpo: "Aqu\xED sintetizar\xE1s amilina leyendo el mensaje del ARNm. Usa el
+      gatillo para tomar objetos y pulsa Entendido o A/X para continuar."
+    imagenOpcional: {fileID: 0}
+  - clave: ribosoma_mesa
+    turno: 0
+    titulo: Ribosoma de mesa
+    cuerpo: "Este es tu ribosoma principal. Observa el cod\xF3n iluminado en el ARNm:
+      indica qu\xE9 amino\xE1cido debes traer."
+    imagenOpcional: {fileID: 0}
+  - clave: corriente
+    turno: 0
+    titulo: Corriente de ARNt
+    cuerpo: "Por aqu\xED fluyen los ARNt libres. Busca el que tenga el anticod\xF3n
+      complementario al cod\xF3n que pide el ribosoma."
+    imagenOpcional: {fileID: 0}
+  - clave: sintetasa
+    turno: 0
+    titulo: Aminoacil-ARNt sintetasa
+    cuerpo: "Los ARNt llegan vac\xEDos. Col\xF3calos en la sintetasa para unirles
+      su amino\xE1cido correspondiente."
+    imagenOpcional: {fileID: 0}
+  - clave: llave
+    turno: 0
+    titulo: Encaje en el ribosoma
+    cuerpo: "Al colocar un ARNt cargado en el ribosoma de mesa, g\xEDralo como una
+      llave hasta que encaje en su posici\xF3n."
+    imagenOpcional: {fileID: 0}
+  - clave: boton_fin
+    turno: 0
+    titulo: "Cod\xF3n de paro y bot\xF3n FIN"
+    cuerpo: "Cuando el ribosoma llegue al cod\xF3n de paro, toca el bot\xF3n FIN
+      para liberar la cadena polipept\xEDdica terminada."
+    imagenOpcional: {fileID: 0}
+  - clave: sintetasa_error
+    turno: 0
+    titulo: Error de carga
+    cuerpo: "A veces la sintetasa une un amino\xE1cido incorrecto. Si ves el aviso
+      de error, sacude el ARNt en el aire para vaciarlo."
+    imagenOpcional: {fileID: 0}
+  - clave: salida
+    turno: 0
+    titulo: Salida del ribosoma de ARNt
+    cuerpo: "Tras entregar su amino\xE1cido, el ARNt sale vac\xEDo del ribosoma.
+      No dejes que la salida se llene."
+    imagenOpcional: {fileID: 0}
+  - clave: reciclaje
+    turno: 0
+    titulo: Reciclaje de ARNt
+    cuerpo: Devuelve los ARNt usados a la zona de reciclaje para que vuelvan a la
+      corriente y obtengas puntos extra.
+    imagenOpcional: {fileID: 0}
+  - clave: t2_intro
+    turno: 2
+    titulo: 'Segundo turno: mayor demanda'
+    cuerpo: "La c\xE9lula necesita m\xE1s amilina. Ahora trabajar\xE1s con dos ribosomas
+      activos y posibles imprevistos en el ARNm."
+    imagenOpcional: {fileID: 0}
+  - clave: ribosoma_lejano
+    turno: 2
+    titulo: Ribosoma lejano
+    cuerpo: "Este segundo ribosoma trabaja en paralelo. Puedes entregarle su ARNt
+      cargado directamente o lanz\xE1rselo con precisi\xF3n."
+    imagenOpcional: {fileID: 0}
+  - clave: horquilla
+    turno: 2
+    titulo: "\xA1Horquilla de ARN!"
+    cuerpo: "El ARNm form\xF3 un lazo que bloquea el ribosoma de mesa. Golpea la
+      horquilla repetidamente hasta desenrollarla."
+    imagenOpcional: {fileID: 0}
+  - clave: codon_raro
+    turno: 2
+    titulo: "Cod\xF3n poco frecuente"
+    cuerpo: "Apareci\xF3 un cod\xF3n raro: durante unos segundos circular\xE1n m\xE1s
+      ARNt en la corriente para ayudarte a encontrarlo."
+    imagenOpcional: {fileID: 0}
+  - clave: t3_intro
+    turno: 3
+    titulo: 'Tercer turno: control de calidad'
+    cuerpo: "En este turno sintetizar\xE1s una variante de amilina con una mutaci\xF3n
+      puntual. Al terminar la s\xEDntesis pasar\xE1s a inspeccionarla."
+    imagenOpcional: {fileID: 0}
+  - clave: fase_b
+    turno: 3
+    titulo: "Inspecci\xF3n de plegamiento"
+    cuerpo: "Una sola sustituci\xF3n de amino\xE1cido puede alterar c\xF3mo se pliega
+      la amilina y favorecer agregados t\xF3xicos."
+    imagenOpcional: {fileID: 0}
+  - clave: busca
+    turno: 3
+    titulo: "Localiza la mutaci\xF3n"
+    cuerpo: "Explora el holograma de la cadena plegada y toca la cuenta donde ocurri\xF3
+      el cambio de amino\xE1cido."
+    imagenOpcional: {fileID: 0}
+  - clave: chaperona
+    turno: 3
+    titulo: "Prote\xEDna chaperona"
+    cuerpo: "Las chaperonas ayudan a estabilizar prote\xEDnas mal plegadas. \xDAsala
+      primero si quieres intentar rescatar su forma."
+    imagenOpcional: {fileID: 0}
+  - clave: decide
+    turno: 3
+    titulo: "Degradaci\xF3n en proteasoma"
+    cuerpo: "Cuando una prote\xEDna sigue mal plegada, env\xEDala al proteasoma para
+      reciclarla antes de que da\xF1e la c\xE9lula."
+    imagenOpcional: {fileID: 0}
