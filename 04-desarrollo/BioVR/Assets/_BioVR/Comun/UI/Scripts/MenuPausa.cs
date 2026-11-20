@@ -7,6 +7,13 @@ using UnityEngine.SceneManagement;
 
 namespace BioVR.Comun
 {
+    // Menú de pausa: se abre y se cierra con el botón ☰ del mando izquierdo (Esc o P en el editor).
+    // Al abrirse aparece frente a la vista del jugador y pausa el juego (GameManager.Pausar y, en la Cocina,
+    // ControlCocina.PonerPausa).
+    // Botones: Continuar, Reiniciar (vuelve a cargar la escena desde el Hangar), Reiniciar turno y Reiniciar
+    // tutorial (solo hacen algo en la Cocina) y Salir. Los que reinician o salen preguntan "¿Estás seguro?"
+    // en el panel de confirmación (Sí / No).
+    // Lo arma el menú BioVR → Agregar menú de pausa.
     public class MenuPausa : MonoBehaviour
     {
         [Tooltip("Canvas del menú (world space). Empieza apagado.")]
@@ -27,16 +34,22 @@ namespace BioVR.Comun
         [Tooltip("Por defecto: botón de menú del mando izquierdo (☰) y las teclas Esc y P en el editor.")]
         public InputActionProperty botonMenu = new InputActionProperty(CrearAccionPorDefecto());
 
+        // Avisa cuando el menú se abre (true) o se cierra (false); lo usa el tutorial
         public static event Action<bool> OnMenu;
 
+        // Abierto = se ve el menú o la confirmación
         public bool Abierto => (panel != null && panel.activeSelf) || (panelConfirmacion != null && panelConfirmacion.activeSelf);
 
+        // Qué se hace si el jugador contesta "Sí": "Reiniciar", "ReiniciarTurno", "ReiniciarTutorial" o "Salir"
         string accionPendiente = "";
+
+        // Si la Cocina ya estaba en pausa al abrir (una ventana del tutorial), al continuar se queda en pausa
+        bool cocinaYaPausada;
 
         static InputAction CrearAccionPorDefecto()
         {
             var accion = new InputAction("Menu", InputActionType.Button);
-            accion.AddBinding("<XRController>{LeftHand}/menuButton");
+            accion.AddBinding("<XRController>{LeftHand}/menuButton"); // el ☰ derecho es del sistema de Meta
             accion.AddBinding("<Keyboard>/escape");
             accion.AddBinding("<Keyboard>/p");
             return accion;
@@ -67,7 +80,7 @@ namespace BioVR.Comun
             var accion = botonMenu.action;
             if (accion == null) return;
             accion.performed -= AlPresionarBoton;
-            if (botonMenu.reference == null) accion.Disable();
+            if (botonMenu.reference == null) accion.Disable(); // solo apagamos la acción si es nuestra
         }
 
         void AlPresionarBoton(InputAction.CallbackContext context)
@@ -88,9 +101,16 @@ namespace BioVR.Comun
             foreach (var go in apagarEnPausa)
                 if (go != null) go.SetActive(false);
             if (gm != null) gm.Pausar(true);
+            var cocina = ControlCocina.Instancia; // en la Cocina no hay GameManager
+            if (cocina != null)
+            {
+                cocinaYaPausada = cocina.Pausado;
+                cocina.PonerPausa(true);
+            }
             OnMenu?.Invoke(true);
         }
 
+        // Botón "Continuar" (y el mismo botón ☰ con el menú o la confirmación abiertos)
         public void Continuar()
         {
             accionPendiente = "";
@@ -100,6 +120,7 @@ namespace BioVR.Comun
             foreach (var go in apagarEnPausa)
                 if (go != null) go.SetActive(true);
             if (GameManager.Instance != null) GameManager.Instance.Pausar(false);
+            if (ControlCocina.Instancia != null && !cocinaYaPausada) ControlCocina.Instancia.PonerPausa(false);
             OnMenu?.Invoke(false);
         }
 
@@ -109,10 +130,13 @@ namespace BioVR.Comun
         // Botón "Reiniciar turno" (A7): repite el turno actual sin borrar el historial del tutorial
         public void ReiniciarTurno() => Preguntar("ReiniciarTurno");
 
+        // Botón "Reiniciar": pregunta antes; con "Sí" todo vuelve a empezar desde el Hangar
         public void Reiniciar() => Preguntar("Reiniciar");
 
+        // Botón "Salir": pregunta antes; con "Sí" cierra la app en el visor (en el editor detiene el Play)
         public void Salir() => Preguntar("Salir");
 
+        // Botón "Sí" de la confirmación
         public void ConfirmarAccionSi()
         {
             if (accionPendiente == "Reiniciar") EjecutarReiniciar();

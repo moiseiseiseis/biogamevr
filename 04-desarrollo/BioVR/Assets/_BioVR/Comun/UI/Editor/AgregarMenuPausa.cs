@@ -5,14 +5,15 @@ using Unity.XR.CoreUtils;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace BioVR.Comun.Editor
 {
-    // Arma el menú de pausa en 00-EscenaInicial:
+    // Arma el menú de pausa en 00-EscenaInicial (y en la Cocina con ArmarEn, desde BioVR → Cocina → Armar escena Cocina):
     //   - EventSystem con XRUIInputModule (para que los rayos de los mandos puedan usar la UI)
     //   - "Menu de pausa" con MenuPausa y un Canvas world space: título, Continuar, Reiniciar,
-    //     Reiniciar turno, Reiniciar tutorial, altura del asiento (Bajar / Subir), Salir y los controles
+    //     Reiniciar turno y Reiniciar tutorial (solo en la Cocina), altura del asiento (Bajar / Subir), Salir y los controles
     //   - El panel de confirmación "¿Estás seguro?" (Sí / No) que sale antes de Reiniciar y Salir
     //   - AlturaAsiento junto a Recentrar (mismo XR Origin y Punto ojos), si no estaba
     // Se puede correr varias veces: borra el menú anterior y lo vuelve a crear.
@@ -31,12 +32,29 @@ namespace BioVR.Comun.Editor
             "Este menú: apunta y usa el gatillo\n" +
             "B / Y: volver al asiento · Menú (mando izq.): pausa";
 
+        public const string TextoControlesCocina =
+            "<b>Controles</b>\n" +
+            "Grip: agarrar un ARNt o la manivela\n" +
+            "Gira la muñeca para encajar el ARNt\n" +
+            "Gatillo: tocar FIN, la horquilla y las cuentas\n" +
+            "Este menú: apunta y usa el gatillo\n" +
+            "B / Y: recentrar la mesa · Menú (mando izq.): pausa";
+
         [MenuItem("BioVR/Agregar menú de pausa")]
         public static void Agregar()
         {
             var escena = EditorSceneManager.OpenScene(EscenaInicial, OpenSceneMode.Single);
+            if (!ArmarEn(escena, TextoControles, botonesCocina: false)) return;
+            EditorSceneManager.MarkSceneDirty(escena);
+            EditorSceneManager.SaveScene(escena);
+            Debug.Log("[Menu] Menú de pausa listo: botón de menú del mando izquierdo, o Esc / P en el editor.");
+        }
+
+        // Arma el menú en la escena abierta (no la guarda). botonesCocina: Reiniciar turno y Reiniciar tutorial.
+        public static bool ArmarEn(Scene escena, string textoControles, bool botonesCocina)
+        {
             var origen = Object.FindFirstObjectByType<XROrigin>();
-            if (origen == null || origen.Camera == null) { Debug.LogError("[Menu] No hay XR Origin con cámara en la escena inicial."); return; }
+            if (origen == null || origen.Camera == null) { Debug.LogError($"[Menu] No hay XR Origin con cámara en {escena.name}."); return false; }
 
             UIVR.AsegurarEventSystem();
             var altura = AsegurarAlturaAsiento();
@@ -47,15 +65,18 @@ namespace BioVR.Comun.Editor
             var raiz = new GameObject(NombreMenu);
             var menu = raiz.AddComponent<MenuPausa>();
 
-            var panel = UIVR.Panel("Panel", raiz.transform, new Vector2(500f, 920f), origen.Camera); // 0.5 × 0.92 m
+            var panel = UIVR.Panel("Panel", raiz.transform, new Vector2(500f, botonesCocina ? 920f : 740f), origen.Camera); // 0.5 × 0.92 o 0.74 m
             UIVR.Texto(panel.transform, "Titulo", "Pausa", 52f, FontStyles.Bold, 70f);
             UIVR.Boton(panel.transform, "Boton Continuar", "Continuar", UIVR.ColorBoton, menu.Continuar);
             UIVR.Boton(panel.transform, "Boton Reiniciar", "Reiniciar", UIVR.ColorBoton, menu.Reiniciar);
-            UIVR.Boton(panel.transform, "Boton Reiniciar Turno", "Reiniciar turno", UIVR.ColorBoton, menu.ReiniciarTurno);
-            UIVR.Boton(panel.transform, "Boton Reiniciar Tutorial", "Reiniciar tutorial", UIVR.ColorBoton, menu.ReiniciarTutorial);
+            if (botonesCocina)
+            {
+                UIVR.Boton(panel.transform, "Boton Reiniciar Turno", "Reiniciar turno", UIVR.ColorBoton, menu.ReiniciarTurno);
+                UIVR.Boton(panel.transform, "Boton Reiniciar Tutorial", "Reiniciar tutorial", UIVR.ColorBoton, menu.ReiniciarTutorial);
+            }
             if (altura != null) FilaAltura(panel.transform, altura);
             UIVR.Boton(panel.transform, "Boton Salir", "Salir del juego", UIVR.ColorSalir, menu.Salir);
-            UIVR.Texto(panel.transform, "Controles", TextoControles, 21f, FontStyles.Normal, 170f).alignment = TextAlignmentOptions.TopLeft;
+            UIVR.Texto(panel.transform, "Controles", textoControles, 21f, FontStyles.Normal, 170f).alignment = TextAlignmentOptions.TopLeft;
             UIVR.CapaDeUI(panel);
             panel.SetActive(false);
 
@@ -71,10 +92,7 @@ namespace BioVR.Comun.Editor
             apagar.arraySize = locomocion != null ? 1 : 0;
             if (locomocion != null) apagar.GetArrayElementAtIndex(0).objectReferenceValue = locomocion.gameObject;
             so.ApplyModifiedPropertiesWithoutUndo();
-
-            EditorSceneManager.MarkSceneDirty(escena);
-            EditorSceneManager.SaveScene(escena);
-            Debug.Log("[Menu] Menú de pausa listo: botón de menú del mando izquierdo, o Esc / P en el editor.");
+            return true;
         }
 
         // Pone AlturaAsiento en el mismo objeto que Recentrar y le pasa sus referencias
