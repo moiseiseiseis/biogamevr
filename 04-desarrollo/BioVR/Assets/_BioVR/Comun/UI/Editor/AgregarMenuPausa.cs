@@ -44,20 +44,22 @@ namespace BioVR.Comun.Editor
         public static void Agregar()
         {
             var escena = EditorSceneManager.OpenScene(EscenaInicial, OpenSceneMode.Single);
-            if (!ArmarEn(escena, TextoControles, botonesCocina: false)) return;
+            if (!ArmarEn(escena, TextoControles, botonesCocina: false, alturaAsiento: true)) return;
             EditorSceneManager.MarkSceneDirty(escena);
             EditorSceneManager.SaveScene(escena);
             Debug.Log("[Menu] Menú de pausa listo: botón de menú del mando izquierdo, o Esc / P en el editor.");
         }
 
         // Arma el menú en la escena abierta (no la guarda). botonesCocina: Reiniciar turno y Reiniciar tutorial.
-        public static bool ArmarEn(Scene escena, string textoControles, bool botonesCocina)
+        // alturaAsiento: AlturaAsiento y su fila en el menú. Solo en la cabina: pone los ojos a 1.4 m (la consola),
+        // y en la Cocina, hecha para ojos a 1.2 m, deja al jugador por encima de la mesa.
+        public static bool ArmarEn(Scene escena, string textoControles, bool botonesCocina, bool alturaAsiento)
         {
             var origen = Object.FindFirstObjectByType<XROrigin>();
             if (origen == null || origen.Camera == null) { Debug.LogError($"[Menu] No hay XR Origin con cámara en {escena.name}."); return false; }
 
             UIVR.AsegurarEventSystem();
-            var altura = AsegurarAlturaAsiento();
+            var altura = alturaAsiento ? AsegurarAlturaAsiento() : null;
 
             var viejo = escena.GetRootGameObjects().FirstOrDefault(g => g.name == NombreMenu);
             if (viejo != null) Object.DestroyImmediate(viejo);

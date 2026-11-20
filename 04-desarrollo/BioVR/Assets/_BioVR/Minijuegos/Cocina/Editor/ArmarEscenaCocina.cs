@@ -70,7 +70,7 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             FaseB(a);
             Interfaz(a);
             MusicaYAmbiente(a);
-            BioVR.Comun.Editor.AgregarMenuPausa.ArmarEn(escena, BioVR.Comun.Editor.AgregarMenuPausa.TextoControlesCocina, botonesCocina: true);
+            BioVR.Comun.Editor.AgregarMenuPausa.ArmarEn(escena, BioVR.Comun.Editor.AgregarMenuPausa.TextoControlesCocina, botonesCocina: true, alturaAsiento: false);
             new GameObject("Conexiones (M9)", typeof(ConexionCorrienteRibosomas)).transform.SetParent(a, false);
 
             if (escenario != null) Escenario(a, escenario);
@@ -191,14 +191,15 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             PonerEnMarca(proteasoma, ancla, "Proteasoma (26S)");
         }
 
-        // M8: donde Marcos los puso en Cocina_M8 (posición respecto a AnclaCocina; los Canvas miran al jugador sin girarlos)
+        // M8: posición respecto a AnclaCocina, con los ojos a 1.2 m. Panel y pantalla final donde los puso Marcos en
+        // Cocina_M8; el tablero más bajo (a 2 m quedaba muy arriba) y el tutorial más al frente (estaba muy a la derecha).
         static readonly (string prefab, Vector3 posicion)[] PiezasInterfaz =
         {
             ("Cocina_Sonidos", Vector3.zero),
             ("CocinaMarcaTutorial", Vector3.zero),
             ("Cocina_PanelMensajes", new Vector3(-0.9f, 1.4f, 1.3f)),
-            ("Cocina_TableroPedido", new Vector3(0f, 2f, 1.5f)),
-            ("CocinaTutorial", new Vector3(0.9f, 1.4f, 1.3f)),
+            ("Cocina_TableroPedido", new Vector3(0f, 1.6f, 1.5f)),
+            ("CocinaTutorial", new Vector3(0.3f, 1.3f, 1.1f)),
             ("Cocina_PantallaFinal", new Vector3(0f, 1.4f, 1.2f)),
         };
 
@@ -221,7 +222,9 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
                 if (prefab == null) continue;
                 var go = (GameObject)PrefabUtility.InstantiatePrefab(prefab, ancla);
                 go.transform.localPosition = posicion;
-                go.transform.localRotation = Quaternion.identity;
+                // Un Canvas se lee de frente con su +Z alejándose del jugador: los que están a un lado se giran hacia él
+                var horizontal = new Vector3(posicion.x, 0f, posicion.z);
+                go.transform.localRotation = horizontal.sqrMagnitude > 1e-4f ? Quaternion.LookRotation(horizontal) : Quaternion.identity;
                 if (nombre == "CocinaTutorial") tutorial = go;
                 if (nombre == "CocinaMarcaTutorial") marca = go;
             }
