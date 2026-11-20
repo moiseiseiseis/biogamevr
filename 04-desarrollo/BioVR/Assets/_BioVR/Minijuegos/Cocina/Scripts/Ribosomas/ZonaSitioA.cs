@@ -19,6 +19,17 @@ namespace BioVR.Minijuegos.Cocina
         readonly Dictionary<ARNtCocina, UnityAction<SelectExitEventArgs>> dentro =
             new Dictionary<ARNtCocina, UnityAction<SelectExitEventArgs>>();
 
+        static readonly List<ZonaSitioA> activas = new List<ZonaSitioA>();
+
+        // Para M2: si el ARNt se suelta dentro de un sitio A, lo recibe el ribosoma y la corriente no lo regresa al tubo
+        public static bool AlgunaContiene(ARNtCocina t)
+        {
+            foreach (var z in activas) if (z.dentro.ContainsKey(t)) return true;
+            return false;
+        }
+
+        void OnEnable() => activas.Add(this);
+
         void OnTriggerEnter(Collider otro)
         {
             var t = otro.GetComponentInParent<ARNtCocina>();
@@ -38,6 +49,7 @@ namespace BioVR.Minijuegos.Cocina
 
         void OnDisable()
         {
+            activas.Remove(this);
             foreach (var t in new List<ARNtCocina>(dentro.Keys)) Quitar(t);
         }
 
