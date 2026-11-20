@@ -96,7 +96,7 @@ namespace BioVR.Minijuegos.Cocina
             var necesarios = control.Necesarios();
             bool mostrarPista = control.SegundosEspera > control.Config.esperaPista;
 
-            // Mover y actualizar visuales de los ARNt que flotan en la corriente
+            // Mover y actualizar visuales de los ARNt
             for (int i = 0; i < activos.Count; i++)
             {
                 var item = activos[i];
@@ -110,6 +110,11 @@ namespace BioVR.Minijuegos.Cocina
 
                     bool sirve = !item.datos.Cargado && necesarios.Exists(c => c.tripleta == item.datos.CodonQueLee);
                     if (item.visual != null) item.visual.EstablecerBrilloPista(mostrarPista && sirve);
+                }
+                else if (item.datos.Lugar == LugarARNt.Mano)
+                {
+                    if (item.visual != null) item.visual.EstablecerBrilloPista(false);
+                    if (VueloARNt.Instancia != null) VueloARNt.Instancia.ActualizarRastreoMano(item.datos);
                 }
                 else
                 {
@@ -189,6 +194,9 @@ namespace BioVR.Minijuegos.Cocina
                 grab.selectExited.AddListener(args => AlSoltar(datos, args));
             }
 
+            if (VueloARNt.Instancia != null)
+                VueloARNt.Instancia.RegistrarARNt(datos);
+
             var item = new ItemARNt
             {
                 datos = datos,
@@ -204,17 +212,31 @@ namespace BioVR.Minijuegos.Cocina
 
         void AlAgarrar(ARNtCocina datos)
         {
+            // No interferir si M4 lo tiene en modo llave en el ribosoma
+            if (datos.Lugar == LugarARNt.Llave) return;
+
             if (ControlCocina.Instancia != null)
                 ControlCocina.Instancia.Agarrar(datos);
         }
 
         void AlSoltar(ARNtCocina datos, SelectExitEventArgs args)
         {
-            if (datos.Lugar != LugarARNt.Mano) return; // Ya lo capturó un socket (sintetasa/ribosoma)
+            // Si M4 lo tiene en modo llave o M3 en la sintetasa, no devolver al tubo
+            if (datos.Lugar == LugarARNt.Llave || datos.Lugar == LugarARNt.Sintetasa) return;
+            if (datos.Lugar != LugarARNt.Mano)
+            {
+                if (VueloARNt.Instancia != null) VueloARNt.Instancia.LimpiarRastreo(datos);
+                return;
+            }
+
+            // Verificar si se soltó sobre la sintetasa (M3)
+            var sint = FindFirstObjectByType<EstacionSintetasa>();
+            if (sint != null && sint.IntentarColocar(datos))
+                return;
 
             Vector3 vel = Vector3.zero;
             var rb = datos.GetComponent<Rigidbody>();
-            if (rb != null) vel = rb.linearVelocity;
+            if (rb != null && !rb.isKinematic) vel = rb.linearVelocity;
 
             if (VueloARNt.Instancia != null && VueloARNt.Instancia.IntentarLanzarVR(datos, vel))
                 return;
@@ -240,4 +262,3 @@ namespace BioVR.Minijuegos.Cocina
         }
     }
 }
-

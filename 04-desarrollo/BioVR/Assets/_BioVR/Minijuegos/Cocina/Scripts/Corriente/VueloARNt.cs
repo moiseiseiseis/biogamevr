@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 namespace BioVR.Minijuegos.Cocina
 {
@@ -14,6 +17,9 @@ namespace BioVR.Minijuegos.Cocina
 
         public Action<ARNtCocina> AlLlegarRibosomaLejano;
         public Action<ARNtCocina> AlLlegarRegreso;
+
+        readonly Dictionary<ARNtCocina, Vector3> ultimaPos = new Dictionary<ARNtCocina, Vector3>();
+        readonly Dictionary<ARNtCocina, Vector3> velocidadCalculada = new Dictionary<ARNtCocina, Vector3>();
 
         void Awake()
         {
@@ -33,15 +39,65 @@ namespace BioVR.Minijuegos.Cocina
             destinoRegresoCitoplasma = regresoCitoplasma;
         }
 
-        // Evalúa si al soltar un ARNt con velocidad > 1.2 m/s le atina a un destino lejano dentro de 25°
-        public bool IntentarLanzarVR(ARNtCocina arnt, Vector3 velocidadMano)
+        public void RegistrarARNt(ARNtCocina arnt)
         {
-            float rapidez = velocidadMano.magnitude;
-            if (rapidez <= ControlesCocina.VelocidadLanzar) return false;
+            if (arnt == null) return;
+            var grab = arnt.GetComponent<XRGrabInteractable>();
+            if (grab == null) return;
 
-            Vector3 dirLanzamiento = velocidadMano.normalized;
+            grab.activated.AddListener(args => AlApretarGatilloSosteniendo(arnt, args));
+        }
+
+        public void ActualizarRastreoMano(ARNtCocina arnt)
+        {
+            if (arnt == null) return;
+            Vector3 actual = arnt.transform.position;
+            if (ultimaPos.TryGetValue(arnt, out Vector3 prev) && Time.deltaTime > 0.0001f)
+            {
+                Vector3 velInstantanea = (actual - prev) / Time.deltaTime;
+                velocidadCalculada[arnt] = velocidadCalculada.TryGetValue(arnt, out Vector3 vAnt)
+                    ? Vector3.Lerp(vAnt, velInstantanea, 0.5f)
+                    : velInstantanea;
+            }
+            ultimaPos[arnt] = actual;
+        }
+
+        public void LimpiarRastreo(ARNtCocina arnt)
+        {
+            if (arnt == null) return;
+            ultimaPos.Remove(arnt);
+            velocidadCalculada.Remove(arnt);
+        }
+
+        // Opción A VR: Apretar el gatillo mientras sostienes el ARNt apuntando con el rayo
+        void AlApretarGatilloSosteniendo(ARNtCocina arnt, ActivateEventArgs args)
+        {
+            if (arnt == null || arnt.Lugar != LugarARNt.Mano) return;
+            Transform interactorTr = args.interactorObject?.transform;
+            if (interactorTr == null) return;
+
+            if (IntentarLanzarPorDireccion(arnt, interactorTr.forward))
+            {
+                var grab = arnt.GetComponent<XRGrabInteractable>();
+                if (grab != null && grab.isSelected && grab.interactionManager != null && grab.firstInteractorSelecting != null)
+                    grab.interactionManager.SelectExit(grab.firstInteractorSelecting, grab);
+            }
+        }
+
+
+        // Opción B VR: Soltar el grip moviendo la mano rápido (> 1.2 m/s)
+        public bool IntentarLanzarVR(ARNtCocina arnt, Vector3 velocidadFallback)
+        {
+            Vector3 vel = velocidadCalculada.TryGetValue(arnt, out Vector3 vCalc) ? vCalc : velocidadFallback;
+            LimpiarRastreo(arnt);
+
+            if (vel.magnitude <= ControlesCocina.VelocidadLanzar) return false;
+            return IntentarLanzarPorDireccion(arnt, vel.normalized);
+        }
+
+        bool IntentarLanzarPorDireccion(ARNtCocina arnt, Vector3 dirLanzamiento)
+        {
             Vector3 origen = arnt.transform.position;
-
             Transform mejorDestino = null;
             float mejorAngulo = ControlesCocina.AnguloAtinar;
             bool esRegreso = false;
@@ -132,4 +188,5 @@ namespace BioVR.Minijuegos.Cocina
         }
     }
 }
+
 

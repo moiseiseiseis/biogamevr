@@ -1102,6 +1102,7 @@ GameObject:
   - component: {fileID: 949220657582902870}
   - component: {fileID: 7878245916572450039}
   - component: {fileID: 8197313417944876751}
+  - component: {fileID: -8763177466851271290}
   m_Layer: 0
   m_Name: Cocina_ARNt
   m_TagString: Untagged
@@ -1325,7 +1326,7 @@ MonoBehaviour:
   m_SmoothScale: 0
   m_SmoothScaleAmount: 8
   m_TightenScale: 0.1
-  m_ThrowOnDetach: 1
+  m_ThrowOnDetach: 0
   m_ThrowSmoothingDuration: 0.25
   m_ThrowSmoothingCurve:
     serializedVersion: 2
@@ -1355,6 +1356,18 @@ MonoBehaviour:
   m_LimitAngularVelocity: 0
   m_MaxLinearVelocityDelta: 10
   m_MaxAngularVelocityDelta: 20
+--- !u!114 &-8763177466851271290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8135734656818822934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0e6aefe5e607d04da4f83e2999c6478, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.DetectorSacudida
 --- !u!1001 &4380058070648496748
 PrefabInstance:
   m_ObjectHideFlags: 0
