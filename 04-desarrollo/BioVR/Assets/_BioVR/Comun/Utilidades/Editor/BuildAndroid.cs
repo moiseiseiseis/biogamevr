@@ -10,7 +10,8 @@ namespace BioVR.Comun.Editor
     // Desde el editor: menú BioVR → Build APK.
     // Desde la terminal: Unity -batchmode -buildTarget Android -executeMethod BioVR.Comun.Editor.BuildAndroid.Construir
     // BioVR → Build APK Expresión Genética genera solo la escena del minijuego, con otro nombre de paquete
-    // para que se instale junto a BioVR sin reemplazarlo. BioVR → Build APK Fase A hace lo mismo con la escena de traducción.
+    // para que se instale junto a BioVR sin reemplazarlo. BioVR → Build APK Fase A hace lo mismo con la escena de traducción,
+    // y BioVR → Build APK Cocina con la escena integrada de la Cocina de proteínas.
     public static class BuildAndroid
     {
         const string RutaApk = "Builds/BioVR.apk";
@@ -20,6 +21,9 @@ namespace BioVR.Comun.Editor
         const string RutaApkFaseA = "Builds/FaseA.apk";
         const string PaqueteFaseA = "com.biogamevr.fasea";
         const string NombreFaseA = "BioVR Fase A";
+        const string RutaApkCocina = "Builds/Cocina.apk";
+        const string PaqueteCocina = "com.biogamevr.cocina";
+        const string NombreCocina = "BioVR Cocina";
 
         [MenuItem("BioVR/Build APK")]
         public static void Construir()
@@ -38,6 +42,12 @@ namespace BioVR.Comun.Editor
         public static void ConstruirFaseA() =>
             Terminar(GenerarAparte(BioVR.Minijuegos.ExpresionGenetica.Herramientas.ArmarPruebaTraduccion.Escena,
                 "BioVR → Armar prueba Traducción (Rol 3)", PaqueteFaseA, NombreFaseA, RutaApkFaseA));
+
+        // La Cocina de proteínas (M9): la escena integrada, sola, para probarla sin pasar por el hangar.
+        [MenuItem("BioVR/Build APK Cocina")]
+        public static void ConstruirCocina() =>
+            Terminar(GenerarAparte(BioVR.Minijuegos.Cocina.Herramientas.ArmarEscenaCocina.Escena,
+                "BioVR → Cocina → Armar escena Cocina", PaqueteCocina, NombreCocina, RutaApkCocina));
 
         // Compila una sola escena con otro paquete y otro nombre, para que se instale junto a BioVR sin reemplazarlo.
         static bool GenerarAparte(string escena, string armador, string paqueteNuevo, string nombreNuevo, string ruta)
