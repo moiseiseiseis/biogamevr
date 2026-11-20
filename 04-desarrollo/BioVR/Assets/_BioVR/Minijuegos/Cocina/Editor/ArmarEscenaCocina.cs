@@ -17,7 +17,8 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
     //   - Conexión M2 ↔ M4 (ConexionCorrienteRibosomas) y el destino "ribosoma lejano" del lanzamiento.
     //   - Sin cabina: en la Cocina el jugador solo ve las pinzas del Mecha en primera persona (decisión del 20-nov).
     //   - Fondo 360° (Skybox Panoramic) y el escenario celular low poly de Diseño (#59).
-    //   - M5, M8 y M10 todavía no existen: sus marcas se quedan visibles en Play para saber dónde van.
+    //   - M10 (fase B): la BiP y el proteasoma de BioVR → Cocina → Armar fase B (M10), si ya se corrió.
+    //   - M5 y M8 todavía no existen: sus marcas se quedan visibles en Play para saber dónde van.
     //
     // Se puede correr varias veces: la escena se vuelve a hacer desde Cocina_Base y conserva su GUID.
     public static class ArmarEscenaCocina
@@ -63,6 +64,7 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             Sintetasa(a);
             Imprevistos(a);
             Holograma(a);
+            FaseB(a);
             new GameObject("Conexiones (M9)", typeof(ConexionCorrienteRibosomas)).transform.SetParent(a, false);
 
             if (escenario != null) Escenario(a, escenario);
@@ -76,7 +78,7 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             EditorSceneManager.MarkSceneDirty(escena);
             EditorSceneManager.SaveScene(escena);
             AssetDatabase.SaveAssets();
-            Debug.Log($"[Cocina] Listo: {Escena}. Faltan M5 (salida), M8 (mensajes, tutorial y final) y M10 (fase B): sus marcas se ven en Play.");
+            Debug.Log($"[Cocina] Listo: {Escena}. Faltan M5 (salida) y M8 (mensajes, tutorial y final): sus marcas se ven en Play.");
         }
 
         // ---------------- Módulos ----------------
@@ -167,6 +169,20 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
                 return;
             }
             PonerEnMarca(prefab, ancla, "Holograma");
+        }
+
+        // M10: la BiP y el proteasoma en sus marcas (solo se ven en la fase B)
+        static void FaseB(Transform ancla)
+        {
+            var bip = AssetDatabase.LoadAssetAtPath<GameObject>(ArmarFaseB.RutaBiP);
+            var proteasoma = AssetDatabase.LoadAssetAtPath<GameObject>(ArmarFaseB.RutaProteasoma);
+            if (bip == null || proteasoma == null)
+            {
+                Debug.LogWarning("[Cocina] Faltan Cocina_BiP o Cocina_Proteasoma. Córrelo primero: BioVR → Cocina → Armar fase B (M10).");
+                return;
+            }
+            PonerEnMarca(bip, ancla, "Chaperona (BiP)");
+            PonerEnMarca(proteasoma, ancla, "Proteasoma (26S)");
         }
 
         // ---------------- Escenario y fondo ----------------
@@ -277,7 +293,7 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             return p;
         }
 
-        static Transform Marca(Transform ancla, string nombre)
+        internal static Transform Marca(Transform ancla, string nombre)
         {
             var t = ancla.Find("Puntos/" + nombre);
             if (t == null) Debug.LogWarning($"[Cocina] Falta la marca '{nombre}' en AnclaCocina/Puntos. Vuelve a armar Cocina_Base.");
@@ -285,13 +301,13 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
         }
 
         // La marca ya tiene su módulo: no se dibuja su esfera en Play
-        static void OcultarMarca(Transform ancla, string nombre)
+        internal static void OcultarMarca(Transform ancla, string nombre)
         {
             var punto = ancla.Find("Puntos/" + nombre)?.GetComponent<PuntoCocina>();
             if (punto != null) punto.mostrarEnJuego = false;
         }
 
-        static GameObject PonerEnMarca(GameObject prefab, Transform ancla, string marca)
+        internal static GameObject PonerEnMarca(GameObject prefab, Transform ancla, string marca)
         {
             var punto = Marca(ancla, marca);
             if (prefab == null || punto == null) return null;
