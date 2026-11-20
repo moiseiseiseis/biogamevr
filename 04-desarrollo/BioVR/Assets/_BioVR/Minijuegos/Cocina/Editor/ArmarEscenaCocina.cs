@@ -11,7 +11,8 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
     // Arma Escenas/Cocina.unity, la escena integrada, a partir de Cocina_Base: nadie la edita a mano,
     // si hace falta algo se agrega aquí y se vuelve a correr (especificación 1.1).
     //
-    //   - Módulos que ya están en main: M2 corriente, M3 sintetasa, M4 ribosomas, M6 imprevistos, M7 holograma.
+    //   - Módulos que ya están en main: M2 corriente, M3 sintetasa, M4 ribosomas, M6 imprevistos, M7 holograma
+    //     (Cocina_Holograma.prefab, de BioVR → Cocina → Armar holograma (M7)).
     //     Cada uno en su marca de AnclaCocina/Puntos, igual que en su escena de prueba (sin los atajos de prueba).
     //   - Conexión M2 ↔ M4 (ConexionCorrienteRibosomas) y el destino "ribosoma lejano" del lanzamiento.
     //   - Sin cabina: en la Cocina el jugador solo ve las pinzas del Mecha en primera persona (decisión del 20-nov).
@@ -25,7 +26,6 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
 
         const string Raiz = CrearDatosCocina.Raiz;
         const string Prefabs = Raiz + "/Prefabs/";
-        const string Datos = Raiz + "/Datos/";
         const string CarpetaFondo = Raiz + "/Fondo";
         const string CarpetaEscenario = "Assets/_BioVR/Modelos/EscenarioCelular";
         const string ModeloEscenario = CarpetaEscenario + "/escenario-celular_lowpoly.fbx";
@@ -157,35 +157,16 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             horquilla.transform.SetPositionAndRotation(ribosoma.TransformPoint(h.posicionEnRibosoma), ribosoma.rotation);
         }
 
-        // M7: el proyector provisional de Ascencio (cilindro de 0.4 × 0.13 m) con el holograma encima
+        // M7: Cocina_Holograma.prefab (BioVR → Cocina → Armar holograma (M7)) en la marca "Holograma"
         static void Holograma(Transform ancla)
         {
-            var marca = Marca(ancla, "Holograma");
-            var cuenta = Prefab("Cocina_CuentaHolograma");
-            var csv = AssetDatabase.LoadAssetAtPath<TextAsset>(Datos + "coordenadas_normales.csv");
-            var forma = AssetDatabase.LoadAssetAtPath<FormaProteinaData>(Datos + "FormaS20G.asset");
-            if (marca == null || cuenta == null || csv == null || forma == null)
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(ArmarHolograma.RutaPrefab);
+            if (prefab == null)
             {
-                Debug.LogWarning("[Cocina] Falta algo de M7 (marca Holograma, Cocina_CuentaHolograma, coordenadas_normales.csv o FormaS20G): no se pone el holograma.");
+                Debug.LogWarning($"[Cocina] Falta {ArmarHolograma.RutaPrefab}. Córrelo primero: BioVR → Cocina → Armar holograma (M7).");
                 return;
             }
-
-            var proyector = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            proyector.name = "Proyector_Holograma";
-            Object.DestroyImmediate(proyector.GetComponent<Collider>());
-            proyector.transform.SetParent(marca, false);
-            proyector.transform.localPosition = new Vector3(0f, 0.064f, 0f);
-            proyector.transform.localScale = new Vector3(0.2f, 0.064f, 0.2f);
-            proyector.GetComponent<Renderer>().sharedMaterial = MaterialLiso("Proyector", new Color(0.3f, 0.32f, 0.38f));
-
-            var lector = proyector.AddComponent<LectorCoordenadas>();
-            lector.csvNormal = csv;
-            lector.formaS20G = forma;
-            var holo = proyector.AddComponent<HologramaCocina>();
-            holo.lector = lector;
-            holo.cuentaPrefab = cuenta;
-            holo.escalaCuenta = 0.022f; // el valor de Cocina_M7
-            OcultarMarca(ancla, "Holograma");
+            PonerEnMarca(prefab, ancla, "Holograma");
         }
 
         // ---------------- Escenario y fondo ----------------
@@ -320,18 +301,6 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             go.transform.localScale = Vector3.one;
             OcultarMarca(ancla, marca);
             return go;
-        }
-
-        static Material MaterialLiso(string nombre, Color color)
-        {
-            string carpeta = Raiz + "/Materiales";
-            CrearDatosCocina.Carpeta(carpeta);
-            string ruta = $"{carpeta}/Cocina_{nombre}.mat";
-            var m = AssetDatabase.LoadAssetAtPath<Material>(ruta);
-            if (m != null) return m;
-            m = new Material(Shader.Find("Universal Render Pipeline/Lit")) { color = color };
-            AssetDatabase.CreateAsset(m, ruta);
-            return m;
         }
     }
 }
