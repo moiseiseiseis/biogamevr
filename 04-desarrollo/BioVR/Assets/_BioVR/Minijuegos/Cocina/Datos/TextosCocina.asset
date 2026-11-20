@@ -100,3 +100,44 @@ MonoBehaviour:
   - clave: raro
     texto: "\xA1Cod\xF3n raro! El ARNt que encaja con \xE9l casi no hay en la c\xE9lula:
       b\xFAscalo bien en la corriente."
+  - clave: tablero_codon_raro
+    texto: "\xA1COD\xD3N RARO! Mayor flujo de ARNt"
+  - clave: final_turno_titulo
+    texto: "\xA1TURNO COMPLETADO!"
+  - clave: final_juego_titulo
+    texto: "\xA1PEDIDO DE AMILINA COMPLETADO!"
+  - clave: final_frase_t1
+    texto: "Dominaste la s\xEDntesis b\xE1sica de amilina en el ribosoma de mesa."
+  - clave: final_frase_t2
+    texto: Superaste dos ribosomas activos e imprevistos en la cadena de ARNm.
+  - clave: final_frase_t3
+    texto: "Identificaste la mutaci\xF3n S20G y protegiste la c\xE9lula del plegamiento
+      t\xF3xico."
+  - clave: consejo_inicio_t1
+    texto: "Toma un ARNt de la corriente que coincida con el cod\xF3n del ribosoma."
+  - clave: consejo_inicio_t2
+    texto: Atiende ambos ribosomas y mantente atento a horquillas o codones raros.
+  - clave: consejo_inicio_t3
+    texto: "Sintetiza la cadena con precisi\xF3n para inspeccionar su plegamiento."
+  - clave: consejo_vacio
+    texto: "Este ARNt est\xE1 vac\xEDo: ll\xE9valo a la sintetasa para cargarle su
+      amino\xE1cido."
+  - clave: consejo_sintetasa_cargar
+    texto: "Activa la sintetasa hasta completar la barra de carga del amino\xE1cido."
+  - clave: consejo_sintetasa_sacar
+    texto: "El ARNt ya est\xE1 cargado: t\xF3malo de la sintetasa y ll\xE9valo al
+      ribosoma."
+  - clave: consejo_equivocado
+    texto: "\xA1Amino\xE1cido equivocado! Sacude el ARNt para vaciarlo antes de usarlo."
+  - clave: consejo_listo
+    texto: "\xA1Encaja! Ll\xE9valo al ribosoma que pide ese cod\xF3n."
+  - clave: consejo_otro_codon
+    texto: "Ning\xFAn ribosoma pide ese cod\xF3n ahora; busca el cod\xF3n activo."
+  - clave: consejo_llave
+    texto: Gira el ARNt en el ribosoma hasta que encaje en su sitio.
+  - clave: consejo_usado
+    texto: "ARNt usado: devu\xE9lvelo a la zona de reciclaje para ganar puntos."
+  - clave: consejo_fin
+    texto: "Cod\xF3n de paro alcanzado: toca el bot\xF3n FIN para liberar la cadena."
+  - clave: consejo_horquilla
+    texto: "\xA1Horquilla en el ARNm! Golp\xE9ala varias veces para deshacer el nudo."

@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5d0d3c3146160e42a715015b2eb6a51, type: 3}
+  m_Name: SonidosCocina
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.SonidosCocinaData
+  sonidos:
+  - clave: acierto
+    clip: {fileID: 0}
+    volumen: 1
+  - clave: error
+    clip: {fileID: 0}
+    volumen: 1
+  - clave: clic
+    clip: {fileID: 0}
+    volumen: 1
+  - clave: tic
+    clip: {fileID: 0}
+    volumen: 1
+  - clave: llave
+    clip: {fileID: 0}
+    volumen: 1
+  - clave: cargado
+    clip: {fileID: 0}
+    volumen: 1
+  - clave: malo
+    clip: {fileID: 0}
+    volumen: 1
+  - clave: sacude
+    clip: {fileID: 0}
+    volumen: 1
+  - clave: lanzar
+    clip: {fileID: 0}
+    volumen: 1
+  - clave: cae
+    clip: {fileID: 0}
+    volumen: 1
+  - clave: recicla
+    clip: {fileID: 0}
+    volumen: 1
+  - clave: golpe
+    clip: {fileID: 0}
+    volumen: 1
+  - clave: pop
+    clip: {fileID: 0}
+    volumen: 1
+  - clave: alarma
+    clip: {fileID: 0}
+    volumen: 1
+  - clave: pliega
+    clip: {fileID: 0}
+    volumen: 1
+  - clave: torcida
+    clip: {fileID: 0}
+    volumen: 1
+  - clave: escala
+    clip: {fileID: 0}
+    volumen: 1
+  - clave: chaperona
+    clip: {fileID: 0}
+    volumen: 1
+  - clave: tritura
+    clip: {fileID: 0}
+    volumen: 1
+  - clave: estrella
+    clip: {fileID: 0}
+    volumen: 1

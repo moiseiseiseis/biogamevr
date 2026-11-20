@@ -1,0 +1,1989 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!29 &1
+OcclusionCullingSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_OcclusionBakeSettings:
+    smallestOccluder: 5
+    smallestHole: 0.25
+    backfaceThreshold: 100
+  m_SceneGUID: 00000000000000000000000000000000
+  m_OcclusionCullingData: {fileID: 0}
+--- !u!104 &2
+RenderSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 10
+  m_Fog: 0
+  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_FogMode: 3
+  m_FogDensity: 0.01
+  m_LinearFogStart: 0
+  m_LinearFogEnd: 300
+  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
+  m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
+  m_AmbientIntensity: 1
+  m_AmbientMode: 0
+  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
+  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_HaloStrength: 0.5
+  m_FlareStrength: 1
+  m_FlareFadeSpeed: 3
+  m_HaloTexture: {fileID: 0}
+  m_SpotCookie: {fileID: 10001, guid: 0000000000000000e000000000000000, type: 0}
+  m_DefaultReflectionMode: 0
+  m_DefaultReflectionResolution: 128
+  m_ReflectionBounces: 1
+  m_ReflectionIntensity: 1
+  m_CustomReflection: {fileID: 0}
+  m_Sun: {fileID: 0}
+  m_UseRadianceAmbientProbe: 0
+--- !u!157 &3
+LightmapSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
+  m_GISettings:
+    serializedVersion: 2
+    m_BounceScale: 1
+    m_IndirectOutputScale: 1
+    m_AlbedoBoost: 1
+    m_EnvironmentLightingMode: 0
+    m_EnableBakedLightmaps: 1
+    m_EnableRealtimeLightmaps: 0
+  m_LightmapEditorSettings:
+    serializedVersion: 12
+    m_Resolution: 2
+    m_BakeResolution: 40
+    m_AtlasSize: 1024
+    m_AO: 0
+    m_AOMaxDistance: 1
+    m_CompAOExponent: 1
+    m_CompAOExponentDirect: 0
+    m_ExtractAmbientOcclusion: 0
+    m_Padding: 2
+    m_LightmapParameters: {fileID: 0}
+    m_LightmapsBakeMode: 1
+    m_TextureCompression: 1
+    m_ReflectionCompression: 2
+    m_MixedBakeMode: 2
+    m_BakeBackend: 2
+    m_PVRSampling: 1
+    m_PVRDirectSampleCount: 32
+    m_PVRSampleCount: 512
+    m_PVRBounces: 2
+    m_PVREnvironmentSampleCount: 256
+    m_PVREnvironmentReferencePointCount: 2048
+    m_PVRFilteringMode: 1
+    m_PVRDenoiserTypeDirect: 1
+    m_PVRDenoiserTypeIndirect: 1
+    m_PVRDenoiserTypeAO: 1
+    m_PVRFilterTypeDirect: 0
+    m_PVRFilterTypeIndirect: 0
+    m_PVRFilterTypeAO: 0
+    m_PVREnvironmentMIS: 1
+    m_PVRCulling: 1
+    m_PVRFilteringGaussRadiusDirect: 1
+    m_PVRFilteringGaussRadiusIndirect: 1
+    m_PVRFilteringGaussRadiusAO: 1
+    m_PVRFilteringAtrousPositionSigmaDirect: 0.5
+    m_PVRFilteringAtrousPositionSigmaIndirect: 2
+    m_PVRFilteringAtrousPositionSigmaAO: 1
+    m_ExportTrainingData: 0
+    m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
+  m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
+  m_LightingSettings: {fileID: 0}
+--- !u!196 &4
+NavMeshSettings:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_BuildSettings:
+    serializedVersion: 3
+    agentTypeID: 0
+    agentRadius: 0.5
+    agentHeight: 2
+    agentSlope: 45
+    agentClimb: 0.4
+    ledgeDropHeight: 0
+    maxJumpAcrossDistance: 0
+    minRegionArea: 2
+    manualCellSize: 0
+    cellSize: 0.16666667
+    manualTileSize: 0
+    tileSize: 256
+    buildHeightMesh: 0
+    maxJobWorkers: 0
+    preserveTilesOutsideBounds: 0
+    debug:
+      m_Flags: 0
+  m_NavMeshData: {fileID: 0}
+--- !u!1 &346990056
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 346990057}
+  - component: {fileID: 346990058}
+  m_Layer: 0
+  m_Name: Ribosoma lejano
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &346990057
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346990056}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.04012145, y: 0.9518835, z: -0.2684589, w: -0.14225993}
+  m_LocalPosition: {x: 0.5555062, y: 1.3, z: 1.816979}
+  m_LocalScale: {x: 2.1, y: 2.1, z: 2.1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1579637552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &346990058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346990056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
+  nota: "-17\xB0 \xB7 1.9 m \xB7 1.3 m de alto. M4. Escala \xD72.1, inclinado 0.55
+    rad. Plataforma a 1.04 m con anillo magenta"
+  color: {r: 1, g: 0.24, b: 0.65, a: 1}
+  radio: 0.05
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &374076246
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 374076247}
+  - component: {fileID: 374076248}
+  m_Layer: 0
+  m_Name: Tablero del pedido
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &374076247
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374076246}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.034899496, z: -0, w: 0.99939084}
+  m_LocalPosition: {x: -0.13951294, y: 1.95, z: 1.9951282}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1579637552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &374076248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374076246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
+  nota: "4\xB0 \xB7 2 m \xB7 1.95 m de alto. M8. Panel de 0.80 \xD7 0.26 m sobre
+    tablero-pedido.fbx. Orientado para un Canvas"
+  color: {r: 0.5, g: 0.9, b: 1, a: 1}
+  radio: 0.05
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1001 &471223017
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1175130374}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.00000004371139
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+      propertyPath: m_Name
+      value: Mesa curva
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+--- !u!4 &471223018 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d79d9b61340ec674291907d89725ab39, type: 3}
+  m_PrefabInstance: {fileID: 471223017}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &484356570
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 484356574}
+  - component: {fileID: 484356573}
+  - component: {fileID: 484356572}
+  - component: {fileID: 484356571}
+  m_Layer: 0
+  m_Name: Piso
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!23 &484356571
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484356570}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 7d3a36c7cb146ce4183ef98fe504fe13, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &484356572
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484356570}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!33 &484356573
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484356570}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &484356574
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484356570}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &696865701 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4616964010550230199, guid: 382dda457a7cd804f9bc249ec87f68d3, type: 3}
+  m_PrefabInstance: {fileID: 1446116696435124299}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &828759581
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 828759582}
+  - component: {fileID: 828759583}
+  m_Layer: 0
+  m_Name: Holograma
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &828759582
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 828759581}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.91706014, z: 0, w: -0.39874902}
+  m_LocalPosition: {x: 0.62165064, y: 0.78, z: 0.5796986}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1579637552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &828759583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 828759581}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
+  nota: "-47\xB0 \xB7 0.85 m \xB7 0.78 m de alto. M7. proyector-holograma.fbx"
+  color: {r: 1, g: 0.24, b: 0.65, a: 1}
+  radio: 0.05
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!4 &891896982 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8248805211516899126, guid: 9ccd151fc1368ea4490ba21724086825, type: 3}
+  m_PrefabInstance: {fileID: 4565324732690786411}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &898920874
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 898920877}
+  - component: {fileID: 898920876}
+  - component: {fileID: 898920875}
+  m_Layer: 0
+  m_Name: Directional Light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &898920875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 898920874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
+--- !u!108 &898920876
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 898920874}
+  m_Enabled: 1
+  serializedVersion: 12
+  m_Type: 1
+  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Intensity: 1
+  m_Range: 10
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize2D: {x: 0.5, y: 0.5}
+  m_Shadows:
+    m_Type: 2
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
+--- !u!4 &898920877
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 898920874}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!4 &905008793 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8692165094208931627, guid: 6651c9285ab6929419d14a0a6c898696, type: 3}
+  m_PrefabInstance: {fileID: 922626560683677774}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &941926329
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 941926330}
+  - component: {fileID: 941926331}
+  m_Layer: 0
+  m_Name: ControlCocina
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &941926330
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 941926329}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1175130374}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &941926331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 941926329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c643a22459a8d554daf88c9e95a3d3fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.ControlCocina
+  config: {fileID: 11400000, guid: d95169dcabfa4824cb605704485b3855, type: 2}
+  codigo: {fileID: 11400000, guid: 5f86281b763d1184b854bf79b5dea8f7, type: 2}
+  textos: {fileID: 11400000, guid: 753b574308b9d394bb5b78ef9308151f, type: 2}
+  turnos:
+  - {fileID: 11400000, guid: 38b4f40bf24fcc1459a5077414984882, type: 2}
+  - {fileID: 11400000, guid: a47fa1aaf434dc040b17e862be149f2d, type: 2}
+  - {fileID: 11400000, guid: 70266fcf92402b242ae8ca382122e4d9, type: 2}
+  turnoInicial: 0
+  semilla: 0
+--- !u!1001 &1060790046
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1319746308, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 58445280694286476, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1316853283282549446, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1470279098769358944, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_Name
+      value: XR Origin (XR Rig)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1717954561962503726, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2190828208922718286, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2449787133337329437, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2626757739553014894, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3904471525139099824, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1060790050}
+    - targetCorrespondingSourceObject: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1060790049}
+  m_SourcePrefab: {fileID: 100100000, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+--- !u!1 &1060790047 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+  m_PrefabInstance: {fileID: 1060790046}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1060790048 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1178791450436251564, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+  m_PrefabInstance: {fileID: 1060790046}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060790047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0cb9aa70a22847b5925ee5f067c10a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1060790049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060790047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7e1333adc5815c498a764b82fe1463b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Jugador.Recentrar
+  xrOrigin: {fileID: 1060790048}
+  puntoOjos: {fileID: 2101267057}
+  botonRecentrar:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Recentrar
+      m_Type: 1
+      m_ExpectedControlType: 
+      m_Id: f0c2d7b7-116d-41f7-931f-efdfec528844
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: dc08564d-905f-4696-8095-4551f03da8d1
+        m_Path: <XRController>{RightHand}/secondaryButton
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Recentrar
+        m_Flags: 0
+      - m_Name: 
+        m_Id: 61f7b5ef-d519-4caa-a9cc-1261c8d04805
+        m_Path: <XRController>{LeftHand}/secondaryButton
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Recentrar
+        m_Flags: 0
+      - m_Name: 
+        m_Id: 3f5175e2-ded9-4519-8527-42db81e7165c
+        m_Path: <Keyboard>/home
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Recentrar
+        m_Flags: 0
+      m_Flags: 0
+      m_Priority: 0
+    m_Reference: {fileID: 0}
+--- !u!114 &1060790050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060790047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9aaa68a4ef1475f4bacc64e8bd311be8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Jugador.AnclarAlJugador
+  origen: {fileID: 1060790048}
+  estacion: {fileID: 1175130373}
+  puntoOjos: {fileID: 2101267057}
+  esperaMaxima: 2
+--- !u!1 &1109481235
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1109481236}
+  - component: {fileID: 1109481237}
+  m_Layer: 0
+  m_Name: Salida
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1109481236
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109481235}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.9659259, z: 0, w: -0.25881907}
+  m_LocalPosition: {x: 0.26, y: 0.78, z: 0.45033318}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1579637552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1109481237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109481235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
+  nota: "-30\xB0 \xB7 0.52 m \xB7 0.78 m de alto. M5. bandeja-salida.fbx"
+  color: {r: 1, g: 0.24, b: 0.65, a: 1}
+  radio: 0.05
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &1175130373
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1175130374}
+  m_Layer: 0
+  m_Name: AnclaCocina
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1175130374
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175130373}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2101267057}
+  - {fileID: 471223018}
+  - {fileID: 1579637552}
+  - {fileID: 941926330}
+  - {fileID: 5908060328502053367}
+  - {fileID: 891896982}
+  - {fileID: 4025563267603801862}
+  - {fileID: 1406913365168905237}
+  - {fileID: 696865701}
+  - {fileID: 905008793}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1331460106
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1331460107}
+  - component: {fileID: 1331460108}
+  m_Layer: 0
+  m_Name: Corriente fin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1331460107
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331460106}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.99254614, z: 0, w: 0.12186935}
+  m_LocalPosition: {x: -0.17418377, y: 1.06, z: 0.6986129}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1579637552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1331460108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1331460106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
+  nota: "14\xB0 \xB7 0.72 m \xB7 1.06 m de alto. M2. Fin de la corriente"
+  color: {r: 1, g: 0.24, b: 0.65, a: 1}
+  radio: 0.05
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &1356255547
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1356255548}
+  - component: {fileID: 1356255549}
+  m_Layer: 0
+  m_Name: Sintetasa
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1356255548
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1356255547}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.92050487, z: 0, w: 0.3907311}
+  m_LocalPosition: {x: -0.4747643, y: 0.88, z: 0.45847455}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1579637552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1356255549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1356255547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
+  nota: "46\xB0 \xB7 0.66 m \xB7 0.88 m de alto. M3. Modelo \xD70.75; base-sintetasa.fbx
+    debajo, a 0.78 m"
+  color: {r: 1, g: 0.24, b: 0.65, a: 1}
+  radio: 0.05
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &1359918727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1359918729}
+  - component: {fileID: 1359918728}
+  m_Layer: 0
+  m_Name: XR Interaction Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1359918728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1359918727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83e4e6cca11330d4088d729ab4fc9d9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.Interaction.Toolkit::UnityEngine.XR.Interaction.Toolkit.XRInteractionManager
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+--- !u!4 &1359918729
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1359918727}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1551890619
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1551890620}
+  - component: {fileID: 1551890621}
+  m_Layer: 0
+  m_Name: Corriente inicio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1551890620
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1551890619}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.83867055, z: 0, w: 0.54463905}
+  m_LocalPosition: {x: -0.65775275, y: 1.06, z: 0.29285038}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1579637552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1551890621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1551890619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
+  nota: "66\xB0 \xB7 0.72 m \xB7 1.06 m de alto. M2. La corriente va de +66\xB0 a
+    +14\xB0, radio 0.72, altura 1.06 \xB1 0.035. Tubo magenta de 0.06 m de radio"
+  color: {r: 1, g: 0.24, b: 0.65, a: 1}
+  radio: 0.05
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &1579637551
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1579637552}
+  m_Layer: 0
+  m_Name: Puntos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1579637552
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579637551}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1914171728}
+  - {fileID: 346990057}
+  - {fileID: 1551890620}
+  - {fileID: 1331460107}
+  - {fileID: 1356255548}
+  - {fileID: 1109481236}
+  - {fileID: 1849663972}
+  - {fileID: 828759582}
+  - {fileID: 2021479176}
+  - {fileID: 1710827887}
+  - {fileID: 2078575663}
+  - {fileID: 374076247}
+  m_Father: {fileID: 1175130374}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1710827886
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1710827887}
+  - component: {fileID: 1710827888}
+  m_Layer: 0
+  m_Name: Proteasoma (26S)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1710827887
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710827886}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.9659259, z: 0, w: -0.25881907}
+  m_LocalPosition: {x: 0.25, y: 0.78, z: 0.4330127}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1579637552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1710827888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710827886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
+  nota: "-30\xB0 \xB7 0.5 m \xB7 0.78 m de alto. M10. Solo en la fase B, donde estaba
+    la salida"
+  color: {r: 1, g: 0.24, b: 0.65, a: 1}
+  radio: 0.05
+  subirEtiqueta: 0.07
+  detalle: fase B
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!114 &1833458397 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7167420315476556305, guid: 9ccd151fc1368ea4490ba21724086825, type: 3}
+  m_PrefabInstance: {fileID: 4565324732690786411}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!1 &1849663971
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1849663972}
+  - component: {fileID: 1849663973}
+  m_Layer: 0
+  m_Name: Regreso al citoplasma
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1849663972
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849663971}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.95105654, z: 0, w: -0.30901697}
+  m_LocalPosition: {x: 0.9404564, y: 1.68, z: 1.2944273}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1579637552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1849663973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849663971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
+  nota: "-36\xB0 \xB7 1.6 m \xB7 1.68 m de alto. M5. Embudo con aro naranja"
+  color: {r: 1, g: 0.24, b: 0.65, a: 1}
+  radio: 0.05
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &1914171727
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1914171728}
+  - component: {fileID: 1914171729}
+  m_Layer: 0
+  m_Name: Ribosoma de mesa
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1914171728
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914171727}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.993961, z: -0.10973431, w: 0}
+  m_LocalPosition: {x: -0, y: 0.86, z: 0.62}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1579637552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1914171729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914171727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
+  nota: "0\xB0 \xB7 0.62 m \xB7 0.86 m de alto. M4. Inclinado 0.22 rad hacia el jugador,
+    con un pie debajo"
+  color: {r: 1, g: 0.24, b: 0.65, a: 1}
+  radio: 0.05
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &2021479175
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2021479176}
+  - component: {fileID: 2021479177}
+  m_Layer: 0
+  m_Name: Chaperona (BiP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2021479176
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2021479175}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.9659259, z: 0, w: 0.25881907}
+  m_LocalPosition: {x: -0.25, y: 0.78, z: 0.4330127}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1579637552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2021479177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2021479175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
+  nota: "30\xB0 \xB7 0.5 m \xB7 0.78 m de alto. M10. Solo en la fase B"
+  color: {r: 1, g: 0.24, b: 0.65, a: 1}
+  radio: 0.05
+  subirEtiqueta: 0.07
+  detalle: fase B
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &2078575662
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2078575663}
+  - component: {fileID: 2078575664}
+  m_Layer: 0
+  m_Name: Panel de mensajes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2078575663
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078575662}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.32556817, z: -0, w: 0.9455186}
+  m_LocalPosition: {x: -0.8927092, y: 1.64, z: 1.1426157}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1579637552}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2078575664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2078575662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14fd37bde0a6658408d86ba591c6fe1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PuntoCocina
+  nota: "38\xB0 \xB7 1.45 m \xB7 1.64 m de alto. M8. Panel de 0.70 \xD7 0.34 m. Orientado
+    para un Canvas (su +Z se aleja del jugador)"
+  color: {r: 0.5, g: 0.9, b: 1, a: 1}
+  radio: 0.05
+  subirEtiqueta: 0
+  detalle: 
+  mostrarEnJuego: 1
+  material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &2101267056
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2101267057}
+  m_Layer: 0
+  m_Name: Punto ojos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2101267057
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101267056}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1175130374}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &922626560683677774
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1175130374}
+    m_Modifications:
+    - target: {fileID: 8396151150567550151, guid: 6651c9285ab6929419d14a0a6c898696, type: 3}
+      propertyPath: m_Name
+      value: Cocina_Sonidos
+      objectReference: {fileID: 0}
+    - target: {fileID: 8692165094208931627, guid: 6651c9285ab6929419d14a0a6c898696, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8692165094208931627, guid: 6651c9285ab6929419d14a0a6c898696, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8692165094208931627, guid: 6651c9285ab6929419d14a0a6c898696, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8692165094208931627, guid: 6651c9285ab6929419d14a0a6c898696, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8692165094208931627, guid: 6651c9285ab6929419d14a0a6c898696, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8692165094208931627, guid: 6651c9285ab6929419d14a0a6c898696, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8692165094208931627, guid: 6651c9285ab6929419d14a0a6c898696, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8692165094208931627, guid: 6651c9285ab6929419d14a0a6c898696, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8692165094208931627, guid: 6651c9285ab6929419d14a0a6c898696, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8692165094208931627, guid: 6651c9285ab6929419d14a0a6c898696, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6651c9285ab6929419d14a0a6c898696, type: 3}
+--- !u!1001 &1406913365168905236
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1175130374}
+    m_Modifications:
+    - target: {fileID: 2456325364428290907, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: m_Name
+      value: CocinaTutorial
+      objectReference: {fileID: 0}
+    - target: {fileID: 4522336095727533959, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4522336095727533959, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4522336095727533959, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4522336095727533959, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4522336095727533959, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4522336095727533959, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4522336095727533959, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4522336095727533959, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4522336095727533959, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4522336095727533959, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6296314002001853895, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: m_Name
+      value: Entendido
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: marcaTutorial
+      value: 
+      objectReference: {fileID: 4025563267603801861}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.size
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[0].clave
+      value: bienvenida
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[1].clave
+      value: riboso_mesa
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[2].clave
+      value: corriente
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[3].clave
+      value: sintetasa
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[4].clave
+      value: llave
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[5].clave
+      value: boton_fin
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[6].clave
+      value: sintetasa_error
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[7].clave
+      value: salida
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[8].clave
+      value: reciclaje
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[9].clave
+      value: t2_intro
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[10].clave
+      value: ribosoma_lejano
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[11].clave
+      value: horquilla
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[12].clave
+      value: codon_raro
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[13].clave
+      value: t3_intro
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[14].clave
+      value: fase_b
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[15].clave
+      value: busca
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[16].clave
+      value: chaperona
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[17].clave
+      value: decide
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[1].objetivo
+      value: 
+      objectReference: {fileID: 1914171728}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[2].objetivo
+      value: 
+      objectReference: {fileID: 1551890620}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[3].objetivo
+      value: 
+      objectReference: {fileID: 1356255548}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[4].objetivo
+      value: 
+      objectReference: {fileID: 1356255548}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[5].objetivo
+      value: 
+      objectReference: {fileID: 1914171728}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[6].objetivo
+      value: 
+      objectReference: {fileID: 1356255548}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[7].objetivo
+      value: 
+      objectReference: {fileID: 1109481236}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[8].objetivo
+      value: 
+      objectReference: {fileID: 1710827887}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[9].objetivo
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[10].objetivo
+      value: 
+      objectReference: {fileID: 346990057}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[11].objetivo
+      value: 
+      objectReference: {fileID: 1551890620}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[12].objetivo
+      value: 
+      objectReference: {fileID: 346990057}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[14].objetivo
+      value: 
+      objectReference: {fileID: 828759582}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[15].objetivo
+      value: 
+      objectReference: {fileID: 828759582}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[16].objetivo
+      value: 
+      objectReference: {fileID: 2021479176}
+    - target: {fileID: 7688602645636600880, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+      propertyPath: objetivos.Array.data[17].objetivo
+      value: 
+      objectReference: {fileID: 1710827887}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+--- !u!4 &1406913365168905237 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4522336095727533959, guid: c0edb9b87ec3609408bb95d382bfd415, type: 3}
+  m_PrefabInstance: {fileID: 1406913365168905236}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1446116696435124299
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1175130374}
+    m_Modifications:
+    - target: {fileID: 267931312054168283, guid: 382dda457a7cd804f9bc249ec87f68d3, type: 3}
+      propertyPath: textoPuntos
+      value: 
+      objectReference: {fileID: 1833458397}
+    - target: {fileID: 524991972411292268, guid: 382dda457a7cd804f9bc249ec87f68d3, type: 3}
+      propertyPath: m_Name
+      value: Cocina_PantallaFinal
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616964010550230199, guid: 382dda457a7cd804f9bc249ec87f68d3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616964010550230199, guid: 382dda457a7cd804f9bc249ec87f68d3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616964010550230199, guid: 382dda457a7cd804f9bc249ec87f68d3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616964010550230199, guid: 382dda457a7cd804f9bc249ec87f68d3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616964010550230199, guid: 382dda457a7cd804f9bc249ec87f68d3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616964010550230199, guid: 382dda457a7cd804f9bc249ec87f68d3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616964010550230199, guid: 382dda457a7cd804f9bc249ec87f68d3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616964010550230199, guid: 382dda457a7cd804f9bc249ec87f68d3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616964010550230199, guid: 382dda457a7cd804f9bc249ec87f68d3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4616964010550230199, guid: 382dda457a7cd804f9bc249ec87f68d3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 382dda457a7cd804f9bc249ec87f68d3, type: 3}
+--- !u!1001 &4025563267603801860
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1175130374}
+    m_Modifications:
+    - target: {fileID: 5732562149007159956, guid: ce8171bd8f8e6ad4a8ee0e73fe72c2e9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5732562149007159956, guid: ce8171bd8f8e6ad4a8ee0e73fe72c2e9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5732562149007159956, guid: ce8171bd8f8e6ad4a8ee0e73fe72c2e9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5732562149007159956, guid: ce8171bd8f8e6ad4a8ee0e73fe72c2e9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5732562149007159956, guid: ce8171bd8f8e6ad4a8ee0e73fe72c2e9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5732562149007159956, guid: ce8171bd8f8e6ad4a8ee0e73fe72c2e9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5732562149007159956, guid: ce8171bd8f8e6ad4a8ee0e73fe72c2e9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5732562149007159956, guid: ce8171bd8f8e6ad4a8ee0e73fe72c2e9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5732562149007159956, guid: ce8171bd8f8e6ad4a8ee0e73fe72c2e9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5732562149007159956, guid: ce8171bd8f8e6ad4a8ee0e73fe72c2e9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8036097163675731489, guid: ce8171bd8f8e6ad4a8ee0e73fe72c2e9, type: 3}
+      propertyPath: m_Name
+      value: CocinaMarcaTutorial
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ce8171bd8f8e6ad4a8ee0e73fe72c2e9, type: 3}
+--- !u!114 &4025563267603801861 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3508406336145231680, guid: ce8171bd8f8e6ad4a8ee0e73fe72c2e9, type: 3}
+  m_PrefabInstance: {fileID: 4025563267603801860}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7d91d49b6daf504f924c1f3159ee493, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.MarcaTutorial
+--- !u!4 &4025563267603801862 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5732562149007159956, guid: ce8171bd8f8e6ad4a8ee0e73fe72c2e9, type: 3}
+  m_PrefabInstance: {fileID: 4025563267603801860}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4565324732690786411
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1175130374}
+    m_Modifications:
+    - target: {fileID: 7846529715418604258, guid: 9ccd151fc1368ea4490ba21724086825, type: 3}
+      propertyPath: m_Name
+      value: Cocina_TableroPedido
+      objectReference: {fileID: 0}
+    - target: {fileID: 8248805211516899126, guid: 9ccd151fc1368ea4490ba21724086825, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8248805211516899126, guid: 9ccd151fc1368ea4490ba21724086825, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8248805211516899126, guid: 9ccd151fc1368ea4490ba21724086825, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8248805211516899126, guid: 9ccd151fc1368ea4490ba21724086825, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8248805211516899126, guid: 9ccd151fc1368ea4490ba21724086825, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8248805211516899126, guid: 9ccd151fc1368ea4490ba21724086825, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8248805211516899126, guid: 9ccd151fc1368ea4490ba21724086825, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8248805211516899126, guid: 9ccd151fc1368ea4490ba21724086825, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8248805211516899126, guid: 9ccd151fc1368ea4490ba21724086825, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8248805211516899126, guid: 9ccd151fc1368ea4490ba21724086825, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9ccd151fc1368ea4490ba21724086825, type: 3}
+--- !u!1001 &5908060328502053366
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1175130374}
+    m_Modifications:
+    - target: {fileID: 2312958760241037103, guid: 9e67149fe861fcf4ba2ee68114c787e3, type: 3}
+      propertyPath: m_Name
+      value: Cocina_PanelMensajes
+      objectReference: {fileID: 0}
+    - target: {fileID: 6351939262045606673, guid: 9e67149fe861fcf4ba2ee68114c787e3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6351939262045606673, guid: 9e67149fe861fcf4ba2ee68114c787e3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6351939262045606673, guid: 9e67149fe861fcf4ba2ee68114c787e3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6351939262045606673, guid: 9e67149fe861fcf4ba2ee68114c787e3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6351939262045606673, guid: 9e67149fe861fcf4ba2ee68114c787e3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6351939262045606673, guid: 9e67149fe861fcf4ba2ee68114c787e3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6351939262045606673, guid: 9e67149fe861fcf4ba2ee68114c787e3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6351939262045606673, guid: 9e67149fe861fcf4ba2ee68114c787e3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6351939262045606673, guid: 9e67149fe861fcf4ba2ee68114c787e3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6351939262045606673, guid: 9e67149fe861fcf4ba2ee68114c787e3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9e67149fe861fcf4ba2ee68114c787e3, type: 3}
+--- !u!4 &5908060328502053367 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6351939262045606673, guid: 9e67149fe861fcf4ba2ee68114c787e3, type: 3}
+  m_PrefabInstance: {fileID: 5908060328502053366}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1660057539 &9223372036854775807
+SceneRoots:
+  m_ObjectHideFlags: 0
+  m_Roots:
+  - {fileID: 898920877}
+  - {fileID: 1359918729}
+  - {fileID: 1060790046}
+  - {fileID: 484356574}
+  - {fileID: 1175130374}
