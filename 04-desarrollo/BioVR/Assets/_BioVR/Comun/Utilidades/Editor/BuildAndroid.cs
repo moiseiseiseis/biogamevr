@@ -24,6 +24,15 @@ namespace BioVR.Comun.Editor
         const string RutaApkCocina = "Builds/Cocina.apk";
         const string PaqueteCocina = "com.biogamevr.cocina";
         const string NombreCocina = "BioVR Cocina";
+        const string RutaApkPilotaje = "Builds/Pilotaje.apk";
+        const string PaquetePilotaje = "com.biogamevr.pilotaje";
+        const string NombrePilotaje = "BioVR Pilotaje";
+
+        // Prueba del pilotaje libre en la célula (modo investigación): solo esa escena, aparte del juego
+        [MenuItem("BioVR/Build APK Pilotaje")]
+        public static void ConstruirPilotaje() =>
+            Terminar(GenerarAparte(BioVR.Pilotaje.Editor.ArmarPruebaPilotaje.Escena,
+                "BioVR → Pilotaje → Armar prueba de pilotaje", PaquetePilotaje, NombrePilotaje, RutaApkPilotaje));
 
         [MenuItem("BioVR/Build APK")]
         public static void Construir()

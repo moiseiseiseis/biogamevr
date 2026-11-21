@@ -45,6 +45,7 @@ namespace BioVR.Pokedex
 
         public int Total => fichas.Length;
         public int Registradas => registro.Count;
+        public bool EstaRegistrada(FichaPokedex f) => f != null && registro.Contains(f);
 
         class Mano
         {
