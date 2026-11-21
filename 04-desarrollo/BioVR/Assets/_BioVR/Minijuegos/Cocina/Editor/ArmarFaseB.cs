@@ -14,7 +14,8 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
     //      sin cámaras ni luces. Vienen en angstroms: se escalan al tamaño de los de Uli ×0.6 (especificación 9.3).
     //   2. Prefabs/Cocina_BiP.prefab: los dos estados de Diego (BiP_Abierta 5E84 y BiP_Cerrada 5E85) alineados
     //      en el mismo lugar, con la cerrada apagada. La animación (abre, sujeta, suelta) la hace ChaperonaBiP
-    //      (Ascencio) intercambiando esos dos hijos al recibir OnChaperona.
+    //      (Ascencio) intercambiando esos dos hijos al recibir OnChaperona; DepositosAmiloides (Ascencio) va en
+    //      la misma raíz, con el material Materiales/Cocina_M10_Deposito.mat.
     //   3. Prefabs/Cocina_Proteasoma.prefab: el 26S de pie, con la entrada de arriba como destino de la cadena
     //      (Proteasoma26S).
     //   Los dos se tocan con el rayo o la pinza (TocarFaseB) y solo se ven en la fase B (MostrarEnFaseB).
@@ -78,6 +79,16 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             Ajustar(modelo, abierta.gameObject, TamanoBiP);
             Letrero(visual, "chaperona BiP", Limites(abierta.gameObject).max.y + 0.03f);
             Interaccion(raiz, visual, AccionFaseB.Chaperona, abierta.gameObject);
+
+            // Partes C y D (Ascencio): la animación de la BiP y los depósitos amiloides, en la raíz.
+            // Van aquí para que no se pierdan al volver a armar el prefab.
+            var cso = new SerializedObject(raiz.AddComponent<ChaperonaBiP>());
+            cso.FindProperty("bipAbierta").objectReferenceValue = abierta.gameObject;
+            cso.FindProperty("bipCerrada").objectReferenceValue = cerrada.gameObject;
+            cso.ApplyModifiedPropertiesWithoutUndo();
+            var dso = new SerializedObject(raiz.AddComponent<DepositosAmiloides>());
+            dso.FindProperty("material").objectReferenceValue = MaterialDeposito();
+            dso.ApplyModifiedPropertiesWithoutUndo();
 
             float escala = modelo.localScale.x; // antes de destruir la raíz
             PrefabUtility.SaveAsPrefabAsset(raiz, RutaBiP);
@@ -225,6 +236,33 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             var m = AssetDatabase.LoadAssetAtPath<Material>(ruta);
             if (m != null) return m;
             m = new Material(Shader.Find("Universal Render Pipeline/Lit")) { color = color };
+            AssetDatabase.CreateAsset(m, ruta);
+            return m;
+        }
+
+        // Rosa translúcido con emisión, como el que DepositosAmiloides creaba al correr (mismos valores de Ascencio),
+        // pero guardado como asset para que su variante de shader entre en el APK
+        static Material MaterialDeposito()
+        {
+            string carpeta = Raiz + "/Materiales";
+            CrearDatosCocina.Carpeta(carpeta);
+            string ruta = $"{carpeta}/Cocina_M10_Deposito.mat";
+            var m = AssetDatabase.LoadAssetAtPath<Material>(ruta);
+            if (m != null) return m;
+            m = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            m.SetFloat("_Surface", 1f);
+            m.SetFloat("_Blend", 0f);
+            m.SetFloat("_SrcBlend", (float)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            m.SetFloat("_DstBlend", (float)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            m.SetFloat("_ZWrite", 0f);
+            m.SetOverrideTag("RenderType", "Transparent");
+            m.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+            m.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+            m.SetColor("_BaseColor", new Color(1f, 0.32f, 0.72f, 0.16f));
+            m.EnableKeyword("_EMISSION");
+            m.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
+            m.SetColor("_EmissionColor", new Color(1f, 0.22f, 0.65f) * 0.85f);
+            m.enableInstancing = true;
             AssetDatabase.CreateAsset(m, ruta);
             return m;
         }
