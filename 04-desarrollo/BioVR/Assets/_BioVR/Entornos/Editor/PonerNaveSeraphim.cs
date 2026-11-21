@@ -18,11 +18,43 @@ namespace BioVR.Entornos.Editor
         const string Hangar = "Assets/_BioVR/Entornos/Hangar/Hangar.prefab";
         const string Sonidos = "Assets/_BioVR/Comun/Audio/SFX/";
 
-        // El FBX sale de Blender sin Apply Transform: su raíz ("Seraphim") lleva −90° en X y la animación de despliegue
-        // TAMBIÉN anima esa raíz con −90°. Con Bake Axis Conversion Unity ya endereza las mallas y la animación le vuelve
-        // a sumar −90°: la nave queda con la nariz hacia arriba. Por eso se importa SIN Bake Axis Conversion (la raíz
-        // conserva su −90° y la animación pone el mismo). Este giro extra queda en cero; está por si hiciera falta.
-        public static readonly Quaternion Correccion = Quaternion.identity;
+        // El FBX sale de Blender sin Apply Transform y su animación de despliegue también anima la raíz ("Seraphim"),
+        // así que cómo queda orientada depende de la conversión de ejes de Unity. En lugar de adivinar un ángulo,
+        // MedirCorreccion la pone en la pose desplegada y mide hacia dónde quedó:
+        //   adelante = de las patas (atrás) a los hombros de los brazos (adelante)  → debe quedar en +Z (nariz)
+        //   arriba   = de las pinzas y los pies (abajo) al casco                    → debe quedar en +Y (aletas)
+        // y devuelve el giro que la deja así (alas y turbinas a ±X, escape de las turbinas a −Z).
+        public static Quaternion MedirCorreccion(GameObject fbx)
+        {
+            var temp = (GameObject)PrefabUtility.InstantiatePrefab(fbx);
+            temp.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+            var anim = temp.GetComponentInChildren<Animation>();
+            if (anim != null && anim.clip != null) anim.clip.SampleAnimation(anim.gameObject, anim.clip.length);
+
+            var partes = temp.GetComponentsInChildren<Renderer>(true);
+            Vector3 Centro(System.Func<string, bool> elegir)
+            {
+                Vector3 suma = Vector3.zero; int n = 0;
+                foreach (var r in partes) if (elegir(r.name)) { suma += r.bounds.center; n++; }
+                return n > 0 ? suma / n : Vector3.zero;
+            }
+            var hombros = Centro(n => n.StartsWith("Brazo_") && n.Contains("Hombro"));
+            var muslos = Centro(n => n.StartsWith("Pierna_") && n.Contains("Muslo"));
+            var casco = Centro(n => n == "Casco");
+            var abajo = Centro(n => n.Contains("Pinza") || n.EndsWith("_Pie"));
+            Object.DestroyImmediate(temp);
+
+            var adelante = hombros - muslos;
+            var arriba = Vector3.ProjectOnPlane(casco - abajo, adelante);
+            if (adelante.sqrMagnitude < 1e-6f || arriba.sqrMagnitude < 1e-6f)
+            {
+                Debug.LogWarning("[Nave] No pude medir la orientación de la Seraphim (¿cambiaron los nombres de sus piezas?).");
+                return Quaternion.identity;
+            }
+            var giro = Quaternion.Inverse(Quaternion.LookRotation(adelante, arriba));
+            Debug.Log($"[Nave] Seraphim importada: adelante {adelante.normalized:F2}, arriba {arriba.normalized:F2} → giro {giro.eulerAngles:F0}.");
+            return giro;
+        }
 
         [MenuItem("BioVR/Poner nave Seraphim")]
         public static void Poner()
@@ -40,9 +72,12 @@ namespace BioVR.Entornos.Editor
             var modelo = (GameObject)PrefabUtility.InstantiatePrefab(fbx, nave.transform);
             modelo.transform.localPosition = Vector3.zero;
             modelo.transform.localRotation = Quaternion.identity;
+            // En la pose desplegada (cuadro 60), que es como se ve en el hangar, para apoyarla bien en el piso
+            var anim = modelo.GetComponentInChildren<Animation>();
+            if (anim != null && anim.clip != null) anim.clip.SampleAnimation(anim.gameObject, anim.clip.length);
             // Al frente de la cabina, como la nave anterior; parada sobre el piso del hangar (y = -0.05) ya desplegada
             nave.transform.localPosition = new Vector3(0f, 0f, 17f);
-            nave.transform.localRotation = Correccion;
+            nave.transform.localRotation = MedirCorreccion(fbx);
             var b = Limites(nave);
             nave.transform.localPosition += new Vector3(0f, -0.05f - b.min.y, 0f);
             b = Limites(nave);

@@ -251,7 +251,7 @@ namespace BioVR.Prologo.Editor
             r[10] = Uno(padre, "10 Ribosoma 80S", Cargar("Assets/_BioVR/Minijuegos/ExpresionGenetica/Modelos/Diseno/ribosoma_80S_4ug0.fbx"), 1.1f);
 
             // 11: la Seraphim, plegada; se despliega al llegar al centro
-            var nave = Uno(padre, "11 El Mecha Seraphim", seraphim, 1.7f, PonerNaveSeraphim.Correccion);
+            var nave = Uno(padre, "11 El Mecha Seraphim", seraphim, 1.7f, seraphim != null ? PonerNaveSeraphim.MedirCorreccion(seraphim) : (Quaternion?)null);
             if (nave != null)
             {
                 var nso = new SerializedObject(nave.AddComponent<NaveDespliegue>()); // busca la animación en sus hijos
