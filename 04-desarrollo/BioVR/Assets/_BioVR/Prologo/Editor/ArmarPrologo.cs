@@ -251,7 +251,7 @@ namespace BioVR.Prologo.Editor
             r[10] = Uno(padre, "10 Ribosoma 80S", Cargar("Assets/_BioVR/Minijuegos/ExpresionGenetica/Modelos/Diseno/ribosoma_80S_4ug0.fbx"), 1.1f);
 
             // 11: la Seraphim, plegada; se despliega al llegar al centro
-            var nave = Uno(padre, "11 El Mecha Seraphim", seraphim, 1.7f);
+            var nave = Uno(padre, "11 El Mecha Seraphim", seraphim, 1.7f, PonerNaveSeraphim.Correccion);
             if (nave != null)
             {
                 var nso = new SerializedObject(nave.AddComponent<NaveDespliegue>()); // busca la animación en sus hijos
@@ -284,12 +284,20 @@ namespace BioVR.Prologo.Editor
             return go;
         }
 
-        static GameObject Uno(Transform padre, string nombre, GameObject fbx, float lado)
+        static GameObject Uno(Transform padre, string nombre, GameObject fbx, float lado, Quaternion? giro = null)
         {
             if (fbx == null) return null;
             var go = new GameObject(nombre);
             go.transform.SetParent(padre, false);
-            Instanciar(fbx, go.transform);
+            // Con giro de corrección, el giro va en un objeto intermedio (la animación del modelo no lo toca)
+            var padreModelo = go.transform;
+            if (giro.HasValue)
+            {
+                padreModelo = new GameObject("Giro").transform;
+                padreModelo.SetParent(go.transform, false);
+                padreModelo.localRotation = giro.Value;
+            }
+            Instanciar(fbx, padreModelo);
             return Normalizar(go, lado);
         }
 
