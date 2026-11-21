@@ -8,6 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_BioVR/Escenas/00-EscenaInicial.unity
     guid: d4af9128716fc2742a2b9d0e2b8ac7f8
+  - enabled: 1
+    path: Assets/_BioVR/Escenas/Cocina.unity
+    guid: b7cad01be5e84f749a5247cf3ee2cfbd
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: ea04bd181d486594ea2d46f84d8ce525, type: 2}

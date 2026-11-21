@@ -113,6 +113,7 @@ namespace BioVR.Comun.Editor
             Asignar(so, "reduccionCompletada", "SFX/SFX-ESC-03_reduccion-completada_v01.wav");
             Asignar(so, "entradaCelula", "SFX/SFX-ENT-07_entrada-celula_v01.wav");
             Clips(so.FindProperty("transiciones"), Carpeta("MUS", "MUS-GEN-07"));
+            Asignar(so, "musicaCarga", "MUS/MUS-GEN-01_carga-loop_v01.wav");
             Asignar(so, "boton", "SFX/SFX-CAB-03_click-boton_v01.wav");
             Asignar(so, "noDisponible", "UI/UI-FBK-04_no-disponible_v01.wav");
             Asignar(so, "palanca", "SFX/SFX-CAB-04_indicador-luminoso_v01.wav");

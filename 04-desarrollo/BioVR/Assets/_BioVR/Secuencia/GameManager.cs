@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 namespace BioVR.Secuencia
 {
@@ -22,12 +23,22 @@ namespace BioVR.Secuencia
         [SerializeField] float duracionDestello = 0.25f;
         [SerializeField] Color colorDestello = Color.white;
 
+        [Header("Salto a la Cocina (5 nm)")]
+        [Tooltip("Escena que se carga con el último salto Matrioska desde la llegada. Debe estar en Build Settings.")]
+        [SerializeField] string escenaCocina = "Cocina";
+
         public GameState Estado { get; private set; }
 
         // Índice de escala: 0 = Hangar (tamaño normal), 1 = Vasos, 2 = Capilar, 3 = Citoplasma.
         // Es el mismo índice que usa GestorEscala (rol 5) para elegir su NivelEscalaData.
         public int Salto { get; private set; }
         public const int SaltoMaximo = 3;
+
+        // Salto 4 (5 nm, escala molecular): desde la llegada, el último salto lleva a la Cocina de proteínas
+        public const int SaltoCocina = 4;
+
+        // Avisa que ya se tapó la vista y empieza a cargar la Cocina (la música de carga lo usa)
+        public event Action OnCargandoCocina;
 
         // Otros roles se suscriben a estos eventos para activar/desactivar su zona
         public event Action<GameState> OnEstadoCambiado;
@@ -90,11 +101,24 @@ namespace BioVR.Secuencia
             else Debug.Log($"[Secuencia] Iniciar inmersión no aplica en {Estado}: usa Salto Matrioska.");
         }
 
-        // Botón "Salto Matrioska" y palanca: solo sirven durante el viaje (saltos de escala y llegada)
+        // Botón "Salto Matrioska" y palanca: durante el viaje hacen los saltos de escala y la llegada;
+        // en la llegada, el último salto (5 nm) lleva a la Cocina
         public void SaltoMatrioska()
         {
             if (Estado == GameState.Viaje) Avanzar();
+            else if (Estado == GameState.Llegada) IrALaCocina();
             else Debug.Log($"[Secuencia] Salto Matrioska no aplica en {Estado}.");
+        }
+
+        public void IrALaCocina()
+        {
+            if (Pausado || enTransicion) return;
+            if (!Application.CanStreamedLevelBeLoaded(escenaCocina))
+            {
+                Debug.LogWarning($"[Secuencia] La escena '{escenaCocina}' no está en Build Settings: corre BioVR → Conectar salto a la Cocina.");
+                return;
+            }
+            StartCoroutine(SaltoALaCocina());
         }
 
         public void IrA(GameState nuevo, bool instantaneo = false)
@@ -151,6 +175,20 @@ namespace BioVR.Secuencia
             enTransicion = false;
         }
 
+        // El salto a 5 nm: mismo túnel y destello que los demás; con la vista en blanco se avisa el salto 4
+        // (el monitor dice 5 nm) y se carga la Cocina. La vista se queda tapada hasta que cambia la escena.
+        IEnumerator SaltoALaCocina()
+        {
+            enTransicion = true;
+            yield return Cubrir(SaltoCocina, esSalto: true);
+            Salto = SaltoCocina;
+            Debug.Log($"[Secuencia] Salto: {Salto} → cargando {escenaCocina}");
+            OnSaltoCambiado?.Invoke(Salto);
+            OnCargandoCocina?.Invoke();
+            var carga = SceneManager.LoadSceneAsync(escenaCocina);
+            while (carga != null && !carga.isDone) yield return null;
+        }
+
         // Tapa la vista antes de cambiar de zona: en un salto, primero el efecto y luego destello blanco;
         // en un cambio de estado normal, fundido a negro.
         IEnumerator Cubrir(int saltoNuevo, bool esSalto)
@@ -171,7 +209,7 @@ namespace BioVR.Secuencia
             if (fader != null) yield return fader.FadeA(0f, esSalto ? fadeTime * 1.5f : fadeTime);
         }
 
-        // ---- Atajo de depuración: 1-4 = estados, Espacio = avanzar ----
+        // ---- Atajo de depuración: 1-4 = estados, 5 = salto a la Cocina (desde la llegada), Espacio = avanzar ----
         // Solo en el editor y en builds de desarrollo; en el APK final no se compila.
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
         void Update()
@@ -182,6 +220,7 @@ namespace BioVR.Secuencia
             if (k.digit2Key.wasPressedThisFrame) IrA(GameState.Abordaje);
             if (k.digit3Key.wasPressedThisFrame) IrA(GameState.Viaje);
             if (k.digit4Key.wasPressedThisFrame) IrA(GameState.Llegada);
+            if (k.digit5Key.wasPressedThisFrame && Estado == GameState.Llegada) IrALaCocina();
             if (k.spaceKey.wasPressedThisFrame) Avanzar();
         }
 #endif

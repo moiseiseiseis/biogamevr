@@ -94,6 +94,7 @@ namespace BioVR.Comun
         [SerializeField] AudioClip reduccionCompletada; // SFX-ESC-03
         [SerializeField] AudioClip entradaCelula;       // SFX-ENT-07, al llegar al citoplasma
         [SerializeField] AudioClip[] transiciones = new AudioClip[0]; // MUS-GEN-07, cambios de estado sin salto
+        [SerializeField] AudioClip musicaCarga;         // MUS-GEN-01, mientras carga la Cocina
 
         [Header("Controles de la cabina")]
         [SerializeField] AudioClip boton;               // SFX-CAB-03
@@ -122,6 +123,7 @@ namespace BioVR.Comun
         AudioSource momentos, interfaz, pausa;
         GameState estadoAnterior;
         bool enSalto;
+        bool cargando;
         int transicion;
         PasoTutorial pasoAnterior;
 
@@ -177,6 +179,7 @@ namespace BioVR.Comun
                 gm.OnEstadoCambiado -= AlCambiarEstado;
                 gm.OnSaltoIniciado -= AlIniciarSalto;
                 gm.OnSaltoCambiado -= AlCambiarSalto;
+                gm.OnCargandoCocina -= AlCargarCocina;
             }
             Escotilla.OnAfuera -= AlUsarEscotilla;
             AlturaAsiento.OnAjuste -= AlAjustarAsiento;
@@ -191,6 +194,7 @@ namespace BioVR.Comun
             gm.OnEstadoCambiado += AlCambiarEstado;
             gm.OnSaltoIniciado += AlIniciarSalto;
             gm.OnSaltoCambiado += AlCambiarSalto;
+            gm.OnCargandoCocina += AlCargarCocina;
             Escotilla.OnAfuera += AlUsarEscotilla;
             AlturaAsiento.OnAjuste += AlAjustarAsiento;
             MenuPausa.OnMenu += AlAbrirMenu;
@@ -202,7 +206,7 @@ namespace BioVR.Comun
                 if (b.name == "Boton Iniciar inmersion")
                     b.selectEntered.AddListener(_ => AlPresionarBoton(gm.Estado != GameState.Viaje));
                 else if (b.name == "Boton Salto Matrioska")
-                    b.selectEntered.AddListener(_ => AlPresionarBoton(gm.Estado == GameState.Viaje));
+                    b.selectEntered.AddListener(_ => AlPresionarBoton(gm.Estado == GameState.Viaje || gm.Estado == GameState.Llegada));
             }
             foreach (var p in FindObjectsByType<Palanca>(FindObjectsInactive.Include, FindObjectsSortMode.None))
                 p.alLlegarAlTope.AddListener(() => Tocar2D(palanca));
@@ -252,6 +256,18 @@ namespace BioVR.Comun
             enSalto = false;
             StartCoroutine(Tocar(reduccionCompletada, 0.6f));
             if (salto == GameManager.SaltoMaximo) StartCoroutine(Tocar(entradaCelula, 0.2f));
+        }
+
+        // Mientras carga la Cocina: se callan las capas y suena la música de carga hasta que cambia la escena
+        void AlCargarCocina()
+        {
+            cargando = true;
+            foreach (var c in capas)
+                if (c.fuente != null) c.fuente.Stop();
+            if (musicaCarga == null) return;
+            pausa.clip = musicaCarga;
+            pausa.volume = volumenPausa;
+            pausa.Play();
         }
 
         void AlPresionarBoton(bool aplica)
@@ -314,6 +330,7 @@ namespace BioVR.Comun
 
         void Update()
         {
+            if (cargando) return;
             float paso = Time.deltaTime / Mathf.Max(0.01f, fundido);
             foreach (var c in capas)
             {

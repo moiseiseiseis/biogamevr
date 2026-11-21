@@ -40,7 +40,8 @@ Volumen en cada estado (0 = no suena). Escala: 1 vasos, 2 capilar, 3 citoplasma.
 | Al empezar en el hangar, y cada vez que se vuelve a él | `MUS-HAN-03` revelación del mecha |
 | Entrar al abordaje | `MUS-ABO-01`, `SFX-CAB-01` cinturón (0.4 s después) y `SFX-CAB-02` pantallas (1.2 s después) |
 | Primer salto (hangar → vasos) | `SFX-MEC-04` repliegue y `SFX-ESC-02` reducción |
-| Salto 2 (1 µm), 3 (50 nm) y 4 (5 nm) | `SFX-ESC-04_reduccion-2-1um`, `3-50nm` y `4-5nm`. El de 5 nm ya está asignado; suena cuando exista ese salto. |
+| Salto 2 (1 µm), 3 (50 nm) y 4 (5 nm, de la llegada a la Cocina) | `SFX-ESC-04_reduccion-2-1um`, `3-50nm` y `4-5nm` |
+| Mientras carga la Cocina | Se callan las capas y suena `MUS-GEN-01` carga |
 | Al terminar cada salto | `SFX-ESC-03` reducción completada |
 | Llegar al citoplasma | `SFX-ENT-07` entrada a la célula |
 | Cambio de estado sin salto (viaje → llegada, llegada → hangar) | `MUS-GEN-07`, las 4 transiciones en orden |
@@ -74,7 +75,6 @@ No se importaron. Quedan en el Drive para cuando exista su momento en el juego.
 - **Entrada a la célula:** `SFX-ENT-04` membrana, `SFX-ENT-05` aterrizaje y `SFX-ENT-08` endosoma. El juego entra a la célula con un salto.
 - **Menú y generales:** `AMB-GEN-01` (no hay menú principal), `AMB-HAN-02` (no hay zona de plataforma), `SFX-CAB-05`, `MUS-GEN-04` fallo, `UI-ALR-02` advertencia, `UI-INT-01/02/03` (en la escena inicial no hay nada que agarrar) y `UI-FBK-03`.
 - **Para la Cocina:** `MUS-MIN-02` poco tiempo. La Cocina no tiene reloj.
-- **Para el flujo a la Cocina:** `MUS-GEN-01` carga. Se usará al hacer el salto a 5 nm.
 - **Voz del prólogo:** `VOZ-NAR-01` (13 partes, 4.1 min). Esperando la decisión sobre el prólogo.
 
 ## Pendientes

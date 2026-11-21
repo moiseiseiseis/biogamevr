@@ -2961,273 +2961,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.2, y: 2.8, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &639086101
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 639086103}
-  - component: {fileID: 639086102}
-  m_Layer: 0
-  m_Name: Sonidos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &639086102
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 639086101}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95485cbdfd91db34eb9b7cb979b16395, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Comun.SonidosEscena
-  capas:
-  - nombre: Zumbido de la nave
-    clip: {fileID: 8300000, guid: 5fb345b1c162d7544bc1d17b90088f1f, type: 3}
-    volumenPorEstado:
-    - 0.35
-    - 0.35
-    - 0.35
-    - 0.35
-    saltos: 
-    fuente: {fileID: 0}
-  - nombre: Sistemas de la nave
-    clip: {fileID: 8300000, guid: d9b32423c0406454ab959508019a41ce, type: 3}
-    volumenPorEstado:
-    - 0.5
-    - 0.6
-    - 0.6
-    - 0.6
-    saltos: 
-    fuente: {fileID: 0}
-  - nombre: Hangar
-    clip: {fileID: 8300000, guid: 4ac96e90fca8f3749b22707df44c1583, type: 3}
-    volumenPorEstado:
-    - 0.7
-    - 0.3
-    - 0
-    - 0
-    saltos: 
-    fuente: {fileID: 0}
-  - nombre: Flujo sanguineo
-    clip: {fileID: 8300000, guid: 0fbd222f72555f24e870a717851ff342, type: 3}
-    volumenPorEstado:
-    - 0
-    - 0
-    - 0.6
-    - 0
-    saltos: 0100000002000000
-    fuente: {fileID: 0}
-  - nombre: Corriente
-    clip: {fileID: 8300000, guid: 884e0d516f2e2d246a697f0bf322e852, type: 3}
-    volumenPorEstado:
-    - 0
-    - 0
-    - 0.5
-    - 0
-    saltos: 01000000
-    fuente: {fileID: 0}
-  - nombre: Particulas del plasma
-    clip: {fileID: 8300000, guid: 8ea028e9cf26dd2469d31cc6831a2b85, type: 3}
-    volumenPorEstado:
-    - 0
-    - 0
-    - 0.7
-    - 0
-    saltos: 0100000002000000
-    fuente: {fileID: 0}
-  - nombre: Desplazamiento
-    clip: {fileID: 8300000, guid: 07627fe6ef0510642823b00909351eca, type: 3}
-    volumenPorEstado:
-    - 0
-    - 0
-    - 0.35
-    - 0.25
-    saltos: 
-    fuente: {fileID: 0}
-  - nombre: Antenas
-    clip: {fileID: 8300000, guid: ac87b603699afab4eaf1bc847bcd01a1, type: 3}
-    volumenPorEstado:
-    - 0
-    - 0
-    - 0.12
-    - 0.12
-    saltos: 
-    fuente: {fileID: 0}
-  - nombre: Interior celular
-    clip: {fileID: 8300000, guid: 57f767ebb0ccff14cb3bc3dd32e19aa0, type: 3}
-    volumenPorEstado:
-    - 0
-    - 0
-    - 0.6
-    - 0.6
-    saltos: 03000000
-    fuente: {fileID: 0}
-  - nombre: Musica viaje tranquilo
-    clip: {fileID: 8300000, guid: 16148b431ad779c4fb8a4f41b94f5e99, type: 3}
-    volumenPorEstado:
-    - 0
-    - 0
-    - 0.4
-    - 0
-    saltos: 01000000
-    fuente: {fileID: 0}
-  - nombre: Musica viaje intenso
-    clip: {fileID: 8300000, guid: b549e2cdd12192c49a990f1813ccb307, type: 3}
-    volumenPorEstado:
-    - 0
-    - 0
-    - 0.4
-    - 0
-    saltos: 02000000
-    fuente: {fileID: 0}
-  - nombre: Musica celula
-    clip: {fileID: 8300000, guid: 7775c75e3a79be14abdda213c63b0a5d, type: 3}
-    volumenPorEstado:
-    - 0
-    - 0
-    - 0.35
-    - 0.35
-    saltos: 03000000
-    fuente: {fileID: 0}
-  fundido: 1.5
-  fijos:
-  - nombre: Pantallas del hangar
-    clip: {fileID: 8300000, guid: 54bb5a3a9b3780a44afd0278a1d4824e, type: 3}
-    zonas:
-    - Hangar
-    objetos:
-    - Pantalla
-    - Torre
-    volumen: 0.5
-    distanciaMaxima: 15
-  - nombre: Membrana
-    clip: {fileID: 8300000, guid: 3f6aa3ce0fe60804794c941cfbe3cbe5, type: 3}
-    zonas:
-    - Citoplasma
-    - Llegada
-    objetos:
-    - Membrana
-    volumen: 0.6
-    distanciaMaxima: 20
-  - nombre: Citoesqueleto
-    clip: {fileID: 8300000, guid: 9808c395d4d3c5a40b58c289871e78f1, type: 3}
-    zonas:
-    - Citoplasma
-    - Llegada
-    objetos:
-    - Citoesqueleto
-    - Microtubulo
-    - Actina
-    volumen: 0.5
-    distanciaMaxima: 20
-  - nombre: Nucleo
-    clip: {fileID: 8300000, guid: f42774391d9e6284590eb467dbf8aeb9, type: 3}
-    zonas:
-    - Citoplasma
-    - Llegada
-    objetos:
-    - Nucleo
-    - "N\xFAcleo"
-    volumen: 0.6
-    distanciaMaxima: 30
-  esporadicos:
-  - nombre: Herramientas del hangar
-    clips:
-    - {fileID: 8300000, guid: 6159acceb0e0677419807c6c2ec3db8a, type: 3}
-    - {fileID: 8300000, guid: b94ba6547c76f2644bdc2170ecde1262, type: 3}
-    - {fileID: 8300000, guid: 0ad910c2b77581049a100c29a7bb66c9, type: 3}
-    - {fileID: 8300000, guid: 96ccbc4d72ffb6c48b5f557ec69eb47e, type: 3}
-    - {fileID: 8300000, guid: 8e1ddfb593717cf4fb0efe70bfc99a28, type: 3}
-    - {fileID: 8300000, guid: 10284fcd96d9271458dc19276b0bb02a, type: 3}
-    - {fileID: 8300000, guid: a36f947e5300d2d4bad19e720d4f3b16, type: 3}
-    - {fileID: 8300000, guid: 54f2193bb31fbad4697f43a9daee2aa4, type: 3}
-    - {fileID: 8300000, guid: ec9b57e215d2a5f4fb0d11cf3c6a1ace, type: 3}
-    estados: 01010000
-    saltos: 
-    intervalo: {x: 4, y: 10}
-    zona: Hangar
-    distancia: {x: 4, y: 12}
-    volumen: 0.5
-    fuente: {fileID: 0}
-    reloj: 0
-  - nombre: Globulos junto a la cabina
-    clips:
-    - {fileID: 8300000, guid: b5c20a22716cca140b2371d59a6556ae, type: 3}
-    estados: 00000100
-    saltos: 01000000
-    intervalo: {x: 2.5, y: 6}
-    zona: 
-    distancia: {x: 1.5, y: 3.5}
-    volumen: 0.5
-    fuente: {fileID: 0}
-    reloj: 0
-  - nombre: Contacto con moleculas
-    clips:
-    - {fileID: 8300000, guid: 1c9f1aae3518f29469a63d8e7c6a4ff0, type: 3}
-    estados: 00000101
-    saltos: 03000000
-    intervalo: {x: 8, y: 18}
-    zona: 
-    distancia: {x: 1, y: 2}
-    volumen: 0.4
-    fuente: {fileID: 0}
-    reloj: 0
-  revelacionMecha: {fileID: 8300000, guid: e92f82d6874f88d4885d167ef6cd547b, type: 3}
-  entradaCabina: {fileID: 8300000, guid: bf74e25f6d4e4254491098605234c55d, type: 3}
-  cinturon: {fileID: 8300000, guid: 1badfb1154cd8a846b1c8dd69c98f619, type: 3}
-  encenderPantallas: {fileID: 8300000, guid: 811a08702ac079c48803838fa6a379fa, type: 3}
-  compuerta: {fileID: 8300000, guid: fc3c8b64c07844d4b8d23b8d217d9b4f, type: 3}
-  repliegue: {fileID: 8300000, guid: 0d5cbb060b391fa45b55d3ea18c5b1b4, type: 3}
-  primeraReduccion: {fileID: 8300000, guid: 2dee10b99aa240c4bb36aa6aec1c94c8, type: 3}
-  reducciones:
-  - {fileID: 8300000, guid: c5c972abce1b4f746862307545389740, type: 3}
-  - {fileID: 8300000, guid: 3bf24310cf1cacd47b036f5ad512f72c, type: 3}
-  - {fileID: 8300000, guid: 26e250acee3e76d41af8cdf86606c8a1, type: 3}
-  reduccionCompletada: {fileID: 8300000, guid: e038973e2a6922b4cb6b656e6bd7ed92, type: 3}
-  entradaCelula: {fileID: 8300000, guid: 68195bd1a09609240a02c16f07ab0bda, type: 3}
-  transiciones:
-  - {fileID: 8300000, guid: c3a922abd23bcb94faf42cbbe3e1323f, type: 3}
-  - {fileID: 8300000, guid: 63ed1b46808bdcc4dadb9014c14a9516, type: 3}
-  - {fileID: 8300000, guid: 33a795b20aa498d4db3c6727aa87bc83, type: 3}
-  - {fileID: 8300000, guid: 608bf0c97e1ac8f47bca00713b818c18, type: 3}
-  boton: {fileID: 8300000, guid: b16116f9da06aa5479e91d014b039fac, type: 3}
-  noDisponible: {fileID: 8300000, guid: aada3156e11b772488e9759640a33ef8, type: 3}
-  palanca: {fileID: 8300000, guid: 744c7dd286e811f4fb9d128686b4a15d, type: 3}
-  ajusteAsiento: {fileID: 8300000, guid: 58d1d4a9a468f6644b5cf2e009813dd9, type: 3}
-  musicaPausa: {fileID: 8300000, guid: f69a97e57712c9542b09a678b4265fc5, type: 3}
-  abrirPanel: {fileID: 8300000, guid: 0cd9fdb94fef47742b275e89268b0d9e, type: 3}
-  cerrarPanel: {fileID: 8300000, guid: a45621c5ea09b9a43897f7503dc4de6e, type: 3}
-  hover: {fileID: 8300000, guid: 159ddf62f081f124a96c233360d07000, type: 3}
-  tocarPantalla: {fileID: 8300000, guid: 6738d8b33afb21b43862eeb6abe1c81e, type: 3}
-  pasoTutorial: {fileID: 8300000, guid: d5a415ee382166e4da9bb20bd88bb8fa, type: 3}
-  volumenMomentos: 0.8
-  volumenInterfaz: 0.6
-  volumenPausa: 0.4
---- !u!4 &639086103
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 639086101}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &654084464
 GameObject:
   m_ObjectHideFlags: 0
@@ -11046,6 +10779,274 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1338947854
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1338947856}
+  - component: {fileID: 1338947855}
+  m_Layer: 0
+  m_Name: Sonidos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1338947855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338947854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95485cbdfd91db34eb9b7cb979b16395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Comun.SonidosEscena
+  capas:
+  - nombre: Zumbido de la nave
+    clip: {fileID: 8300000, guid: 5fb345b1c162d7544bc1d17b90088f1f, type: 3}
+    volumenPorEstado:
+    - 0.35
+    - 0.35
+    - 0.35
+    - 0.35
+    saltos: 
+    fuente: {fileID: 0}
+  - nombre: Sistemas de la nave
+    clip: {fileID: 8300000, guid: d9b32423c0406454ab959508019a41ce, type: 3}
+    volumenPorEstado:
+    - 0.5
+    - 0.6
+    - 0.6
+    - 0.6
+    saltos: 
+    fuente: {fileID: 0}
+  - nombre: Hangar
+    clip: {fileID: 8300000, guid: 4ac96e90fca8f3749b22707df44c1583, type: 3}
+    volumenPorEstado:
+    - 0.7
+    - 0.3
+    - 0
+    - 0
+    saltos: 
+    fuente: {fileID: 0}
+  - nombre: Flujo sanguineo
+    clip: {fileID: 8300000, guid: 0fbd222f72555f24e870a717851ff342, type: 3}
+    volumenPorEstado:
+    - 0
+    - 0
+    - 0.6
+    - 0
+    saltos: 0100000002000000
+    fuente: {fileID: 0}
+  - nombre: Corriente
+    clip: {fileID: 8300000, guid: 884e0d516f2e2d246a697f0bf322e852, type: 3}
+    volumenPorEstado:
+    - 0
+    - 0
+    - 0.5
+    - 0
+    saltos: 01000000
+    fuente: {fileID: 0}
+  - nombre: Particulas del plasma
+    clip: {fileID: 8300000, guid: 8ea028e9cf26dd2469d31cc6831a2b85, type: 3}
+    volumenPorEstado:
+    - 0
+    - 0
+    - 0.7
+    - 0
+    saltos: 0100000002000000
+    fuente: {fileID: 0}
+  - nombre: Desplazamiento
+    clip: {fileID: 8300000, guid: 07627fe6ef0510642823b00909351eca, type: 3}
+    volumenPorEstado:
+    - 0
+    - 0
+    - 0.35
+    - 0.25
+    saltos: 
+    fuente: {fileID: 0}
+  - nombre: Antenas
+    clip: {fileID: 8300000, guid: ac87b603699afab4eaf1bc847bcd01a1, type: 3}
+    volumenPorEstado:
+    - 0
+    - 0
+    - 0.12
+    - 0.12
+    saltos: 
+    fuente: {fileID: 0}
+  - nombre: Interior celular
+    clip: {fileID: 8300000, guid: 57f767ebb0ccff14cb3bc3dd32e19aa0, type: 3}
+    volumenPorEstado:
+    - 0
+    - 0
+    - 0.6
+    - 0.6
+    saltos: 03000000
+    fuente: {fileID: 0}
+  - nombre: Musica viaje tranquilo
+    clip: {fileID: 8300000, guid: 16148b431ad779c4fb8a4f41b94f5e99, type: 3}
+    volumenPorEstado:
+    - 0
+    - 0
+    - 0.4
+    - 0
+    saltos: 01000000
+    fuente: {fileID: 0}
+  - nombre: Musica viaje intenso
+    clip: {fileID: 8300000, guid: b549e2cdd12192c49a990f1813ccb307, type: 3}
+    volumenPorEstado:
+    - 0
+    - 0
+    - 0.4
+    - 0
+    saltos: 02000000
+    fuente: {fileID: 0}
+  - nombre: Musica celula
+    clip: {fileID: 8300000, guid: 7775c75e3a79be14abdda213c63b0a5d, type: 3}
+    volumenPorEstado:
+    - 0
+    - 0
+    - 0.35
+    - 0.35
+    saltos: 03000000
+    fuente: {fileID: 0}
+  fundido: 1.5
+  fijos:
+  - nombre: Pantallas del hangar
+    clip: {fileID: 8300000, guid: 54bb5a3a9b3780a44afd0278a1d4824e, type: 3}
+    zonas:
+    - Hangar
+    objetos:
+    - Pantalla
+    - Torre
+    volumen: 0.5
+    distanciaMaxima: 15
+  - nombre: Membrana
+    clip: {fileID: 8300000, guid: 3f6aa3ce0fe60804794c941cfbe3cbe5, type: 3}
+    zonas:
+    - Citoplasma
+    - Llegada
+    objetos:
+    - Membrana
+    volumen: 0.6
+    distanciaMaxima: 20
+  - nombre: Citoesqueleto
+    clip: {fileID: 8300000, guid: 9808c395d4d3c5a40b58c289871e78f1, type: 3}
+    zonas:
+    - Citoplasma
+    - Llegada
+    objetos:
+    - Citoesqueleto
+    - Microtubulo
+    - Actina
+    volumen: 0.5
+    distanciaMaxima: 20
+  - nombre: Nucleo
+    clip: {fileID: 8300000, guid: f42774391d9e6284590eb467dbf8aeb9, type: 3}
+    zonas:
+    - Citoplasma
+    - Llegada
+    objetos:
+    - Nucleo
+    - "N\xFAcleo"
+    volumen: 0.6
+    distanciaMaxima: 30
+  esporadicos:
+  - nombre: Herramientas del hangar
+    clips:
+    - {fileID: 8300000, guid: 6159acceb0e0677419807c6c2ec3db8a, type: 3}
+    - {fileID: 8300000, guid: b94ba6547c76f2644bdc2170ecde1262, type: 3}
+    - {fileID: 8300000, guid: 0ad910c2b77581049a100c29a7bb66c9, type: 3}
+    - {fileID: 8300000, guid: 96ccbc4d72ffb6c48b5f557ec69eb47e, type: 3}
+    - {fileID: 8300000, guid: 8e1ddfb593717cf4fb0efe70bfc99a28, type: 3}
+    - {fileID: 8300000, guid: 10284fcd96d9271458dc19276b0bb02a, type: 3}
+    - {fileID: 8300000, guid: a36f947e5300d2d4bad19e720d4f3b16, type: 3}
+    - {fileID: 8300000, guid: 54f2193bb31fbad4697f43a9daee2aa4, type: 3}
+    - {fileID: 8300000, guid: ec9b57e215d2a5f4fb0d11cf3c6a1ace, type: 3}
+    estados: 01010000
+    saltos: 
+    intervalo: {x: 4, y: 10}
+    zona: Hangar
+    distancia: {x: 4, y: 12}
+    volumen: 0.5
+    fuente: {fileID: 0}
+    reloj: 0
+  - nombre: Globulos junto a la cabina
+    clips:
+    - {fileID: 8300000, guid: b5c20a22716cca140b2371d59a6556ae, type: 3}
+    estados: 00000100
+    saltos: 01000000
+    intervalo: {x: 2.5, y: 6}
+    zona: 
+    distancia: {x: 1.5, y: 3.5}
+    volumen: 0.5
+    fuente: {fileID: 0}
+    reloj: 0
+  - nombre: Contacto con moleculas
+    clips:
+    - {fileID: 8300000, guid: 1c9f1aae3518f29469a63d8e7c6a4ff0, type: 3}
+    estados: 00000101
+    saltos: 03000000
+    intervalo: {x: 8, y: 18}
+    zona: 
+    distancia: {x: 1, y: 2}
+    volumen: 0.4
+    fuente: {fileID: 0}
+    reloj: 0
+  revelacionMecha: {fileID: 8300000, guid: e92f82d6874f88d4885d167ef6cd547b, type: 3}
+  entradaCabina: {fileID: 8300000, guid: bf74e25f6d4e4254491098605234c55d, type: 3}
+  cinturon: {fileID: 8300000, guid: 1badfb1154cd8a846b1c8dd69c98f619, type: 3}
+  encenderPantallas: {fileID: 8300000, guid: 811a08702ac079c48803838fa6a379fa, type: 3}
+  compuerta: {fileID: 8300000, guid: fc3c8b64c07844d4b8d23b8d217d9b4f, type: 3}
+  repliegue: {fileID: 8300000, guid: 0d5cbb060b391fa45b55d3ea18c5b1b4, type: 3}
+  primeraReduccion: {fileID: 8300000, guid: 2dee10b99aa240c4bb36aa6aec1c94c8, type: 3}
+  reducciones:
+  - {fileID: 8300000, guid: c5c972abce1b4f746862307545389740, type: 3}
+  - {fileID: 8300000, guid: 3bf24310cf1cacd47b036f5ad512f72c, type: 3}
+  - {fileID: 8300000, guid: 26e250acee3e76d41af8cdf86606c8a1, type: 3}
+  reduccionCompletada: {fileID: 8300000, guid: e038973e2a6922b4cb6b656e6bd7ed92, type: 3}
+  entradaCelula: {fileID: 8300000, guid: 68195bd1a09609240a02c16f07ab0bda, type: 3}
+  transiciones:
+  - {fileID: 8300000, guid: c3a922abd23bcb94faf42cbbe3e1323f, type: 3}
+  - {fileID: 8300000, guid: 63ed1b46808bdcc4dadb9014c14a9516, type: 3}
+  - {fileID: 8300000, guid: 33a795b20aa498d4db3c6727aa87bc83, type: 3}
+  - {fileID: 8300000, guid: 608bf0c97e1ac8f47bca00713b818c18, type: 3}
+  musicaCarga: {fileID: 8300000, guid: 5f979c67ad86d4a4f92c4b5daf2575ae, type: 3}
+  boton: {fileID: 8300000, guid: b16116f9da06aa5479e91d014b039fac, type: 3}
+  noDisponible: {fileID: 8300000, guid: aada3156e11b772488e9759640a33ef8, type: 3}
+  palanca: {fileID: 8300000, guid: 744c7dd286e811f4fb9d128686b4a15d, type: 3}
+  ajusteAsiento: {fileID: 8300000, guid: 58d1d4a9a468f6644b5cf2e009813dd9, type: 3}
+  musicaPausa: {fileID: 8300000, guid: f69a97e57712c9542b09a678b4265fc5, type: 3}
+  abrirPanel: {fileID: 8300000, guid: 0cd9fdb94fef47742b275e89268b0d9e, type: 3}
+  cerrarPanel: {fileID: 8300000, guid: a45621c5ea09b9a43897f7503dc4de6e, type: 3}
+  hover: {fileID: 8300000, guid: 159ddf62f081f124a96c233360d07000, type: 3}
+  tocarPantalla: {fileID: 8300000, guid: 6738d8b33afb21b43862eeb6abe1c81e, type: 3}
+  pasoTutorial: {fileID: 8300000, guid: d5a415ee382166e4da9bb20bd88bb8fa, type: 3}
+  volumenMomentos: 0.8
+  volumenInterfaz: 0.6
+  volumenPausa: 0.4
+--- !u!4 &1338947856
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338947854}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1345678146
 GameObject:
   m_ObjectHideFlags: 0
@@ -12696,6 +12697,7 @@ MonoBehaviour:
   duracionEfectoSalto: 1.2
   duracionDestello: 0.25
   colorDestello: {r: 1, g: 1, b: 1, a: 1}
+  escenaCocina: Cocina
 --- !u!114 &1753647160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12772,6 +12774,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1cdc689b66b04b17a9942eaf437abe87, type: 2}
   - {fileID: 11400000, guid: 5fab17e5384a40248af15b513f100746, type: 2}
   - {fileID: 11400000, guid: 332b34f78b6f4c8c865260cbd956d9ea, type: 2}
+  - {fileID: 0}
   indiceEscalaActual: 0
 --- !u!1 &1794479622 stripped
 GameObject:
@@ -14089,4 +14092,4 @@ SceneRoots:
   - {fileID: 1179603489}
   - {fileID: 228361477}
   - {fileID: 2036462929}
-  - {fileID: 639086103}
+  - {fileID: 1338947856}

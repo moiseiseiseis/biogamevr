@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 11-Listo
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Comun.PasoTutorial
   titulo: "\xA1Listo!"
-  instruccion: "Sigue saltando hasta llegar a la c\xE9lula. Al final, Iniciar inmersi\xF3n
-    te regresa al hangar."
+  instruccion: "Sigue saltando hasta llegar a la c\xE9lula. Ah\xED, un \xFAltimo Salto Matrioska
+    reduce la nave a 5 nm y te lleva al ribosoma."
   clave: 
   opcional: 0
