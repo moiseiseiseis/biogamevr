@@ -59,12 +59,8 @@ namespace BioVR.Comun.Editor
             EditorSceneManager.SaveScene(escena);
 
             // 3. Build Settings: la escena inicial es la 0 (a ella regresa la pantalla final de la Cocina)
-            var otras = EditorBuildSettings.scenes.Where(e => e.path != EscenaInicial && e.path != EscenaCocina);
-            EditorBuildSettings.scenes = new[]
-            {
-                new EditorBuildSettingsScene(EscenaInicial, true),
-                new EditorBuildSettingsScene(EscenaCocina, true),
-            }.Concat(otras).ToArray();
+            //    (si ya existe el prólogo, va antes: es la escena 0)
+            BioVR.Prologo.Editor.ArmarPrologo.OrdenEscenas();
 
             AssetDatabase.SaveAssets();
             Debug.Log("[Secuencia] Listo: salto a 5 nm conectado (GestorEscala con 5 niveles; Build Settings: 00-EscenaInicial, Cocina). " +

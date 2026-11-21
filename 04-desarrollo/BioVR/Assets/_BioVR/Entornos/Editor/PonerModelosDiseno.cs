@@ -6,7 +6,8 @@ using UnityEngine;
 namespace BioVR.Entornos.Editor
 {
     // Pone los modelos de Diseño (Assets/_BioVR/Modelos) en lugar de los placeholders (rol 6):
-    //   Hangar.prefab          → la nave Seraphim (submarino-exterior) apoyada en el piso; se apaga el submarino de cápsulas
+    //   Hangar.prefab          → la nave apoyada en el piso; se apaga el submarino de cápsulas. Desde el 21-nov la nave es
+    //                            la Seraphim final (seraphim-mecha, BioVR → Poner nave Seraphim), no submarino-exterior
     //   EspacioCelular.prefab  → escenario-celular_lowpoly (A4); se apagan los placeholders (no se borran, por si hay que regresar)
     //                            (también solo: BioVR → Poner escenario celular (low poly))
     //                            y sus burbujas, vesículas libres y polirribosomas tiemblan (EmpujonesMoleculares)
@@ -25,6 +26,7 @@ namespace BioVR.Entornos.Editor
         public static void Poner()
         {
             Hangar();
+            PonerNaveSeraphim.Poner(); // la nave final (#91) reemplaza a submarino-exterior
             EspacioCelular();
             Cabina();
             Debug.Log("[ModelosDiseno] Listo: nave en el hangar, escenario celular y cabina de Diseño.");
