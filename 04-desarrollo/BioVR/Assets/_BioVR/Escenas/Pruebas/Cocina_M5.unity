@@ -286,79 +286,6 @@ MonoBehaviour:
   detalle: 
   mostrarEnJuego: 1
   material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
---- !u!1001 &435595310
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1109481236}
-    m_Modifications:
-    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8157532746930590043, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
-      propertyPath: m_Name
-      value: Cocina_Salida
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
---- !u!114 &435595311 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3353421949301785405, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
-  m_PrefabInstance: {fileID: 435595310}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94717cb5ced443c4b802d0f75547b172, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.BandejaSalida
---- !u!4 &435595312 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
-  m_PrefabInstance: {fileID: 435595310}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &471223017
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -534,6 +461,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &733259964
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 733259965}
+  - component: {fileID: 733259966}
+  m_Layer: 0
+  m_Name: '[M5] Prueba salida (vuelo de prueba)'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &733259965
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 733259964}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1175130374}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &733259966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 733259964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a0adc87feb7a134994c2fa08c8b7b34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PruebaSalida
+  bandeja: {fileID: 2116405678}
 --- !u!1 &828759581
 GameObject:
   m_ObjectHideFlags: 0
@@ -585,73 +557,6 @@ MonoBehaviour:
   detalle: 
   mostrarEnJuego: 1
   material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
---- !u!1001 &884464271
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1849663972}
-    m_Modifications:
-    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392839431308493198, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
-      propertyPath: m_Name
-      value: Cocina_Regreso
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
---- !u!4 &884464272 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3001751024386100072, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
-  m_PrefabInstance: {fileID: 884464271}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &884464273 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
-  m_PrefabInstance: {fileID: 884464271}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &898920874
 GameObject:
   m_ObjectHideFlags: 0
@@ -1040,7 +945,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 435595312}
+  - {fileID: 2116405679}
   m_Father: {fileID: 1579637552}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1109481237
@@ -1124,52 +1029,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6156496214916445030, guid: dce97bec8ea8e494191cab5f4f12626b, type: 3}
   m_PrefabInstance: {fileID: 1168336451}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1172108837
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1172108838}
-  - component: {fileID: 1172108839}
-  m_Layer: 0
-  m_Name: '[M5] Vuelo de M2 (VueloARNt)'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1172108838
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1172108837}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1175130374}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1172108839
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1172108837}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86550913f77bfd5468b6b0a43a6c858e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.VueloARNt
-  destinoRibosomaLejano: {fileID: 0}
-  destinoRegresoCitoplasma: {fileID: 884464272}
 --- !u!1 &1175130373
 GameObject:
   m_ObjectHideFlags: 0
@@ -1204,10 +1063,77 @@ Transform:
   - {fileID: 1579637552}
   - {fileID: 941926330}
   - {fileID: 1533464963}
-  - {fileID: 1172108838}
-  - {fileID: 1838310081}
+  - {fileID: 1573905563}
+  - {fileID: 733259965}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1266533705
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1849663972}
+    m_Modifications:
+    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5392839431308493198, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
+      propertyPath: m_Name
+      value: Cocina_Regreso
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
+--- !u!4 &1266533706 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3001751024386100072, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
+  m_PrefabInstance: {fileID: 1266533705}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1266533707 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 115129290151900941, guid: b3d44c65d139c544ba82e64cb8faf188, type: 3}
+  m_PrefabInstance: {fileID: 1266533705}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1331460106
 GameObject:
   m_ObjectHideFlags: 0
@@ -1462,6 +1388,52 @@ MonoBehaviour:
   detalle: 
   mostrarEnJuego: 1
   material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
+--- !u!1 &1573905562
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1573905563}
+  - component: {fileID: 1573905564}
+  m_Layer: 0
+  m_Name: '[M5] Vuelo de M2 (VueloARNt)'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1573905563
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573905562}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1175130374}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1573905564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573905562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86550913f77bfd5468b6b0a43a6c858e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.VueloARNt
+  destinoRibosomaLejano: {fileID: 0}
+  destinoRegresoCitoplasma: {fileID: 1266533706}
 --- !u!1 &1579637551
 GameObject:
   m_ObjectHideFlags: 0
@@ -1557,51 +1529,6 @@ MonoBehaviour:
   detalle: fase B
   mostrarEnJuego: 1
   material: {fileID: 2100000, guid: 6076829a56487014a8841815c0fd94fa, type: 2}
---- !u!1 &1838310080
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1838310081}
-  - component: {fileID: 1838310082}
-  m_Layer: 0
-  m_Name: '[M5] Prueba salida (vuelo de prueba)'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1838310081
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1838310080}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1175130374}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1838310082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1838310080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a0adc87feb7a134994c2fa08c8b7b34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.PruebaSalida
-  bandeja: {fileID: 435595311}
 --- !u!1 &1849663971
 GameObject:
   m_ObjectHideFlags: 0
@@ -1632,7 +1559,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 884464273}
+  - {fileID: 1266533707}
   m_Father: {fileID: 1579637552}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1849663973
@@ -1841,6 +1768,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1175130374}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &2116405677
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1109481236}
+    m_Modifications:
+    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8157532746930590043, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
+      propertyPath: m_Name
+      value: Cocina_Salida
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
+--- !u!114 &2116405678 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3353421949301785405, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
+  m_PrefabInstance: {fileID: 2116405677}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94717cb5ced443c4b802d0f75547b172, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.BandejaSalida
+--- !u!4 &2116405679 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6824900401928626882, guid: 4cc0674dca8475141accad741ec7b277, type: 3}
+  m_PrefabInstance: {fileID: 2116405677}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -36,6 +36,7 @@ namespace BioVR.Minijuegos.Cocina
         {
             EventosCocina.OnARNtASalida += Seguir;
             EventosCocina.OnReciclado += Dejar;
+            EventosCocina.OnReciclado += Reportar;
             EventosCocina.OnTurnoIniciado += AlIniciarTurno;
         }
 
@@ -43,8 +44,17 @@ namespace BioVR.Minijuegos.Cocina
         {
             EventosCocina.OnARNtASalida -= Seguir;
             EventosCocina.OnReciclado -= Dejar;
+            EventosCocina.OnReciclado -= Reportar;
             EventosCocina.OnTurnoIniciado -= AlIniciarTurno;
             foreach (var t in new List<ARNtCocina>(seguidos.Keys)) Dejar(t);
+        }
+
+        // En esta escena no está el tablero de M8: los puntos se ven en la consola
+        void Reportar(ARNtCocina t)
+        {
+            if (Control == null) return;
+            var m = Control.Marcador;
+            Debug.Log($"[M5 prueba] Llegó al regreso al citoplasma: {t.name}. Puntos: {m.puntos} · reciclados: {m.reciclados}");
         }
 
         void AlIniciarTurno(TurnoData _)
