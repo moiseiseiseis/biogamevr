@@ -11,9 +11,9 @@ namespace BioVR.Entornos.Editor
     // Cuando Diseño mande los FBX, se reemplaza el contenido de cada prefab y las zonas no cambian.
     //
     //   Hangar.prefab          → zonas Hangar y Abordaje
-    //   VasoSanguineo.prefab   → zona Vasos      (salto 1, ~1-5 mm)
-    //   Capilar.prefab         → zona Capilar    (salto 2, ~1 µm)
-    //   EspacioCelular.prefab  → zonas Citoplasma y Llegada (salto 3, ~200-500 nm)
+    //   VasoSanguineo.prefab   → zona Vasos      (salto 1, 3 µm)
+    //   Capilar.prefab         → zona Capilar    (salto 2, 1 µm)
+    //   EspacioCelular.prefab  → zonas Citoplasma y Llegada (salto 3, 50 nm)
     //
     // La cabina está en el origen (4 × 4 m) y el jugador mira hacia +Z: todo lo importante va al frente.
     // Se puede correr varias veces: sobrescribe los prefabs y vuelve a poner las zonas.
@@ -123,7 +123,7 @@ namespace BioVR.Entornos.Editor
             while (puestos < 70)
             {
                 var p = PuntoEnTubo(radioMin: 1.2f, radioMax: 5.2f);
-                if (CruzaCabina(p, 0.8f)) continue;
+                if (CruzaCabina(p, 0.7f)) continue;
                 Pieza(PrimitiveType.Cylinder, "Globulo rojo", flujo, p, new Vector3(1.4f, 0.18f, 1.4f), globulo,
                       Quaternion.Euler(R(0, 360), R(0, 360), R(0, 360)));
                 puestos++;
@@ -131,7 +131,7 @@ namespace BioVR.Entornos.Editor
             for (int i = 0; i < 3; i++)
             {
                 var p = PuntoEnTubo(3.5f, 4.5f);
-                if (CruzaCabina(p, 1.5f)) { i--; continue; }
+                if (CruzaCabina(p, 1.2f)) { i--; continue; }
                 Pieza(PrimitiveType.Sphere, "Leucocito", flujo, p, Vector3.one * 2.4f, leucocito);
             }
             return raiz;
@@ -156,7 +156,7 @@ namespace BioVR.Entornos.Editor
             while (puestos < 90)
             {
                 var p = PuntoEnTubo(0.3f, 4f);
-                if (CruzaCabina(p, 0.4f)) continue;
+                if (CruzaCabina(p, 0.45f)) continue;
                 if (puestos % 3 == 0)
                     Pieza(PrimitiveType.Capsule, "Anticuerpo", flujo, p, new Vector3(0.25f, 0.45f, 0.25f), anticuerpo,
                           Quaternion.Euler(R(0, 360), R(0, 360), 0));
@@ -262,6 +262,10 @@ namespace BioVR.Entornos.Editor
             {
                 var zona = zonas.transform.Find(nombreZona);
                 if (zona == null) { Debug.LogWarning($"[Entornos] Falta la zona '{nombreZona}'."); continue; }
+                // Capilar estaba movida a (0, -3.46, -14.48) desde octubre y su tubo cruzaba la cabina
+                zona.localPosition = Vector3.zero;
+                zona.localRotation = Quaternion.identity;
+                zona.localScale = Vector3.one;
                 for (int i = zona.childCount - 1; i >= 0; i--)
                     Object.DestroyImmediate(zona.GetChild(i).gameObject);
                 var entorno = (GameObject)PrefabUtility.InstantiatePrefab(prefab, zona);
@@ -376,9 +380,19 @@ namespace BioVR.Entornos.Editor
             return new Vector3(Mathf.Cos(ang) * r, 1 + Mathf.Sin(ang) * r, R(-8, 68));
         }
 
-        // Lo que fluye en Z atraviesa la cabina si su (x, y) cae dentro de la sección de la cabina
-        static bool CruzaCabina(Vector3 p, float margen) =>
-            Mathf.Abs(p.x) < 2f + margen && p.y > -0.1f - margen && p.y < 2.1f + margen;
+        // Sección de la cabina retro (submarino-cabina.fbx, CAB_Estructura): x ±2.1 m, y de -0.1 a 2.7 m.
+        // La de cubos medía 2 m de alto; con ella los glóbulos pasaban por el techo y el cristal del modelo nuevo.
+        const float CabinaMitadAncho = 2.1f, CabinaPiso = -0.1f, CabinaTecho = 2.7f;
+        // Espacio libre entre el borde de lo que fluye y el casco
+        const float HolguraCabina = 0.2f;
+
+        // Lo que fluye en Z atraviesa la cabina si su (x, y) cae dentro de la sección de la cabina.
+        // alcance = distancia del centro del objeto a su punto más lejano (gira mientras fluye).
+        static bool CruzaCabina(Vector3 p, float alcance)
+        {
+            float m = alcance + HolguraCabina;
+            return Mathf.Abs(p.x) < CabinaMitadAncho + m && p.y > CabinaPiso - m && p.y < CabinaTecho + m;
+        }
 
         static float DistanciaASegmento(Vector3 p, Vector3 a, Vector3 b)
         {

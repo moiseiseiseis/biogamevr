@@ -9,7 +9,7 @@ namespace BioVR.Escala
         [Tooltip("Nombre descriptivo del nivel de escala.")]
         public string nombreNivel;
 
-        [Tooltip("Descripción del tamaño del mecha (ej. '~1-5 mm', '~200-500 nm').")]
+        [Tooltip("Descripción del tamaño del mecha (ej. '3 µm', '50 nm'). Escalas del guion revisadas por Investigación.")]
         public string tamanoMecha;
 
         [Header("Físicas y Comportamiento")]
