@@ -29,9 +29,14 @@ namespace BioVR.Minijuegos.Cocina
         [SerializeField] float radio = 0.55f;
         [SerializeField] float altura = 1.0f;
         [SerializeField] float intervalo = 0.5f;
+        [Tooltip("Apagado en Cocina_M5: los usados se quedan en la bandeja de M5 en vez de reciclarse solos")]
+        [SerializeField] bool reciclarSalida = true;
+        [Tooltip("Segundos para volver a cargar un ARNt vacío en el estante (hace las veces de la sintetasa)")]
+        [SerializeField] float recarga = 1.5f;
 
         readonly List<ARNtCocina> arnts = new List<ARNtCocina>();
         readonly Dictionary<ARNtCocina, int> lugares = new Dictionary<ARNtCocina, int>();
+        readonly HashSet<ARNtCocina> recargando = new HashSet<ARNtCocina>();
         float reloj;
 
         static ControlCocina Control => ControlCocina.Instancia;
@@ -41,6 +46,7 @@ namespace BioVR.Minijuegos.Cocina
             EventosCocina.OnTurnoIniciado += AlIniciarTurno;
             EventosCocina.OnARNtASalida += AlSalir;
             EventosCocina.OnFaseCambiada += AlCambiarFase;
+            EventosCocina.OnReciclado += AlReciclar;
             PuenteCorriente.OnDevolver += AlDevolver;
             if (Control != null && Control.Turno != null) AlIniciarTurno(Control.Turno);
         }
@@ -50,6 +56,7 @@ namespace BioVR.Minijuegos.Cocina
             EventosCocina.OnTurnoIniciado -= AlIniciarTurno;
             EventosCocina.OnARNtASalida -= AlSalir;
             EventosCocina.OnFaseCambiada -= AlCambiarFase;
+            EventosCocina.OnReciclado -= AlReciclar;
             PuenteCorriente.OnDevolver -= AlDevolver;
         }
 
@@ -92,6 +99,11 @@ namespace BioVR.Minijuegos.Cocina
         // Un ARNt cargado para cada codón que piden los ribosomas, y un señuelo
         void Rellenar()
         {
+            // Los vacíos que regresan al estante se vuelven a cargar después de un momento
+            foreach (var a in arnts)
+                if (a != null && a.Lugar == LugarARNt.Corriente && !a.Cargado && !recargando.Contains(a))
+                    StartCoroutine(Recargar(a));
+
             var necesarios = Control.Necesarios();
             var disponibles = new List<ARNtCocina>();
             foreach (var a in arnts)
@@ -190,8 +202,22 @@ namespace BioVR.Minijuegos.Cocina
         // M5 todavía no existe: los usados se reciclan solos para que la salida no se llene
         void AlSalir(ARNtCocina t)
         {
-            if (!arnts.Contains(t)) return;
+            if (!reciclarSalida || !arnts.Contains(t)) return;
             StartCoroutine(Reciclar(t));
+        }
+
+        // Llegó al regreso al citoplasma (M5): reaparece vacío al inicio del estante y luego se vuelve a cargar
+        void AlReciclar(ARNtCocina t)
+        {
+            if (t != null && lugares.ContainsKey(t)) Poner(t);
+        }
+
+        IEnumerator Recargar(ARNtCocina t)
+        {
+            recargando.Add(t);
+            yield return new WaitForSeconds(recarga);
+            recargando.Remove(t);
+            if (t != null && t.Lugar == LugarARNt.Corriente && !t.Cargado) Control.TerminarCarga(t, false);
         }
 
         IEnumerator Reciclar(ARNtCocina t)
@@ -219,7 +245,7 @@ namespace BioVR.Minijuegos.Cocina
             // Si hay uno equivocado (tecla M) lo pone primero, para probar la cuenta roja
             ARNtCocina t = null;
             foreach (var a in arnts)
-                if (a != null && a.Lugar == LugarARNt.Corriente && a.CodonQueLee == pide.Value.tripleta && (t == null || a.Equivocado)) t = a;
+                if (a != null && a.Lugar == LugarARNt.Corriente && a.Cargado && a.CodonQueLee == pide.Value.tripleta && (t == null || a.Equivocado)) t = a;
             if (t == null) { Debug.Log("[M4 prueba] Todavía no hay en el estante un ARNt para " + pide.Value.tripleta); return; }
             Control.Agarrar(t);
             mesa.Recibir(t);
@@ -234,7 +260,7 @@ namespace BioVR.Minijuegos.Cocina
             var pide = Control.PideAhora(lejano.Estado);
             ARNtCocina t = null;
             foreach (var a in arnts)
-                if (a != null && a.Lugar == LugarARNt.Corriente && (!pide.HasValue || a.CodonQueLee == pide.Value.tripleta)) { t = a; break; }
+                if (a != null && a.Lugar == LugarARNt.Corriente && a.Cargado && (!pide.HasValue || a.CodonQueLee == pide.Value.tripleta)) { t = a; break; }
             if (t == null) { Debug.Log("[M4 prueba] No hay un ARNt para aventar al lejano."); return; }
             StartCoroutine(Volar(t, lejano));
         }
@@ -257,6 +283,7 @@ namespace BioVR.Minijuegos.Cocina
         {
             arnts.Remove(t);
             lugares.Remove(t);
+            recargando.Remove(t);
             if (t != null) Destroy(t.gameObject);
         }
 
