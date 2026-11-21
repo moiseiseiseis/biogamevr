@@ -40,7 +40,7 @@ namespace BioVR.Comun.Editor
             ("Pantallas del hangar", Audio + "AMB/AMB-HAN-03_pantallas-equipos-3d-loop_v01.wav",
                 new[] { "Hangar" }, new[] { "Pantalla", "Torre" }, 0.5f, 15f),
             ("Membrana", Audio + "AMB/AMB-CEL-02_membrana-burbujeo-3d-loop_v01.wav",
-                new[] { "Citoplasma", "Llegada" }, new[] { "Membrana" }, 0.6f, 20f),
+                new[] { "Citoplasma", "Llegada" }, new[] { "Membrana_Celular", "Membrana" }, 0.6f, 20f),
             ("Citoesqueleto", Audio + "AMB/AMB-CEL-02_citoesqueleto-crujidos-3d-loop_v01.wav",
                 new[] { "Citoplasma", "Llegada" }, new[] { "Citoesqueleto", "Microtubulo", "Actina" }, 0.5f, 20f),
             ("Nucleo", Audio + "AMB/AMB-CEL-02_nucleo-pulso-3d-loop_v01.wav",

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using BioVR.Cabina;
 using BioVR.Jugador;
 using BioVR.Secuencia;
@@ -331,6 +332,7 @@ namespace BioVR.Comun
         void Update()
         {
             if (cargando) return;
+            if (porColocar.Count > 0) ColocarFijos();
             float paso = Time.deltaTime / Mathf.Max(0.01f, fundido);
             foreach (var c in capas)
             {
@@ -409,24 +411,58 @@ namespace BioVR.Comun
                         Debug.Log($"[Sonido] {f.nombre}: no hay {string.Join("/", f.objetos)} en la zona {nombreZona}; no suena ahí.");
                         continue;
                     }
-                    // Hijo del objeto: se apaga y se prende con su zona y sigue al objeto si se mueve
+                    // Hijo del objeto: se apaga y se prende con su zona. Se coloca la primera vez que la zona se
+                    // enciende (con la zona apagada Unity no da el tamaño real de las piezas)
                     var fuente = Fuente3D(f.nombre, objeto, f.distanciaMaxima);
-                    fuente.transform.position = Limites(objeto).center;
                     fuente.clip = f.clip;
                     fuente.loop = true;
                     fuente.volume = f.volumen;
                     fuente.playOnAwake = true;
-                    if (fuente.isActiveAndEnabled) fuente.Play();
+                    porColocar.Add((fuente, objeto));
                 }
             }
         }
 
+        readonly List<(AudioSource fuente, Transform objeto)> porColocar = new List<(AudioSource, Transform)>();
+
+        // Junto al objeto; si es enorme o está lejos (la membrana mide cientos de metros), en su dirección
+        // a media distancia audible, para que se oiga de qué lado está
+        void ColocarFijos()
+        {
+            for (int i = porColocar.Count - 1; i >= 0; i--)
+            {
+                var (fuente, objeto) = porColocar[i];
+                if (fuente == null || objeto == null) { porColocar.RemoveAt(i); continue; }
+                if (!objeto.gameObject.activeInHierarchy) continue;
+                var centro = Limites(objeto).center;
+                var hacia = centro - oyente.position;
+                float alcance = fuente.maxDistance * 0.5f;
+                fuente.transform.position = hacia.magnitude > alcance ? oyente.position + hacia.normalized * alcance : centro;
+                if (!fuente.isPlaying) fuente.Play();
+                porColocar.RemoveAt(i);
+            }
+        }
+
+        // Busca dentro de la zona (aunque la zona esté apagada todavía) un objeto encendido: los placeholders que
+        // apagó el armador de modelos de Diseño no cuentan. Primero el nombre exacto y luego uno que lo contenga
+        // (así "Nucleo" no cae en "Nucleosoma").
         static Transform Buscar(Transform raiz, string[] nombres)
         {
-            foreach (var t in raiz.GetComponentsInChildren<Transform>(true))
-                foreach (var n in nombres)
+            var todos = raiz.GetComponentsInChildren<Transform>(true).Where(t => EncendidoDentroDe(t, raiz)).ToArray();
+            foreach (var n in nombres)
+                foreach (var t in todos)
+                    if (string.Equals(t.name, n, StringComparison.OrdinalIgnoreCase)) return t;
+            foreach (var n in nombres)
+                foreach (var t in todos)
                     if (t.name.IndexOf(n, StringComparison.OrdinalIgnoreCase) >= 0) return t;
             return null;
+        }
+
+        static bool EncendidoDentroDe(Transform t, Transform raiz)
+        {
+            for (var p = t; p != null && p != raiz; p = p.parent)
+                if (!p.gameObject.activeSelf) return false;
+            return true;
         }
 
         // ---------------- Fuentes ----------------

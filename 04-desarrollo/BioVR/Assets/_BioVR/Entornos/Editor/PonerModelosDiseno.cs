@@ -7,7 +7,8 @@ namespace BioVR.Entornos.Editor
 {
     // Pone los modelos de Diseño (Assets/_BioVR/Modelos) en lugar de los placeholders (rol 6):
     //   Hangar.prefab          → la nave Seraphim (submarino-exterior) apoyada en el piso; se apaga el submarino de cápsulas
-    //   EspacioCelular.prefab  → escenario-celular; se apagan los placeholders (no se borran, por si hay que regresar)
+    //   EspacioCelular.prefab  → escenario-celular_lowpoly (A4); se apagan los placeholders (no se borran, por si hay que regresar)
+    //                            (también solo: BioVR → Poner escenario celular (low poly))
     //                            y sus burbujas, vesículas libres y polirribosomas tiemblan (EmpujonesMoleculares)
     //   00-EscenaInicial       → submarino-cabina dentro de "Cabina (provisional)" con su ANCLA_Jugador en el origen;
     //                            se apagan los cubos y nuestros controles se mueven encima de los controles del modelo
@@ -54,14 +55,27 @@ namespace BioVR.Entornos.Editor
         }
 
         // ---------------- Espacio celular ----------------
-        static void EspacioCelular()
+        // A4: el escenario low poly de Diego (#59): la misma célula que escenario-celular.fbx, con los mismos nombres,
+        // pero ~33k triángulos (antes 284k), sin luces, sin LOD y sin virus. Es el mismo que usa la Cocina.
+        // Sus texturas están en Modelos/EscenarioCelular/texturas/escenario-celular-lowpoly (las copia el armador de la Cocina).
+        const string ModeloEscenario = Modelos + "EscenarioCelular/escenario-celular_lowpoly.fbx";
+
+        [MenuItem("BioVR/Poner escenario celular (low poly)")]
+        public static void EspacioCelular()
         {
             const string ruta = "Assets/_BioVR/Entornos/EspacioCelular/EspacioCelular.prefab";
             var raiz = PrefabUtility.LoadPrefabContents(ruta);
             // El escenario de Diseño mide ~500 m: el fondo provisional (esfera de 150 m) lo taparía
             foreach (var nombre in new[] { "Fondo", "Membrana", "Citoesqueleto", "Ribosomas y enzimas", "Golgi", "Mitocondrias", "Cinesina con vesicula" })
                 Apagar(raiz.transform, nombre);
-            var escenario = Instanciar(Modelos + "EscenarioCelular/escenario-celular.fbx", "Escenario celular", raiz.transform);
+            var escenario = Instanciar(ModeloEscenario, "Escenario celular", raiz.transform);
+            if (escenario != null)
+            {
+                int triangulos = 0;
+                foreach (var mf in escenario.GetComponentsInChildren<MeshFilter>(true))
+                    if (mf.sharedMesh != null) for (int i = 0; i < mf.sharedMesh.subMeshCount; i++) triangulos += (int)mf.sharedMesh.GetIndexCount(i) / 3;
+                Debug.Log($"[ModelosDiseno] Escenario celular low poly: {triangulos:N0} triángulos.");
+            }
 
             // El temblor del citoplasma (rol 5) pasa a las piezas sueltas del modelo; el de los placeholders quedó apagado.
             // Son grandes (burbujas de 2-6 m, polirribosomas de ~20 m) y están lejos, por eso la amplitud es mayor.
