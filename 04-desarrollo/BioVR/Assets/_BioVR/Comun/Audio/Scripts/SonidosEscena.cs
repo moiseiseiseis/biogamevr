@@ -125,6 +125,9 @@ namespace BioVR.Comun
         Transform zonas;
         Transform oyente;
         AudioSource momentos, interfaz, pausa;
+        AudioSource momentosRelevo;                 // la otra fuente: la de la escena anterior, mientras se apaga
+        Coroutine fundidoAnterior;
+        readonly List<Coroutine> programados = new List<Coroutine>(); // sonidos con retraso que aún no suenan
         GameState estadoAnterior;
         bool enSalto;
         bool cargando;
@@ -148,6 +151,7 @@ namespace BioVR.Comun
             oyente = listener != null ? listener.transform : Camera.main != null ? Camera.main.transform : transform;
 
             momentos = Fuente2D("Momentos", false);
+            momentosRelevo = Fuente2D("Momentos (relevo)", false);
             interfaz = Fuente2D("Interfaz", true);
             pausa = Fuente2D("Musica de pausa", true);
             pausa.loop = true;
@@ -172,7 +176,7 @@ namespace BioVR.Comun
 
             estadoAnterior = gm.Estado;
             AplicarCapas(instantaneo: true);
-            if (gm.Estado == GameState.Hangar) StartCoroutine(Tocar(revelacionMecha, 1.5f));
+            if (gm.Estado == GameState.Hangar) Programar(revelacionMecha, 1.5f);
             musicaUnaVez = new HashSet<AudioClip>(transiciones) { revelacionMecha, entradaCabina };
         }
 
@@ -234,19 +238,20 @@ namespace BioVR.Comun
             if (estado == estadoAnterior) return;
             estadoAnterior = estado;
             AplicarCapas(instantaneo: false);
+            if (!enSalto) NuevaEscena(); // si viene con un salto, ya se hizo al empezar el salto
 
-            if (estado == GameState.Hangar) StartCoroutine(Tocar(revelacionMecha, 1f));
+            if (estado == GameState.Hangar) Programar(revelacionMecha, 1f);
             else if (estado == GameState.Abordaje)
             {
-                StartCoroutine(Tocar(entradaCabina, 0f));
-                StartCoroutine(Tocar(cinturon, 0.4f));
-                StartCoroutine(Tocar(encenderPantallas, 1.2f));
-                StartCoroutine(Tocar(cargaAnillos, 2.5f));
+                Programar(entradaCabina, 0f);
+                Programar(cinturon, 0.4f);
+                Programar(encenderPantallas, 1.2f);
+                Programar(cargaAnillos, 2.5f);
             }
             else if (!enSalto && transiciones.Length > 0)
             {
                 // Viaje → Llegada, Llegada → Hangar: cambios con fundido a negro, sin salto
-                StartCoroutine(Tocar(transiciones[transicion % transiciones.Length], 0f));
+                Programar(transiciones[transicion % transiciones.Length], 0f);
                 transicion++;
             }
         }
@@ -254,13 +259,14 @@ namespace BioVR.Comun
         void AlIniciarSalto(int salto)
         {
             enSalto = true;
+            NuevaEscena();
             if (salto == 1)
             {
-                StartCoroutine(Tocar(repliegue, 0f));
-                StartCoroutine(Tocar(primeraReduccion, 0.5f));
+                Programar(repliegue, 0f);
+                Programar(primeraReduccion, 0.5f);
             }
             else if (salto - 2 < reducciones.Length)
-                StartCoroutine(Tocar(reducciones[salto - 2], 0f));
+                Programar(reducciones[salto - 2], 0f);
         }
 
         void AlCambiarSalto(int salto)
@@ -268,8 +274,8 @@ namespace BioVR.Comun
             AplicarCapas(instantaneo: false);
             if (!enSalto || salto == 0) return;
             enSalto = false;
-            StartCoroutine(Tocar(reduccionCompletada, 0.6f));
-            if (salto == GameManager.SaltoMaximo) StartCoroutine(Tocar(entradaCelula, 0.2f));
+            Programar(reduccionCompletada, 0.6f);
+            if (salto == GameManager.SaltoMaximo) Programar(entradaCelula, 0.2f);
         }
 
         // Mientras carga la Cocina: se callan las capas y suena la música de carga hasta que cambia la escena
@@ -518,6 +524,40 @@ namespace BioVR.Comun
             if (clip == null) yield break;
             if (retraso > 0f) yield return new WaitForSeconds(retraso);
             Tocar2D(clip);
+        }
+
+        void Programar(AudioClip clip, float retraso)
+        {
+            if (clip != null) programados.Add(StartCoroutine(Tocar(clip, retraso)));
+        }
+
+        // Empieza una escena nueva (un salto o un cambio de estado): lo que seguía sonando de la anterior (la carga de
+        // los anillos, la música de la cabina, una reducción…) se apaga en 0.3 s y lo que estaba programado se cancela,
+        // para que no se encime si el jugador avanza antes de que termine. Lo nuevo suena en la otra fuente.
+        void NuevaEscena()
+        {
+            foreach (var c in programados) if (c != null) StopCoroutine(c);
+            programados.Clear();
+            if (fundidoAnterior != null) StopCoroutine(fundidoAnterior);
+            var anterior = momentos;
+            momentos = momentosRelevo;
+            momentosRelevo = anterior;
+            momentos.Stop();
+            momentos.volume = 1f;
+            fundidoAnterior = StartCoroutine(Apagar(anterior, 0.3f));
+        }
+
+        IEnumerator Apagar(AudioSource fuente, float duracion)
+        {
+            float inicio = fuente.volume;
+            for (float t = 0f; t < duracion; t += Time.unscaledDeltaTime)
+            {
+                fuente.volume = Mathf.Lerp(inicio, 0f, t / duracion);
+                yield return null;
+            }
+            fuente.Stop();
+            fuente.volume = 1f;
+            fundidoAnterior = null;
         }
     }
 }
