@@ -47,7 +47,7 @@ namespace BioVR.Comun.Editor
             ("10-Salto", "Salto Matrioska",
              "Toca Salto Matrioska o empuja la palanca para reducir la nave otra vez.", "salto:2", false),
             ("11-Listo", "¡Listo!",
-             "Sigue saltando hasta llegar a la célula. Al final, Iniciar inmersión te regresa al hangar.", "", false),
+             "Sigue saltando hasta llegar a la célula. Ahí, un último Salto Matrioska reduce la nave a 5 nm y te lleva al ribosoma.", "", false),
         };
 
         [MenuItem("BioVR/Crear tutorial")]
