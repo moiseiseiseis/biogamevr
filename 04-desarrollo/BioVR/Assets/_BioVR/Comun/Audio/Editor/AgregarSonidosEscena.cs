@@ -124,6 +124,7 @@ namespace BioVR.Comun.Editor
             Asignar(so, "hover", "UI/UI-NAV-01_hover_v01.wav");
             Asignar(so, "tocarPantalla", "UI/UI-INT-04_tocar-pantalla_v01.wav");
             Asignar(so, "pasoTutorial", "UI/UI-FBK-01_acierto_v01.wav");
+            Asignar(so, "fichaNueva", "UI/UI-FBK-03_datos-registrados_v01.wav");
             so.ApplyModifiedPropertiesWithoutUndo();
 
             EditorSceneManager.MarkSceneDirty(escena);

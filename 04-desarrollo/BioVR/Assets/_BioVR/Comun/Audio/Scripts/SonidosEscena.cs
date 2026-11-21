@@ -110,6 +110,7 @@ namespace BioVR.Comun
         [SerializeField] AudioClip hover;               // UI-NAV-01
         [SerializeField] AudioClip tocarPantalla;       // UI-INT-04
         [SerializeField] AudioClip pasoTutorial;        // UI-FBK-01
+        [SerializeField] AudioClip fichaNueva;          // UI-FBK-03, pokédex: ficha registrada por primera vez
 
         [Header("Volúmenes")]
         [SerializeField] float volumenMomentos = 0.8f;
@@ -186,7 +187,12 @@ namespace BioVR.Comun
             AlturaAsiento.OnAjuste -= AlAjustarAsiento;
             MenuPausa.OnMenu -= AlAbrirMenu;
             Tutorial.OnPasoCambiado -= AlCambiarPaso;
+            BioVR.Pokedex.Pokedex.OnRegistrada -= AlRegistrarFicha;
         }
+
+        // Ficha nueva: "datos registrados"; una que ya estaba: solo el toque de pantalla
+        void AlRegistrarFicha(BioVR.Pokedex.FichaPokedex _, bool nueva) =>
+            Tocar2D(nueva ? fichaNueva : tocarPantalla, interfaz);
 
         // ---------------- Conexiones con lo que ya existe ----------------
 
@@ -200,6 +206,7 @@ namespace BioVR.Comun
             AlturaAsiento.OnAjuste += AlAjustarAsiento;
             MenuPausa.OnMenu += AlAbrirMenu;
             Tutorial.OnPasoCambiado += AlCambiarPaso;
+            BioVR.Pokedex.Pokedex.OnRegistrada += AlRegistrarFicha;
 
             // Botones de la consola (los crea BioVR → Integrar controles de cabina con estos nombres)
             foreach (var b in FindObjectsByType<XRSimpleInteractable>(FindObjectsInactive.Include, FindObjectsSortMode.None))
