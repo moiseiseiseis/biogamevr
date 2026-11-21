@@ -20,7 +20,7 @@ namespace BioVR.Pilotaje
     //   A (mando derecho) piloto automático: va al organelo más cercano que no se ha registrado
     //
     //   - Velocidad constante con arranque y frenado suaves; nunca se inclina ni rueda (el horizonte queda recto).
-    //   - Viñeta de comodidad mientras se mueve (la misma del salto Matrioska).
+    //   - Sin viñeta al moverse, para ver el paisaje (se puede prender en el Inspector si marea).
     //   - Se frena antes de chocar con un organelo y no puede salir de la membrana.
     //   - Brújula en el tablero: apunta al organelo más cercano sin registrar, con su distancia.
     //   - Mientras pilota se apagan caminar y girar del XR Origin (los sticks son de la nave); al salir se regresan.
@@ -35,8 +35,8 @@ namespace BioVR.Pilotaje
         [SerializeField] float alturaCentro = 1.2f;
 
         [Header("Movimiento")]
-        [SerializeField] float velocidad = 8f;          // m/s hacia adelante y a los lados
-        [SerializeField] float velocidadVertical = 5f;  // m/s
+        [SerializeField] float velocidad = 12f;         // m/s hacia adelante y a los lados
+        [SerializeField] float velocidadVertical = 7f;  // m/s
         [SerializeField] float suavizado = 3f;          // qué tan rápido llega a la velocidad pedida (1/s)
         [SerializeField] float giro = 30f;              // grados por toque del stick derecho
         [SerializeField] float zonaMuerta = 0.2f;
@@ -49,13 +49,18 @@ namespace BioVR.Pilotaje
         [SerializeField] string nombreMembrana = "Membrana_Celular";
 
         [Header("Piloto automático")]
-        [SerializeField] float velocidadAutomatico = 15f;
+        [SerializeField] float velocidadAutomatico = 20f;
         [SerializeField] float duracionMinima = 2f, duracionMaxima = 6f;
 
         [Header("Brújula del tablero")]
         [SerializeField] Transform flecha;
         [SerializeField] TextMeshPro textoBrujula;
 
+        [Header("Viñeta de comodidad")]
+        [Tooltip("Cerrar la viñeta al pilotar con los sticks. Apagada: el jugador ve todo el paisaje mientras avanza.")]
+        [SerializeField] bool vinetaAlPilotar = false;
+        [Tooltip("Cerrar la viñeta durante el piloto automático (incluye un giro, que marea más).")]
+        [SerializeField] bool vinetaEnAutomatico = false;
         [SerializeField] VignetteParameters vineta = new VignetteParameters
         {
             apertureSize = 0.7f, featheringEffect = 0.25f, easeInTime = 0.3f, easeOutTime = 0.4f,
@@ -187,7 +192,7 @@ namespace BioVR.Pilotaje
             var paso = Limitar(velocidadActual * Time.deltaTime);
             if (paso.sqrMagnitude > 0f) mundo.position -= paso; // la nave avanza = la célula retrocede
             else if (velocidadActual.sqrMagnitude > 0f && pedida.sqrMagnitude == 0f) velocidadActual = Vector3.zero;
-            Vineta(Rapidez > 0.05f);
+            Vineta(vinetaAlPilotar && Rapidez > 0.05f);
         }
 
         Vector2 ConZonaMuerta(Vector2 v) => v.magnitude < zonaMuerta ? Vector2.zero : v;
@@ -235,7 +240,7 @@ namespace BioVR.Pilotaje
         {
             enAutomatico = true;
             velocidadActual = Vector3.zero;
-            Vineta(true);
+            Vineta(vinetaEnAutomatico);
 
             var b = Limites(d.transform);
             var P = Centro;
