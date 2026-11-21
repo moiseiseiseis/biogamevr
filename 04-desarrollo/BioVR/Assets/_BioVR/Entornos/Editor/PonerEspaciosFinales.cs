@@ -241,6 +241,65 @@ namespace BioVR.Entornos.Editor
             Debug.Log($"[Espacios] Sala de reducción en el abordaje: {bs.size.x:F0} × {bs.size.y:F0} × {bs.size.z:F0} m, {anillos.Length} anillos.");
         }
 
+        // ---------------- 5. Escenario celular v2 (prueba) ----------------
+
+        // El v2 de Uli (escenario-celular-v2, ~550k triángulos y ~5,900 objetos) optimizado para el Quest, como prueba.
+        // Para regresar a la low poly: BioVR → Poner escenario celular (low poly). Después de cualquiera de los dos,
+        // volver a correr BioVR → Agregar pokédex biológico (marca los organelos del escenario que quede).
+        //   - Quita los LODGroup que crea Unity (agrupan cada "_Bloques" entero, que abarca la célula: siempre elegirían
+        //     el nivel más pesado). Deja un solo nivel por pieza: LOD1 en organelos, LOD2 en bloques repetidos y redes.
+        //   - Apaga virus, E. coli y bacteriófagos (el juego va sin virus).
+        //   - Marca todo como estático para que Unity junte mallas (menos dibujos por cuadro). OJO: con esto la célula
+        //     ya no se puede mover, así que no sirve para la prueba de pilotaje libre (que mueve la célula).
+        //   - La nave queda en Spawn_Nave (la pista del retículo rugoso).
+        [MenuItem("BioVR/Espacios finales/5 Escenario celular v2 (prueba)", priority = 20)]
+        public static void EscenarioV2()
+        {
+            var fbx = Importar("escenario-celular-v2.fbx", "EscenarioCelular", "escenario-celular-v2");
+            if (fbx == null) return;
+            const string ruta = "Assets/_BioVR/Entornos/EspacioCelular/EspacioCelular.prefab";
+            var raiz = PrefabUtility.LoadPrefabContents(ruta);
+            var viejo = raiz.transform.Find(Prefijo + "Escenario celular");
+            if (viejo != null) Object.DestroyImmediate(viejo.gameObject);
+
+            var go = (GameObject)PrefabUtility.InstantiatePrefab(fbx, raiz.transform);
+            go.name = Prefijo + "Escenario celular";
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
+
+            foreach (var lg in go.GetComponentsInChildren<LODGroup>(true)) Object.DestroyImmediate(lg);
+            int apagados = 0;
+            foreach (var t in go.GetComponentsInChildren<Transform>(true))
+            {
+                var m = System.Text.RegularExpressions.Regex.Match(t.name, @"_LOD(\d)$");
+                bool repetido = t.parent != null && (t.parent.name.Contains("Bloques") || t.parent.name.Contains("Telarana"));
+                bool fuera = t.name.StartsWith("Virus") || t.name.StartsWith("E_Coli") || t.name.StartsWith("Bacteriofago") || t.name.StartsWith("Luz_");
+                bool otroNivel = m.Success && int.Parse(m.Groups[1].Value) != (repetido ? 2 : 1);
+                if (fuera || otroNivel) { t.gameObject.SetActive(false); apagados++; }
+            }
+
+            // Estático (excepto lo que tiembla con los empujones moleculares)
+            int renderers = 0, triangulos = 0;
+            foreach (var r in go.GetComponentsInChildren<Renderer>(false))
+            {
+                renderers++;
+                var mf = r.GetComponent<MeshFilter>();
+                if (mf != null && mf.sharedMesh != null) for (int i = 0; i < mf.sharedMesh.subMeshCount; i++) triangulos += (int)mf.sharedMesh.GetIndexCount(i) / 3;
+                bool tiembla = r.GetComponentsInParent<Transform>(true).Any(p => p.name.StartsWith("Burbuja") || p.name.StartsWith("Vesicula_Libre") || p.name.StartsWith("Polirribosoma"));
+                if (!tiembla) GameObjectUtility.SetStaticEditorFlags(r.gameObject, StaticEditorFlags.BatchingStatic);
+            }
+
+            // La nave (el origen de la zona) en Spawn_Nave
+            var spawn = Buscar(go.transform, "Spawn_Nave");
+            if (spawn != null) go.transform.position -= spawn.position - raiz.transform.position;
+            else Debug.LogWarning("[Espacios] El v2 no trae Spawn_Nave: queda en el origen.");
+
+            PrefabUtility.SaveAsPrefabAsset(raiz, ruta);
+            PrefabUtility.UnloadPrefabContents(raiz);
+            Debug.Log($"[Espacios] Escenario v2 (prueba): {triangulos:N0} triángulos en {renderers:N0} objetos visibles ({apagados:N0} apagados). " +
+                      "Ahora corre BioVR → Agregar pokédex biológico. Para regresar: BioVR → Poner escenario celular (low poly).");
+        }
+
         // ---------------- Ayudantes ----------------
 
         // Copia un FBX de 03-diseno/exports a Modelos/<carpeta> (y sus texturas con la misma ruta relativa que buscan
