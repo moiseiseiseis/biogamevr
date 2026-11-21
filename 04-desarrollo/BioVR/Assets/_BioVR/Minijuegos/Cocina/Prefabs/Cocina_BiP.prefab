@@ -687,7 +687,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -877,6 +877,8 @@ GameObject:
   - component: {fileID: 5948130380181878157}
   - component: {fileID: 2941577612066047332}
   - component: {fileID: 8414509966789231731}
+  - component: {fileID: 8468593379879485153}
+  - component: {fileID: 5941670204918842543}
   m_Layer: 0
   m_Name: Cocina_BiP
   m_TagString: Untagged
@@ -1034,6 +1036,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.MostrarEnFaseB
   visual: {fileID: 2679706137853366319}
   fases: 030000000400000005000000
+--- !u!114 &8468593379879485153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4642333254141615992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bde784dfc35332b41a581d0e7dd18dd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.ChaperonaBiP
+  bipAbierta: {fileID: 0}
+  bipCerrada: {fileID: 0}
+  holograma: {fileID: 0}
+  duracionTotal: 3
+  tiempoAperturaInicial: 0.6
+  tiempoSujecionCerrada: 1.8
+  amplitudTemblor: 0.012
+--- !u!114 &5941670204918842543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4642333254141615992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0076c91b08277ec4390a832a6b91a599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.DepositosAmiloides
+  holograma: {fileID: 0}
+  desplazamiento: {x: 0, y: 0.07, z: 0.05}
+  colorRosa: {r: 1, g: 0.32, b: 0.72, a: 0.16}
+  colorEmisionRosa: {r: 1, g: 0.22, b: 0.65, a: 1}
+  intensidadEmision: 0.85
+  velocidadRotacionY: 0.15
 --- !u!1 &5740693643210401947
 GameObject:
   m_ObjectHideFlags: 0
