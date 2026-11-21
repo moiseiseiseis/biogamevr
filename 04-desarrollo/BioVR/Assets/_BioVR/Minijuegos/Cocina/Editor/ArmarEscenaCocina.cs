@@ -21,7 +21,7 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
     //   - M8 (Marcos): panel de mensajes, tablero del pedido, tutorial (con sus objetivos en las marcas),
     //     pantalla final y sonidos, donde los puso en Cocina_M8; y el menú de pausa de la escena inicial,
     //     con Reiniciar turno y Reiniciar tutorial.
-    //   - M5 todavía no existe: su marca se queda visible en Play para saber dónde va.
+    //   - M5 (Iker): bandeja de salida y regreso al citoplasma, conectado como segundo destino del vuelo de M2.
     //
     // Se puede correr varias veces: la escena se vuelve a hacer desde Cocina_Base y conserva su GUID.
     public static class ArmarEscenaCocina
@@ -63,8 +63,9 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             ancla.SetActive(true);
             var a = ancla.transform;
             var lejano = Ribosomas(a);
-            Corriente(a, lejano);
+            var vuelo = Corriente(a, lejano);
             Sintetasa(a);
+            Salida(a, vuelo);
             Imprevistos(a);
             Holograma(a);
             FaseB(a);
@@ -84,7 +85,7 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             EditorSceneManager.MarkSceneDirty(escena);
             EditorSceneManager.SaveScene(escena);
             AssetDatabase.SaveAssets();
-            Debug.Log($"[Cocina] Listo: {Escena}. Falta M5 (salida): su marca se ve en Play.");
+            Debug.Log($"[Cocina] Listo: {Escena}.");
         }
 
         // ---------------- Módulos ----------------
@@ -98,11 +99,11 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
         }
 
         // M2: el mismo arreglo que Cocina_M2 (Sistema_Corriente con CorrienteARNt, VueloARNt y el tubo)
-        static void Corriente(Transform ancla, RibosomaCocina lejano)
+        static VueloARNt Corriente(Transform ancla, RibosomaCocina lejano)
         {
             var tubo = Prefab("Cocina_Corriente");
             var arnt = Prefab("Cocina_ARNt");
-            if (tubo == null || arnt == null) return;
+            if (tubo == null || arnt == null) return null;
 
             var sistema = new GameObject("Sistema_Corriente");
             sistema.transform.SetParent(ancla, false);
@@ -117,7 +118,7 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             visual.transform.localPosition = Vector3.zero;
             visual.transform.localRotation = Quaternion.identity;
 
-            // Destino del lanzamiento: el sitio A del lejano. El regreso al citoplasma lo conecta M5 cuando exista.
+            // Destino del lanzamiento: el sitio A del lejano. El regreso al citoplasma lo conecta Salida (M5).
             if (lejano != null)
             {
                 var sitioA = new SerializedObject(lejano).FindProperty("sitioA").objectReferenceValue as Transform;
@@ -127,6 +128,19 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             }
             OcultarMarca(ancla, "Corriente inicio");
             OcultarMarca(ancla, "Corriente fin");
+            return vuelo;
+        }
+
+        // M5 (Iker): bandeja de salida y regreso al citoplasma en sus marcas, como en Cocina_M5 (sin PruebaSalida).
+        // La boca del regreso es el segundo destino del lanzamiento de M2.
+        static void Salida(Transform ancla, VueloARNt vuelo)
+        {
+            PonerEnMarca(Prefab("Cocina_Salida"), ancla, "Salida");
+            var regreso = PonerEnMarca(Prefab("Cocina_Regreso"), ancla, "Regreso al citoplasma");
+            if (regreso == null || vuelo == null) return;
+            var vso = new SerializedObject(vuelo);
+            vso.FindProperty("destinoRegresoCitoplasma").objectReferenceValue = regreso.GetComponent<RegresoCitoplasma>().Boca;
+            vso.ApplyModifiedPropertiesWithoutUndo();
         }
 
         // M3: donde la puso Genaro en Cocina_M3 (0.78 m, girada -46°), pero colgada de la marca "Sintetasa"

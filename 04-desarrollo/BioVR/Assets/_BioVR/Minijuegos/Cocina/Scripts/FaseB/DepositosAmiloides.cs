@@ -8,6 +8,9 @@ namespace BioVR.Minijuegos.Cocina
         [Header("Referencia opcional")]
         [SerializeField] private HologramaCocina holograma;
 
+        [Header("Material (lo asigna BioVR → Cocina → Armar fase B; en el APK Shader.Find puede fallar)")]
+        [SerializeField] private Material material;
+
         [Header("Ajustes Visuales (§9.2)")]
         [SerializeField] private Vector3 desplazamiento = new Vector3(0f, 0.07f, 0.05f);
         [SerializeField] private Color colorRosa = new Color(1f, 0.32f, 0.72f, 0.16f);
@@ -125,6 +128,7 @@ namespace BioVR.Minijuegos.Cocina
 
         private Material ObtenerOCrearMaterialRosa()
         {
+            if (material != null) return material;
             if (materialFantasma != null) return materialFantasma;
 
             Shader shader = Shader.Find("Universal Render Pipeline/Lit");
