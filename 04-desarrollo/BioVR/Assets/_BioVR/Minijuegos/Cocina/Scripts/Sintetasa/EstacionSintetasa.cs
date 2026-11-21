@@ -170,17 +170,19 @@ namespace BioVR.Minijuegos.Cocina
         void ActualizarBarraVisual(int indice, float valor)
         {
             if (indice < 0 || indice >= barrasCarga.Length || barrasCarga[indice] == null) return;
-            Vector3 esc = barrasCarga[indice].localScale;
-            esc.x = Mathf.Lerp(0.001f, 1f, Mathf.Clamp01(valor));
-            barrasCarga[indice].localScale = esc;
+            Transform barra = barrasCarga[indice];
+            float v = Mathf.Clamp01(valor);
+            barra.gameObject.SetActive(v > 0.001f);
+            barra.localScale = new Vector3(Mathf.Lerp(0.001f, 0.11f, v), 0.018f, 0.015f);
         }
-
         void DevolverACorriente(ARNtCocina arnt)
         {
             if (corriente == null) corriente = FindFirstObjectByType<CorrienteARNt>();
             if (corriente != null) corriente.DevolverAlTubo(arnt);
             else if (ControlCocina.Instancia != null) ControlCocina.Instancia.DevolverACorriente(arnt);
         }
+
+
     }
 }
 

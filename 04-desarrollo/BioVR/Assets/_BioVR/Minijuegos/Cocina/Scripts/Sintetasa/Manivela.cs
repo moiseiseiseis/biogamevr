@@ -8,7 +8,7 @@ namespace BioVR.Minijuegos.Cocina
     public class Manivela : MonoBehaviour
     {
         [SerializeField] EstacionSintetasa estacion;
-        [Tooltip("Objeto visual que gira sobre su eje local Z")]
+        [Tooltip("Objeto visual que gira (si se deja vacío gira este mismo objeto)")]
         [SerializeField] Transform pivoteGiro;
 
         XRGrabInteractable grab;
@@ -53,16 +53,19 @@ namespace BioVR.Minijuegos.Cocina
             var control = ControlCocina.Instancia;
             if (control != null && control.Pausado) return;
 
-            // Proyectar la posición de la mano en el plano XY local del eje de la manivela
-            Vector3 localMano = pivoteGiro.parent != null
-                ? pivoteGiro.parent.InverseTransformPoint(manoActual.position) - pivoteGiro.localPosition
-                : manoActual.position - pivoteGiro.position;
+            // Calculamos el punto donde apunta el rayo a la distancia de la manivela (funciona en Quest cerca y con rayo en simulador)
+            float dist = Vector3.Distance(manoActual.position, pivoteGiro.position);
+            Vector3 puntoPuntero = manoActual.position + manoActual.forward * dist;
 
-            // La mano debe estar al menos a RadioMinimoManivela (0.04 m) del eje
-            Vector2 planoXY = new Vector2(localMano.x, localMano.y);
-            if (planoXY.magnitude < ControlesCocina.RadioMinimoManivela) return;
+            Vector3 localPuntero = pivoteGiro.parent != null
+                ? pivoteGiro.parent.InverseTransformPoint(puntoPuntero) - pivoteGiro.localPosition
+                : puntoPuntero - pivoteGiro.position;
 
-            float anguloActual = Mathf.Atan2(planoXY.y, planoXY.x) * Mathf.Rad2Deg;
+            // La rueda amarilla de la manivela está en el plano YZ (gira sobre el eje local X)
+            Vector2 planoRueda = new Vector2(localPuntero.z, localPuntero.y);
+            if (planoRueda.magnitude < 0.005f) return;
+
+            float anguloActual = Mathf.Atan2(planoRueda.y, planoRueda.x) * Mathf.Rad2Deg;
 
             if (!tieneAnguloPrevio)
             {
@@ -74,9 +77,10 @@ namespace BioVR.Minijuegos.Cocina
             float deltaGrados = Mathf.DeltaAngle(anguloAnterior, anguloActual);
             anguloAnterior = anguloActual;
 
-            if (Mathf.Abs(deltaGrados) < 0.01f) return;
+            if (Mathf.Abs(deltaGrados) < 0.05f) return;
 
-            pivoteGiro.Rotate(Vector3.forward, deltaGrados, Space.Self);
+            // Girar visualmente la rueda amarilla sobre su eje local X
+            pivoteGiro.Rotate(Vector3.right, -deltaGrados, Space.Self);
 
             float vueltasRequeridas = (control != null && control.Config.vueltasManivela > 0)
                 ? control.Config.vueltasManivela
@@ -105,4 +109,5 @@ namespace BioVR.Minijuegos.Cocina
         }
     }
 }
+
 
