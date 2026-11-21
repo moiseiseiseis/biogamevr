@@ -8,8 +8,8 @@ namespace BioVR.Entornos.Editor
     //
     // La Seraphim de Diseño (#91, seraphim-mecha.fbx: el Mecha final decidido el 21-nov, una libélula con 6 brazos
     // y 2 patas, 14.6 m) sustituye en Hangar.prefab a la nave anterior (submarino-exterior). Se importa como pide
-    // Diseño: con Bake Axis Conversion (el FBX sale sin Apply Transform para no romper la animación) y la animación
-    // de despliegue como Legacy, para NaveDespliegue. Lleva una caja de colisión para caminar alrededor en el hangar.
+    // Diseño (sin Apply Transform, para no romper la animación) pero SIN Bake Axis Conversion (ver Correccion) y con la
+    // animación de despliegue como Legacy, para NaveDespliegue. Lleva una caja de colisión para caminar alrededor en el hangar.
     // La cabina (submarino-cabina) no cambia. También la usa el prólogo (ImportarSeraphim).
     public static class PonerNaveSeraphim
     {
@@ -18,9 +18,11 @@ namespace BioVR.Entornos.Editor
         const string Hangar = "Assets/_BioVR/Entornos/Hangar/Hangar.prefab";
         const string Sonidos = "Assets/_BioVR/Comun/Audio/SFX/";
 
-        // El FBX sale de Blender sin Apply Transform y, aun con Bake Axis Conversion, queda acostada con las patas
-        // hacia la derecha (+X). Este giro la para; lo usan el hangar y el prólogo. Si quedara al revés, cambiar a +90.
-        public static readonly Quaternion Correccion = Quaternion.Euler(0f, 0f, -90f);
+        // El FBX sale de Blender sin Apply Transform: su raíz ("Seraphim") lleva −90° en X y la animación de despliegue
+        // TAMBIÉN anima esa raíz con −90°. Con Bake Axis Conversion Unity ya endereza las mallas y la animación le vuelve
+        // a sumar −90°: la nave queda con la nariz hacia arriba. Por eso se importa SIN Bake Axis Conversion (la raíz
+        // conserva su −90° y la animación pone el mismo). Este giro extra queda en cero; está por si hiciera falta.
+        public static readonly Quaternion Correccion = Quaternion.identity;
 
         [MenuItem("BioVR/Poner nave Seraphim")]
         public static void Poner()
@@ -64,7 +66,7 @@ namespace BioVR.Entornos.Editor
             Debug.Log($"[Nave] Seraphim en el hangar: {b.size.x:F1} × {b.size.y:F1} × {b.size.z:F1} m.");
         }
 
-        // Copia el FBX de 03-diseno/exports (si falta) y lo importa: sin cámaras ni luces, Bake Axis Conversion
+        // Copia el FBX de 03-diseno/exports (si falta) y lo importa: sin cámaras ni luces, sin Bake Axis Conversion
         // y animación Legacy (NaveDespliegue la reproduce hacia adelante o hacia atrás)
         public static GameObject ImportarSeraphim()
         {
@@ -76,11 +78,11 @@ namespace BioVR.Entornos.Editor
                 AssetDatabase.ImportAsset(Ruta);
             }
             if (AssetImporter.GetAtPath(Ruta) is ModelImporter mi &&
-                (mi.importCameras || mi.importLights || !mi.bakeAxisConversion || mi.animationType != ModelImporterAnimationType.Legacy || !mi.importAnimation))
+                (mi.importCameras || mi.importLights || mi.bakeAxisConversion || mi.animationType != ModelImporterAnimationType.Legacy || !mi.importAnimation))
             {
                 mi.importCameras = false;
                 mi.importLights = false;
-                mi.bakeAxisConversion = true;
+                mi.bakeAxisConversion = false; // ver Correccion
                 mi.animationType = ModelImporterAnimationType.Legacy;
                 mi.importAnimation = true;
                 mi.SaveAndReimport();
