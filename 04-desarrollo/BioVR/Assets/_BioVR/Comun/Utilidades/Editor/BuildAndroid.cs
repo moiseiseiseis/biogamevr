@@ -24,6 +24,18 @@ namespace BioVR.Comun.Editor
         const string RutaApkCocina = "Builds/Cocina.apk";
         const string PaqueteCocina = "com.biogamevr.cocina";
         const string NombreCocina = "BioVR Cocina";
+        const string RutaApkPilotaje = "Builds/Pilotaje.apk";
+        const string PaquetePilotaje = "com.biogamevr.pilotaje";
+        const string NombrePilotaje = "BioVR Pilotaje";
+
+        // Prueba del pilotaje libre en la célula (modo investigación), aparte del juego: empieza en la célula y,
+        // con la misión cumplida, el salto a 5 nm lleva a la Cocina (que también va en este APK). Al terminar la
+        // Cocina, su pantalla final regresa a la escena 0, que aquí es la del pilotaje.
+        [MenuItem("BioVR/Build APK Pilotaje")]
+        public static void ConstruirPilotaje() =>
+            Terminar(GenerarAparte(new[] { BioVR.Pilotaje.Editor.ArmarPruebaPilotaje.Escena,
+                    BioVR.Minijuegos.Cocina.Herramientas.ArmarEscenaCocina.Escena },
+                "BioVR → Pilotaje → Armar prueba de pilotaje", PaquetePilotaje, NombrePilotaje, RutaApkPilotaje));
 
         [MenuItem("BioVR/Build APK")]
         public static void Construir()
@@ -50,13 +62,18 @@ namespace BioVR.Comun.Editor
                 "BioVR → Cocina → Armar escena Cocina", PaqueteCocina, NombreCocina, RutaApkCocina));
 
         // Compila una sola escena con otro paquete y otro nombre, para que se instale junto a BioVR sin reemplazarlo.
-        static bool GenerarAparte(string escena, string armador, string paqueteNuevo, string nombreNuevo, string ruta)
+        static bool GenerarAparte(string escena, string armador, string paqueteNuevo, string nombreNuevo, string ruta) =>
+            GenerarAparte(new[] { escena }, armador, paqueteNuevo, nombreNuevo, ruta);
+
+        // Igual, con varias escenas (la primera es la escena 0, con la que abre la app)
+        static bool GenerarAparte(string[] escenas, string armador, string paqueteNuevo, string nombreNuevo, string ruta)
         {
-            if (AssetDatabase.LoadAssetAtPath<SceneAsset>(escena) == null)
-            {
-                Debug.LogError($"[BuildAndroid] No existe {escena}. Corre primero {armador}.");
-                return false;
-            }
+            foreach (var escena in escenas)
+                if (AssetDatabase.LoadAssetAtPath<SceneAsset>(escena) == null)
+                {
+                    Debug.LogError($"[BuildAndroid] No existe {escena}. Corre primero {armador}.");
+                    return false;
+                }
 
             // Se cambian el paquete y el nombre solo durante la compilación y luego se regresan
             var android = NamedBuildTarget.Android;
@@ -66,7 +83,7 @@ namespace BioVR.Comun.Editor
             {
                 PlayerSettings.SetApplicationIdentifier(android, paqueteNuevo);
                 PlayerSettings.productName = nombreNuevo;
-                return Generar(new[] { escena }, ruta);
+                return Generar(escenas, ruta);
             }
             finally
             {

@@ -30,6 +30,8 @@ namespace BioVR.Comun
         [SerializeField] PasoTutorial[] pasos = new PasoTutorial[0];
         [SerializeField] GameObject panel;
         [SerializeField] TextMeshProUGUI progreso;
+        [Tooltip("Lo que dice arriba del panel antes de \"paso X de N\" (p. ej. Tutorial, Misión).")]
+        [SerializeField] string rotulo = "Tutorial";
         [SerializeField] TextMeshProUGUI titulo;
         [SerializeField] TextMeshProUGUI instruccion;
         [SerializeField] GameObject botonSiguiente;
@@ -150,7 +152,7 @@ namespace BioVR.Comun
             indice = i;
             if (Terminado) { Terminar(); return; }
             var paso = pasos[i];
-            if (progreso != null) progreso.text = $"Tutorial · paso {i + 1} de {pasos.Length}";
+            if (progreso != null) progreso.text = $"{rotulo} · paso {i + 1} de {pasos.Length}";
             titulo.text = paso.titulo;
             instruccion.text = paso.instruccion;
             bool conBoton = string.IsNullOrEmpty(paso.clave) || paso.opcional;

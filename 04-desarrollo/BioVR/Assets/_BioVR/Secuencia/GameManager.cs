@@ -40,6 +40,11 @@ namespace BioVR.Secuencia
         // Avisa que ya se tapó la vista y empieza a cargar la Cocina (la música de carga lo usa)
         public event Action OnCargandoCocina;
 
+        // Si otro script pone aquí una condición (p. ej. la misión de los organelos), el salto a la Cocina solo
+        // ocurre cuando devuelve null o vacío; si no, se avisa el motivo con OnCocinaBloqueada
+        public Func<string> BloqueoCocina;
+        public event Action<string> OnCocinaBloqueada;
+
         // Otros roles se suscriben a estos eventos para activar/desactivar su zona
         public event Action<GameState> OnEstadoCambiado;
         public event Action<int> OnSaltoCambiado;
@@ -113,6 +118,13 @@ namespace BioVR.Secuencia
         public void IrALaCocina()
         {
             if (Pausado || enTransicion) return;
+            var motivo = BloqueoCocina?.Invoke();
+            if (!string.IsNullOrEmpty(motivo))
+            {
+                Debug.Log($"[Secuencia] Salto a la Cocina bloqueado: {motivo}");
+                OnCocinaBloqueada?.Invoke(motivo);
+                return;
+            }
             if (!Application.CanStreamedLevelBeLoaded(escenaCocina))
             {
                 Debug.LogWarning($"[Secuencia] La escena '{escenaCocina}' no está en Build Settings: corre BioVR → Conectar salto a la Cocina.");
