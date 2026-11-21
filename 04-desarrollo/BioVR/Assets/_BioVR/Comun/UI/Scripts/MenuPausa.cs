@@ -1,4 +1,5 @@
 using System;
+using BioVR.Minijuegos.Cocina;
 using BioVR.Secuencia;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,9 +8,11 @@ using UnityEngine.SceneManagement;
 namespace BioVR.Comun
 {
     // Menú de pausa: se abre y se cierra con el botón ☰ del mando izquierdo (Esc o P en el editor).
-    // Al abrirse aparece frente a la vista del jugador y pausa el juego (GameManager.Pausar).
-    // Botones: Continuar, Reiniciar (vuelve a cargar la escena desde el Hangar) y Salir.
-    // Reiniciar y Salir primero preguntan "¿Estás seguro?" en el panel de confirmación (Sí / No).
+    // Al abrirse aparece frente a la vista del jugador y pausa el juego (GameManager.Pausar y, en la Cocina,
+    // ControlCocina.PonerPausa).
+    // Botones: Continuar, Reiniciar (vuelve a cargar la escena desde el Hangar), Reiniciar turno y Reiniciar
+    // tutorial (solo hacen algo en la Cocina) y Salir. Los que reinician o salen preguntan "¿Estás seguro?"
+    // en el panel de confirmación (Sí / No).
     // Lo arma el menú BioVR → Agregar menú de pausa.
     public class MenuPausa : MonoBehaviour
     {
@@ -37,8 +40,11 @@ namespace BioVR.Comun
         // Abierto = se ve el menú o la confirmación
         public bool Abierto => (panel != null && panel.activeSelf) || (panelConfirmacion != null && panelConfirmacion.activeSelf);
 
-        // Qué se hace si el jugador contesta "Sí": "Reiniciar" o "Salir"
+        // Qué se hace si el jugador contesta "Sí": "Reiniciar", "ReiniciarTurno", "ReiniciarTutorial" o "Salir"
         string accionPendiente = "";
+
+        // Si la Cocina ya estaba en pausa al abrir (una ventana del tutorial), al continuar se queda en pausa
+        bool cocinaYaPausada;
 
         static InputAction CrearAccionPorDefecto()
         {
@@ -95,6 +101,12 @@ namespace BioVR.Comun
             foreach (var go in apagarEnPausa)
                 if (go != null) go.SetActive(false);
             if (gm != null) gm.Pausar(true);
+            var cocina = ControlCocina.Instancia; // en la Cocina no hay GameManager
+            if (cocina != null)
+            {
+                cocinaYaPausada = cocina.Pausado;
+                cocina.PonerPausa(true);
+            }
             OnMenu?.Invoke(true);
         }
 
@@ -108,8 +120,15 @@ namespace BioVR.Comun
             foreach (var go in apagarEnPausa)
                 if (go != null) go.SetActive(true);
             if (GameManager.Instance != null) GameManager.Instance.Pausar(false);
+            if (ControlCocina.Instancia != null && !cocinaYaPausada) ControlCocina.Instancia.PonerPausa(false);
             OnMenu?.Invoke(false);
         }
+
+        // Botón "Reiniciar tutorial" (A7): borra las ventanas vistas y reinicia desde el turno 1 (índice 0)
+        public void ReiniciarTutorial() => Preguntar("ReiniciarTutorial");
+
+        // Botón "Reiniciar turno" (A7): repite el turno actual sin borrar el historial del tutorial
+        public void ReiniciarTurno() => Preguntar("ReiniciarTurno");
 
         // Botón "Reiniciar": pregunta antes; con "Sí" todo vuelve a empezar desde el Hangar
         public void Reiniciar() => Preguntar("Reiniciar");
@@ -121,10 +140,11 @@ namespace BioVR.Comun
         public void ConfirmarAccionSi()
         {
             if (accionPendiente == "Reiniciar") EjecutarReiniciar();
+            else if (accionPendiente == "ReiniciarTutorial") EjecutarReiniciarTutorial();
+            else if (accionPendiente == "ReiniciarTurno") EjecutarReiniciarTurno();
             else if (accionPendiente == "Salir") EjecutarSalir();
         }
 
-        // Botón "No" de la confirmación: regresa al menú de pausa
         public void CancelarConfirmacionNo()
         {
             accionPendiente = "";
@@ -132,13 +152,37 @@ namespace BioVR.Comun
             panel.SetActive(true);
         }
 
-        // Cambia el menú por la confirmación; sin panel de confirmación hace la acción de una vez
         void Preguntar(string accion)
         {
             accionPendiente = accion;
             if (panelConfirmacion == null) { ConfirmarAccionSi(); return; }
             panel.SetActive(false);
             panelConfirmacion.SetActive(true);
+        }
+
+        void EjecutarReiniciarTutorial()
+        {
+            Continuar();
+            TutorialCocina.ReiniciarHistorial();
+            var cocina = ControlCocina.Instancia;
+            if (cocina != null)
+            {
+                cocina.PonerPausa(false);
+                cocina.IniciarTurno(0);
+            }
+            Debug.Log("[Menu] Reiniciar tutorial.");
+        }
+
+        void EjecutarReiniciarTurno()
+        {
+            Continuar();
+            var cocina = ControlCocina.Instancia;
+            if (cocina != null)
+            {
+                cocina.PonerPausa(false);
+                cocina.RepetirTurno();
+            }
+            Debug.Log("[Menu] Reiniciar turno.");
         }
 
         void EjecutarReiniciar()
@@ -158,12 +202,10 @@ namespace BioVR.Comun
 #endif
         }
 
-        // Pone el menú al frente de la vista, a la altura de los ojos y derecho (sin inclinarse con la cabeza).
-        // Se mueve el objeto completo (no solo el panel) para que la confirmación también quede enfrente.
         void Colocar()
         {
             var adelante = Vector3.ProjectOnPlane(cabeza.forward, Vector3.up);
-            if (adelante.sqrMagnitude < 0.01f) adelante = Vector3.forward; // mirando justo arriba o abajo
+            if (adelante.sqrMagnitude < 0.01f) adelante = Vector3.forward;
             adelante.Normalize();
             transform.SetPositionAndRotation(cabeza.position + adelante * distancia, Quaternion.LookRotation(adelante));
         }

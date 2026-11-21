@@ -11,3 +11,4 @@ Uno por tema, con la fecha en que se escribió: `AAAA-MM-DD-tema.md`. Las minuta
 | [Pendientes: menú y tutorial](2026-10-20-pendientes-menu-y-tutorial.md) | Menú de pausa, altura del asiento, movimiento y tutorial |
 | [Análisis del aporte BioMecha](2026-10-22-analisis-aporte-biomecha.md) | Cañón molecular de Diseño: qué se reutiliza, qué no corre en el Quest y plan de integración |
 | [Guía: revisar y fusionar un PR](2026-11-17-guia-revisar-y-fusionar-pr.md) | Paso a paso para revisar, probar en Unity, comentar y fusionar un PR del equipo |
+| [Sonidos de la Cocina](2026-11-20-sonidos-de-la-cocina.md) | Qué audio va en cada clave de sonido de la Cocina, música, ambiente y pendientes con Sonido |
