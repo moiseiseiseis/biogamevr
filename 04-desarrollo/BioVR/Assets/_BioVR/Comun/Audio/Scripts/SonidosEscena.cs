@@ -115,8 +115,9 @@ namespace BioVR.Comun
 
         [Header("Volúmenes")]
         [SerializeField] float volumenMomentos = 0.8f;
+        [SerializeField] float volumenMusica = 1f;      // música de una vez (revelación, cabina, transiciones)
         [SerializeField] float volumenInterfaz = 0.6f;
-        [SerializeField] float volumenPausa = 0.4f;
+        [SerializeField] float volumenPausa = 0.55f;
 
         public static SonidosEscena Instancia { get; private set; }
 
@@ -172,7 +173,10 @@ namespace BioVR.Comun
             estadoAnterior = gm.Estado;
             AplicarCapas(instantaneo: true);
             if (gm.Estado == GameState.Hangar) StartCoroutine(Tocar(revelacionMecha, 1.5f));
+            musicaUnaVez = new HashSet<AudioClip>(transiciones) { revelacionMecha, entradaCabina };
         }
+
+        HashSet<AudioClip> musicaUnaVez = new HashSet<AudioClip>();
 
         void OnDestroy()
         {
@@ -276,7 +280,7 @@ namespace BioVR.Comun
                 if (c.fuente != null) c.fuente.Stop();
             if (musicaCarga == null) return;
             pausa.clip = musicaCarga;
-            pausa.volume = volumenPausa;
+            pausa.volume = Mathf.Max(volumenPausa, 0.6f);
             pausa.Play();
         }
 
@@ -505,7 +509,8 @@ namespace BioVR.Comun
         {
             if (clip == null) return;
             fuente = fuente != null ? fuente : momentos;
-            fuente.PlayOneShot(clip, volumen * (fuente == interfaz ? volumenInterfaz : volumenMomentos));
+            float v = fuente == interfaz ? volumenInterfaz : musicaUnaVez.Contains(clip) ? volumenMusica : volumenMomentos;
+            fuente.PlayOneShot(clip, volumen * v);
         }
 
         IEnumerator Tocar(AudioClip clip, float retraso)

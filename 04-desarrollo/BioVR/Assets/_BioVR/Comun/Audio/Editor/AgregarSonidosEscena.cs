@@ -33,9 +33,9 @@ namespace BioVR.Comun.Editor
             ("Desplazamiento", Audio + "SFX/SFX-MEC-06_desplazamiento-loop_v01.wav", V(0f, 0f, 0.35f, 0.25f), S()),
             ("Antenas", Audio + "SFX/SFX-MEC-05_antenas-estatica-loop_v01.wav", V(0f, 0f, 0.12f, 0.12f), S()),
             ("Interior celular", AudioCocina + "AMB/AMB-CEL-01_interior-celular-loop_v01.wav", V(0f, 0f, 0.6f, 0.6f), S(3)),
-            ("Musica viaje tranquilo", Audio + "MUS/MUS-VAS-01_viaje-tranquilo-loop_v01.wav", V(0f, 0f, 0.4f, 0f), S(1)),
-            ("Musica viaje intenso", Audio + "MUS/MUS-VAS-03_viaje-intenso-loop_v01.wav", V(0f, 0f, 0.4f, 0f), S(2)),
-            ("Musica celula", Audio + "MUS/MUS-MEN-01_tema-menu_v01.wav", V(0f, 0f, 0.35f, 0.35f), S(3)),
+            ("Musica viaje tranquilo", Audio + "MUS/MUS-VAS-01_viaje-tranquilo-loop_v01.wav", V(0f, 0f, 0.65f, 0f), S(1)),
+            ("Musica viaje intenso", Audio + "MUS/MUS-VAS-03_viaje-intenso-loop_v01.wav", V(0f, 0f, 0.65f, 0f), S(2)),
+            ("Musica celula", Audio + "MUS/MUS-MEN-01_tema-menu_v01.wav", V(0f, 0f, 0.6f, 0.6f), S(3)),
         };
 
         static readonly (string nombre, string archivo, string[] zonas, string[] objetos, float volumen, float distancia)[] Fijos =

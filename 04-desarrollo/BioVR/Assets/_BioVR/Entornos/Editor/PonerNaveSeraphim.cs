@@ -77,7 +77,8 @@ namespace BioVR.Entornos.Editor
             if (anim != null && anim.clip != null) anim.clip.SampleAnimation(anim.gameObject, anim.clip.length);
             // Al frente de la cabina, como la nave anterior; parada sobre el piso del hangar (y = -0.05) ya desplegada
             nave.transform.localPosition = new Vector3(0f, 0f, 17f);
-            nave.transform.localRotation = MedirCorreccion(fbx);
+            // Con la cúpula hacia la cabina (el jugador mira hacia +Z desde el origen): girada 180° respecto a +Z
+            nave.transform.localRotation = Quaternion.Euler(0f, 180f, 0f) * MedirCorreccion(fbx);
             var b = Limites(nave);
             nave.transform.localPosition += new Vector3(0f, -0.05f - b.min.y, 0f);
             b = Limites(nave);

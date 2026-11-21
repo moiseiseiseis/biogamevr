@@ -114,7 +114,7 @@ namespace BioVR.Prologo.Editor
             musica.transform.SetParent(raiz.transform, false);
             musica.playOnAwake = false;
             musica.loop = true;
-            musica.volume = 0.25f; // abajo de la voz
+            musica.volume = 0.4f; // abajo de la voz, pero presente
             musica.clip = AssetDatabase.LoadAssetAtPath<AudioClip>(Musica);
 
             // ---- Subtítulos con fondo oscuro, abajo de la pasarela ----

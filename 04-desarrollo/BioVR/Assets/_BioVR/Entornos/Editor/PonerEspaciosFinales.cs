@@ -202,26 +202,32 @@ namespace BioVR.Entornos.Editor
             }
             else Debug.LogWarning("[Espacios] La sala no trae Spawn_Jugador / Soporte_Nave: queda en el origen.");
 
-            // La Seraphim plegada sobre la plataforma, del tamaño que quepa en el anillo interior
-            if (seraphim != null && soporte != null)
+            // La Seraphim plegada en el centro de los anillos (medido con la malla del anillo interior, no con los
+            // empties del FBX), de frente al jugador y del tamaño que quepa adentro
+            var interior = Buscar(sala.transform, "Anillo_Interior");
+            if (seraphim != null && interior != null)
             {
-                var nave = new GameObject(Prefijo + "Seraphim en la plataforma");
+                var bi = Limites(interior.gameObject);
+                var nave = new GameObject(Prefijo + "Seraphim en los anillos");
                 nave.transform.SetParent(sala.transform, true);
-                nave.transform.position = soporte.position;
-                nave.transform.rotation = Quaternion.LookRotation(Vector3.back) * PonerNaveSeraphim.MedirCorreccion(seraphim); // de frente al jugador
+                nave.transform.position = bi.center;
+                nave.transform.rotation = Quaternion.LookRotation(Vector3.back) * PonerNaveSeraphim.MedirCorreccion(seraphim); // cúpula hacia el jugador
                 var m = (GameObject)PrefabUtility.InstantiatePrefab(seraphim, nave.transform);
                 m.transform.localPosition = Vector3.zero;
                 m.transform.localRotation = Quaternion.identity;
-                var interior = Buscar(sala.transform, "Anillo_Interior");
-                float cabe = interior != null ? Limites(interior.gameObject).size.magnitude * 0.35f : 6f;
+                // El anillo interior es un aro: su lado más chico es el grosor, los otros dos son el diámetro
+                var s = bi.size;
+                float diametro = Mathf.Max(Mathf.Min(s.x, s.y), Mathf.Min(Mathf.Max(s.x, s.y), s.z));
+                float cabe = diametro * 0.55f;
                 var bn = Limites(nave);
                 float mayor = Mathf.Max(bn.size.x, bn.size.y, bn.size.z);
-                if (mayor > cabe) nave.transform.localScale *= cabe / mayor;
+                if (mayor > 0f) nave.transform.localScale *= cabe / mayor;
                 bn = Limites(nave);
-                nave.transform.position += new Vector3(soporte.position.x - bn.center.x, soporte.position.y - bn.min.y, soporte.position.z - bn.center.z);
+                nave.transform.position += bi.center - bn.center; // centrada en el anillo
                 var dso = new SerializedObject(nave.AddComponent<NaveDespliegue>());
                 dso.FindProperty("seguirAlJuego").boolValue = false; // se queda plegada, lista para reducirse
                 dso.ApplyModifiedPropertiesWithoutUndo();
+                Debug.Log($"[Espacios] Seraphim en los anillos: centro {bi.center:F1}, anillo de {diametro:F1} m, nave de {cabe:F1} m.");
             }
 
             // Anillos: el script los carga en el abordaje y los acelera en la reducción
