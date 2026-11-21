@@ -687,7 +687,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
+  m_TextStyleHashCode: 0
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -1048,8 +1048,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bde784dfc35332b41a581d0e7dd18dd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.ChaperonaBiP
-  bipAbierta: {fileID: 0}
-  bipCerrada: {fileID: 0}
+  bipAbierta: {fileID: 6241667669608028825}
+  bipCerrada: {fileID: 3010876515490148000}
   holograma: {fileID: 0}
   duracionTotal: 3
   tiempoAperturaInicial: 0.6
@@ -1068,6 +1068,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.DepositosAmiloides
   holograma: {fileID: 0}
+  material: {fileID: 2100000, guid: ba689babaf5dc064c82e9811b2b835c5, type: 2}
   desplazamiento: {x: 0, y: 0.07, z: 0.05}
   colorRosa: {r: 1, g: 0.32, b: 0.72, a: 0.16}
   colorEmisionRosa: {r: 1, g: 0.22, b: 0.65, a: 1}
