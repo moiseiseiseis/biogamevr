@@ -97,7 +97,12 @@ namespace BioVR.Entornos.Editor
         }
 
         // ---------------- Cabina ----------------
-        static void Cabina()
+        // Desde el 21-nov la cabina es la sala de enlace de Diego (#92, cápsula para controlar el Mecha a distancia);
+        // si todavía no está en Modelos/Cabina se usa la cabina retro. Las dos tienen los mismos INT_ y ANCLA_Jugador.
+        public const string SalaEnlace = Modelos + "Cabina/sala-enlace.fbx";
+        const string CabinaRetro = Modelos + "Cabina/submarino-cabina.fbx";
+
+        public static void Cabina()
         {
             var escena = EditorSceneManager.OpenScene(EscenaInicial, OpenSceneMode.Single);
             var cabina = escena.GetRootGameObjects().FirstOrDefault(r => r.name == "Cabina (provisional)");
@@ -108,7 +113,8 @@ namespace BioVR.Entornos.Editor
                                            "techo", "tablero_frontal", "Consola (provisional)", "Asiento (provisional)", "Base palanca" })
                 Apagar(cabina.transform, nombre);
 
-            var modelo = Instanciar(Modelos + "Cabina/submarino-cabina.fbx", "Cabina de Diseño", cabina.transform);
+            bool enlace = AssetDatabase.LoadAssetAtPath<GameObject>(SalaEnlace) != null;
+            var modelo = Instanciar(enlace ? SalaEnlace : CabinaRetro, "Cabina de Diseño", cabina.transform);
             // El asiento del modelo (ANCLA_Jugador) va donde está el jugador: x = 0, z = 0
             var ancla = Buscar(modelo, "ANCLA_Jugador");
             modelo.localPosition = ancla != null ? new Vector3(-ancla.localPosition.x, 0f, -ancla.localPosition.z) : Vector3.zero;
@@ -123,8 +129,19 @@ namespace BioVR.Entornos.Editor
             var principal = Buscar(modelo, "INT_Pantalla_Principal");
             if (pantalla != null && principal != null)
             {
-                pantalla.position = principal.position + new Vector3(0f, 0f, -0.02f);
-                pantalla.rotation = Quaternion.identity;
+                if (enlace)
+                {
+                    // En la sala de enlace la pantalla principal está en la consola, inclinada: de frente a los ojos del piloto
+                    var ojos = cabina.transform.TransformPoint(new Vector3(0f, 1.27f, 0f));
+                    var haciaPiloto = (ojos - principal.position).normalized;
+                    pantalla.position = principal.position + haciaPiloto * 0.02f;
+                    pantalla.rotation = Quaternion.LookRotation(-haciaPiloto);
+                }
+                else
+                {
+                    pantalla.position = principal.position + new Vector3(0f, 0f, -0.02f);
+                    pantalla.rotation = Quaternion.identity;
+                }
             }
 
             EditorSceneManager.MarkSceneDirty(escena);

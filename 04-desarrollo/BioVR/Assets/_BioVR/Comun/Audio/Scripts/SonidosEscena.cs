@@ -85,6 +85,7 @@ namespace BioVR.Comun
         [SerializeField] AudioClip entradaCabina;       // MUS-ABO-01
         [SerializeField] AudioClip cinturon;            // SFX-CAB-01
         [SerializeField] AudioClip encenderPantallas;   // SFX-CAB-02
+        [SerializeField] AudioClip cargaAnillos;        // SFX-ESC-01, los anillos de la sala de reducción se cargan
         [SerializeField] AudioClip compuerta;           // SFX-MEC-01, escotilla
 
         [Header("Saltos de escala")]
@@ -236,6 +237,7 @@ namespace BioVR.Comun
                 StartCoroutine(Tocar(entradaCabina, 0f));
                 StartCoroutine(Tocar(cinturon, 0.4f));
                 StartCoroutine(Tocar(encenderPantallas, 1.2f));
+                StartCoroutine(Tocar(cargaAnillos, 2.5f));
             }
             else if (!enSalto && transiciones.Length > 0)
             {

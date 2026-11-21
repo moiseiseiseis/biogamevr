@@ -19,7 +19,7 @@ namespace BioVR.Escala
         [SerializeField] int saltoHolograma = 3;
 
         [Tooltip("Piezas que desaparecen en modo holograma (paredes, techo y cristal). Se compara el inicio del nombre.")]
-        [SerializeField] string[] ocultar = { "CAB_Estructura", "CAB_Cristal", "CAB_Mobiliario" };
+        [SerializeField] string[] ocultar = { "CAB_Estructura", "CAB_Cristal", "CAB_Mobiliario", "CAB_Capsula" }; // CAB_Capsula: sala de enlace
 
         readonly Dictionary<Renderer, Material[]> originales = new();
         readonly List<Renderer> ocultos = new();
