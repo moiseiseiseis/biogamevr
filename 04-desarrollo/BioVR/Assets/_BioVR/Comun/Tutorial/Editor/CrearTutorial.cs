@@ -64,18 +64,28 @@ namespace BioVR.Comun.Editor
                 .Select(AssetDatabase.LoadAssetAtPath<PasoTutorial>)
                 .ToArray();
 
+            if (ArmarEn(escena, NombreTutorial, pasos, "Tutorial") == null) return;
+            EditorSceneManager.MarkSceneDirty(escena);
+            EditorSceneManager.SaveScene(escena);
+            Debug.Log($"[Tutorial] Listo con {pasos.Length} pasos.");
+        }
+
+        // Arma en la escena un objeto "nombre" con el Tutorial, su panel (a la izquierda de la consola) y los pasos dados.
+        // Lo usan este menú y otros (p. ej. la misión de la prueba de pilotaje). "rotulo" va arriba del panel.
+        public static Tutorial ArmarEn(UnityEngine.SceneManagement.Scene escena, string nombre, PasoTutorial[] pasos, string rotulo)
+        {
             var origen = Object.FindFirstObjectByType<XROrigin>();
-            if (origen == null || origen.Camera == null) { Debug.LogError("[Tutorial] No hay XR Origin con cámara en la escena inicial."); return; }
+            if (origen == null || origen.Camera == null) { Debug.LogError("[Tutorial] No hay XR Origin con cámara en la escena."); return null; }
             UIVR.AsegurarEventSystem();
 
-            var viejo = escena.GetRootGameObjects().FirstOrDefault(g => g.name == NombreTutorial);
+            var viejo = escena.GetRootGameObjects().FirstOrDefault(g => g.name == nombre);
             if (viejo != null) Object.DestroyImmediate(viejo);
-            var raiz = new GameObject(NombreTutorial);
+            var raiz = new GameObject(nombre);
             var tutorial = raiz.AddComponent<Tutorial>();
 
             var panel = UIVR.Panel("Panel", raiz.transform, new Vector2(460f, 440f), origen.Camera); // 0.46 × 0.44 m
             panel.transform.SetPositionAndRotation(PosicionPanel, Quaternion.LookRotation(PosicionPanel - OjosPiloto));
-            var progreso = UIVR.Texto(panel.transform, "Progreso", "Tutorial", 20f, FontStyles.Italic, 26f);
+            var progreso = UIVR.Texto(panel.transform, "Progreso", rotulo, 20f, FontStyles.Italic, 26f);
             var titulo = UIVR.Texto(panel.transform, "Titulo", "Título", 38f, FontStyles.Bold, 50f);
             var instruccion = UIVR.Texto(panel.transform, "Instruccion", "Instrucción", 26f, FontStyles.Normal, 150f);
             var fila = UIVR.Fila("Botones", panel.transform, 70f);
@@ -98,11 +108,9 @@ namespace BioVR.Comun.Editor
             so.FindProperty("instruccion").objectReferenceValue = instruccion;
             so.FindProperty("botonSiguiente").objectReferenceValue = siguiente;
             so.FindProperty("textoSiguiente").objectReferenceValue = siguiente.GetComponentInChildren<TextMeshProUGUI>();
+            so.FindProperty("rotulo").stringValue = rotulo;
             so.ApplyModifiedPropertiesWithoutUndo();
-
-            EditorSceneManager.MarkSceneDirty(escena);
-            EditorSceneManager.SaveScene(escena);
-            Debug.Log($"[Tutorial] Listo con {pasos.Length} pasos.");
+            return tutorial;
         }
 
         static void CrearPasosQueFalten()

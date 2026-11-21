@@ -11,7 +11,8 @@ namespace BioVR.Pilotaje.Editor
     // Menú BioVR → Pilotaje → Armar prueba de pilotaje.
     //
     // Hace Escenas/Pruebas/Pilotaje.unity, una copia de 00-EscenaInicial que empieza directo en la llegada a la célula,
-    // sin tutorial, con el pilotaje libre y la brújula en el tablero. Es para probar la comodidad del vuelo en el visor
+    // con el pilotaje libre, la brújula en el tablero y la misión del modo investigación (registrar 4 organelos
+    // para desbloquear el salto a 5 nm, con su propio tutorial; el del hangar queda apagado). Es para probar la comodidad del vuelo en el visor
     // con su propio APK (BioVR → Build APK Pilotaje), sin tocar el juego. Si se aprueba, se integra al flujo normal.
     // Correr después de que la escena inicial tenga el escenario low poly y el pokédex. Se puede correr varias veces.
     public static class ArmarPruebaPilotaje
@@ -63,11 +64,22 @@ namespace BioVR.Pilotaje.Editor
             so.FindProperty("textoBrujula").objectReferenceValue = texto;
             so.ApplyModifiedPropertiesWithoutUndo();
 
+            // Misión: 4 organelos para desbloquear el salto a 5 nm; su letrero va arriba de la brújula
+            var letrero = Texto("Letrero de la mision", cabina.transform, PosicionBrujula + new Vector3(0f, 0.09f, 0f), 0.34f, new Vector2(0.6f, 0.12f));
+            letrero.transform.SetParent(flecha.parent, true);
+            var mso = new SerializedObject(go.AddComponent<MisionOrganelos>());
+            mso.FindProperty("letrero").objectReferenceValue = letrero;
+            mso.ApplyModifiedPropertiesWithoutUndo();
+
+            // Tutorial de la misión (el del hangar queda apagado)
+            var pasos = PasosMision();
+            if (BioVR.Comun.Editor.CrearTutorial.ArmarEn(escena, "Tutorial de la mision", pasos, "Misión") == null) return;
+
             EditorSceneManager.MarkSceneDirty(escena);
             EditorSceneManager.SaveScene(escena);
             AssetDatabase.SaveAssets();
             Debug.Log($"[Pilotaje] Listo: {Escena}. Empieza en la llegada. Stick izquierdo: avanzar y de lado; stick derecho: " +
-                      "subir, bajar y girar; A: piloto automático. En el editor, con el XR Device Simulator.");
+                      "subir, bajar y girar; A: piloto automático. Misión: 4 organelos para el salto a 5 nm.");
         }
 
         // Flecha hecha de dos cubos (cuerpo y punta) que apunta al organelo más cercano sin registrar, y su texto
@@ -83,18 +95,70 @@ namespace BioVR.Pilotaje.Editor
             Cubo("Cuerpo", flecha, new Vector3(0f, 0f, -0.01f), new Vector3(0.012f, 0.012f, 0.07f), Quaternion.identity, mat);
             Cubo("Punta", flecha, new Vector3(0f, 0f, 0.03f), new Vector3(0.03f, 0.012f, 0.03f), Quaternion.Euler(0f, 45f, 0f), mat);
 
-            var go = new GameObject("Texto", typeof(TextMeshPro));
-            go.transform.SetParent(raiz, false);
-            go.transform.localPosition = new Vector3(0f, -0.06f, 0f);
-            var mundoTexto = cabina.TransformPoint(PosicionBrujula + new Vector3(0f, -0.06f, 0f));
-            go.transform.rotation = Quaternion.LookRotation(mundoTexto - cabina.TransformPoint(OjosPiloto));
-            var tmp = go.GetComponent<TextMeshPro>();
+            var tmp = Texto("Texto", cabina, PosicionBrujula + new Vector3(0f, -0.06f, 0f), 0.3f, new Vector2(0.5f, 0.12f));
+            tmp.transform.SetParent(raiz, true);
             tmp.text = "Sin registrar";
-            tmp.fontSize = 0.3f;
+            return (flecha, tmp);
+        }
+
+        // Texto 3D en la cabina, de frente a los ojos del piloto
+        static TextMeshPro Texto(string nombre, Transform cabina, Vector3 posicionLocal, float tamano, Vector2 caja)
+        {
+            var go = new GameObject(nombre, typeof(TextMeshPro));
+            go.transform.SetParent(cabina, false);
+            go.transform.localPosition = posicionLocal;
+            go.transform.rotation = Quaternion.LookRotation(cabina.TransformPoint(posicionLocal) - cabina.TransformPoint(OjosPiloto));
+            var tmp = go.GetComponent<TextMeshPro>();
+            tmp.fontSize = tamano;
             tmp.alignment = TextAlignmentOptions.Center;
             tmp.color = new Color(0.6f, 0.95f, 1f);
-            tmp.rectTransform.sizeDelta = new Vector2(0.5f, 0.12f);
-            return (flecha, tmp);
+            tmp.rectTransform.sizeDelta = caja;
+            return tmp;
+        }
+
+        // ---------------- Tutorial de la misión ----------------
+
+        const string CarpetaPasos = "Assets/_BioVR/Pilotaje/Tutorial";
+
+        // archivo, título, instrucción, clave, opcional. Claves: "pilotar" y "automatico" (PilotajeLibre),
+        // "organelo" y "mision" (MisionOrganelos), "salto:4" (el salto a 5 nm, del GameManager)
+        static readonly (string, string, string, string, bool)[] Pasos =
+        {
+            ("01-ModoInvestigacion", "Modo investigación",
+             "Antes de entrar al ribosoma, explora la célula y registra 4 organelos distintos en el pokédex. Con eso se desbloquea el salto a 5 nm.", "", false),
+            ("02-Pilotar", "Pilota la nave",
+             "Stick izquierdo: avanza y muévete de lado. Stick derecho: arriba y abajo para subir y bajar; a los lados para girar.", "pilotar", false),
+            ("03-Brujula", "Sigue la brújula",
+             "La flecha sobre la consola apunta al organelo más cercano que no has registrado. Presiona A y el piloto automático te lleva.", "automatico", true),
+            ("04-Registrar", "Registra un organelo",
+             "Apúntale con el mando y aprieta el gatillo. Su ficha aparece en el panel de la derecha.", "organelo", false),
+            ("05-Mision", "Completa la misión",
+             "Registra 4 organelos distintos. Tu avance se ve sobre la consola.", "mision", false),
+            ("06-Salto", "¡Misión cumplida!",
+             "Toca Salto Matrioska o empuja la palanca: la nave se reduce a 5 nm y entra al ribosoma.", "salto:4", false),
+        };
+
+        static BioVR.Comun.PasoTutorial[] PasosMision()
+        {
+            if (!AssetDatabase.IsValidFolder(CarpetaPasos)) AssetDatabase.CreateFolder("Assets/_BioVR/Pilotaje", "Tutorial");
+            foreach (var (archivo, titulo, instruccion, clave, opcional) in Pasos)
+            {
+                var ruta = $"{CarpetaPasos}/{archivo}.asset";
+                if (AssetDatabase.LoadAssetAtPath<BioVR.Comun.PasoTutorial>(ruta) != null) continue; // respeta lo que se haya corregido
+                var paso = ScriptableObject.CreateInstance<BioVR.Comun.PasoTutorial>();
+                paso.titulo = titulo;
+                paso.instruccion = instruccion;
+                paso.clave = clave;
+                paso.opcional = opcional;
+                if (clave == "salto:4") paso.resaltar = new[] { "Boton Salto Matrioska", "Palanca" };
+                AssetDatabase.CreateAsset(paso, ruta);
+            }
+            AssetDatabase.SaveAssets();
+            return AssetDatabase.FindAssets("t:PasoTutorial", new[] { CarpetaPasos })
+                .Select(AssetDatabase.GUIDToAssetPath)
+                .OrderBy(Path.GetFileName)
+                .Select(AssetDatabase.LoadAssetAtPath<BioVR.Comun.PasoTutorial>)
+                .ToArray();
         }
 
         static void Cubo(string nombre, Transform padre, Vector3 pos, Vector3 escala, Quaternion rot, Material mat)

@@ -182,6 +182,7 @@ namespace BioVR.Comun
                 gm.OnSaltoIniciado -= AlIniciarSalto;
                 gm.OnSaltoCambiado -= AlCambiarSalto;
                 gm.OnCargandoCocina -= AlCargarCocina;
+                gm.OnCocinaBloqueada -= AlBloquearCocina;
             }
             Escotilla.OnAfuera -= AlUsarEscotilla;
             AlturaAsiento.OnAjuste -= AlAjustarAsiento;
@@ -202,6 +203,7 @@ namespace BioVR.Comun
             gm.OnSaltoIniciado += AlIniciarSalto;
             gm.OnSaltoCambiado += AlCambiarSalto;
             gm.OnCargandoCocina += AlCargarCocina;
+            gm.OnCocinaBloqueada += AlBloquearCocina;
             Escotilla.OnAfuera += AlUsarEscotilla;
             AlturaAsiento.OnAjuste += AlAjustarAsiento;
             MenuPausa.OnMenu += AlAbrirMenu;
@@ -277,6 +279,9 @@ namespace BioVR.Comun
             pausa.volume = volumenPausa;
             pausa.Play();
         }
+
+        // El salto a la Cocina está bloqueado (p. ej. falta la misión): mismo aviso que un botón que no aplica
+        void AlBloquearCocina(string _) => Tocar2D(noDisponible, interfaz);
 
         void AlPresionarBoton(bool aplica)
         {

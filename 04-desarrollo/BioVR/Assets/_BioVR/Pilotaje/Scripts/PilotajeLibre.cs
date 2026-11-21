@@ -82,6 +82,7 @@ namespace BioVR.Pilotaje
         Quaternion rotacionInicial;
         Vector3 velocidadActual;
         bool giroListo = true, vinetaPuesta, enAutomatico;
+        float recorrido; // metros pilotados: a los 10 m se avisa al tutorial ("pilotar")
         Bounds membranaLocal;
         bool hayMembrana;
         readonly RaycastHit[] golpes = new RaycastHit[16];
@@ -190,7 +191,13 @@ namespace BioVR.Pilotaje
             else if (Mathf.Abs(der.x) < 0.3f) giroListo = true;
 
             var paso = Limitar(velocidadActual * Time.deltaTime);
-            if (paso.sqrMagnitude > 0f) mundo.position -= paso; // la nave avanza = la célula retrocede
+            if (paso.sqrMagnitude > 0f)
+            {
+                mundo.position -= paso; // la nave avanza = la célula retrocede
+                recorrido += paso.magnitude;
+                // Se avisa mientras vuela (no una sola vez): si el paso "pilotar" aparece después, igual se completa
+                if (recorrido > 10f) BioVR.Comun.Tutorial.Notificar("pilotar");
+            }
             else if (velocidadActual.sqrMagnitude > 0f && pedida.sqrMagnitude == 0f) velocidadActual = Vector3.zero;
             Vineta(vinetaAlPilotar && Rapidez > 0.05f);
         }
@@ -240,6 +247,7 @@ namespace BioVR.Pilotaje
         {
             enAutomatico = true;
             velocidadActual = Vector3.zero;
+            BioVR.Comun.Tutorial.Notificar("automatico");
             Vineta(vinetaEnAutomatico);
 
             var b = Limites(d.transform);
