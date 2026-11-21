@@ -34,7 +34,7 @@ namespace BioVR.Prologo.Editor
         const string Materiales = "Assets/_BioVR/Prologo/Materiales";
         const string Voz = "Assets/_BioVR/Comun/Audio/VOZ/";
         const string Transcripcion = Voz + "VOZ-NAR-03_Transcripcion_prologo_Emi.txt";
-        const string Musica = "Assets/_BioVR/Comun/Audio/MUS/MUS-MEN-01_tema-menu_v01.wav";
+        const string Musica = "Assets/_BioVR/Comun/Audio/MUS/MUS-PRO-02_prologo_v01.mp3"; // música del prólogo (prologo-game.mp3)
         const string Exports = "../../../03-diseno/exports/"; // desde Assets/
 
         // Dónde pasa todo, respecto al jugador sentado (ojos a ~1.2 m)
@@ -114,7 +114,7 @@ namespace BioVR.Prologo.Editor
             musica.transform.SetParent(raiz.transform, false);
             musica.playOnAwake = false;
             musica.loop = true;
-            musica.volume = 0.15f; // muy abajo de la voz
+            musica.volume = 0.25f; // abajo de la voz
             musica.clip = AssetDatabase.LoadAssetAtPath<AudioClip>(Musica);
 
             // ---- Subtítulos con fondo oscuro, abajo de la pasarela ----
