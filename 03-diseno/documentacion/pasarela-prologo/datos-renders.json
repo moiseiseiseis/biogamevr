@@ -1,0 +1,174 @@
+{
+ "nota_general": "Renders 1600x1600 PNG con fondo transparente (Eevee, AgX; 05 y 08 con vista Standard por sus emisivos), cámara 3/4 desde arriba (dirección 1,-1.25,0.75), objeto encuadrado al 80 %, luces key + rim + fill iguales para todos (escaladas al tamaño del objeto). medidas_m = caja envolvente X,Y,Z en unidades de Blender (Z arriba) de lo que sale en el render; 07, 09, 10, 11 y 12 están en la escala del juego/microscópica, no en metros reales. tris = triángulos de lo que se ve en el render (con copias incluidas en 09 y 12).",
+ "modelos": [
+  {
+   "id": "01",
+   "archivo_png": "01_tierra.png",
+   "tris": 3744,
+   "medidas_m": [
+    1.02,
+    1.02,
+    1.02
+   ],
+   "fuente": "pasarela_prologo/01_tierra/tierra.blend",
+   "nota": "",
+   "titulo": "Tierra"
+  },
+  {
+   "id": "02",
+   "archivo_png": "02_tierra_seca.png",
+   "tris": 3744,
+   "medidas_m": [
+    1.02,
+    1.02,
+    1.02
+   ],
+   "fuente": "pasarela_prologo/02_tierra_seca/tierra_seca.blend",
+   "nota": "",
+   "titulo": "Tierra seca"
+  },
+  {
+   "id": "03",
+   "archivo_png": "03_ciudad_domo.png",
+   "tris": 22226,
+   "medidas_m": [
+    1.0,
+    0.987,
+    0.753
+   ],
+   "fuente": "pasarela_prologo/03_ciudad_domo/ciudad_domo.blend",
+   "nota": "",
+   "titulo": "Ciudad con domo"
+  },
+  {
+   "id": "04",
+   "archivo_png": "04_silueta_holograma.png",
+   "tris": 77817,
+   "medidas_m": [
+    1.463,
+    0.323,
+    1.68
+   ],
+   "fuente": "biogamevr@main 03-diseno/exports/paciente.fbx",
+   "nota": "material holograma cian: emisivo + transparente con Fresnel",
+   "titulo": "Silueta holograma"
+  },
+  {
+   "id": "05",
+   "archivo_png": "05_logo_cellverse.png",
+   "tris": 1564,
+   "medidas_m": [
+    1.2,
+    0.09,
+    0.84
+   ],
+   "fuente": "pasarela_prologo/05_logo_cellverse/logo_cellverse.blend",
+   "nota": "",
+   "titulo": "Logo Cellverse"
+  },
+  {
+   "id": "06",
+   "archivo_png": "06_laboratorio.png",
+   "tris": 2394,
+   "medidas_m": [
+    1.913,
+    0.918,
+    1.226
+   ],
+   "fuente": "biogamevr@main 03-diseno/exports/minijuego-cocina/props/proyector-holograma.fbx + mesa-curva.fbx",
+   "nota": "proyector colocado sobre la mesa (z=0.780)",
+   "titulo": "Laboratorio (proyector de holograma sobre mesa curva)"
+  },
+  {
+   "id": "07",
+   "archivo_png": "07_celula.png",
+   "tris": 55328,
+   "medidas_m": [
+    492.057,
+    519.167,
+    479.082
+   ],
+   "fuente": "biogamevr@main 03-diseno/exports/escenario-celular_lowpoly.fbx",
+   "nota": "vista general en corte: se quito la mitad de la membrana que mira a la camara para ver el interior (solo en el render)",
+   "titulo": "Célula"
+  },
+  {
+   "id": "08",
+   "archivo_png": "08_pantalla_alerta.png",
+   "tris": 1490,
+   "medidas_m": [
+    0.6,
+    0.404,
+    0.621
+   ],
+   "fuente": "biogamevr@main 03-diseno/exports/minijuego-cocina/props/tablero-pedido.fbx",
+   "nota": "pantalla en rojo emisivo con triangulo de alerta (plano superpuesto de 0.451 x 0.316 m, solo para el render)",
+   "titulo": "Pantalla de alerta"
+  },
+  {
+   "id": "09",
+   "archivo_png": "09_amilina_grumo.png",
+   "tris": 13132,
+   "medidas_m": [
+    40.383,
+    35.696,
+    31.387
+   ],
+   "fuente": "biogamevr@main 03-diseno/exports/amilina_modelo.fbx (x7)",
+   "nota": "7 copias en grumo compacto, rotaciones al azar (semilla 4)",
+   "titulo": "Grumo de amilina"
+  },
+  {
+   "id": "10",
+   "archivo_png": "10_ribosoma.png",
+   "tris": 4279,
+   "medidas_m": [
+    304.709,
+    278.897,
+    319.101
+   ],
+   "fuente": "biogamevr@main 03-diseno/exports/ribosoma_80S_4ug0.fbx",
+   "nota": "",
+   "titulo": "Ribosoma 80S"
+  },
+  {
+   "id": "11",
+   "archivo_png": "11_seraphim.png",
+   "tris": 18416,
+   "medidas_m": [
+    14.586,
+    12.674,
+    9.649
+   ],
+   "fuente": "Desktop/cellgame/seraphim_exterior.blend (Seraphim bipedo, cuadro 60 desplegado)",
+   "nota": "",
+   "titulo": "Seraphim (mecha final)"
+  },
+  {
+   "id": "12",
+   "archivo_png": "12_eritrocitos.png",
+   "tris": 3648,
+   "medidas_m": [
+    14.839,
+    17.39,
+    15.719
+   ],
+   "fuente": "biogamevr@main 03-diseno/exports/eritrocito.fbx (x3)",
+   "nota": "3 copias en fila diagonal",
+   "titulo": "Eritrocitos"
+  },
+  {
+   "id": "13",
+   "archivo_png": "13_paciente.png",
+   "tris": 27272,
+   "medidas_m": [
+    1.463,
+    2.265,
+    0.937
+   ],
+   "fuente": "biogamevr@main 03-diseno/exports/paciente-en-camilla_lowpoly.fbx",
+   "nota": "",
+   "titulo": "Paciente en camilla"
+  }
+ ]
+}
