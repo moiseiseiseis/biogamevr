@@ -55,9 +55,12 @@ namespace BioVR.Prologo
         [SerializeField] ScreenFader fader;
         [SerializeField] string escenaSiguiente = "00-EscenaInicial";
         [SerializeField] float fundido = 1.2f;
+        [Tooltip("Segundos que tarda la música en apagarse al final; empieza ese tiempo antes de que termine el prólogo.")]
+        [SerializeField] float fundidoMusica = 5f;
 
         readonly List<Transform> aLaVista = new List<Transform>();
         bool terminando;
+        Coroutine fundiendoMusica;
 
         IEnumerator Start()
         {
@@ -70,6 +73,11 @@ namespace BioVR.Prologo
                 yield return fader.FadeA(0f, fundido);
             }
             if (musica != null) musica.Play();
+
+            // La última entrada que se va a ver: al empezar su voz ya se sabe cuánto falta para terminar
+            Entrada ultima = null;
+            foreach (var e in entradas)
+                if (e.modelo != null && (!versionFeria || e.enFeria)) ultima = e;
 
             Transform anterior = null;
             foreach (var e in entradas)
@@ -92,6 +100,12 @@ namespace BioVR.Prologo
                 var nave = actual.GetComponentInChildren<NaveDespliegue>();
                 if (nave != null) nave.Desplegar();
 
+                if (e == ultima)
+                {
+                    // Lo que falta: la voz, la pausa, la salida del modelo y el fundido a negro
+                    float falta = (e.voz != null ? e.voz.length : 0f) + pausaEntreAudios + duracionTraslado + (fader != null ? fundido : 0f);
+                    fundiendoMusica = StartCoroutine(FundirMusica(Mathf.Max(0f, falta - fundidoMusica), Mathf.Min(fundidoMusica, falta)));
+                }
                 if (e.voz != null) yield return Narrar(e);
                 yield return new WaitForSeconds(pausaEntreAudios);
                 anterior = actual;
@@ -177,11 +191,25 @@ namespace BioVR.Prologo
             aLaVista.Remove(t);
         }
 
+        IEnumerator FundirMusica(float espera, float duracion)
+        {
+            if (musica == null) yield break;
+            if (espera > 0f) yield return new WaitForSeconds(espera);
+            float inicial = musica.volume;
+            for (float s = 0f; s < duracion; s += Time.deltaTime)
+            {
+                musica.volume = inicial * (1f - s / duracion);
+                yield return null;
+            }
+            musica.volume = 0f;
+        }
+
         // Botón "Saltar prólogo"
         public void Saltar()
         {
             if (terminando) return;
             StopAllCoroutines();
+            fundiendoMusica = null;
             StartCoroutine(Terminar());
         }
 
@@ -190,6 +218,8 @@ namespace BioVR.Prologo
             terminando = true;
             if (voz != null) voz.Stop();
             if (subtitulo != null) subtitulo.text = "";
+            // Si se saltó el prólogo, la música se apaga junto con el fundido a negro
+            if (fundiendoMusica == null) fundiendoMusica = StartCoroutine(FundirMusica(0f, fader != null ? fundido : 0.3f));
             if (fader != null) yield return fader.FadeA(1f, fundido, Color.black);
             if (musica != null) musica.Stop();
             SceneManager.LoadScene(escenaSiguiente);

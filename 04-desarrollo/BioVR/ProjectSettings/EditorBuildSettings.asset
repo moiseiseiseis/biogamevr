@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/_BioVR/Escenas/Prologo.unity
+    guid: 058d701aee2fcaa48925dd8252104773
+  - enabled: 1
     path: Assets/_BioVR/Escenas/00-EscenaInicial.unity
     guid: d4af9128716fc2742a2b9d0e2b8ac7f8
   - enabled: 1
