@@ -47,7 +47,8 @@ namespace BioVR.Comun.Editor
 
             PrenderLocomocion(origen);
 
-            var estructura = Limites(Buscar(modelo, "CAB_Estructura"));
+            // CAB_Estructura en la cabina retro, CAB_Capsula en la sala de enlace
+            var estructura = Limites(Buscar(modelo, "CAB_Estructura") ?? Buscar(modelo, "CAB_Capsula"));
             var consola = Limites(Buscar(modelo, "CAB_Consola"));
             Colisiones(cabina.transform, estructura, consola);
             PonerEscotilla(cabina.transform, modelo, estructura, recentrar);

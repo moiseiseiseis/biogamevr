@@ -6,7 +6,8 @@ using UnityEngine;
 namespace BioVR.Entornos.Editor
 {
     // Pone los modelos de Diseño (Assets/_BioVR/Modelos) en lugar de los placeholders (rol 6):
-    //   Hangar.prefab          → la nave Seraphim (submarino-exterior) apoyada en el piso; se apaga el submarino de cápsulas
+    //   Hangar.prefab          → la nave apoyada en el piso; se apaga el submarino de cápsulas. Desde el 21-nov la nave es
+    //                            la Seraphim final (seraphim-mecha, BioVR → Poner nave Seraphim), no submarino-exterior
     //   EspacioCelular.prefab  → escenario-celular_lowpoly (A4); se apagan los placeholders (no se borran, por si hay que regresar)
     //                            (también solo: BioVR → Poner escenario celular (low poly))
     //                            y sus burbujas, vesículas libres y polirribosomas tiemblan (EmpujonesMoleculares)
@@ -25,6 +26,7 @@ namespace BioVR.Entornos.Editor
         public static void Poner()
         {
             Hangar();
+            PonerNaveSeraphim.Poner(); // la nave final (#91) reemplaza a submarino-exterior
             EspacioCelular();
             Cabina();
             Debug.Log("[ModelosDiseno] Listo: nave en el hangar, escenario celular y cabina de Diseño.");
@@ -95,7 +97,12 @@ namespace BioVR.Entornos.Editor
         }
 
         // ---------------- Cabina ----------------
-        static void Cabina()
+        // Desde el 21-nov la cabina es la sala de enlace de Diego (#92, cápsula para controlar el Mecha a distancia);
+        // si todavía no está en Modelos/Cabina se usa la cabina retro. Las dos tienen los mismos INT_ y ANCLA_Jugador.
+        public const string SalaEnlace = Modelos + "Cabina/sala-enlace.fbx";
+        const string CabinaRetro = Modelos + "Cabina/submarino-cabina.fbx";
+
+        public static void Cabina()
         {
             var escena = EditorSceneManager.OpenScene(EscenaInicial, OpenSceneMode.Single);
             var cabina = escena.GetRootGameObjects().FirstOrDefault(r => r.name == "Cabina (provisional)");
@@ -106,7 +113,8 @@ namespace BioVR.Entornos.Editor
                                            "techo", "tablero_frontal", "Consola (provisional)", "Asiento (provisional)", "Base palanca" })
                 Apagar(cabina.transform, nombre);
 
-            var modelo = Instanciar(Modelos + "Cabina/submarino-cabina.fbx", "Cabina de Diseño", cabina.transform);
+            bool enlace = AssetDatabase.LoadAssetAtPath<GameObject>(SalaEnlace) != null;
+            var modelo = Instanciar(enlace ? SalaEnlace : CabinaRetro, "Cabina de Diseño", cabina.transform);
             // El asiento del modelo (ANCLA_Jugador) va donde está el jugador: x = 0, z = 0
             var ancla = Buscar(modelo, "ANCLA_Jugador");
             modelo.localPosition = ancla != null ? new Vector3(-ancla.localPosition.x, 0f, -ancla.localPosition.z) : Vector3.zero;
@@ -121,8 +129,19 @@ namespace BioVR.Entornos.Editor
             var principal = Buscar(modelo, "INT_Pantalla_Principal");
             if (pantalla != null && principal != null)
             {
-                pantalla.position = principal.position + new Vector3(0f, 0f, -0.02f);
-                pantalla.rotation = Quaternion.identity;
+                if (enlace)
+                {
+                    // En la sala de enlace la pantalla principal está en la consola, inclinada: de frente a los ojos del piloto
+                    var ojos = cabina.transform.TransformPoint(new Vector3(0f, 1.27f, 0f));
+                    var haciaPiloto = (ojos - principal.position).normalized;
+                    pantalla.position = principal.position + haciaPiloto * 0.02f;
+                    pantalla.rotation = Quaternion.LookRotation(-haciaPiloto);
+                }
+                else
+                {
+                    pantalla.position = principal.position + new Vector3(0f, 0f, -0.02f);
+                    pantalla.rotation = Quaternion.identity;
+                }
             }
 
             EditorSceneManager.MarkSceneDirty(escena);

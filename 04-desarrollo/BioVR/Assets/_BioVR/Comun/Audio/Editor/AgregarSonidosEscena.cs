@@ -23,16 +23,19 @@ namespace BioVR.Comun.Editor
         {
             ("Zumbido de la nave", Audio + "AMB/AMB-GEN-02_zumbido-nave-base-loop_v01.wav", V(0.35f, 0.35f, 0.35f, 0.35f), S()),
             ("Sistemas de la nave", Audio + "AMB/AMB-ABO-02_sistemas-reposo-loop_v01.wav", V(0.5f, 0.6f, 0.6f, 0.6f), S()),
-            ("Hangar", Audio + "AMB/AMB-HAN-01_hangar-reposo-loop_v01.wav", V(0.7f, 0.3f, 0f, 0f), S()),
+            ("Hangar", Audio + "AMB/AMB-HAN-01_hangar-reposo-loop_v01.wav", V(0.7f, 0f, 0f, 0f), S()),
+            // Abordaje = la sala de reducción (Espacios finales 4): sala metálica con eco y el campo de los anillos
+            ("Sala de reduccion", Audio + "AMB/AMB-RED-01_sala-preparacion-metalica-loop_v01.wav", V(0f, 0.55f, 0f, 0f), S()),
+            ("Anillos", Audio + "AMB/AMB-RED-02_campo-anillos-loop_v01.wav", V(0f, 0.45f, 0f, 0f), S()),
             ("Flujo sanguineo", Audio + "AMB/AMB-VAS-01_flujo-sanguineo-loop_v01.wav", V(0f, 0f, 0.6f, 0f), S(1, 2)),
             ("Corriente", Audio + "SFX/SFX-ENT-03_corriente-loop_v01.wav", V(0f, 0f, 0.5f, 0f), S(1)),
             ("Particulas del plasma", Audio + "SFX/SFX-ENT-02_particulas-plasma_v01.wav", V(0f, 0f, 0.7f, 0f), S(1, 2)),
             ("Desplazamiento", Audio + "SFX/SFX-MEC-06_desplazamiento-loop_v01.wav", V(0f, 0f, 0.35f, 0.25f), S()),
             ("Antenas", Audio + "SFX/SFX-MEC-05_antenas-estatica-loop_v01.wav", V(0f, 0f, 0.12f, 0.12f), S()),
             ("Interior celular", AudioCocina + "AMB/AMB-CEL-01_interior-celular-loop_v01.wav", V(0f, 0f, 0.6f, 0.6f), S(3)),
-            ("Musica viaje tranquilo", Audio + "MUS/MUS-VAS-01_viaje-tranquilo-loop_v01.wav", V(0f, 0f, 0.4f, 0f), S(1)),
-            ("Musica viaje intenso", Audio + "MUS/MUS-VAS-03_viaje-intenso-loop_v01.wav", V(0f, 0f, 0.4f, 0f), S(2)),
-            ("Musica celula", Audio + "MUS/MUS-MEN-01_tema-menu_v01.wav", V(0f, 0f, 0.35f, 0.35f), S(3)),
+            ("Musica viaje tranquilo", Audio + "MUS/MUS-VAS-01_viaje-tranquilo-loop_v01.wav", V(0f, 0f, 0.65f, 0f), S(1)),
+            ("Musica viaje intenso", Audio + "MUS/MUS-VAS-03_viaje-intenso-loop_v01.wav", V(0f, 0f, 0.65f, 0f), S(2)),
+            ("Musica celula", Audio + "MUS/MUS-MEN-01_tema-menu_v01.wav", V(0f, 0f, 0.6f, 0.6f), S(3)),
         };
 
         static readonly (string nombre, string archivo, string[] zonas, string[] objetos, float volumen, float distancia)[] Fijos =
@@ -101,6 +104,7 @@ namespace BioVR.Comun.Editor
             Asignar(so, "entradaCabina", "MUS/MUS-ABO-01_entrada-cabina_v01.wav");
             Asignar(so, "cinturon", "SFX/SFX-CAB-01_cinturon_v01.wav");
             Asignar(so, "encenderPantallas", "SFX/SFX-CAB-02_encender-consola_v01.wav");
+            Asignar(so, "cargaAnillos", "SFX/SFX-ESC-01_anillos-contencion_v01.wav");
             Asignar(so, "compuerta", "SFX/SFX-MEC-01_compuerta-abre_v01.wav");
             Asignar(so, "repliegue", "SFX/SFX-MEC-04_repliegue-extremidades_v01.wav");
             Asignar(so, "primeraReduccion", "SFX/SFX-ESC-02_reduccion-progresiva_v01.wav");

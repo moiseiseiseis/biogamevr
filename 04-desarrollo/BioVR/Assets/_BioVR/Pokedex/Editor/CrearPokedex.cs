@@ -93,11 +93,11 @@ namespace BioVR.Pokedex.Editor
         static readonly (string[] prefijos, bool exacto, int ficha)[] Organelos =
         {
             (new[] { "Mitocondria" }, false, 8),
-            (new[] { "REL", "RER" }, false, 9),
+            (new[] { "REL", "RER", "RE_" }, false, 9), // RE_Completo_Rugoso_y_Liso en el escenario v2
             (new[] { "Nucleo" }, true, 10),
             (new[] { "Vesicula" }, false, 12),
             (new[] { "Microtubulo", "Actina", "Filamento" }, false, 13),
-            (new[] { "Polirribosoma" }, false, 14),
+            (new[] { "Polirribosoma", "Ribosomas" }, false, 14),
             (new[] { "Golgi" }, false, 15),
             (new[] { "Lisosoma" }, false, 16),
         };
@@ -304,10 +304,14 @@ namespace BioVR.Pokedex.Editor
             foreach (Transform hijo in t)
             {
                 int ficha = FichaDe(hijo.name);
+                // Un grupo enorme (p. ej. los cientos de bloques de actina del escenario v2) abarca toda la célula:
+                // marcado, cualquier punto lo registraría. Esos se saltan; sus piezas sueltas no se revisan.
+                int mallas = hijo.GetComponentsInChildren<MeshFilter>(false).Length;
+                if (ficha > 0 && hijo.gameObject.activeInHierarchy && mallas > 60) continue;
                 if (ficha > 0 && hijo.gameObject.activeInHierarchy)
                 {
                     hijo.gameObject.AddComponent<Descubrible>().ficha = fichas[ficha];
-                    foreach (var mf in hijo.GetComponentsInChildren<MeshFilter>(true))
+                    foreach (var mf in hijo.GetComponentsInChildren<MeshFilter>(false)) // solo lo visible (el v2 apaga niveles de detalle)
                         if (mf.sharedMesh != null) mf.gameObject.AddComponent<MeshCollider>().sharedMesh = mf.sharedMesh;
                     usadas.Add(fichas[ficha]);
                     marcadas++;
