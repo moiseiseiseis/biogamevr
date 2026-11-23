@@ -11,6 +11,8 @@ namespace BioVR.Minijuegos.Cocina
     /// Gestiona las 19 ventanas del tutorial de la Cocina, pausando el juego mientras
     /// están abiertas, señalando la estación con MarcaTutorial y permitiendo cerrar
     /// con el botón Entendido o con el botón primario del control VR (A / X).
+    /// Con "modoGuiado" (por defecto, desde la prueba del 21-nov) las ventanas las decide GuiaCocina,
+    /// paso por paso según lo que hace el jugador; esta clase solo pone la ventana y la marca.
     /// </summary>
     public class TutorialCocina : MonoBehaviour
     {
@@ -39,12 +41,34 @@ namespace BioVR.Minijuegos.Cocina
         [Header("Input VR (Botón A / X)")]
         [SerializeField] private InputActionProperty accionEntendido;
 
+        [Header("Tutorial guiado")]
+        [Tooltip("Encendido: GuiaCocina dice qué hacer paso por paso. Apagado: las 19 ventanas de antes.")]
+        [SerializeField] private bool modoGuiado = true;
+        private GuiaCocina guia;
+
         private readonly Queue<EntradaTutorial> cola = new Queue<EntradaTutorial>();
         private static readonly HashSet<string> clavesVistas = new HashSet<string>();
         private bool ventanaAbierta;
 
+        private void Awake()
+        {
+            if (!modoGuiado) return;
+            guia = GetComponent<GuiaCocina>();
+            if (guia == null) guia = gameObject.AddComponent<GuiaCocina>();
+            guia.Usar(this);
+        }
+
         private void OnEnable()
         {
+            if (botonEntendido != null)
+                botonEntendido.onClick.AddListener(CerrarVentanaActual);
+            if (accionEntendido.action != null)
+            {
+                accionEntendido.action.Enable();
+                accionEntendido.action.performed += AlPresionarBotonVR;
+            }
+            if (modoGuiado) return; // la guía escucha sus propios eventos
+
             EventosCocina.OnTurnoIniciado += AlIniciarTurno;
             EventosCocina.OnCodonCambiado += AlCambiarCodon;
             EventosCocina.OnARNtCargado += AlCargarARNt;
@@ -55,15 +79,6 @@ namespace BioVR.Minijuegos.Cocina
             EventosCocina.OnFaseCambiada += AlCambiarFase;
             EventosCocina.OnCuentaEncontrada += AlEncontrarCuenta;
             EventosCocina.OnChaperona += AlUsarChaperona;
-
-            if (botonEntendido != null)
-                botonEntendido.onClick.AddListener(CerrarVentanaActual);
-
-            if (accionEntendido.action != null)
-            {
-                accionEntendido.action.Enable();
-                accionEntendido.action.performed += AlPresionarBotonVR;
-            }
         }
 
         private void OnDisable()
@@ -88,14 +103,45 @@ namespace BioVR.Minijuegos.Cocina
 
         private void Start()
         {
+            if (modoGuiado) return; // la guía ya pudo haber abierto su primer paso
             if (panelVentana != null) panelVentana.SetActive(false);
             if (marcaTutorial != null) marcaTutorial.Ocultar();
         }
 
         private void AlPresionarBotonVR(InputAction.CallbackContext ctx)
         {
+            if (modoGuiado) { if (guia != null) guia.Entendido(); return; }
             if (ventanaAbierta)
                 CerrarVentanaActual();
+        }
+
+        // --- Ventana para GuiaCocina ---
+
+        public void MostrarGuia(string titulo, string cuerpo, string pie, bool conBoton, Transform objetivo)
+        {
+            if (panelVentana != null) panelVentana.SetActive(true);
+            if (textoTitulo != null) textoTitulo.text = titulo;
+            if (textoCuerpo != null)
+            {
+                textoCuerpo.enableAutoSizing = true; // los pasos guiados son más largos que las ventanas de antes
+                textoCuerpo.fontSizeMin = 15f;
+                textoCuerpo.fontSizeMax = 26f;
+                textoCuerpo.text = cuerpo;
+            }
+            if (textoContador != null) textoContador.text = pie ?? string.Empty;
+            if (imagenIlustracion != null) imagenIlustracion.gameObject.SetActive(false);
+            if (botonEntendido != null) botonEntendido.gameObject.SetActive(conBoton);
+            if (marcaTutorial != null)
+            {
+                if (objetivo != null) marcaTutorial.Senalar(objetivo);
+                else marcaTutorial.Ocultar();
+            }
+        }
+
+        public void OcultarGuia()
+        {
+            if (panelVentana != null) panelVentana.SetActive(false);
+            if (marcaTutorial != null) marcaTutorial.Ocultar();
         }
 
         // --- Disparadores de las 19 claves (ControlCocina.NumeroTurno es 0, 1, 2) ---
@@ -238,6 +284,7 @@ namespace BioVR.Minijuegos.Cocina
 
         public void CerrarVentanaActual()
         {
+            if (modoGuiado) { if (guia != null) guia.Entendido(); return; }
             if (!ventanaAbierta) return;
             ControlCocina.Instancia?.Sonar("clic");
             MostrarSiguiente();
