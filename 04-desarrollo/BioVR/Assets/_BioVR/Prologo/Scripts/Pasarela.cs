@@ -70,6 +70,7 @@ namespace BioVR.Prologo
             if (fader != null)
             {
                 yield return fader.FadeA(1f, 0f, Color.black); // empieza en negro
+                yield return MirarAlCentro();
                 yield return fader.FadeA(0f, fundido);
             }
             if (musica != null) musica.Play();
@@ -113,6 +114,19 @@ namespace BioVR.Prologo
 
             if (anterior != null) yield return Mover(anterior, centro.position, centro.position + desdeCentroSalida, ocultarAlFinal: true);
             yield return Terminar();
+        }
+
+        // Mientras está en negro, gira al jugador (sobre su cabeza) hacia donde pasan los modelos: el visor arranca
+        // mirando hacia donde quedó el límite del Quest, que puede ser cualquier lado.
+        IEnumerator MirarAlCentro()
+        {
+            var origen = FindFirstObjectByType<Unity.XR.CoreUtils.XROrigin>();
+            if (origen == null || centro == null) yield break;
+            float limite = Time.time + 2f;
+            while (origen.CameraInOriginSpaceHeight < 0.2f && Time.time < limite) yield return null;
+            yield return null;
+            var hacia = Vector3.ProjectOnPlane(centro.position - origen.Camera.transform.position, Vector3.up);
+            if (hacia.sqrMagnitude > 1e-4f) origen.MatchOriginUpCameraForward(Vector3.up, hacia.normalized);
         }
 
         void Update()

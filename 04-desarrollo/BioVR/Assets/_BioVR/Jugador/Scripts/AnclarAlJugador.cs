@@ -40,7 +40,11 @@ namespace BioVR.Jugador
             while (origen.CameraInOriginSpaceHeight < 0.2f && Time.time < limite) yield return null;
             yield return null; // un cuadro más para que la pose se asiente
 
-            // Solo se traslada (no se gira): el visor ya arranca mirando al frente (+Z)
+            // El visor no siempre arranca mirando al frente: depende de hacia dónde quedó el límite del Quest
+            // (en la prueba del 21-nov la mesa quedó a la espalda). Se gira al jugador, sobre su cabeza, para que
+            // mire hacia el frente de la estación; luego la estación se traslada a la cabeza.
+            var frente = Vector3.ProjectOnPlane(puntoOjos.forward, Vector3.up);
+            origen.MatchOriginUpCameraForward(Vector3.up, frente.sqrMagnitude > 1e-4f ? frente.normalized : Vector3.forward);
             var cabeza = origen.Camera.transform.position;
             estacion.transform.position += cabeza - puntoOjos.position;
             Physics.SyncTransforms();
