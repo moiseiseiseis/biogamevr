@@ -25,8 +25,15 @@ namespace BioVR.Minijuegos.Cocina
     // holograma y proteasoma a la derecha.
     public class GuiaCocina : MonoBehaviour
     {
-        const string Grip = "<b>GRIP</b> (botón de tu dedo medio)";
-        const string Gatillo = "<b>GATILLO</b> (botón de tu dedo índice)";
+        // Los botones se nombran con el color que tienen en el mando (EtiquetasMandos, prueba del 24-nov)
+        static readonly string GripCorto = BioVR.Comun.EtiquetasMandos.Colores.Etiqueta("GRIP", BioVR.Comun.EtiquetasMandos.Colores.Grip);
+        static readonly string GatilloCorto = BioVR.Comun.EtiquetasMandos.Colores.Etiqueta("GATILLO", BioVR.Comun.EtiquetasMandos.Colores.Gatillo);
+        static readonly string Grip = GripCorto + " (botón naranja de tu dedo medio)";
+        static readonly string Gatillo = GatilloCorto + " (botón celeste de tu dedo índice)";
+        static readonly string AoX = BioVR.Comun.EtiquetasMandos.Colores.Etiqueta("A", BioVR.Comun.EtiquetasMandos.Colores.A) + " o " +
+                                     BioVR.Comun.EtiquetasMandos.Colores.Etiqueta("X", BioVR.Comun.EtiquetasMandos.Colores.X);
+        static readonly string BoY = BioVR.Comun.EtiquetasMandos.Colores.Etiqueta("B", BioVR.Comun.EtiquetasMandos.Colores.B) + " o " +
+                                     BioVR.Comun.EtiquetasMandos.Colores.Etiqueta("Y", BioVR.Comun.EtiquetasMandos.Colores.Y);
 
         // La guía se recalcula 10 veces por segundo (busca ARNt en la escena; no hace falta en cada cuadro)
         static readonly WaitForSeconds Tic = new WaitForSeconds(0.1f);
@@ -111,11 +118,11 @@ namespace BioVR.Minijuegos.Cocina
         {
             yield return Info("Bienvenido a la Cocina de proteínas",
                 "Vas a fabricar una proteína como lo hace un ribosoma. Te voy a decir qué hacer, paso por paso.\n" +
-                $"• {Grip}: agarrar y soltar.\n• {Gatillo} + rayo: tocar botones.\n• <b>A</b> o <b>X</b>: continuar.   • <b>B</b> o <b>Y</b>: acomodar la mesa.",
-                null, "Aprieta A o X para empezar");
+                $"• {Grip}: agarrar y soltar.\n• {Gatillo} + rayo: tocar botones.\n• {AoX}: continuar.   • {BoY}: acomodar la mesa.",
+                null, $"Aprieta {AoX} para empezar");
             yield return Info("El mensaje",
                 $"Frente a ti está el <b>ribosoma</b>. Por él pasa el <b>ARNm</b>: el mensaje, leído de 3 en 3 letras (codones). Ahora pide <b>{CodonDe(C.RibosomaMesa)}</b>.\n" +
-                "La <b>tarjeta</b> de abajo del ribosoma te muestra el codón y, arriba, las piezas del ARNt que encaja con él.", Ribosoma(false), "Aprieta A o X");
+                "La <b>tarjeta</b> de abajo del ribosoma te muestra el codón y, arriba, las piezas del ARNt que encaja con él.", Ribosoma(false), $"Aprieta {AoX}");
 
             for (int vuelta = 0; vuelta < 3 && C.Fase == FaseCocina.Armando; vuelta++)
             {
@@ -143,7 +150,7 @@ namespace BioVR.Minijuegos.Cocina
                     if (C.Fase == FaseCocina.Armando)
                         yield return Info("¡Eso es todo el ciclo!",
                         "1. Agarra el ARNt que encaja.  2. Cárgalo en la sintetasa.  3. Llévalo al ribosoma y gíralo.  4. Avienta el usado al embudo.\n" +
-                        "Ahora repítelo con el siguiente codón. Te ayudo menos cada vez.", null, "Aprieta A o X");
+                        "Ahora repítelo con el siguiente codón. Te ayudo menos cada vez.", null, $"Aprieta {AoX}");
                 }
             }
 
@@ -157,16 +164,16 @@ namespace BioVR.Minijuegos.Cocina
             {
                 yield return Info("Turno 2 · Pedido de amilina",
                     "Ahora hay <b>dos ribosomas</b> leyendo el mismo mensaje: el de tu mesa y uno <b>lejano</b> (al frente, sobre el anillo magenta). " +
-                    "Los dos avanzan solos y se detienen en un tramo de <b>5 codones</b> que te toca poner a ti.", Ribosoma(true), "Aprieta A o X");
+                    "Los dos avanzan solos y se detienen en un tramo de <b>5 codones</b> que te toca poner a ti.", Ribosoma(true), $"Aprieta {AoX}");
                 yield return Info("Reglas nuevas",
                     "• Al ribosoma lejano no lo alcanzas: carga su ARNt y <b>aviéntaselo</b>.\n• La sintetasa a veces se equivoca: si el ARNt sale con <b>!</b>, sacúdelo.\n" +
-                    "• El ARNm puede doblarse en una <b>horquilla</b>: golpéala.\nTe aviso cuando pase cada cosa.", null, "Aprieta A o X");
+                    "• El ARNm puede doblarse en una <b>horquilla</b>: golpéala.\nTe aviso cuando pase cada cosa.", null, $"Aprieta {AoX}");
             }
             else
             {
                 yield return Info("Turno 3 · Un mensaje con algo raro",
                     "Otro pedido de 2 amilinas. Ahora <b>la mesa gira</b>: la sintetasa y la bandeja se mueven despacio por el borde. " +
-                    "El mensaje trae un cambio: arma las cadenas como siempre y al final las revisamos.", null, "Aprieta A o X");
+                    "El mensaje trae un cambio: arma las cadenas como siempre y al final las revisamos.", null, $"Aprieta {AoX}");
             }
             yield return Bucle(turno3);
         }
@@ -223,7 +230,7 @@ namespace BioVR.Minijuegos.Cocina
                             "Es la mutación <b>S20G</b>: donde iba serina quedó glicina. Esta amilina se dobla mal y forma fibras tóxicas (los depósitos rosas).\n" +
                             "Tienes dos ayudantes de la célula:\n• <b>Chaperona BiP</b> (a tu izquierda): sujeta la proteína e intenta que se doble bien. No siempre lo logra.\n" +
                             "• <b>Proteasoma</b> (el barril, a tu derecha): degrada la proteína que salió mal.",
-                            Chaperona, "Aprieta A o X");
+                            Chaperona, $"Aprieta {AoX}");
                     // Primero la chaperona (opcional); si ya se usó o se salta, el proteasoma
                     while (C.Fase == FaseCocina.Decide && !C.Marcador.usoChaperona)
                     {
@@ -277,7 +284,7 @@ namespace BioVR.Minijuegos.Cocina
                 "Los ARNt de la corriente vienen vacíos: sin pasar por aquí no le sirven al ribosoma.", Sintetasa),
             "manivela" => ("La manivela",
                 "Al girarla, la sintetasa une el aminoácido al ARNt (en la célula esto gasta energía, ATP). " +
-                "La <b>barra verde</b> muestra cuánto falta. La manivela es la pieza amarilla a un lado de la sintetasa: la flecha te la señala.", Manivela),
+                "La <b>barra verde</b> muestra cuánto falta. La manivela es la rueda amarilla al frente de la sintetasa: la flecha te la señala.", Manivela),
             "sitioA" => ("El sitio A del ribosoma",
                 "El ARNt cargado entra al <b>sitio A</b>. Si su anticodón encaja con el codón, el ribosoma une el aminoácido a la cadena " +
                 "y el ARNm avanza un codón.\nLa tarjeta de abajo del ribosoma te muestra qué piezas encajan.", Ribosoma(false)),
@@ -285,12 +292,13 @@ namespace BioVR.Minijuegos.Cocina
                 "El ARNt que ya dejó su aminoácido sale <b>vacío</b> a esta bandeja. Caben pocos: si se llena, el ribosoma se detiene.", UsadoEnBandeja),
             _ => ("El regreso al citoplasma",
                 "El embudo naranja devuelve el ARNt a la corriente, para que la sintetasa lo cargue otra vez. En la célula los ARNt se reutilizan muchas veces.\n" +
-                "Agarra el ARNt usado, mueve el brazo hacia el embudo y suelta el GRIP a medio movimiento.", Embudo),
+                $"Agarra el ARNt usado, mueve el brazo hacia el embudo y suelta el {GripCorto} a medio movimiento.", Embudo),
         };
 
-        IEnumerator Presentar(string clave, string pie = "Aprieta A o X para continuar")
+        IEnumerator Presentar(string clave, string pie = null)
         {
             presentados.Add(clave);
+            pie ??= $"Aprieta {AoX} para continuar";
             var (t, c, o) = Explicacion(clave);
             return Info(t, c, o, pie);
         }
@@ -330,7 +338,7 @@ namespace BioVR.Minijuegos.Cocina
         {
             yield return Info("Repaso del tutorial",
                 "Te muestro otra vez cada parte de la Cocina. La flecha señala de qué hablo.\n" +
-                $"• {Grip}: agarrar y soltar.\n• {Gatillo} + rayo: tocar botones.\n• <b>A</b> o <b>X</b>: continuar.   • <b>B</b> o <b>Y</b>: acomodar la mesa.",
+                $"• {Grip}: agarrar y soltar.\n• {Gatillo} + rayo: tocar botones.\n• {AoX}: continuar.   • {BoY}: acomodar la mesa.",
                 null, $"1 de {OrdenExplicaciones.Length + 1}");
             for (int i = 0; i < OrdenExplicaciones.Length; i++)
                 yield return Presentar(OrdenExplicaciones[i], $"{i + 2} de {OrdenExplicaciones.Length + 1}");
@@ -383,14 +391,14 @@ namespace BioVR.Minijuegos.Cocina
                             ? $"El ribosoma pide <b>{codon}</b>. En la <b>corriente</b> (los ARNt que flotan a tu izquierda) busca el ARNt con las piezas <b>{anticodon}</b> abajo: " +
                               $"A encaja con U, G con C. La flecha te lo señala. Acércale la mano y aprieta el {Grip}.{aviso}"
                             : detalle == 1
-                                ? $"Pide <b>{codon}</b>: en la corriente (izquierda) agarra con el GRIP el ARNt <b>{anticodon}</b> que señala la flecha.{aviso}"
+                                ? $"Pide <b>{codon}</b>: en la corriente (izquierda) agarra con el {GripCorto} el ARNt <b>{anticodon}</b> que señala la flecha.{aviso}"
                                 : $"Pide <b>{codon}</b> → ARNt <b>{anticodon}</b>, en la corriente.{aviso}",
                         () => ARNtEnCorriente(codon), etiquetaPaso);
                     break;
                 case 1:
                     PonerPaso("Llévalo a la sintetasa",
                         detalle > 0
-                            ? "Los ARNt de la corriente vienen <b>vacíos</b>. Llévalo a la <b>sintetasa</b> (la máquina con manivela, a tu izquierda) y <b>suelta el GRIP</b> encima de una de sus ranuras."
+                            ? $"Los ARNt de la corriente vienen <b>vacíos</b>. Llévalo a la <b>sintetasa</b> (la máquina con manivela, a tu izquierda) y <b>suelta el</b> {GripCorto} encima de una de sus ranuras."
                             : "Suéltalo en la sintetasa (izquierda).",
                         Sintetasa, etiquetaPaso);
                     break;
@@ -410,12 +418,12 @@ namespace BioVR.Minijuegos.Cocina
                     if (r.Lejano)
                         PonerPaso("Aviéntalo al ribosoma lejano",
                             detalle > 0
-                                ? "El ribosoma lejano no se alcanza. <b>Apunta con el brazo</b> hacia él (al frente, sobre el anillo magenta), muévelo rápido y <b>suelta el GRIP</b> a medio movimiento, como si lanzaras una pelota."
+                                ? $"El ribosoma lejano no se alcanza. <b>Apunta con el brazo</b> hacia él (al frente, sobre el anillo magenta), muévelo rápido y <b>suelta el</b> {GripCorto} a medio movimiento, como si lanzaras una pelota."
                                 : "Aviéntaselo al ribosoma lejano.",
                             () => Ribosoma(true)(), etiquetaPaso);
                     else
                         PonerPaso("Llévalo al ribosoma",
-                            detalle > 0 ? "Llévalo al <b>ribosoma</b>, frente a ti, y <b>suelta el GRIP</b> justo encima del codón que brilla." : "Suéltalo sobre el ribosoma.",
+                            detalle > 0 ? $"Llévalo al <b>ribosoma</b>, frente a ti, y <b>suelta el</b> {GripCorto} justo encima del codón que brilla." : "Suéltalo sobre el ribosoma.",
                             () => Ribosoma(false)(), etiquetaPaso);
                     break;
                 case 5:
@@ -434,8 +442,8 @@ namespace BioVR.Minijuegos.Cocina
             if (enMano != null && enMano.Usado)
                 PonerPaso("Aviéntalo al embudo naranja",
                     detallado
-                        ? "Ahora <b>aviéntalo al embudo</b> con aro naranja (lejos, a tu derecha): mueve el brazo rápido hacia él y <b>suelta el GRIP</b> a medio movimiento. " +
-                          $"También puedes <b>apuntarle con el rayo y apretar el GATILLO</b>. Vuelve a la corriente y ganas +50."
+                        ? $"Ahora <b>aviéntalo al embudo</b> con aro naranja (lejos, a tu derecha): mueve el brazo rápido hacia él y <b>suelta el</b> {GripCorto} a medio movimiento. " +
+                          $"También puedes <b>apuntarle con el rayo y apretar el</b> {GatilloCorto}. Vuelve a la corriente y ganas +50."
                         : "Aviéntalo al embudo naranja (o apúntale y aprieta el gatillo).",
                     Embudo, etiquetaPaso);
             else
@@ -558,6 +566,7 @@ namespace BioVR.Minijuegos.Cocina
             rechazo = C != null ? C.Texto(clave) : clave;
             rechazoHasta = Time.unscaledTime + 7f; // duraban muy poco (prueba del 23-nov)
             mostrado = null;
+            MarcaTutorial.PedirAyuda(); // desde el turno 2 la flecha VOLTEA solo sale cuando algo falla
         }
 
         void AlReciclar(ARNtCocina _) => reciclados++;
@@ -573,6 +582,7 @@ namespace BioVR.Minijuegos.Cocina
             iTitulo = t; iCuerpo = c; iObjetivo = o; iResuelta = resuelta;
             C?.Sonar("pop");
             mostrado = null;
+            MarcaTutorial.PedirAyuda();
         }
 
         // ======================= Mostrar =======================

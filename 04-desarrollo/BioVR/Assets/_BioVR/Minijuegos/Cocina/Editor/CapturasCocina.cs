@@ -43,6 +43,8 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             // La ventana fija del tutorial desde el turno 2 (75° a la izquierda)
             ("tutorialfijo",  new Vector3(0f, 1.2f, 0f),     new Vector3(-1.25f, 1.6f, 0.34f), 80f),
             ("lejano",        new Vector3(0f, 1.2f, 0f),     new Vector3(0.82f, 1.6f, 1.55f), 35f),
+            ("mandos",        new Vector3(0f, 1.2f, 0f),     new Vector3(0f, 0.95f, 0.4f),    55f),
+            ("manivela2",     new Vector3(0f, 1.2f, 0f),     new Vector3(-0.2f, 1.05f, 0.6f), 60f),
         };
 
         static CapturasCocina()

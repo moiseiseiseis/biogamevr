@@ -191,6 +191,7 @@ namespace BioVR.Comun
                 gm.OnSaltoIniciado -= AlIniciarSalto;
                 gm.OnSaltoCambiado -= AlCambiarSalto;
                 gm.OnCargandoCocina -= AlCargarCocina;
+                gm.OnCocinaBloqueada -= AlBloquearCocina;
             }
             Escotilla.OnAfuera -= AlUsarEscotilla;
             AlturaAsiento.OnAjuste -= AlAjustarAsiento;
@@ -211,6 +212,7 @@ namespace BioVR.Comun
             gm.OnSaltoIniciado += AlIniciarSalto;
             gm.OnSaltoCambiado += AlCambiarSalto;
             gm.OnCargandoCocina += AlCargarCocina;
+            gm.OnCocinaBloqueada += AlBloquearCocina;
             Escotilla.OnAfuera += AlUsarEscotilla;
             AlturaAsiento.OnAjuste += AlAjustarAsiento;
             MenuPausa.OnMenu += AlAbrirMenu;
@@ -290,6 +292,9 @@ namespace BioVR.Comun
             pausa.Play();
         }
 
+        // El salto a la Cocina está bloqueado (p. ej. falta la misión): mismo aviso que un botón que no aplica
+        void AlBloquearCocina(string _) => Tocar2D(noDisponible, interfaz);
+
         void AlPresionarBoton(bool aplica)
         {
             Tocar2D(boton);
@@ -345,7 +350,14 @@ namespace BioVR.Comun
             int e = (int)gm.Estado;
             float v = e < c.volumenPorEstado.Length ? c.volumenPorEstado[e] : 0f;
             if (c.saltos.Length > 0 && Array.IndexOf(c.saltos, gm.Salto) < 0) v = 0f;
-            return v;
+            // Pilotaje libre: el desplazamiento suena según la velocidad y las antenas suben al acercarse a algo
+            // sin registrar (fila SFX-MEC-05 de la plantilla: "subir volumen según cercanía a un objetivo")
+            if (BioVR.Pilotaje.PilotajeLibre.Activo)
+            {
+                if (c.nombre == "Desplazamiento") v *= 0.3f + 1.2f * BioVR.Pilotaje.PilotajeLibre.Rapidez;
+                else if (c.nombre == "Antenas") v *= 1f + 4f * BioVR.Pilotaje.PilotajeLibre.Cercania;
+            }
+            return Mathf.Clamp01(v);
         }
 
         void Update()

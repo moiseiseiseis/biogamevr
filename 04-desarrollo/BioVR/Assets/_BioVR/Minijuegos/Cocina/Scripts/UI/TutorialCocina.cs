@@ -60,7 +60,11 @@ namespace BioVR.Minijuegos.Cocina
             if (botonEntendido != null)
             {
                 var etiqueta = botonEntendido.GetComponentInChildren<TMP_Text>(true);
-                if (etiqueta != null) etiqueta.text = "Entendido (A / X)";
+                if (etiqueta != null)
+                {
+                    etiqueta.text = "Entendido (" + BioVR.Comun.EtiquetasMandos.Colores.Etiqueta("A", BioVR.Comun.EtiquetasMandos.Colores.A) + " / " +
+                                    BioVR.Comun.EtiquetasMandos.Colores.Etiqueta("X", BioVR.Comun.EtiquetasMandos.Colores.X) + ")";
+                }
             }
             if (seguirAlJugador)
             {
@@ -189,19 +193,90 @@ namespace BioVR.Minijuegos.Cocina
             if (textoTitulo != null) textoTitulo.text = titulo;
             if (textoCuerpo != null)
             {
-                textoCuerpo.enableAutoSizing = true; // los pasos guiados son más largos que las ventanas de antes
-                textoCuerpo.fontSizeMin = 15f;
-                textoCuerpo.fontSizeMax = 26f;
                 textoCuerpo.text = cuerpo;
             }
             if (textoContador != null) textoContador.text = pie ?? string.Empty;
             if (imagenIlustracion != null) imagenIlustracion.gameObject.SetActive(false);
             if (botonEntendido != null) botonEntendido.gameObject.SetActive(conBoton);
+            AcomodarVentana(conBoton);
             if (marcaTutorial != null)
             {
                 if (objetivo != null) marcaTutorial.Senalar(objetivo);
                 else marcaTutorial.Ocultar();
             }
+        }
+
+        // Prueba del 24-nov: "las letras del tutorial deben ser más grandes". Antes el cuerpo se encogía solo
+        // (auto-size de 15 a 26) para caber en una ventana fija de 0.62 × 0.44 y los pasos largos quedaban casi
+        // en el mínimo. Ahora la letra es fija y grande, y la ventana crece hacia arriba con el texto: el botón se
+        // queda donde estaba (hacia abajo tapaba el letrero del ribosoma). Medidas en metros del espacio de PanelVentana (los textos van a escala 0.001, así que
+        // 1 unidad de UI = 1 mm); el botón cuelga del Canvas, que mide en mm.
+        private const float LetraTitulo = 40f, LetraCuerpo = 32f, LetraPie = 28f, LetraBoton = 28f;
+        private const float AnchoVentana = 0.72f, Margen = 0.03f, Hueco = 0.018f, AltoFila = 0.065f;
+        private const float BordeAbajo = -0.22f; // borde de abajo de la ventana de antes (0.44 / 2)
+        private RectTransform fondo;
+        private string ultimoAcomodo;
+
+        private void AcomodarVentana(bool conBoton)
+        {
+            if (textoTitulo == null || textoCuerpo == null || panelVentana == null) return;
+            string clave = textoTitulo.text + " | " + textoCuerpo.text + " | " + conBoton;
+            if (clave == ultimoAcomodo) return; // la guía vuelve a poner la ventana 10 veces por segundo
+            ultimoAcomodo = clave;
+            if (fondo == null)
+            {
+                var f = panelVentana.transform.Find("Fondo");
+                if (f != null) fondo = f as RectTransform;
+            }
+
+            float anchoTexto = (AnchoVentana - 2f * Margen) * 1000f;
+            foreach (var t in new[] { textoTitulo, textoCuerpo })
+            {
+                t.enableAutoSizing = false;
+                t.textWrappingMode = TextWrappingModes.Normal;
+                t.overflowMode = TextOverflowModes.Overflow;
+                t.alignment = t == textoTitulo ? TextAlignmentOptions.Center : TextAlignmentOptions.Top;
+            }
+            textoTitulo.fontSize = LetraTitulo;
+            textoCuerpo.fontSize = LetraCuerpo;
+            if (textoContador != null) { textoContador.enableAutoSizing = false; textoContador.fontSize = LetraPie; }
+
+            float altoTitulo = textoTitulo.GetPreferredValues(textoTitulo.text, anchoTexto, 0f).y * 0.001f;
+            float altoCuerpo = textoCuerpo.GetPreferredValues(textoCuerpo.text, anchoTexto, 0f).y * 0.001f;
+            float alto = Margen + altoTitulo + Hueco + altoCuerpo + Hueco + AltoFila + Margen;
+
+            float BordeArriba = BordeAbajo + alto;
+            float y = BordeArriba - Margen - altoTitulo * 0.5f;
+            Colocar(textoTitulo.rectTransform, 0f, y, anchoTexto, altoTitulo * 1000f);
+            y = BordeArriba - Margen - altoTitulo - Hueco - altoCuerpo * 0.5f;
+            Colocar(textoCuerpo.rectTransform, 0f, y, anchoTexto, altoCuerpo * 1000f);
+            float yFila = BordeArriba - alto + Margen + AltoFila * 0.5f;
+            if (textoContador != null)
+            {
+                textoContador.alignment = conBoton ? TextAlignmentOptions.Left : TextAlignmentOptions.Center;
+                float anchoPie = conBoton ? anchoTexto * 0.5f : anchoTexto;
+                float xPie = conBoton ? -AnchoVentana * 0.5f + Margen + anchoPie * 0.0005f : 0f;
+                Colocar(textoContador.rectTransform, xPie, yFila, anchoPie, AltoFila * 1000f);
+            }
+            if (botonEntendido != null)
+            {
+                var rb = (RectTransform)botonEntendido.transform;
+                rb.sizeDelta = new Vector2(280f, AltoFila * 1000f);
+                rb.anchoredPosition = new Vector2((AnchoVentana * 0.5f - Margen) * 1000f - 140f, yFila * 1000f);
+                var etiqueta = botonEntendido.GetComponentInChildren<TMP_Text>(true);
+                if (etiqueta != null) { etiqueta.enableAutoSizing = false; etiqueta.fontSize = LetraBoton; }
+            }
+            if (fondo != null)
+            {
+                fondo.sizeDelta = new Vector2(AnchoVentana * 1000f, alto * 1000f);
+                fondo.anchoredPosition = new Vector2(0f, BordeArriba - alto * 0.5f);
+            }
+        }
+
+        private static void Colocar(RectTransform r, float x, float y, float ancho, float alto)
+        {
+            r.anchoredPosition = new Vector2(x, y);
+            r.sizeDelta = new Vector2(ancho, alto);
         }
 
         public void OcultarGuia()

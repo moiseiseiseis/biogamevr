@@ -49,6 +49,89 @@ namespace BioVR.Minijuegos.Cocina
             EventosCocina.OnFaseCambiada += AlCambiarFase;
             QuitarManivelaDecorativa();
             ResaltarManivela();
+            PonerManivelaDeFrente();
+        }
+
+        // Prueba del 24-nov: "la manivela sería mejor ponerla de frente a nosotros". Estaba en el costado izquierdo
+        // de la plancha con el plano de giro de canto. Se cuelga de un soporte nuevo que la gira para que su eje
+        // (con la perilla) apunte al jugador y la pone frente a la cara de enfrente de la plancha, en su orilla
+        // izquierda (donde está el letrero "Gira la manivela"), con el eje a la altura de la superficie: el brazo gira
+        // en el aire frente a esa cara, sin tapar las ranuras. A la derecha quedaba pegada al ribosoma de mesa y
+        // encima de la plancha, a la altura de los ojos (capturas del 24-nov). Manivela calcula el giro en el espacio
+        // de su padre, así que el soporte no le cambia nada.
+        const float Holgura = 0.03f; // m entre la cara de la plancha y la manivela
+
+        void PonerManivelaDeFrente()
+        {
+            var m = GetComponentInChildren<Manivela>(true);
+            if (m == null || m.transform.parent == null) return;
+
+            // La plancha (malla base-sintetasa), medida en el espacio de la estación con las esquinas de su malla
+            // (la caja de Renderer.bounds sale inflada porque la estación está girada)
+            MeshFilter plancha = null;
+            foreach (var mf in GetComponentsInChildren<MeshFilter>(true))
+                if (mf.name.StartsWith("base-sintetasa") && mf.sharedMesh != null) { plancha = mf; break; }
+            if (plancha == null) return;
+            var caja = CajaEn(transform, plancha.transform, plancha.sharedMesh.bounds);
+
+            // Hacia dónde está el jugador: el origen de AnclaCocina es donde se para (PosicionMesa); si no, la cámara
+            var ancla = GameObject.Find("AnclaCocina");
+            Vector3 jugador = ancla != null ? ancla.transform.position : (Camera.main != null ? Camera.main.transform.position : transform.position - transform.forward);
+            var haciaJugador = transform.InverseTransformPoint(jugador) - caja.center;
+            haciaJugador.y = 0f;
+            // La cara de la plancha que da al jugador (eje dominante) y su derecha vista por él
+            Vector3 frente = Mathf.Abs(haciaJugador.x) > Mathf.Abs(haciaJugador.z)
+                ? new Vector3(Mathf.Sign(haciaJugador.x), 0f, 0f) : new Vector3(0f, 0f, Mathf.Sign(haciaJugador.z));
+            var derecha = Vector3.Cross(Vector3.up, -frente); // el jugador mira hacia −frente
+
+            Transform perilla = null;
+            foreach (var t in m.GetComponentsInChildren<Transform>(true)) if (t.name == "Manivela_perilla") { perilla = t; break; }
+
+            var soporte = new GameObject("Soporte manivela (de frente)").transform;
+            soporte.SetParent(m.transform.parent, false);
+            soporte.localPosition = m.transform.localPosition;
+            soporte.localRotation = Quaternion.identity;
+            soporte.localScale = Vector3.one;
+            m.transform.SetParent(soporte, true);
+
+            // Eje de giro: X del padre, del lado donde sale la perilla. Se gira (sobre la vertical) hasta el frente.
+            var eje = transform.InverseTransformDirection(soporte.right);
+            if (perilla != null && Vector3.Dot(transform.InverseTransformDirection(perilla.position - m.transform.position), eje) < 0f) eje = -eje;
+            eje.y = 0f;
+            float giro = Vector3.SignedAngle(eje, frente, Vector3.up);
+            soporte.rotation = transform.rotation * Quaternion.Euler(0f, giro, 0f) * Quaternion.Inverse(transform.rotation) * soporte.rotation;
+
+            // Lo que mide el brazo desde el eje (radio del círculo que barre), en el espacio de la estación
+            var ejeLocal = transform.InverseTransformDirection(m.transform.right);
+            var pivote = transform.InverseTransformPoint(m.transform.position);
+            float radio = 0f;
+            foreach (var mf in m.GetComponentsInChildren<MeshFilter>(true))
+            {
+                if (mf.sharedMesh == null) continue;
+                var bb = mf.sharedMesh.bounds;
+                for (int i = 0; i < 8; i++)
+                {
+                    var esquina = transform.InverseTransformPoint(mf.transform.TransformPoint(Esquina(bb, i)));
+                    radio = Mathf.Max(radio, Vector3.ProjectOnPlane(esquina - pivote, ejeLocal).magnitude);
+                }
+            }
+
+            float mitad = Mathf.Abs(derecha.x) * caja.extents.x + Mathf.Abs(derecha.z) * caja.extents.z;
+            float fondo = Mathf.Abs(frente.x) * caja.extents.x + Mathf.Abs(frente.z) * caja.extents.z;
+            var destino = caja.center + frente * (fondo + Holgura) - derecha * Mathf.Max(0f, mitad - radio - Holgura);
+            destino.y = caja.max.y;
+            soporte.position += transform.TransformPoint(destino) - m.transform.position;
+            m.RecordarPosicion();
+        }
+
+        static Vector3 Esquina(Bounds b, int i) =>
+            new Vector3((i & 1) == 0 ? b.min.x : b.max.x, (i & 2) == 0 ? b.min.y : b.max.y, (i & 4) == 0 ? b.min.z : b.max.z);
+
+        static Bounds CajaEn(Transform espacio, Transform t, Bounds local)
+        {
+            var caja = new Bounds(espacio.InverseTransformPoint(t.TransformPoint(Esquina(local, 0))), Vector3.zero);
+            for (int i = 1; i < 8; i++) caja.Encapsulate(espacio.InverseTransformPoint(t.TransformPoint(Esquina(local, i))));
+            return caja;
         }
 
         // La manivela que funciona medía unos 4 cm y era color olivo: casi no se veía. Se agranda y se pinta
