@@ -65,6 +65,9 @@ namespace BioVR.Comun
             }
             panel.SetActive(false);
             if (panelConfirmacion != null) panelConfirmacion.SetActive(false);
+            // Encima de todo: nada de la escena (mesa, ventanas del tutorial) lo tapa
+            SobreTodo.Aplicar(panel);
+            SobreTodo.Aplicar(panelConfirmacion);
         }
 
         void OnEnable()
@@ -126,6 +129,22 @@ namespace BioVR.Comun
 
         // Botón "Reiniciar tutorial" (A7): borra las ventanas vistas y reinicia desde el turno 1 (índice 0)
         public void ReiniciarTutorial() => Preguntar("ReiniciarTutorial");
+
+        // Botón "Ver tutorial" (Cocina): repasa todas las explicaciones sin reiniciar el turno (prueba del 23-nov)
+        public void VerTutorialCocina()
+        {
+            Continuar();
+            var guia = FindFirstObjectByType<GuiaCocina>();
+            if (guia != null) guia.VerTutorial();
+        }
+
+        // Botón "Retomar tutorial" (escena inicial): vuelve a mostrar el tutorial en el paso donde se quedó,
+        // por si el jugador lo saltó por error (prueba del 23-nov). No pregunta: no se pierde nada.
+        public void RetomarTutorial()
+        {
+            Continuar();
+            Tutorial.Retomar();
+        }
 
         // Botón "Reiniciar turno" (A7): repite el turno actual sin borrar el historial del tutorial
         public void ReiniciarTurno() => Preguntar("ReiniciarTurno");

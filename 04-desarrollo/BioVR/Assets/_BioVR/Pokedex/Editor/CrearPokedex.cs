@@ -86,7 +86,17 @@ namespace BioVR.Pokedex.Editor
             (16, "16-lisosoma", "Lisosoma", ZonaCelula, "vesículas con enzimas",
                 "Sus enzimas digieren desechos, organelos dañados y microbios.",
                 "Es el sistema de limpieza y defensa de la célula."),
+            // Capilar (prueba del 23-nov: "en los capilares ya no sale la pokédex": ahí no había nada registrable)
+            (17, "17-albumina", "Albúmina", ZonaCapilar, "unos 8 nm",
+                "La proteína más abundante del plasma: retiene agua dentro de los vasos y transporta hormonas, ácidos grasos y fármacos.",
+                "La fabrica el hígado."),
+            (18, "18-anticuerpo", "Anticuerpo", ZonaCapilar, "unos 10 nm, en forma de Y",
+                "Proteína de defensa que reconoce una molécula extraña (antígeno) y la marca para que el sistema inmune la elimine.",
+                "Lo fabrican los linfocitos B; cada uno reconoce un antígeno distinto."),
         };
+
+        const string ZonaCapilar = "Capilar";
+        const string PrefabCapilar = "Assets/_BioVR/Entornos/Capilar/Capilar.prefab";
 
         // Piezas del escenario low poly → ficha. Se marca la pieza más alta cuyo nombre coincide.
         // "Nucleo" es exacto para no tomar los nucleosomas.
@@ -124,6 +134,7 @@ namespace BioVR.Pokedex.Editor
             var fichas = CrearFichas();
             var usadas = new HashSet<FichaPokedex>();
             Torrente(fichas, usadas);
+            Capilar(fichas, usadas);
             Celula(fichas, usadas);
             Escena(fichas.Values.Where(usadas.Contains).OrderBy(f => f.numero).ToArray());
             AssetDatabase.SaveAssets();
@@ -276,6 +287,35 @@ namespace BioVR.Pokedex.Editor
 
         static float R(float a, float b) => a + (float)azar.NextDouble() * (b - a);
 
+        // ---------------- Capilar ----------------
+        // Las proteínas del plasma que flotan en Capilar.prefab (GenerarEntornos): "Proteina" = albúmina, "Anticuerpo".
+        static void Capilar(Dictionary<int, FichaPokedex> fichas, HashSet<FichaPokedex> usadas)
+        {
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(PrefabCapilar) == null) { Debug.LogWarning($"[Pokedex] No está {PrefabCapilar}."); return; }
+            var raiz = PrefabUtility.LoadPrefabContents(PrefabCapilar);
+            int marcadas = 0;
+            foreach (var t in raiz.GetComponentsInChildren<Transform>(true))
+            {
+                int n = t.name == "Proteina" ? 17 : t.name == "Anticuerpo" ? 18 : 0;
+                if (n == 0) continue;
+                var d = t.GetComponent<Descubrible>();
+                if (d == null) d = t.gameObject.AddComponent<Descubrible>();
+                d.ficha = fichas[n];
+                usadas.Add(fichas[n]);
+                // El colisionador de la primitiva sirve para el rayo; como trigger no estorba. Se mueven con el flujo.
+                foreach (var c in t.GetComponents<Collider>()) c.isTrigger = true;
+                if (t.GetComponent<Collider>() == null) t.gameObject.AddComponent<SphereCollider>().isTrigger = true;
+                var rb = t.GetComponent<Rigidbody>();
+                if (rb == null) rb = t.gameObject.AddComponent<Rigidbody>();
+                rb.isKinematic = true;
+                rb.useGravity = false;
+                marcadas++;
+            }
+            PrefabUtility.SaveAsPrefabAsset(raiz, PrefabCapilar);
+            PrefabUtility.UnloadPrefabContents(raiz);
+            Debug.Log($"[Pokedex] Capilar: {marcadas} proteínas se pueden registrar.");
+        }
+
         // ---------------- Célula ----------------
 
         static void Celula(Dictionary<int, FichaPokedex> fichas, HashSet<FichaPokedex> usadas)
@@ -330,7 +370,9 @@ namespace BioVR.Pokedex.Editor
 
         // ---------------- Escena ----------------
 
-        static readonly Vector3 PosicionPanel = new Vector3(0.75f, 1.45f, 0.85f);
+        // Más arriba y a la derecha que antes (0.75, 1.45, 0.85): ASTRA, sobre la consola, tapaba la parte de abajo
+        // del panel (prueba del 23-nov)
+        static readonly Vector3 PosicionPanel = new Vector3(0.85f, 1.62f, 0.8f);
         static readonly Vector3 OjosPiloto = new Vector3(0f, 1.4f, 0f);
 
         static void Escena(FichaPokedex[] fichas)

@@ -92,8 +92,40 @@ namespace BioVR.Comun
             if (mover != null) mover.locomotionStarted += AlCaminar;
             if (girar != null) girar.locomotionStarted += AlGirar;
 
+            // El panel sigue al jugador, a su izquierda, sin taparle el frente (prueba del 23-nov)
+            if (seguirAlJugador && panel.GetComponent<SeguirAlJugador>() == null)
+            {
+                var s = panel.AddComponent<SeguirAlJugador>();
+                s.distancia = 0.8f;
+                s.angulo = -32f;
+                s.altura = -0.02f;
+                s.anguloLibre = 30f;
+            }
+
             Mostrar(0);
         }
+
+        [Tooltip("El panel sigue al jugador (a su izquierda) en vez de quedarse fijo junto a la consola.")]
+        [SerializeField] bool seguirAlJugador = true;
+
+        // Paso en el que iba el jugador cuando saltó el tutorial (para "Retomar tutorial" del menú de pausa)
+        int guardado;
+
+        // Menú de pausa → "Retomar tutorial": vuelve al paso donde se quedó (si lo saltó por error)
+        public static void Retomar()
+        {
+            if (instancia == null || instancia.pasos.Length == 0) return;
+            instancia.enabled = true;
+            int paso = instancia.Terminado ? Mathf.Clamp(instancia.guardado, 0, instancia.pasos.Length - 1) : instancia.indice;
+            instancia.StopAllCoroutines();
+            instancia.completando = false;
+            instancia.Mostrar(paso);
+            var s = instancia.panel.GetComponent<SeguirAlJugador>();
+            if (s != null) s.TraerAlFrente();
+            Debug.Log($"[Tutorial] Retomado en el paso {paso + 1}.");
+        }
+
+        public static bool HayTutorial => instancia != null;
 
         void OnDestroy()
         {
@@ -169,6 +201,7 @@ namespace BioVR.Comun
         // Botón "Saltar tutorial"
         public void Terminar()
         {
+            if (!Terminado) guardado = indice;
             StopAllCoroutines();
             completando = false;
             indice = pasos.Length;

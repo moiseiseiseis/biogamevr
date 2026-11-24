@@ -58,9 +58,96 @@ namespace BioVR.Minijuegos.Cocina
             if (botonMenu != null) botonMenu.onClick.RemoveListener(AlClicMenu);
         }
 
+        private BioVR.Comun.SeguirAlJugador seguidor;
+
         private void Start()
         {
             if (panelFinal != null) panelFinal.SetActive(false);
+            // El Canvas del prefab quedó en (499, 203, −11): a 500 m del jugador. La pantalla salía, pero nadie la
+            // veía (prueba del 23-nov: "nunca apareció el botón siguiente"). Se centra en su objeto.
+            foreach (var c in GetComponentsInChildren<Canvas>(true))
+                if (c.transform.parent == transform)
+                {
+                    c.transform.localPosition = Vector3.zero;
+                    c.transform.localRotation = Quaternion.identity;
+                }
+            Acomodar();
+            // Los tres botones decían "Button" (texto por defecto): nadie reconocía el de pasar al siguiente
+            // turno (prueba del 23-nov: "nunca apareció el botón siguiente")
+            Etiqueta(botonSiguienteTurno, "SIGUIENTE >");
+            Etiqueta(botonRepetir, "Repetir");
+            Etiqueta(botonMenu, "Salir");
+            // El de seguir, verde: es el que importa
+            if (botonSiguienteTurno != null && botonSiguienteTurno.targetGraphic != null)
+                botonSiguienteTurno.targetGraphic.color = new Color(0.2f, 0.75f, 0.35f);
+            // Las etiquetas de Tiempo y Aciertos decían "Puntos" en el prefab
+            string[] filas = { "Puntos", "Tiempo", "Aciertos", "Errores", "Reciclados", "Arreglos", "MalosEntraron" };
+            string[] textos = { "Puntos:", "Tiempo:", "Aciertos:", "Errores:", "Reciclados:", "Arreglos:", "Malos que entraron:" };
+            if (panelFinal != null)
+                for (int i = 0; i < filas.Length; i++)
+                {
+                    var t = panelFinal.transform.Find("Etiqueta" + filas[i]);
+                    var tmp = t != null ? t.GetComponent<TMP_Text>() : null;
+                    if (tmp != null) tmp.text = textos[i];
+                }
+            transform.localScale = Vector3.one * 1.15f;
+            // Encima de todo y frente al jugador cuando aparece
+            BioVR.Comun.SobreTodo.Aplicar(gameObject);
+            seguidor = GetComponent<BioVR.Comun.SeguirAlJugador>();
+            if (seguidor == null)
+            {
+                seguidor = gameObject.AddComponent<BioVR.Comun.SeguirAlJugador>();
+                seguidor.distancia = 0.85f;
+                seguidor.altura = 0.05f;
+                seguidor.anguloLibre = 35f;
+            }
+        }
+
+        // En el prefab varias piezas quedaron encimadas en el centro (título, una estrella, los puntos): se acomodan
+        // aquí, en píxeles del panel (750 × 650). Arriba el título y las estrellas, en medio las 7 cifras en dos
+        // columnas (etiqueta | valor), abajo la frase y los tres botones.
+        private void Acomodar()
+        {
+            if (panelFinal == null) return;
+            var porNombre = new System.Collections.Generic.Dictionary<string, RectTransform>();
+            foreach (Transform t in panelFinal.transform)
+                if (t is RectTransform rt) porNombre[t.name] = rt;
+
+            void Poner(string nombre, float x, float y, float ancho = -1f, float alto = -1f)
+            {
+                if (!porNombre.TryGetValue(nombre, out var rt)) return;
+                rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f);
+                rt.pivot = new Vector2(0.5f, 0.5f);
+                // Cada pieza del prefab está escalada a 0.001 dentro del Canvas: su posición va en unidades del
+                // Canvas, no en píxeles. Por eso las que no estaban en (0, 0) quedaban a decenas de metros.
+                float k = rt.localScale.x;
+                rt.anchoredPosition = new Vector2(x, y) * k;
+                rt.localPosition = new Vector3(rt.localPosition.x, rt.localPosition.y, 0f);
+                if (ancho > 0f) rt.sizeDelta = new Vector2(ancho, alto);
+            }
+
+            Poner("Fondo", 0f, 0f, 750f, 650f);
+            Poner("TextoTitulo", 0f, 270f, 680f, 55f);
+            Poner("Estrella1", -80f, 205f); Poner("Estrella2", 0f, 205f); Poner("Estrella3", 80f, 205f);
+            string[] filas = { "Puntos", "Tiempo", "Aciertos", "Errores", "Reciclados", "Arreglos", "MalosEntraron" };
+            for (int i = 0; i < filas.Length; i++)
+            {
+                float y = 135f - i * 40f;
+                Poner("Etiqueta" + filas[i], -120f, y, 260f, 38f);
+                Poner("Texto" + filas[i], 140f, y, 220f, 38f);
+            }
+            Poner("TextoMalosEncontraron", 140f, 135f - 6 * 40f, 220f, 38f); // el valor de "Malos entraron"
+            Poner("TextoFrase", 0f, -175f, 680f, 60f);
+            Poner("BotonSiguienteTurno", 230f, -262f, 230f, 62f); // a la derecha: "adelante"
+            Poner("BotonRepetir", 0f, -262f, 200f, 62f);
+            Poner("BotonMenu", -230f, -262f, 200f, 62f);
+        }
+
+        private static void Etiqueta(Button b, string texto)
+        {
+            if (b == null) return;
+            var t = b.GetComponentInChildren<TMP_Text>(true);
+            if (t != null) { t.text = texto; t.enableAutoSizing = true; t.fontSizeMin = 10f; t.fontSizeMax = 40f; t.fontStyle = FontStyles.Bold; }
         }
 
         private void OcultarAlIniciar(TurnoData turno)
@@ -71,6 +158,7 @@ namespace BioVR.Minijuegos.Cocina
         public void MostrarResultados(MarcadorCocina m)
         {
             if (panelFinal != null) panelFinal.SetActive(true);
+            if (seguidor != null) seguidor.TraerAlFrente();
 
             var cocina = ControlCocina.Instancia;
             int indiceTurno = cocina != null ? cocina.NumeroTurno : 0;

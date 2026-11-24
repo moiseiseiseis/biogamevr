@@ -69,10 +69,43 @@ namespace BioVR.Minijuegos.Cocina
 
         static ControlCocina Control => ControlCocina.Instancia;
 
+        [Header("Tarjeta del codón (prueba del 23-nov)")]
+        [Tooltip("Cambia la placa 'codón en el sitio A' por una tarjeta con las piezas del codón y del ARNt que encaja")]
+        [SerializeField] bool usarTarjeta = true;
+        [SerializeField] float escalaTarjeta = 0.8f;
+        [Tooltip("Dónde queda la tarjeta respecto a la placa: x a la derecha, y arriba, z hacia el jugador (m). " +
+                 "En la placa misma la mitad de abajo quedaba dentro de la mesa.")]
+        // 24-nov: más baja y más cerca (antes 0, 0.13, 0.1): se encimaba con el ribosoma. Fijo en el código (no
+        // serializado): la copia importada del prefab se quedaba con el valor viejo.
+        static readonly Vector3 desplazamientoTarjeta = new Vector3(0f, 0.07f, 0.17f);
+        TarjetaCodon tarjeta;
+
         void Awake()
         {
             bloque = new MaterialPropertyBlock();
             opacidad = opacidadNormal;
+            // El recuadro cian que pulsaba tapaba las piezas del codón: se quita (el codón se ve en la tarjeta)
+            if (usarTarjeta && cajaSitioA != null) cajaSitioA.enabled = false;
+            if (usarTarjeta && codonGrande != null && arnm != null)
+            {
+                var placa = codonGrande.transform;
+                tarjeta = TarjetaCodon.Crear(placa, arnm, codonGrande.font, escalaTarjeta);
+                // TextMeshPro mira hacia su −Z: "hacia el jugador" es −forward, pero solo en horizontal (la placa está
+                // inclinada como atril y su −forward también baja: subir y acercar se cancelaban)
+                var haciaJugador = -Vector3.ProjectOnPlane(placa.forward, Vector3.up).normalized;
+                var derecha = Vector3.ProjectOnPlane(placa.right, Vector3.up).normalized;
+                tarjeta.transform.position += derecha * desplazamientoTarjeta.x + Vector3.up * desplazamientoTarjeta.y
+                                              + haciaJugador * desplazamientoTarjeta.z;
+                // De frente a los ojos (la placa estaba acostada como atril y la fila de abajo no se leía)
+                var cam = Camera.main;
+                var dir = cam != null ? tarjeta.transform.position - cam.transform.position : -haciaJugador;
+                if (dir.sqrMagnitude > 1e-6f) tarjeta.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
+                codonGrande.gameObject.SetActive(false);
+                if (letreroSitio != null) letreroSitio.gameObject.SetActive(false);
+                // La placa cian vieja atravesaba la tarjeta
+                foreach (var r in GetComponentsInChildren<Renderer>(true))
+                    if (r.name.StartsWith("Placa sitio")) r.enabled = false;
+            }
         }
 
         void OnEnable()
@@ -159,9 +192,28 @@ namespace BioVR.Minijuegos.Cocina
 
             if (titulo != null) titulo.text = Texto(claveTitulo, respaldoTitulo);
             if (subtitulo != null) subtitulo.text = Texto(claveSubtitulo, respaldoSubtitulo);
+            ApilarLetreros();
             if (letreroSitio != null) letreroSitio.text = Texto(claveSitio, respaldoSitio);
             if (arnm != null) arnm.Iniciar(Control.Codones, Estado.indice);
             Refrescar();
+        }
+
+        // "RIBOSOMA LEJANO" no cabía en el ancho del letrero (0.4 m): se partía en dos renglones y el
+        // segundo caía encima del subtítulo, que también ocupa dos (prueba del 24-nov). El título va en
+        // un solo renglón y se pone justo arriba del alto real del subtítulo. Ambos van centrados en
+        // vertical, así que el borde de arriba del subtítulo es su centro + la mitad de su alto.
+        const float SeparacionLetreros = 0.008f;
+
+        void ApilarLetreros()
+        {
+            if (titulo == null || subtitulo == null) return;
+            titulo.textWrappingMode = TextWrappingModes.NoWrap;
+            var rs = subtitulo.rectTransform;
+            var rt = titulo.rectTransform;
+            float altoSub = subtitulo.GetPreferredValues(subtitulo.text, rs.sizeDelta.x, 0f).y;
+            float altoTit = titulo.GetPreferredValues(titulo.text).y;
+            float y = rs.anchoredPosition.y + altoSub * 0.5f + SeparacionLetreros + altoTit * 0.5f;
+            rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, y);
         }
 
         void AlCambiarCodon(RibosomaEstado r)
@@ -206,6 +258,8 @@ namespace BioVR.Minijuegos.Cocina
                 }
             }
             if (botonFin != null) botonFin.Mostrar(Control.EnParo(Estado));
+            if (tarjeta != null)
+                tarjeta.Mostrar(hayCodon ? codones[Estado.indice] : (Codon?)null, pideAhora.HasValue, Control.EnParo(Estado));
         }
 
         static string FormatoCodon(Codon c) => c.esParo ? $"{c.tripleta}\n<size=60%>paro</size>" : c.tripleta;

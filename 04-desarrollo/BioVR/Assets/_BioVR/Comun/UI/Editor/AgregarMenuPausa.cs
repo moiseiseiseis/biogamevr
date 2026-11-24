@@ -67,12 +67,16 @@ namespace BioVR.Comun.Editor
             var raiz = new GameObject(NombreMenu);
             var menu = raiz.AddComponent<MenuPausa>();
 
-            var panel = UIVR.Panel("Panel", raiz.transform, new Vector2(500f, botonesCocina ? 920f : 740f), origen.Camera); // 0.5 × 0.92 o 0.74 m
+            var panel = UIVR.Panel("Panel", raiz.transform, new Vector2(500f, botonesCocina ? 1010f : 830f), origen.Camera); // 0.5 × 1.01 o 0.83 m
             UIVR.Texto(panel.transform, "Titulo", "Pausa", 52f, FontStyles.Bold, 70f);
             UIVR.Boton(panel.transform, "Boton Continuar", "Continuar", UIVR.ColorBoton, menu.Continuar);
+            if (!botonesCocina) // en la cabina: volver al tutorial donde se quedó (prueba del 23-nov)
+                UIVR.Boton(panel.transform, "Boton Retomar Tutorial", "Retomar tutorial", UIVR.ColorBoton, menu.RetomarTutorial);
             UIVR.Boton(panel.transform, "Boton Reiniciar", "Reiniciar", UIVR.ColorBoton, menu.Reiniciar);
             if (botonesCocina)
             {
+                // Repasa las explicaciones sin reiniciar nada (prueba del 23-nov)
+                UIVR.Boton(panel.transform, "Boton Ver Tutorial", "Ver tutorial otra vez", UIVR.ColorBoton, menu.VerTutorialCocina);
                 UIVR.Boton(panel.transform, "Boton Reiniciar Turno", "Reiniciar turno", UIVR.ColorBoton, menu.ReiniciarTurno);
                 UIVR.Boton(panel.transform, "Boton Reiniciar Tutorial", "Reiniciar tutorial", UIVR.ColorBoton, menu.ReiniciarTutorial);
             }

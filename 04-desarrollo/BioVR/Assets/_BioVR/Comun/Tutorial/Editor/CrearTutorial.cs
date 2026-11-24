@@ -28,6 +28,10 @@ namespace BioVR.Comun.Editor
         {
             ("01-Bienvenida", "¡Bienvenido, piloto!",
              "Aquí aprenderás a manejar la nave. Apunta al botón Siguiente con el mando y presiona el gatillo.", "", false),
+            // Prueba del 23-nov: primero los controles del Quest, luego los del juego
+            ("01b-ControlesQuest", "Tus mandos",
+             "<b>Gatillo</b> (dedo índice): apuntar y tocar botones.\n<b>Grip</b> (dedo medio, de lado): agarrar.\n" +
+             "<b>Stick izq.</b>: caminar · <b>Stick der.</b>: girar.\n<b>B / Y</b>: volver al asiento · <b>☰</b> (mando izq.): pausa.", "", false),
             ("02-Recentrar", "Vuelve a tu asiento",
              "Si te pierdes o quedas de lado, presiona B o Y: regresas al asiento mirando al frente.", "recentrar", false),
             ("03-Caminar", "Camina",
@@ -44,10 +48,15 @@ namespace BioVR.Comun.Editor
              "Toca el botón Iniciar inmersión en la consola.", "estado:Abordaje", false),
             ("09-Sumergirse", "Sumérgete",
              "Toca Iniciar inmersión otra vez para entrar al cuerpo humano.", "estado:Viaje", false),
+            ("09b-Pokedex", "Tu pokédex biológico",
+             "Apunta con el mando a una célula de la sangre y aprieta el gatillo: su ficha aparece en el panel de la derecha. ¡Registra todas las que puedas!", "pokedex", true),
             ("10-Salto", "Salto Matrioska",
              "Toca Salto Matrioska o empuja la palanca para reducir la nave otra vez.", "salto:2", false),
-            ("11-Listo", "¡Listo!",
-             "Sigue saltando hasta llegar a la célula. Ahí, un último Salto Matrioska reduce la nave a 5 nm y te lleva al ribosoma.", "", false),
+            // 23-nov: 11 y 12 llevan al jugador hasta el minijuego ("al llegar al último salto no se ven instrucciones")
+            ("11-Listo", "Entra a la célula",
+             "Sigue con Salto Matrioska (botón o palanca): pasas por un capilar y luego entras a la célula.", "salto:3", false),
+            ("12-UltimoSalto", "Último salto: al ribosoma",
+             "Ya estás dentro de la célula. Toca Salto Matrioska una vez más: la nave se reduce a 5 nm y entras a la Cocina de proteínas, el minijuego.", "salto:4", false),
         };
 
         [MenuItem("BioVR/Crear tutorial")]

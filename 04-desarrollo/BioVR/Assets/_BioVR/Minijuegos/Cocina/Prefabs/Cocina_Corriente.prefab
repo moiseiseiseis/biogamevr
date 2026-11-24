@@ -83,8 +83,30 @@ LineRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
+  - {x: -0.7250462, y: 1.15, z: -0.33809468}
+  - {x: -0.7442228, y: 1.15, z: -0.29348335}
+  - {x: -0.7606574, y: 1.15, z: -0.24779086}
+  - {x: -0.7742896, y: 1.15, z: -0.20118546}
+  - {x: -0.78506917, y: 1.15, z: -0.15383886}
+  - {x: -0.79295635, y: 1.15, z: -0.10592548}
+  - {x: -0.79792213, y: 1.15, z: -0.057621736}
+  - {x: -0.79994816, y: 1.15, z: -0.009105902}
+  - {x: -0.799027, y: 1.15, z: 0.03944367}
+  - {x: -0.79516214, y: 1.15, z: 0.08784774}
+  - {x: -0.7883676, y: 1.15, z: 0.13592835}
+  - {x: -0.7786686, y: 1.15, z: 0.18350807}
+  - {x: -0.7661008, y: 1.15, z: 0.2304117}
+  - {x: -0.75071055, y: 1.15, z: 0.27646646}
+  - {x: -0.7325545, y: 1.15, z: 0.32150266}
+  - {x: -0.7116995, y: 1.15, z: 0.36535442}
+  - {x: -0.68822247, y: 1.15, z: 0.40786004}
+  - {x: -0.6622099, y: 1.15, z: 0.44886303}
+  - {x: -0.63375765, y: 1.15, z: 0.48821235}
+  - {x: -0.6029704, y: 1.15, z: 0.525763}
+  - {x: -0.5699617, y: 1.15, z: 0.5613765}
+  - {x: -0.53485316, y: 1.15, z: 0.59492195}
+  - {x: -0.49777412, y: 1.15, z: 0.6262755}
+  - {x: -0.45886117, y: 1.15, z: 0.65532166}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -93,7 +115,16 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0.012
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.33333334
+      - serializedVersion: 3
+        time: 1
+        value: 0.012
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -140,7 +171,7 @@ LineRenderer:
     textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
-  m_UseWorldSpace: 1
+  m_UseWorldSpace: 0
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
 --- !u!114 &4883773415685882247
@@ -156,7 +187,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Minijuegos.Cocina.TuboCorrienteVisual
   segmentos: 24
-  anguloInicio: 66
-  anguloFin: 14
-  radio: 0.72
-  altura: 1.06
+  anguloInicio: 115
+  anguloFin: 35
+  radio: 0.8
+  altura: 1.15
+  grosor: 0.012

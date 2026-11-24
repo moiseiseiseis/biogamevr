@@ -22,7 +22,7 @@ MonoBehaviour:
   arntIniciales: 5
   maxEnCorriente: 5
   maxEnCorrienteRaro: 9
-  velocidadCorriente: 0.055
+  velocidadCorriente: 0.08
   esperaPista: 9
   codonesAdelantados: 2
   diferenciaSenuelo: 2

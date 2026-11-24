@@ -48,6 +48,11 @@ namespace BioVR.Minijuegos.Cocina
             grab.activated.AddListener(args => AlApretarGatilloSosteniendo(arnt, args));
         }
 
+        // Velocidad más alta de los últimos instantes: al soltar el grip la mano ya va frenando, y con la velocidad
+        // de ese cuadro el lanzamiento casi nunca contaba (prueba del 23-nov)
+        const float VentanaPico = 0.15f; // s
+        readonly Dictionary<ARNtCocina, List<(float t, Vector3 v)>> historial = new Dictionary<ARNtCocina, List<(float, Vector3)>>();
+
         public void ActualizarRastreoMano(ARNtCocina arnt)
         {
             if (arnt == null) return;
@@ -58,8 +63,20 @@ namespace BioVR.Minijuegos.Cocina
                 velocidadCalculada[arnt] = velocidadCalculada.TryGetValue(arnt, out Vector3 vAnt)
                     ? Vector3.Lerp(vAnt, velInstantanea, 0.5f)
                     : velInstantanea;
+                if (!historial.TryGetValue(arnt, out var lista)) historial[arnt] = lista = new List<(float, Vector3)>();
+                lista.Add((Time.time, velocidadCalculada[arnt]));
+                lista.RemoveAll(x => Time.time - x.t > VentanaPico);
             }
             ultimaPos[arnt] = actual;
+        }
+
+        Vector3 VelocidadPico(ARNtCocina arnt, Vector3 respaldo)
+        {
+            Vector3 mejor = velocidadCalculada.TryGetValue(arnt, out var v) ? v : respaldo;
+            if (historial.TryGetValue(arnt, out var lista))
+                foreach (var (t, vel) in lista)
+                    if (Time.time - t <= VentanaPico && vel.sqrMagnitude > mejor.sqrMagnitude) mejor = vel;
+            return mejor;
         }
 
         public void LimpiarRastreo(ARNtCocina arnt)
@@ -67,6 +84,7 @@ namespace BioVR.Minijuegos.Cocina
             if (arnt == null) return;
             ultimaPos.Remove(arnt);
             velocidadCalculada.Remove(arnt);
+            historial.Remove(arnt);
         }
 
         // Opción A VR: Apretar el gatillo mientras sostienes el ARNt apuntando con el rayo
@@ -88,7 +106,7 @@ namespace BioVR.Minijuegos.Cocina
         // Opción B VR: Soltar el grip moviendo la mano rápido (> 1.2 m/s)
         public bool IntentarLanzarVR(ARNtCocina arnt, Vector3 velocidadFallback)
         {
-            Vector3 vel = velocidadCalculada.TryGetValue(arnt, out Vector3 vCalc) ? vCalc : velocidadFallback;
+            Vector3 vel = VelocidadPico(arnt, velocidadFallback);
             LimpiarRastreo(arnt);
 
             if (vel.magnitude <= ControlesCocina.VelocidadLanzar) return false;
@@ -116,7 +134,8 @@ namespace BioVR.Minijuegos.Cocina
             if (destinoRegresoCitoplasma != null && destinoRegresoCitoplasma.gameObject.activeInHierarchy)
             {
                 float ang = Vector3.Angle(dirLanzamiento, (destinoRegresoCitoplasma.position - origen).normalized);
-                if (ang <= mejorAngulo)
+                // Un ARNt usado solo puede ir al embudo: se le perdona más la puntería
+                if (ang <= (arnt.Usado ? ControlesCocina.AnguloAtinarUsado : mejorAngulo) && (mejorDestino == null || ang < mejorAngulo || arnt.Usado))
                 {
                     mejorAngulo = ang;
                     mejorDestino = destinoRegresoCitoplasma;

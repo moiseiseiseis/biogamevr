@@ -27,6 +27,11 @@ namespace BioVR.Minijuegos.Cocina
         [Tooltip("Local al ribosoma. −X = derecha del jugador (lado 3′ del ARNm), +Z = hacia el jugador")]
         public Vector3 posicionEnRibosoma = new Vector3(-0.19f, 0.012f, 0.02f);
 
+        [Tooltip("Cuánto más a la derecha del jugador que posicionEnRibosoma (m)")]
+        [SerializeField] float corrimientoDerecha = 0.06f;
+        // Giro extra para que el modelo quede de pie: viene acostado sobre el ARNm (con el lazo hacia el jugador)
+        static readonly Vector3 giroVertical = new Vector3(-90f, 0f, 0f);
+
         [Header("Modelo")]
         [Tooltip("Lo que se mece, se inclina y se desvanece (el modelo y su letrero)")]
         [SerializeField] Transform visual;
@@ -91,8 +96,11 @@ namespace BioVR.Minijuegos.Cocina
         {
             if (ribosoma != null)
             {
-                transform.position = ribosoma.TransformPoint(posicionEnRibosoma);
-                transform.rotation = ribosoma.rotation;
+                // Prueba del 23-nov: 6 cm más a la derecha del jugador (−X local) y de pie (sin la inclinación del
+                // ribosoma, solo su giro horizontal)
+                transform.position = ribosoma.TransformPoint(posicionEnRibosoma + Vector3.left * corrimientoDerecha);
+                var frente = Vector3.ProjectOnPlane(ribosoma.forward, Vector3.up);
+                transform.rotation = frente.sqrMagnitude > 1e-6f ? Quaternion.LookRotation(frente, Vector3.up) * Quaternion.Euler(giroVertical) : ribosoma.rotation;
             }
             abierta = 0f;
             desvanecer = -1f;

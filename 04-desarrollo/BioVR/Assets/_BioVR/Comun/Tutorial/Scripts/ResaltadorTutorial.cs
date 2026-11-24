@@ -47,6 +47,7 @@ namespace BioVR.Comun
             public Transform flecha;
         }
 
+        static Material materialRombo;
         readonly List<Objetivo> activos = new();
         readonly Dictionary<string, GameObject> porNombre = new();
         MaterialPropertyBlock mpb;
@@ -176,6 +177,14 @@ namespace BioVR.Comun
                 rombo.transform.localScale = new Vector3(1f, 1f, 0.35f);
                 var r = rombo.GetComponent<Renderer>();
                 r.shadowCastingMode = ShadowCastingMode.Off;
+                // Material URP propio: con el material por defecto de las primitivas (no es de URP) el Quest dibujaba
+                // el rombo mal en cada ojo, como si hubiera cuatro (prueba del 23-nov, en el torrente)
+                if (materialRombo == null)
+                {
+                    var sh = Shader.Find("Universal Render Pipeline/Unlit");
+                    if (sh != null) { materialRombo = new Material(sh); materialRombo.SetColor(IdBaseColor, colorResaltado); }
+                }
+                if (materialRombo != null) r.sharedMaterial = materialRombo;
                 mpb.Clear();
                 mpb.SetColor(IdBaseColor, colorResaltado);
                 mpb.SetColor(IdColor, colorResaltado);

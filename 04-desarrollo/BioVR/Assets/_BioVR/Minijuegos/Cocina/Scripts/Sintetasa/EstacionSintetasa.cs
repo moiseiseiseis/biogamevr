@@ -17,6 +17,12 @@ namespace BioVR.Minijuegos.Cocina
             public int ultimoOctavo;
         }
 
+        [Header("Ajustes de la prueba del 23-nov")]
+        [Tooltip("Distancia (m) a la estación o a una ranura a la que se acepta un ARNt soltado")]
+        [SerializeField] float radioSoltar = 0.35f;
+        [Tooltip("Cuánto arriba de la ranura queda el ARNt (m), para que se vea fuera de la enzima")]
+        [SerializeField] float alturaSobreRanura = 0.07f;
+
         readonly Ranura[] ranuras = new Ranura[] { new Ranura(), new Ranura() };
         CorrienteARNt corriente;
 
@@ -36,15 +42,105 @@ namespace BioVR.Minijuegos.Cocina
             corriente = FindFirstObjectByType<CorrienteARNt>();
             for (int i = 0; i < barrasCarga.Length; i++)
                 ActualizarBarraVisual(i, 0f);
-        }
-
-        void OnEnable()
-        {
+            // Escucha desde Awake (no OnEnable): la estación se apaga al terminar el turno y tiene que oír el
+            // siguiente para volver a encenderse. Antes se quedaba apagada y el turno 2 no se podía jugar
+            // (prueba del 23-nov: "al reiniciar el turno desaparece la mesa de la sintetasa").
             EventosCocina.OnTurnoIniciado += AlIniciarTurno;
             EventosCocina.OnFaseCambiada += AlCambiarFase;
+            QuitarManivelaDecorativa();
+            ResaltarManivela();
         }
 
-        void OnDisable()
+        // La manivela que funciona medía unos 4 cm y era color olivo: casi no se veía. Se agranda y se pinta
+        // del ámbar que tenía la de adorno.
+        void ResaltarManivela()
+        {
+            var m = GetComponentInChildren<Manivela>(true);
+            if (m == null) return;
+            m.transform.localScale *= 1.6f;
+            // La zona de agarre (esfera de 10 cm a escala del modelo) creció con la manivela y alcanzaba las ranuras:
+            // el mando se "anclaba" a la manivela al querer agarrar un ARNt de la sintetasa (prueba del 23-nov).
+            // Se deja una esfera de 5 cm centrada en la perilla, del lado de afuera.
+            var esfera = m.GetComponent<SphereCollider>();
+            Transform perilla = null;
+            foreach (var t in m.GetComponentsInChildren<Transform>(true)) if (t.name == "Manivela_perilla") { perilla = t; break; }
+            if (esfera != null)
+            {
+                var rp = perilla != null ? perilla.GetComponent<Renderer>() : null;
+                var centro = rp != null ? rp.bounds.center : m.transform.position;
+                esfera.center = m.transform.InverseTransformPoint(centro);
+                esfera.radius = 0.05f / Mathf.Max(0.0001f, m.transform.lossyScale.x);
+            }
+            var bloque = new MaterialPropertyBlock();
+            foreach (var r in m.GetComponentsInChildren<Renderer>(true))
+            {
+                r.GetPropertyBlock(bloque);
+                bloque.SetColor("_BaseColor", new Color(1f, 0.8f, 0.2f));
+                bloque.SetColor("_EmissionColor", new Color(0.6f, 0.4f, 0.05f));
+                r.SetPropertyBlock(bloque);
+            }
+        }
+
+        // base-sintetasa.fbx (Uli) trae una manivela de adorno (aro ámbar y brazos oscuros) a la izquierda que no hace
+        // nada; la que funciona es la de estacion-sintetasa-1qtq (componente Manivela). En la prueba del 23-nov había
+        // "dos manivelas" y se decidió dejar solo la que funciona: aquí se quitan esas dos partes de la malla de la base.
+        static readonly string[] MaterialesManivelaDecorativa = { "metal_oscuro", "neon_ambar" };
+
+        void QuitarManivelaDecorativa()
+        {
+            foreach (var mf in GetComponentsInChildren<MeshFilter>(true))
+            {
+                if (!mf.name.StartsWith("base-sintetasa") || mf.sharedMesh == null) continue;
+                var r = mf.GetComponent<MeshRenderer>();
+                if (r == null) continue;
+                var original = mf.sharedMesh;
+                var mats = r.sharedMaterials;
+                var quedan = new System.Collections.Generic.List<int>();
+                for (int i = 0; i < original.subMeshCount; i++)
+                {
+                    string nombre = i < mats.Length && mats[i] != null ? mats[i].name : "";
+                    if (System.Array.IndexOf(MaterialesManivelaDecorativa, nombre) < 0) quedan.Add(i);
+                }
+                if (quedan.Count == original.subMeshCount || quedan.Count == 0) continue;
+
+                // La cruceta de la manivela de adorno está en la malla principal: se quitan también los triángulos
+                // que caen dentro del aro (su caja, un poco más gruesa hacia los lados)
+                var caja = new Bounds();
+                bool hayCaja = false;
+                for (int i = 0; i < original.subMeshCount; i++)
+                    if (!quedan.Contains(i))
+                    {
+                        var b = original.GetSubMesh(i).bounds;
+                        if (!hayCaja) { caja = b; hayCaja = true; } else caja.Encapsulate(b);
+                    }
+                caja.Expand(new Vector3(0.02f, 0f, 0f));
+                var v = original.vertices;
+
+                var malla = Instantiate(original);
+                malla.name = original.name + " (sin manivela de adorno)";
+                malla.subMeshCount = quedan.Count;
+                var nuevos = new Material[quedan.Count];
+                for (int k = 0; k < quedan.Count; k++)
+                {
+                    var tri = original.GetTriangles(quedan[k]);
+                    var filtrados = new System.Collections.Generic.List<int>(tri.Length);
+                    for (int t = 0; t + 2 < tri.Length; t += 3)
+                    {
+                        var centro = (v[tri[t]] + v[tri[t + 1]] + v[tri[t + 2]]) / 3f;
+                        // Solo en el cuerpo morado (ahí está la cruceta); el neón del borde no se toca
+                        bool cuerpo = mats[quedan[k]] != null && mats[quedan[k]].name == "metal_morado";
+                        if (cuerpo && hayCaja && caja.Contains(centro)) continue;
+                        filtrados.Add(tri[t]); filtrados.Add(tri[t + 1]); filtrados.Add(tri[t + 2]);
+                    }
+                    malla.SetTriangles(filtrados, k);
+                    nuevos[k] = mats[quedan[k]];
+                }
+                mf.sharedMesh = malla;
+                r.sharedMaterials = nuevos;
+            }
+        }
+
+        void OnDestroy()
         {
             EventosCocina.OnTurnoIniciado -= AlIniciarTurno;
             EventosCocina.OnFaseCambiada -= AlCambiarFase;
@@ -87,7 +183,8 @@ namespace BioVR.Minijuegos.Cocina
 
                 if (i < puntosRanura.Length && puntosRanura[i] != null)
                 {
-                    r.arnt.transform.SetPositionAndRotation(puntosRanura[i].position, puntosRanura[i].rotation);
+                    // Un poco arriba de la ranura: en el punto exacto el ARNt quedaba metido en la enzima y no se veía
+                    r.arnt.transform.SetPositionAndRotation(puntosRanura[i].position + Vector3.up * alturaSobreRanura, puntosRanura[i].rotation);
                 }
             }
         }
@@ -96,10 +193,13 @@ namespace BioVR.Minijuegos.Cocina
         public bool IntentarColocar(ARNtCocina arnt)
         {
             if (arnt == null) return false;
+            if (arnt.Usado) return false; // el usado va al embudo; si se suelta aquí, regresa a la bandeja
 
+            // Cerca de la estación o de cualquiera de sus ranuras, con margen amplio: en el visor costaba atinarle
             float dist = Vector3.Distance(arnt.transform.position, transform.position);
-            // Usamos RadioEstacion de ControlesCocina con un margen cómodo para las dos ranuras
-            if (dist > ControlesCocina.RadioEstacion * 2.5f) return false;
+            foreach (var p in puntosRanura)
+                if (p != null) dist = Mathf.Min(dist, Vector3.Distance(arnt.transform.position, p.position));
+            if (dist > radioSoltar) return false;
 
             var control = ControlCocina.Instancia;
             if (control == null) return false;

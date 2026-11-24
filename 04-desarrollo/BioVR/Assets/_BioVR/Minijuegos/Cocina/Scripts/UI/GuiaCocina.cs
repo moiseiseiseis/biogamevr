@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BioVR.Minijuegos.Cocina
@@ -59,7 +60,14 @@ namespace BioVR.Minijuegos.Cocina
             EventosCocina.OnCodonRaro += AlCodonRaro;
             EventosCocina.OnReciclado += AlReciclar;
             EventosCocina.OnMensaje += AlMensaje;
+            EventosCocina.OnCadenaTerminada += AlTerminarCadena;
+            EventosCocina.OnTerminado += AlTerminar;
         }
+
+        // Si el jugador toca FIN (o termina el turno) con una ventana de información abierta, la ventana se cierra
+        // sola: antes había que cerrar el tutorial primero o la pantalla se quedaba congelada (prueba del 23-nov)
+        void AlTerminarCadena(RibosomaEstado _) { if (esperandoEntendido) entendido = true; }
+        void AlTerminar(MarcadorCocina _) { if (esperandoEntendido) entendido = true; }
 
         void OnDisable()
         {
@@ -70,6 +78,8 @@ namespace BioVR.Minijuegos.Cocina
             EventosCocina.OnCodonRaro -= AlCodonRaro;
             EventosCocina.OnReciclado -= AlReciclar;
             EventosCocina.OnMensaje -= AlMensaje;
+            EventosCocina.OnCadenaTerminada -= AlTerminarCadena;
+            EventosCocina.OnTerminado -= AlTerminar;
         }
 
         void Start()
@@ -86,6 +96,8 @@ namespace BioVR.Minijuegos.Cocina
         void AlIniciarTurno(TurnoData _)
         {
             if (guion != null) StopCoroutine(guion);
+            esperandoEntendido = false; entendido = false; // por si se cortó una ventana de información a la mitad
+            BloquearInteraccion(false);
             Limpiar();
             iResuelta = null;
             reciclados = 0;
@@ -102,29 +114,34 @@ namespace BioVR.Minijuegos.Cocina
                 $"• {Grip}: agarrar y soltar.\n• {Gatillo} + rayo: tocar botones.\n• <b>A</b> o <b>X</b>: continuar.   • <b>B</b> o <b>Y</b>: acomodar la mesa.",
                 null, "Aprieta A o X para empezar");
             yield return Info("El mensaje",
-                $"Frente a ti está el <b>ribosoma</b>. Sobre él pasa el <b>ARNm</b>: el mensaje. El codón que se ve <b>más grande</b> es el que pide: ahora pide <b>{CodonDe(C.RibosomaMesa)}</b>. " +
-                "Le vas a traer el ARNt que encaja con él.", Ribosoma(false), "Aprieta A o X");
+                $"Frente a ti está el <b>ribosoma</b>. Por él pasa el <b>ARNm</b>: el mensaje, leído de 3 en 3 letras (codones). Ahora pide <b>{CodonDe(C.RibosomaMesa)}</b>.\n" +
+                "La <b>tarjeta</b> de abajo del ribosoma te muestra el codón y, arriba, las piezas del ARNt que encaja con él.", Ribosoma(false), "Aprieta A o X");
 
-            for (int vuelta = 0; vuelta < 3; vuelta++)
+            for (int vuelta = 0; vuelta < 3 && C.Fase == FaseCocina.Armando; vuelta++)
             {
                 var mesa = C.RibosomaMesa;
                 int indice = mesa.indice;
                 // Guiar este aminoácido hasta que el ribosoma avance
-                while (mesa.indice == indice && !C.EnParo(mesa))
+                while (mesa.indice == indice && !C.EnParo(mesa) && C.Fase == FaseCocina.Armando)
                 {
+                    var p = PresentacionPendiente(mesa);
+                    if (p != null) { yield return p; continue; }
                     GuiarAminoacido(mesa, vuelta == 0 ? 2 : vuelta == 1 ? 1 : 0, $"Aminoácido {vuelta + 1} de 3");
                     yield return Tic;
                 }
                 // En el primero se enseña a vaciar la bandeja (en el turno 1 caben 2: al tercero ya no cabría)
-                if (vuelta == 0)
+                if (vuelta == 0 && C.Fase == FaseCocina.Armando)
                 {
                     int antes = reciclados;
-                    while (reciclados == antes)
+                    while (reciclados == antes && C.Fase == FaseCocina.Armando)
                     {
+                        var p = PresentacionReciclaje();
+                        if (p != null) { yield return p; continue; }
                         GuiarReciclar(detallado: true, "Último paso del ciclo");
                         yield return Tic;
                     }
-                    yield return Info("¡Eso es todo el ciclo!",
+                    if (C.Fase == FaseCocina.Armando)
+                        yield return Info("¡Eso es todo el ciclo!",
                         "1. Agarra el ARNt que encaja.  2. Cárgalo en la sintetasa.  3. Llévalo al ribosoma y gíralo.  4. Avienta el usado al embudo.\n" +
                         "Ahora repítelo con el siguiente codón. Te ayudo menos cada vez.", null, "Aprieta A o X");
                 }
@@ -151,13 +168,24 @@ namespace BioVR.Minijuegos.Cocina
                     "Otro pedido de 2 amilinas. Ahora <b>la mesa gira</b>: la sintetasa y la bandeja se mueven despacio por el borde. " +
                     "El mensaje trae un cambio: arma las cadenas como siempre y al final las revisamos.", null, "Aprieta A o X");
             }
+            yield return Bucle(turno3);
+        }
 
+        // El resto del turno se guía con el estado de la mesa: sirve para cualquier turno y para seguir
+        // después de "Ver tutorial otra vez" (menú de pausa) sin reiniciar nada
+        IEnumerator Bucle(bool turno3)
+        {
             bool lejanoEnsenado = false;
             while (C.Fase == FaseCocina.Armando)
             {
                 RibosomaEstado quien = null;
                 foreach (var r in C.Ribosomas)
                     if (!r.listo && (C.PideAhora(r) != null || C.EnParo(r))) { quien = r; break; }
+
+                // Si se empezó en este turno sin pasar por el 1 (Repetir, menú), se presenta lo que falte
+                var pendiente = C.SalidaLlena || (quien == null && C.Salida.Count > 0) ? PresentacionReciclaje()
+                              : quien != null && !C.EnParo(quien) ? PresentacionPendiente(quien) : null;
+                if (pendiente != null) { yield return pendiente; continue; }
 
                 if (C.SalidaLlena || (quien == null && C.Salida.Count > 0))
                     GuiarReciclar(detallado: reciclados == 0, quien == null ? "Mientras los ribosomas avanzan" : "La bandeja está llena");
@@ -190,13 +218,123 @@ namespace BioVR.Minijuegos.Cocina
                     yield return Esperar("Busca el error",
                         $"Se dobló diferente. En el <b>holograma</b> cada esfera es un aminoácido y <b>una es distinta</b>. Apúntale con el rayo y aprieta el {Gatillo}. " +
                         "Si fallas dos veces, la correcta empieza a parpadear.", Holograma, () => C.Fase != FaseCocina.Busca, "Fase final");
-                    yield return Esperar("¡La encontraste! Ahora decide",
-                        "Es la mutación <b>S20G</b>: donde iba serina quedó glicina. Esta amilina forma fibras tóxicas (los depósitos rosas). " +
-                        $"Mándala a degradar: apunta al <b>PROTEASOMA</b> (el barril, a tu derecha) y aprieta el {Gatillo}.",
-                        Proteasoma, () => C.Fase != FaseCocina.Decide, "Fase final");
+                    if (C.Fase == FaseCocina.Decide)
+                        yield return Info("¡La encontraste! Ahora decide qué hacer",
+                            "Es la mutación <b>S20G</b>: donde iba serina quedó glicina. Esta amilina se dobla mal y forma fibras tóxicas (los depósitos rosas).\n" +
+                            "Tienes dos ayudantes de la célula:\n• <b>Chaperona BiP</b> (a tu izquierda): sujeta la proteína e intenta que se doble bien. No siempre lo logra.\n" +
+                            "• <b>Proteasoma</b> (el barril, a tu derecha): degrada la proteína que salió mal.",
+                            Chaperona, "Aprieta A o X");
+                    // Primero la chaperona (opcional); si ya se usó o se salta, el proteasoma
+                    while (C.Fase == FaseCocina.Decide && !C.Marcador.usoChaperona)
+                    {
+                        PonerPaso("Prueba con la chaperona",
+                            $"Apunta a la <b>chaperona BiP</b> (izquierda) y aprieta el {Gatillo}. Si prefieres no intentarlo, apunta directo al <b>PROTEASOMA</b> (derecha).",
+                            Chaperona, "Fase final · 1 de 2");
+                        yield return Tic;
+                    }
+                    if (C.Fase == FaseCocina.Decide)
+                    {
+                        // La BiP abre, sujeta y suelta (unos segundos); luego se dice qué pasó
+                        float hasta = Time.time + 3.5f;
+                        while (C.Fase == FaseCocina.Decide && Time.time < hasta)
+                        {
+                            PonerPaso("La chaperona lo intenta…", "Mira cómo la BiP sujeta la cadena en el holograma.", Holograma, "Fase final · 1 de 2");
+                            yield return Tic;
+                        }
+                        yield return Esperar("No se pudo arreglar: al proteasoma",
+                            "La BiP ayuda a doblar, pero <b>no puede cambiar la secuencia</b>: la glicina sigue ahí y la cadena se vuelve a doblar mal. " +
+                            $"Mándala a degradar: apunta al <b>PROTEASOMA</b> (el barril, a tu derecha) y aprieta el {Gatillo}.",
+                            Proteasoma, () => C.Fase != FaseCocina.Decide, "Fase final · 2 de 2");
+                    }
+                    if (C.Fase == FaseCocina.Final)
+                        yield return Esperar("El proteasoma la degrada",
+                            "La cadena mal doblada se corta en pedacitos; sus aminoácidos se reciclan en la célula.",
+                            Proteasoma, () => C.Fase != FaseCocina.Final, "Fase final");
                 }
             }
             yield return GuiarFinal();
+        }
+
+        // ======================= Presentaciones =======================
+        // Antes de pedir algo con un componente nuevo, se dice qué es y para qué sirve (prueba del 23-nov:
+        // "1. presentar el componente, 2. explicar qué hacer y que el jugador lo haga, 3. seguir").
+        // Una sola vez por partida; "Reiniciar tutorial" del menú las vuelve a mostrar.
+
+        static readonly HashSet<string> presentados = new HashSet<string>();
+        public static void OlvidarPresentaciones() => presentados.Clear();
+
+        // Qué es cada componente (las mismas ventanas para la primera vez y para "Ver tutorial otra vez")
+        static readonly string[] OrdenExplicaciones = { "corriente", "sintetasa", "manivela", "sitioA", "bandeja", "embudo" };
+
+        (string titulo, string cuerpo, Func<Transform> objetivo) Explicacion(string clave) => clave switch
+        {
+            "corriente" => ("La corriente de ARNt",
+                "A tu izquierda flotan <b>ARNt</b> (ARN de transferencia), uno tras otro: las moléculas que le llevan aminoácidos al ribosoma.\n" +
+                "Abajo tiene 3 piezas, el <b>anticodón</b>. Solo encaja con un codón: así el ribosoma sabe qué aminoácido sigue.",
+                () => { var c = FindFirstObjectByType<CorrienteARNt>(); return c != null ? (c.PuntoMedio != null ? c.PuntoMedio : c.transform) : null; }),
+            "sintetasa" => ("La sintetasa",
+                "Esta enzima le pone al ARNt su aminoácido. En la célula hay una sintetasa distinta para cada aminoácido; esta es la de <b>metionina</b>.\n" +
+                "Los ARNt de la corriente vienen vacíos: sin pasar por aquí no le sirven al ribosoma.", Sintetasa),
+            "manivela" => ("La manivela",
+                "Al girarla, la sintetasa une el aminoácido al ARNt (en la célula esto gasta energía, ATP). " +
+                "La <b>barra verde</b> muestra cuánto falta. La manivela es la pieza amarilla a un lado de la sintetasa: la flecha te la señala.", Manivela),
+            "sitioA" => ("El sitio A del ribosoma",
+                "El ARNt cargado entra al <b>sitio A</b>. Si su anticodón encaja con el codón, el ribosoma une el aminoácido a la cadena " +
+                "y el ARNm avanza un codón.\nLa tarjeta de abajo del ribosoma te muestra qué piezas encajan.", Ribosoma(false)),
+            "bandeja" => ("La bandeja de salida",
+                "El ARNt que ya dejó su aminoácido sale <b>vacío</b> a esta bandeja. Caben pocos: si se llena, el ribosoma se detiene.", UsadoEnBandeja),
+            _ => ("El regreso al citoplasma",
+                "El embudo naranja devuelve el ARNt a la corriente, para que la sintetasa lo cargue otra vez. En la célula los ARNt se reutilizan muchas veces.\n" +
+                "Agarra el ARNt usado, mueve el brazo hacia el embudo y suelta el GRIP a medio movimiento.", Embudo),
+        };
+
+        IEnumerator Presentar(string clave, string pie = "Aprieta A o X para continuar")
+        {
+            presentados.Add(clave);
+            var (t, c, o) = Explicacion(clave);
+            return Info(t, c, o, pie);
+        }
+
+        IEnumerator PresentacionPendiente(RibosomaEstado r)
+        {
+            int etapa = Etapa(r);
+            if (etapa == 0 && !presentados.Contains("corriente")) return Presentar("corriente");
+            if (etapa == 1 && !presentados.Contains("sintetasa")) return Presentar("sintetasa");
+            if (etapa == 2 && !presentados.Contains("manivela")) return Presentar("manivela");
+            if (etapa == 4 && !r.Lejano && !presentados.Contains("sitioA")) return Presentar("sitioA");
+            return null;
+        }
+
+        IEnumerator PresentacionReciclaje()
+        {
+            var enMano = EnLaMano();
+            if ((enMano == null || !enMano.Usado) && !presentados.Contains("bandeja")) return Presentar("bandeja");
+            if (enMano != null && enMano.Usado && !presentados.Contains("embudo")) return Presentar("embudo");
+            return null;
+        }
+
+        // ======================= Ver tutorial otra vez (menú de pausa) =======================
+        // Repasa todas las explicaciones, una ventana por componente, y luego sigue guiando desde donde va el
+        // turno, sin reiniciar nada (prueba del 23-nov).
+        public void VerTutorial()
+        {
+            if (C == null) return;
+            if (guion != null) StopCoroutine(guion);
+            esperandoEntendido = false; entendido = false;
+            BloquearInteraccion(false);
+            Limpiar();
+            guion = StartCoroutine(Repaso());
+        }
+
+        IEnumerator Repaso()
+        {
+            yield return Info("Repaso del tutorial",
+                "Te muestro otra vez cada parte de la Cocina. La flecha señala de qué hablo.\n" +
+                $"• {Grip}: agarrar y soltar.\n• {Gatillo} + rayo: tocar botones.\n• <b>A</b> o <b>X</b>: continuar.   • <b>B</b> o <b>Y</b>: acomodar la mesa.",
+                null, $"1 de {OrdenExplicaciones.Length + 1}");
+            for (int i = 0; i < OrdenExplicaciones.Length; i++)
+                yield return Presentar(OrdenExplicaciones[i], $"{i + 2} de {OrdenExplicaciones.Length + 1}");
+            yield return Bucle(C.NumeroTurno >= 2);
         }
 
         // ======================= Pasos =======================
@@ -242,7 +380,7 @@ namespace BioVR.Minijuegos.Cocina
                         ? $"\n<color=#E05050>Ese ARNt ({enMano.Anticodon}) no encaja. Suéltalo y agarra el que señala la flecha.</color>" : "";
                     PonerPaso("Agarra el ARNt que encaja",
                         detalle == 2
-                            ? $"El ribosoma pide <b>{codon}</b>. En la <b>corriente</b> (el tubo a tu izquierda) busca el ARNt con las piezas <b>{anticodon}</b> abajo: " +
+                            ? $"El ribosoma pide <b>{codon}</b>. En la <b>corriente</b> (los ARNt que flotan a tu izquierda) busca el ARNt con las piezas <b>{anticodon}</b> abajo: " +
                               $"A encaja con U, G con C. La flecha te lo señala. Acércale la mano y aprieta el {Grip}.{aviso}"
                             : detalle == 1
                                 ? $"Pide <b>{codon}</b>: en la corriente (izquierda) agarra con el GRIP el ARNt <b>{anticodon}</b> que señala la flecha.{aviso}"
@@ -310,7 +448,7 @@ namespace BioVR.Minijuegos.Cocina
 
         IEnumerator GuiarFin(RibosomaEstado r)
         {
-            while (!r.listo)
+            while (!r.listo && C.Fase == FaseCocina.Armando)
             {
                 PonerPaso("Toca FIN", TextoFin(r), () => BotonFinDe(r), "Fin de la cadena");
                 yield return Tic;
@@ -327,21 +465,17 @@ namespace BioVR.Minijuegos.Cocina
                 PonerPaso("Mira el holograma", "Tu cadena se está doblando en el <b>holograma</b>, a tu derecha.", Holograma, "");
                 yield return Tic;
             }
-            bool hay = C.HaySiguienteTurno;
-            while (true)
-            {
-                PonerPaso(hay ? "¡Turno completado!" : "¡Pedido completado!",
-                    hay ? $"Revisa tus puntos y estrellas. Para seguir, apunta al botón <b>SIGUIENTE</b> de la pantalla y aprieta el {Gatillo}."
-                        : $"Terminaste la Cocina. Apunta a <b>REPETIR</b> para jugar otra vez o a <b>MENÚ</b> para salir, y aprieta el {Gatillo}.",
-                    PantallaFinal, "");
-                yield return Tic; // termina cuando empieza otro turno (AlIniciarTurno detiene este guion)
-            }
+            // La pantalla de resultados ya dice qué hacer (SIGUIENTE TURNO): la ventana de la guía se quita para no
+            // taparla (prueba del 23-nov: "nunca apareció el botón siguiente")
+            Limpiar();
+            while (true) yield return Tic; // termina cuando empieza otro turno (AlIniciarTurno detiene este guion)
         }
 
         // Paso de información: pausa el juego y espera A / X o Entendido
         IEnumerator Info(string t, string c, Func<Transform> o, string pie)
         {
             C?.PonerPausa(true);
+            BloquearInteraccion(true);
             entendido = false; esperandoEntendido = true;
             titulo = t; cuerpo = c; objetivo = o; etiqueta = pie;
             Refrescar(true);
@@ -350,8 +484,31 @@ namespace BioVR.Minijuegos.Cocina
             esperandoEntendido = false;
             C?.Sonar("clic");
             C?.PonerPausa(false);
+            BloquearInteraccion(false);
             Limpiar();
         }
+
+        // Mientras una ventana de información espera "Entendido", no se puede agarrar ni tocar nada de la mesa
+        // (prueba del 23-nov: "bloquear toda interacción hasta que se dé aceptar"). Lo que el jugador ya tiene en
+        // la mano no se le quita. Los botones de las ventanas y del menú son UI: siguen funcionando.
+        readonly List<Behaviour> bloqueados = new List<Behaviour>();
+
+        void BloquearInteraccion(bool bloquear)
+        {
+            if (bloquear)
+            {
+                if (bloqueados.Count > 0) return;
+                foreach (var i in FindObjectsByType<UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable>(FindObjectsSortMode.None))
+                    if (i.enabled && !i.isSelected) { i.enabled = false; bloqueados.Add(i); }
+            }
+            else
+            {
+                foreach (var b in bloqueados) if (b != null) b.enabled = true;
+                bloqueados.Clear();
+            }
+        }
+
+        void OnDestroy() => BloquearInteraccion(false);
 
         // Paso de acción que espera una condición
         IEnumerator Esperar(string t, string c, Func<Transform> o, Func<bool> listo, string pie = "")
@@ -399,7 +556,7 @@ namespace BioVR.Minijuegos.Cocina
         void AlRechazar(string clave)
         {
             rechazo = C != null ? C.Texto(clave) : clave;
-            rechazoHasta = Time.unscaledTime + 4f;
+            rechazoHasta = Time.unscaledTime + 7f; // duraban muy poco (prueba del 23-nov)
             mostrado = null;
         }
 
@@ -460,7 +617,7 @@ namespace BioVR.Minijuegos.Cocina
             foreach (var t in FindObjectsByType<ARNtCocina>(FindObjectsSortMode.None))
                 if (t.CodonQueLee == codon && !t.Usado && t.Lugar == LugarARNt.Corriente) return t.transform;
             var corriente = FindFirstObjectByType<CorrienteARNt>();
-            return corriente != null ? corriente.transform : null;
+            return corriente != null ? (corriente.PuntoMedio != null ? corriente.PuntoMedio : corriente.transform) : null;
         }
 
         Transform UsadoEnBandeja()
@@ -492,6 +649,7 @@ namespace BioVR.Minijuegos.Cocina
         static Transform Embudo() { foreach (var r in RegresoCitoplasma.Todos) if (r != null) return r.Boca != null ? r.Boca : r.transform; return null; }
         static Transform Holograma() { var h = FindFirstObjectByType<HologramaCocina>(); return h != null ? h.transform : null; }
         static Transform Proteasoma() { var p = FindFirstObjectByType<Proteasoma26S>(); return p != null ? p.transform : null; }
+        static Transform Chaperona() { var b = FindFirstObjectByType<ChaperonaBiP>(); return b != null ? b.transform : null; }
         static Transform Horquilla() { var h = FindFirstObjectByType<HorquillaARNm>(); return h != null ? h.transform : null; }
         static Transform PantallaFinal() { var p = FindFirstObjectByType<PantallaFinal>(); return p != null ? p.transform : null; }
 

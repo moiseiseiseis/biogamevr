@@ -104,6 +104,9 @@ namespace BioVR.Minijuegos.Cocina
             }
         }
 
+        // Para la tarjeta del codón (TarjetaCodon): las mismas piezas que la cinta
+        public GameObject PiezaDe(char letra) => Pieza(letra);
+
         GameObject Pieza(char letra) => letra switch
         {
             'A' => baseA,
