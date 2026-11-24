@@ -142,6 +142,23 @@ namespace BioVR.Comun
 
         public static bool HayTutorial => instancia != null;
 
+        // Abre el tutorial en ese paso si el jugador todavía no llega a él o si ya lo había cerrado (p. ej. la misión
+        // del pilotaje al llegar a la célula, aunque haya saltado el tutorial del hangar). Si va justo en el paso
+        // anterior, no hace nada: ese paso termina solo y pasa a este.
+        public static void MostrarDesde(PasoTutorial paso)
+        {
+            if (instancia == null || paso == null) return;
+            int i = System.Array.IndexOf(instancia.pasos, paso);
+            if (i < 0) return;
+            if (!instancia.Terminado && instancia.indice >= i - 1) return;
+            instancia.enabled = true;
+            instancia.StopAllCoroutines();
+            instancia.completando = false;
+            instancia.Mostrar(i);
+            var s = instancia.panel.GetComponent<SeguirAlJugador>();
+            if (s != null) s.TraerAlFrente();
+        }
+
         void OnDestroy()
         {
             if (instancia == this) instancia = null;

@@ -37,7 +37,26 @@ namespace BioVR.Pilotaje.Editor
             var escena = EditorSceneManager.OpenScene(EscenaInicial, OpenSceneMode.Single);
             Directory.CreateDirectory(Path.GetDirectoryName(Escena));
             if (!EditorSceneManager.SaveScene(escena, Escena)) { Debug.LogError($"[Pilotaje] No se pudo guardar {Escena}."); return; }
+            if (!Montar(escena, prueba: true)) return;
+            Debug.Log($"[Pilotaje] Listo: {Escena}. Empieza en la llegada. Stick izquierdo: avanzar y de lado; stick derecho: " +
+                      "subir, bajar y girar; A: piloto automático. Misión: 4 organelos para el salto a 5 nm.");
+        }
 
+        // 24-nov: el pilotaje se aprobó en el visor ("funciona excelente") y entra al juego completo. En la escena
+        // inicial la misión empieza al llegar a la célula (estado Llegada) y el tutorial es uno solo: los pasos del
+        // hangar, "Llega a la célula" y los de la misión en vez de "Último salto". Si el jugador saltó el tutorial,
+        // se reabre en el aviso de mareo al llegar (TutorialMision). Correr de nuevo después de BioVR → Crear tutorial.
+        [MenuItem("BioVR/Pilotaje/Integrar al juego completo")]
+        public static void Integrar()
+        {
+            if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+            var escena = EditorSceneManager.OpenScene(EscenaInicial, OpenSceneMode.Single);
+            if (!Montar(escena, prueba: false)) return;
+            Debug.Log("[Pilotaje] Integrado a 00-EscenaInicial: pilotaje libre y misión en la llegada a la célula.");
+        }
+
+        static bool Montar(UnityEngine.SceneManagement.Scene escena, bool prueba)
+        {
             var raices = escena.GetRootGameObjects();
             var gm = raices.Select(r => r.GetComponentInChildren<GameManager>(true)).FirstOrDefault(g => g != null);
             var cabina = raices.FirstOrDefault(r => r.name == "Cabina (provisional)");
@@ -45,15 +64,18 @@ namespace BioVR.Pilotaje.Editor
             if (gm == null || cabina == null || llegada == null)
             {
                 Debug.LogError("[Pilotaje] Falta el GameManager, 'Cabina (provisional)' o 'Zonas/Llegada' en la escena.");
-                return;
+                return false;
             }
 
-            // Empieza en la llegada y sin tutorial (sus pasos son del hangar)
-            var gso = new SerializedObject(gm);
-            gso.FindProperty("estadoInicial").enumValueIndex = (int)GameState.Llegada;
-            gso.ApplyModifiedPropertiesWithoutUndo();
+            // La prueba empieza en la llegada y sin el tutorial del hangar (tiene el suyo de la misión)
             var tutorial = raices.FirstOrDefault(r => r.name == "Tutorial");
-            if (tutorial != null) tutorial.SetActive(false);
+            if (prueba)
+            {
+                var gso = new SerializedObject(gm);
+                gso.FindProperty("estadoInicial").enumValueIndex = (int)GameState.Llegada;
+                gso.ApplyModifiedPropertiesWithoutUndo();
+                if (tutorial != null) tutorial.SetActive(false);
+            }
 
             foreach (var viejo in raices.Where(r => r.name == "Pilotaje")) Object.DestroyImmediate(viejo);
             var viejaBrujula = cabina.transform.Find("Brujula");
@@ -99,15 +121,55 @@ namespace BioVR.Pilotaje.Editor
             mso.FindProperty("letrero").objectReferenceValue = letrero;
             mso.ApplyModifiedPropertiesWithoutUndo();
 
-            // Tutorial de la misión (el del hangar queda apagado)
             var pasos = PasosMision();
-            if (BioVR.Comun.Editor.CrearTutorial.ArmarEn(escena, "Tutorial de la mision", pasos, "Misión", grande: true) == null) return;
+            if (prueba)
+            {
+                // Tutorial de la misión aparte (el del hangar queda apagado)
+                if (BioVR.Comun.Editor.CrearTutorial.ArmarEn(escena, "Tutorial de la mision", pasos, "Misión", grande: true) == null) return false;
+            }
+            else
+            {
+                // Juego completo: un solo tutorial (hangar + llegar a la célula + misión), con letra grande
+                foreach (var t in raices.Where(r => r.name == "Tutorial de la mision")) Object.DestroyImmediate(t);
+                var hangar = AssetDatabase.FindAssets("t:PasoTutorial", new[] { CarpetaPasosHangar })
+                    .Select(AssetDatabase.GUIDToAssetPath)
+                    .Where(p => Path.GetDirectoryName(p).Replace('\\', '/') == CarpetaPasosHangar)
+                    .OrderBy(Path.GetFileName)
+                    .Where(p => Path.GetFileNameWithoutExtension(p) != "12-UltimoSalto") // lo reemplaza la misión
+                    .Select(AssetDatabase.LoadAssetAtPath<BioVR.Comun.PasoTutorial>);
+                var todos = hangar.Append(PasoLlegada()).Concat(pasos).ToArray();
+                var nuevo = BioVR.Comun.Editor.CrearTutorial.ArmarEn(escena, "Tutorial", todos, "Tutorial", grande: true);
+                if (nuevo == null) return false;
+                var tm = new SerializedObject(go.AddComponent<TutorialMision>());
+                tm.FindProperty("primerPaso").objectReferenceValue = pasos[0];
+                tm.ApplyModifiedPropertiesWithoutUndo();
+            }
 
             EditorSceneManager.MarkSceneDirty(escena);
             EditorSceneManager.SaveScene(escena);
             AssetDatabase.SaveAssets();
-            Debug.Log($"[Pilotaje] Listo: {Escena}. Empieza en la llegada. Stick izquierdo: avanzar y de lado; stick derecho: " +
-                      "subir, bajar y girar; A: piloto automático. Misión: 4 organelos para el salto a 5 nm.");
+            return true;
+        }
+
+        const string CarpetaPasosHangar = "Assets/_BioVR/Comun/Tutorial/Pasos";
+
+        // Paso entre "Entra a la célula" (salto 3, citoplasma) y la misión: un salto más detiene la nave en la célula
+        static BioVR.Comun.PasoTutorial PasoLlegada()
+        {
+            string carpeta = CarpetaPasos + "/Juego";
+            if (!AssetDatabase.IsValidFolder(carpeta)) AssetDatabase.CreateFolder(CarpetaPasos, "Juego");
+            string ruta = carpeta + "/LlegaALaCelula.asset";
+            var paso = AssetDatabase.LoadAssetAtPath<BioVR.Comun.PasoTutorial>(ruta);
+            bool nuevo = paso == null;
+            if (nuevo) paso = ScriptableObject.CreateInstance<BioVR.Comun.PasoTutorial>();
+            paso.titulo = "Llega a la célula";
+            paso.instruccion = "Toca <b>Salto Matrioska</b> o empuja la palanca una vez más: la nave se detiene dentro de la célula y empieza tu misión.";
+            paso.clave = "estado:Llegada";
+            paso.opcional = false;
+            paso.resaltar = new[] { "Boton Salto Matrioska", "Palanca" };
+            if (nuevo) AssetDatabase.CreateAsset(paso, ruta);
+            else EditorUtility.SetDirty(paso);
+            return paso;
         }
 
         // Flecha hecha de dos cubos (cuerpo y punta) que apunta al organelo más cercano sin registrar, y su texto
@@ -201,6 +263,7 @@ namespace BioVR.Pilotaje.Editor
             AssetDatabase.SaveAssets();
             return AssetDatabase.FindAssets("t:PasoTutorial", new[] { CarpetaPasos })
                 .Select(AssetDatabase.GUIDToAssetPath)
+                .Where(p => Path.GetDirectoryName(p).Replace('\\', '/') == CarpetaPasos) // sin la subcarpeta Juego
                 .OrderBy(Path.GetFileName)
                 .Select(AssetDatabase.LoadAssetAtPath<BioVR.Comun.PasoTutorial>)
                 .ToArray();
