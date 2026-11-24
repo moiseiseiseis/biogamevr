@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d6256b339824d919b4e3cb0fa825b8b, type: 3}
   m_Name: 03-Brujula
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Comun.PasoTutorial
-  titulo: "Sigue la br\xFAjula"
-  instruccion: "La flecha sobre la consola apunta al organelo m\xE1s cercano que
-    no has registrado. Presiona A y el piloto autom\xE1tico te lleva."
+  titulo: Sigue la flecha
+  instruccion: 'La <b><color=#FFD91A>flecha amarilla</color></b> sobre la consola
+    apunta a un organelo nuevo.
+
+    Aprieta <b><color=#40D94C>A</color></b> y la
+    nave te lleva sola.'
   clave: automatico
   opcional: 1
-  resaltar: []
+  resaltar:
+  - Brujula

@@ -13,8 +13,23 @@ MonoBehaviour:
   m_Name: 02-Pilotar
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Comun.PasoTutorial
   titulo: Pilota la nave
-  instruccion: "Stick izquierdo: avanza y mu\xE9vete de lado. Stick derecho: arriba
-    y abajo para subir y bajar; a los lados para girar."
+  instruccion: 'La nave va hacia el
+
+    <b><color=#5CF2FF>frente de la cabina</color></b>,
+
+    no
+    hacia donde miras.
+
+
+    <b><color=#5CF2FF>Joystick izquierdo</color></b>
+
+    avanza
+    y ve de lado
+
+    <b><color=#5CF2FF>Joystick derecho</color></b>
+
+    sube, baja
+    y gira'
   clave: pilotar
   opcional: 0
   resaltar: []

@@ -16,7 +16,7 @@ namespace BioVR.Pilotaje
     // la célula (la zona "Llegada") alrededor de ella.
     //
     //   Stick izquierdo   avanzar, retroceder y moverse de lado (en la dirección de la nave, no de la cabeza)
-    //   Stick derecho     arriba y abajo subir y bajar; a los lados, girar la nave de 30° en 30°
+    //   Stick derecho     arriba y abajo subir y bajar; a los lados, girar la nave de forma continua (45°/s)
     //   A (mando derecho) piloto automático: va al organelo más cercano que no se ha registrado
     //
     //   - Velocidad constante con arranque y frenado suaves; nunca se inclina ni rueda (el horizonte queda recto).
@@ -38,7 +38,6 @@ namespace BioVR.Pilotaje
         [SerializeField] float velocidad = 12f;         // m/s hacia adelante y a los lados
         [SerializeField] float velocidadVertical = 7f;  // m/s
         [SerializeField] float suavizado = 3f;          // qué tan rápido llega a la velocidad pedida (1/s)
-        [SerializeField] float giro = 30f;              // grados por toque del stick derecho
         [SerializeField] float zonaMuerta = 0.2f;
 
         [Header("Choques")]
@@ -81,7 +80,9 @@ namespace BioVR.Pilotaje
         Vector3 posicionInicial;
         Quaternion rotacionInicial;
         Vector3 velocidadActual;
-        bool giroListo = true, vinetaPuesta, enAutomatico;
+        bool vinetaPuesta, enAutomatico;
+        const float VelocidadGiro = 45f; // grados por segundo con el stick derecho a tope
+        float giroActual;                // grados por segundo en este momento (sube y baja suave)
         float recorrido; // metros pilotados: a los 10 m se avisa al tutorial ("pilotar")
         Bounds membranaLocal;
         bool hayMembrana;
@@ -143,7 +144,7 @@ namespace BioVR.Pilotaje
             Activo = activar;
             StopAllCoroutines();
             enAutomatico = false;
-            velocidadActual = Vector3.zero;
+            velocidadActual = Vector3.zero; giroActual = 0f;
             Vineta(false);
             if (caminar != null) caminar.enabled = !activar;
             if (girar != null) girar.enabled = !activar;
@@ -182,13 +183,11 @@ namespace BioVR.Pilotaje
             velocidadActual = Vector3.MoveTowards(velocidadActual, pedida, Mathf.Max(velocidad, velocidadVertical) * suavizado * Time.deltaTime);
             Rapidez = Mathf.Clamp01(velocidadActual.magnitude / velocidad);
 
-            // Giro por pasos con el stick derecho a los lados
-            if (Mathf.Abs(der.x) > 0.7f && giroListo)
-            {
-                Girar(Mathf.Sign(der.x) * giro);
-                giroListo = false;
-            }
-            else if (Mathf.Abs(der.x) < 0.3f) giroListo = true;
+            // Giro continuo con el stick derecho a los lados, igual que subir y bajar: sin saltos, con arranque y
+            // frenado suaves (prueba del 24-nov; antes giraba de 30° en 30°)
+            float giroPedido = (Mathf.Abs(der.x) > zonaMuerta ? der.x : 0f) * VelocidadGiro;
+            giroActual = Mathf.MoveTowards(giroActual, giroPedido, VelocidadGiro * suavizado * Time.deltaTime);
+            if (giroActual != 0f) Girar(giroActual * Time.deltaTime);
 
             var paso = Limitar(velocidadActual * Time.deltaTime);
             if (paso.sqrMagnitude > 0f)
@@ -246,7 +245,7 @@ namespace BioVR.Pilotaje
         IEnumerator IrA(Pokedex.Descubrible d)
         {
             enAutomatico = true;
-            velocidadActual = Vector3.zero;
+            velocidadActual = Vector3.zero; giroActual = 0f;
             BioVR.Comun.Tutorial.Notificar("automatico");
             Vineta(vinetaEnAutomatico);
 

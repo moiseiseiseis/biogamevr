@@ -39,6 +39,7 @@ namespace BioVR.Escala
             foreach (var r in GetComponentsInChildren<Renderer>(true))
             {
                 if (r.GetComponentInParent<XRBaseInteractable>(true) != null) continue; // botones y palanca no cambian
+                if (Conservar(r.transform)) continue; // la brújula del pilotaje (flecha, textos y leyenda) se ve siempre
                 if (SeOculta(r.name)) ocultos.Add(r);
                 else originales[r] = r.sharedMaterials;
             }
@@ -50,6 +51,15 @@ namespace BioVR.Escala
         void OnDestroy()
         {
             if (gm != null) gm.OnSaltoCambiado -= AlCambiarSalto;
+        }
+
+        // Prueba del 24-nov: la flecha de la brújula se volvía holograma (primero "azul como el holograma",
+        // luego invisible). Va en código y no en un campo serializado para que la escena no lo deje viejo.
+        static bool Conservar(Transform t)
+        {
+            for (var p = t; p != null; p = p.parent)
+                if (p.name == "Brujula") return true;
+            return false;
         }
 
         bool SeOculta(string nombre)

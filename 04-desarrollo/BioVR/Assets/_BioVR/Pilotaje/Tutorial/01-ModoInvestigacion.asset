@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d6256b339824d919b4e3cb0fa825b8b, type: 3}
   m_Name: 01-ModoInvestigacion
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Comun.PasoTutorial
-  titulo: "Modo investigaci\xF3n"
-  instruccion: "Antes de entrar al ribosoma, explora la c\xE9lula y registra 4 organelos
-    distintos en el pok\xE9dex. Con eso se desbloquea el salto a 5 nm."
+  titulo: "Explora la c\xE9lula"
+  instruccion: "Tu misi\xF3n: registra <b>4 organelos</b> distintos.\nAs\xED se abre
+    el salto al ribosoma.\n\nAprieta <b><color=#4080FF>X</color></b> para empezar."
   clave: 
   opcional: 0
   resaltar: []

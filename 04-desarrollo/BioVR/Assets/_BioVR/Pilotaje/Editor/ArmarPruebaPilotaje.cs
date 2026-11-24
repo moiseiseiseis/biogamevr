@@ -22,7 +22,12 @@ namespace BioVR.Pilotaje.Editor
         const string CarpetaMateriales = "Assets/_BioVR/Pilotaje/Materiales";
 
         // Brújula sobre la consola, entre los botones y la pantalla, y los ojos del piloto (en la cabina)
-        static readonly Vector3 PosicionBrujula = new Vector3(0f, 0.92f, 0.6f);
+        // Arriba de la consola, a la derecha de la palanca (prueba del 24-nov: al centro y abajo no se veía,
+        // la tapaba el tutorial). La palanca ocupa x 0.07–0.33 y su perilla llega a y 1.07.
+        static readonly Vector3 PosicionBrujula = new Vector3(0.4f, 1.27f, 0.66f);
+        static readonly Vector3 PosicionAviso = new Vector3(0f, 1.84f, 1.0f); // arriba al centro, por encima del tutorial
+        static readonly Color ColorFlecha = new Color(1f, 0.85f, 0.1f); // = #FFD91A
+        static readonly Vector3 PosicionLeyenda = new Vector3(-0.37f, 1.105f, 0.615f); // sobre la pantalla izquierda de la consola
         static readonly Vector3 OjosPiloto = new Vector3(0f, 1.4f, 0f);
 
         [MenuItem("BioVR/Pilotaje/Armar prueba de pilotaje")]
@@ -67,13 +72,36 @@ namespace BioVR.Pilotaje.Editor
             // Misión: 4 organelos para desbloquear el salto a 5 nm; su letrero va arriba de la brújula
             var letrero = Texto("Letrero de la mision", cabina.transform, PosicionBrujula + new Vector3(0f, 0.09f, 0f), 0.34f, new Vector2(0.6f, 0.12f));
             letrero.transform.SetParent(flecha.parent, true);
+
+            // Leyenda fija de cómo se pilota (pedido de Implementación, 24-nov): la nave va hacia el frente
+            // de la cabina, no hacia donde mira el jugador. Va sobre la pantalla amarilla de la izquierda,
+            // con letra oscura que llena la pantalla. Cuelga de la brújula para que se borre al re-armar.
+            // Texto corto para que la letra salga grande (los joysticks ya los explica el paso 2 del tutorial)
+            var leyenda = Texto("Leyenda de pilotaje", cabina.transform, PosicionLeyenda, 0.45f, new Vector2(0.2f, 0.14f));
+            leyenda.transform.SetParent(flecha.parent, true);
+            leyenda.color = new Color(0.08f, 0.08f, 0.1f);
+            leyenda.enableAutoSizing = true;
+            leyenda.fontSizeMin = 0.15f;
+            leyenda.fontSizeMax = 0.45f;
+            leyenda.fontStyle = FontStyles.Bold;
+            leyenda.text = "La nave avanza\nal <color=#0B3D91>FRENTE</color>,\nno a donde\nmiras";
+
+            // Aviso de mareo que reaparece cada tanto mientras se pilota (AvisoMareo), arriba de la consola
+            var aviso = Texto("Aviso de mareo", cabina.transform, PosicionAviso, 0.42f, new Vector2(1.2f, 0.2f));
+            aviso.transform.SetParent(flecha.parent, true);
+            aviso.color = new Color(1f, 0.69f, 0.13f);
+            aviso.fontStyle = FontStyles.Bold;
+            aviso.outlineWidth = 0.32f;
+            aviso.outlineColor = new Color32(0, 0, 0, 255);
+            aviso.text = $"AVISO: si te mareas, suelta los joysticks\ny mira la cabina. Con {A} la nave va sola.";
+            aviso.gameObject.AddComponent<AvisoMareo>();
             var mso = new SerializedObject(go.AddComponent<MisionOrganelos>());
             mso.FindProperty("letrero").objectReferenceValue = letrero;
             mso.ApplyModifiedPropertiesWithoutUndo();
 
             // Tutorial de la misión (el del hangar queda apagado)
             var pasos = PasosMision();
-            if (BioVR.Comun.Editor.CrearTutorial.ArmarEn(escena, "Tutorial de la mision", pasos, "Misión") == null) return;
+            if (BioVR.Comun.Editor.CrearTutorial.ArmarEn(escena, "Tutorial de la mision", pasos, "Misión", grande: true) == null) return;
 
             EditorSceneManager.MarkSceneDirty(escena);
             EditorSceneManager.SaveScene(escena);
@@ -94,10 +122,12 @@ namespace BioVR.Pilotaje.Editor
             flecha.SetParent(raiz, false);
             Cubo("Cuerpo", flecha, new Vector3(0f, 0f, -0.01f), new Vector3(0.012f, 0.012f, 0.07f), Quaternion.identity, mat);
             Cubo("Punta", flecha, new Vector3(0f, 0f, 0.03f), new Vector3(0.03f, 0.012f, 0.03f), Quaternion.Euler(0f, 45f, 0f), mat);
+            flecha.localScale = Vector3.one * 1.5f; // más grande para que se note desde el asiento
 
             var tmp = Texto("Texto", cabina, PosicionBrujula + new Vector3(0f, -0.06f, 0f), 0.3f, new Vector2(0.5f, 0.12f));
             tmp.transform.SetParent(raiz, true);
             tmp.text = "Sin registrar";
+            tmp.color = ColorFlecha;
             return (flecha, tmp);
         }
 
@@ -120,38 +150,53 @@ namespace BioVR.Pilotaje.Editor
 
         const string CarpetaPasos = "Assets/_BioVR/Pilotaje/Tutorial";
 
-        // archivo, título, instrucción, clave, opcional. Claves: "pilotar" y "automatico" (PilotajeLibre),
-        // "organelo" y "mision" (MisionOrganelos), "salto:4" (el salto a 5 nm, del GameManager)
-        static readonly (string, string, string, string, bool)[] Pasos =
+        // Botones con los colores de los mandos (EtiquetasMandos), igual que en la Cocina
+        static string Etq(string t, Color c) => BioVR.Comun.EtiquetasMandos.Colores.Etiqueta(t, c);
+        static string A => Etq("A", BioVR.Comun.EtiquetasMandos.Colores.A);
+        static string X => Etq("X", BioVR.Comun.EtiquetasMandos.Colores.X);
+        static string Gatillo => Etq("GATILLO", BioVR.Comun.EtiquetasMandos.Colores.Gatillo);
+        static string Cian(string t) => $"<b><color=#5CF2FF>{t}</color></b>";
+
+        // archivo, título, instrucción, clave, opcional, qué se resalta. Claves: "pilotar" y "automatico" (PilotajeLibre),
+        // "organelo" y "mision" (MisionOrganelos), "salto:4" (el salto a 5 nm, del GameManager).
+        // Prueba del 24-nov en la Cocina: textos cortos, una acción por paso y el botón con su color.
+        static (string, string, string, string, bool, string[])[] Pasos() => new[]
         {
-            ("01-ModoInvestigacion", "Modo investigación",
-             "Antes de entrar al ribosoma, explora la célula y registra 4 organelos distintos en el pokédex. Con eso se desbloquea el salto a 5 nm.", "", false),
+            ("00-AvisoMareo", "Antes de pilotar",
+             $"Mover la nave con los joysticks <b>puede marear</b>.\nJuega <b>sentado</b>.\n\nSi te sientes mal, <b>suelta los joysticks</b> y mira la cabina. Con {A} la nave va sola.\n\nAprieta {X} para seguir.", "", false, new string[0]),
+            ("01-ModoInvestigacion", "Explora la célula",
+             $"Tu misión: registra <b>4 organelos</b> distintos.\nAsí se abre el salto al ribosoma.\n\nAprieta {X} para empezar.", "", false, new string[0]),
             ("02-Pilotar", "Pilota la nave",
-             "Stick izquierdo: avanza y muévete de lado. Stick derecho: arriba y abajo para subir y bajar; a los lados para girar.", "pilotar", false),
-            ("03-Brujula", "Sigue la brújula",
-             "La flecha sobre la consola apunta al organelo más cercano que no has registrado. Presiona A y el piloto automático te lleva.", "automatico", true),
+             $"La nave va hacia el\n{Cian("frente de la cabina")},\nno hacia donde miras.\n\n{Cian("Joystick izquierdo")}\navanza y ve de lado\n{Cian("Joystick derecho")}\nsube, baja y gira", "pilotar", false, new string[0]),
+            ("03-Brujula", "Sigue la flecha",
+             $"La <b><color=#FFD91A>flecha amarilla</color></b> sobre la consola apunta a un organelo nuevo.\nAprieta {A} y la nave te lleva sola.", "automatico", true,
+             new[] { "Brujula" }),
             ("04-Registrar", "Registra un organelo",
-             "Apúntale con el mando y aprieta el gatillo. Su ficha aparece en el panel de la derecha.", "organelo", false),
+             $"Apúntale con el rayo y aprieta el {Gatillo}.", "organelo", false, new string[0]),
             ("05-Mision", "Completa la misión",
-             "Registra 4 organelos distintos. Tu avance se ve sobre la consola.", "mision", false),
+             "Registra 4 organelos distintos.\nTu avance está sobre la consola.", "mision", false, new[] { "Letrero de la mision" }),
             ("06-Salto", "¡Misión cumplida!",
-             "Toca Salto Matrioska o empuja la palanca: la nave se reduce a 5 nm y entra al ribosoma.", "salto:4", false),
+             "Toca <b>Salto Matrioska</b> o empuja la palanca para entrar al ribosoma.", "salto:4", false,
+             new[] { "Boton Salto Matrioska", "Palanca" }),
         };
 
         static BioVR.Comun.PasoTutorial[] PasosMision()
         {
             if (!AssetDatabase.IsValidFolder(CarpetaPasos)) AssetDatabase.CreateFolder("Assets/_BioVR/Pilotaje", "Tutorial");
-            foreach (var (archivo, titulo, instruccion, clave, opcional) in Pasos)
+            // Los textos salen de aquí: se reescriben cada vez que se arma la prueba
+            foreach (var (archivo, titulo, instruccion, clave, opcional, resaltar) in Pasos())
             {
                 var ruta = $"{CarpetaPasos}/{archivo}.asset";
-                if (AssetDatabase.LoadAssetAtPath<BioVR.Comun.PasoTutorial>(ruta) != null) continue; // respeta lo que se haya corregido
-                var paso = ScriptableObject.CreateInstance<BioVR.Comun.PasoTutorial>();
+                var paso = AssetDatabase.LoadAssetAtPath<BioVR.Comun.PasoTutorial>(ruta);
+                bool nuevo = paso == null;
+                if (nuevo) paso = ScriptableObject.CreateInstance<BioVR.Comun.PasoTutorial>();
                 paso.titulo = titulo;
                 paso.instruccion = instruccion;
                 paso.clave = clave;
                 paso.opcional = opcional;
-                if (clave == "salto:4") paso.resaltar = new[] { "Boton Salto Matrioska", "Palanca" };
-                AssetDatabase.CreateAsset(paso, ruta);
+                paso.resaltar = resaltar;
+                if (nuevo) AssetDatabase.CreateAsset(paso, ruta);
+                else EditorUtility.SetDirty(paso);
             }
             AssetDatabase.SaveAssets();
             return AssetDatabase.FindAssets("t:PasoTutorial", new[] { CarpetaPasos })
@@ -178,10 +223,12 @@ namespace BioVR.Pilotaje.Editor
             if (!AssetDatabase.IsValidFolder(CarpetaMateriales)) AssetDatabase.CreateFolder("Assets/_BioVR/Pilotaje", "Materiales");
             string ruta = CarpetaMateriales + "/Pilotaje_Flecha.mat";
             var m = AssetDatabase.LoadAssetAtPath<Material>(ruta);
-            if (m != null) return m;
-            m = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
-            m.SetColor("_BaseColor", new Color(0.3f, 0.95f, 1f));
-            AssetDatabase.CreateAsset(m, ruta);
+            bool nuevo = m == null;
+            if (nuevo) m = new Material(Shader.Find("Universal Render Pipeline/Unlit"));
+            // Amarilla (prueba del 24-nov): azul no se distinguía del holograma de la cabina
+            m.SetColor("_BaseColor", ColorFlecha);
+            if (nuevo) AssetDatabase.CreateAsset(m, ruta);
+            else EditorUtility.SetDirty(m);
             return m;
         }
     }

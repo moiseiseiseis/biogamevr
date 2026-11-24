@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: 04-Registrar
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Comun.PasoTutorial
   titulo: Registra un organelo
-  instruccion: "Ap\xFAntale con el mando y aprieta el gatillo. Su ficha aparece en
-    el panel de la derecha."
+  instruccion: "Ap\xFAntale con el rayo y aprieta el <b><color=#59D9FF>GATILLO</color></b>."
   clave: organelo
   opcional: 0
   resaltar: []

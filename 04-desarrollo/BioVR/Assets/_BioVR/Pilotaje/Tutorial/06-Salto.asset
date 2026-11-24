@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: 06-Salto
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Comun.PasoTutorial
   titulo: "\xA1Misi\xF3n cumplida!"
-  instruccion: 'Toca Salto Matrioska o empuja la palanca: la nave se reduce a 5 nm
-    y entra al ribosoma.'
+  instruccion: Toca <b>Salto Matrioska</b> o empuja la palanca para entrar al ribosoma.
   clave: salto:4
   opcional: 0
   resaltar:

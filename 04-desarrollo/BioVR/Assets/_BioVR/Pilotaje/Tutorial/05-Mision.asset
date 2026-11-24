@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: 05-Mision
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Comun.PasoTutorial
   titulo: "Completa la misi\xF3n"
-  instruccion: Registra 4 organelos distintos. Tu avance se ve sobre la consola.
+  instruccion: "Registra 4 organelos distintos.\nTu avance est\xE1 sobre la consola."
   clave: mision
   opcional: 0
-  resaltar: []
+  resaltar:
+  - Letrero de la mision

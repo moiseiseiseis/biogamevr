@@ -81,7 +81,8 @@ namespace BioVR.Comun.Editor
 
         // Arma en la escena un objeto "nombre" con el Tutorial, su panel (a la izquierda de la consola) y los pasos dados.
         // Lo usan este menú y otros (p. ej. la misión de la prueba de pilotaje). "rotulo" va arriba del panel.
-        public static Tutorial ArmarEn(UnityEngine.SceneManagement.Scene escena, string nombre, PasoTutorial[] pasos, string rotulo)
+        // "grande": letra grande y panel que crece con el texto (como la Cocina, prueba del 24-nov) y X = Siguiente.
+        public static Tutorial ArmarEn(UnityEngine.SceneManagement.Scene escena, string nombre, PasoTutorial[] pasos, string rotulo, bool grande = false)
         {
             var origen = Object.FindFirstObjectByType<XROrigin>();
             if (origen == null || origen.Camera == null) { Debug.LogError("[Tutorial] No hay XR Origin con cámara en la escena."); return null; }
@@ -92,18 +93,25 @@ namespace BioVR.Comun.Editor
             var raiz = new GameObject(nombre);
             var tutorial = raiz.AddComponent<Tutorial>();
 
-            var panel = UIVR.Panel("Panel", raiz.transform, new Vector2(460f, 440f), origen.Camera); // 0.46 × 0.44 m
+            var panel = UIVR.Panel("Panel", raiz.transform, grande ? new Vector2(620f, 440f) : new Vector2(460f, 440f), origen.Camera); // 0.46 × 0.44 m
             panel.transform.SetPositionAndRotation(PosicionPanel, Quaternion.LookRotation(PosicionPanel - OjosPiloto));
-            var progreso = UIVR.Texto(panel.transform, "Progreso", rotulo, 20f, FontStyles.Italic, 26f);
-            var titulo = UIVR.Texto(panel.transform, "Titulo", "Título", 38f, FontStyles.Bold, 50f);
-            var instruccion = UIVR.Texto(panel.transform, "Instruccion", "Instrucción", 26f, FontStyles.Normal, 150f);
-            var fila = UIVR.Fila("Botones", panel.transform, 70f);
+            var progreso = UIVR.Texto(panel.transform, "Progreso", rotulo, grande ? 24f : 20f, FontStyles.Italic, grande ? 30f : 26f);
+            var titulo = UIVR.Texto(panel.transform, "Titulo", "Título", grande ? 48f : 38f, FontStyles.Bold, grande ? 60f : 50f);
+            var instruccion = UIVR.Texto(panel.transform, "Instruccion", "Instrucción", grande ? 36f : 26f, FontStyles.Normal, 150f);
+            if (grande)
+            {
+                // El alto sale del texto: el panel crece o se encoge con cada paso, sin achicar la letra
+                instruccion.GetComponent<UnityEngine.UI.LayoutElement>().preferredHeight = -1f;
+                instruccion.textWrappingMode = TextWrappingModes.Normal;
+                panel.AddComponent<UnityEngine.UI.ContentSizeFitter>().verticalFit = UnityEngine.UI.ContentSizeFitter.FitMode.PreferredSize;
+            }
+            var fila = UIVR.Fila("Botones", panel.transform, grande ? 80f : 70f);
             var saltar = UIVR.Boton(fila, "Boton Saltar", "Saltar tutorial", UIVR.ColorSalir, tutorial.Terminar);
             var siguiente = UIVR.Boton(fila, "Boton Siguiente", "Siguiente", UIVR.ColorBoton, tutorial.Siguiente);
             foreach (var b in new[] { saltar, siguiente })
             {
                 b.GetComponent<UnityEngine.UI.LayoutElement>().flexibleWidth = 1f;
-                b.GetComponentInChildren<TextMeshProUGUI>().fontSize = 28f;
+                b.GetComponentInChildren<TextMeshProUGUI>().fontSize = grande ? 32f : 28f;
             }
             UIVR.CapaDeUI(panel);
 
@@ -118,6 +126,7 @@ namespace BioVR.Comun.Editor
             so.FindProperty("botonSiguiente").objectReferenceValue = siguiente;
             so.FindProperty("textoSiguiente").objectReferenceValue = siguiente.GetComponentInChildren<TextMeshProUGUI>();
             so.FindProperty("rotulo").stringValue = rotulo;
+            so.FindProperty("avanzarConX").boolValue = grande;
             so.ApplyModifiedPropertiesWithoutUndo();
             return tutorial;
         }
