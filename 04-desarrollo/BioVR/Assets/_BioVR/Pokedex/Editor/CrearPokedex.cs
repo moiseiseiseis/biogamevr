@@ -114,16 +114,29 @@ namespace BioVR.Pokedex.Editor
 
         // Torrente: modelo, ficha, cuántos, tamaño (lado mayor en m; el disco provisional del glóbulo medía 1.4 m)
         // y color si se tiñe. Tamaños en proporción a las fichas.
+        // 24-nov: el vaso es el torrente de Ulises a escala real (1 µm = 1 m, tronco de 30 m; PonerTorrente). Los
+        // tamaños de antes (glóbulo de 1.4 m en un tubo de 12 m) se multiplican para que el glóbulo mida 7.5 m como
+        // los de Ulises, con un tope para que los glóbulos blancos quepan entre la cabina y la pared.
+        const float EscalaTorrente = 7.5f / 1.4f, TamanoMaximo = 11f;
+        static float T(float antes) => Mathf.Min(antes * EscalaTorrente, TamanoMaximo);
         static readonly (string fbx, int ficha, int cuantos, float tamano, Color? tinte)[] Celulas =
         {
-            ("eritrocito.fbx", 1, 30, 1.4f, null),
-            ("plaquetas.fbx", 6, 6, 0.5f, null),
-            ("neutrofilo.fbx", 4, 2, 2.2f, null),
-            ("neutrofilo.fbx", 2, 1, 2.4f, new Color(1f, 0.55f, 0.35f)),   // eosinófilo: gránulos rojo anaranjado
-            ("neutrofilo.fbx", 3, 1, 2.0f, new Color(0.55f, 0.35f, 0.85f)), // basófilo: violeta
-            ("linfocito.fbx", 5, 1, 1.8f, null),
-            ("monocito.fbx", 7, 1, 2.8f, null),
+            ("eritrocito.fbx", 1, 45, T(1.4f), null),
+            ("plaquetas.fbx", 6, 10, T(0.5f), null),
+            ("neutrofilo.fbx", 4, 2, T(2.2f), null),
+            ("neutrofilo.fbx", 2, 1, T(2.4f), new Color(1f, 0.55f, 0.35f)),   // eosinófilo: gránulos rojo anaranjado
+            ("neutrofilo.fbx", 3, 1, T(2.0f), new Color(0.55f, 0.35f, 0.85f)), // basófilo: violeta
+            ("linfocito.fbx", 5, 1, T(1.8f), null),
+            ("monocito.fbx", 7, 1, T(2.8f), null),
         };
+
+        // Solo el torrente (lo usa PonerTorrente después de cambiar el vaso)
+        public static void SoloTorrente()
+        {
+            var fichas = CrearFichas();
+            Torrente(fichas, new HashSet<FichaPokedex>());
+            AssetDatabase.SaveAssets();
+        }
 
         static System.Random azar;
 
@@ -276,13 +289,14 @@ namespace BioVR.Pokedex.Editor
         {
             for (int i = 0; i < 200; i++)
             {
-                float ang = R(0, Mathf.PI * 2), r = R(1.2f, 5.2f - alcance);
-                var p = new Vector3(Mathf.Cos(ang) * r, 1 + Mathf.Sin(ang) * r, R(-8, 68));
+                // Hasta la pared del tronco de Ulises (radio 15 m) con medio metro de holgura
+                float ang = R(0, Mathf.PI * 2), r = R(1.2f, BioVR.Entornos.Editor.PonerTorrente.RadioVaso - 0.5f - alcance);
+                var p = new Vector3(Mathf.Cos(ang) * r, 1 + Mathf.Sin(ang) * r, R(BioVR.Entornos.Editor.PonerTorrente.FlujoZMin, BioVR.Entornos.Editor.PonerTorrente.FlujoZMax));
                 float m = alcance + 0.2f;
                 bool cruza = Mathf.Abs(p.x) < 2.1f + m && p.y > -0.1f - m && p.y < 2.7f + m;
                 if (!cruza) return p;
             }
-            return new Vector3(4f, 1f, R(-8, 68));
+            return new Vector3(2.4f + alcance, 1f, R(BioVR.Entornos.Editor.PonerTorrente.FlujoZMin, BioVR.Entornos.Editor.PonerTorrente.FlujoZMax)); // a un lado de la cabina, sin tocarla
         }
 
         static float R(float a, float b) => a + (float)azar.NextDouble() * (b - a);
