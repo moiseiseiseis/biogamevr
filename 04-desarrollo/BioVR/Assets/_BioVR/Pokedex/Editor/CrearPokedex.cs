@@ -86,7 +86,17 @@ namespace BioVR.Pokedex.Editor
             (16, "16-lisosoma", "Lisosoma", ZonaCelula, "vesículas con enzimas",
                 "Sus enzimas digieren desechos, organelos dañados y microbios.",
                 "Es el sistema de limpieza y defensa de la célula."),
+            // Capilar (prueba del 23-nov: "en los capilares ya no sale la pokédex": ahí no había nada registrable)
+            (17, "17-albumina", "Albúmina", ZonaCapilar, "unos 8 nm",
+                "La proteína más abundante del plasma: retiene agua dentro de los vasos y transporta hormonas, ácidos grasos y fármacos.",
+                "La fabrica el hígado."),
+            (18, "18-anticuerpo", "Anticuerpo", ZonaCapilar, "unos 10 nm, en forma de Y",
+                "Proteína de defensa que reconoce una molécula extraña (antígeno) y la marca para que el sistema inmune la elimine.",
+                "Lo fabrican los linfocitos B; cada uno reconoce un antígeno distinto."),
         };
+
+        const string ZonaCapilar = "Capilar";
+        const string PrefabCapilar = "Assets/_BioVR/Entornos/Capilar/Capilar.prefab";
 
         // Piezas del escenario low poly → ficha. Se marca la pieza más alta cuyo nombre coincide.
         // "Nucleo" es exacto para no tomar los nucleosomas.
@@ -104,16 +114,29 @@ namespace BioVR.Pokedex.Editor
 
         // Torrente: modelo, ficha, cuántos, tamaño (lado mayor en m; el disco provisional del glóbulo medía 1.4 m)
         // y color si se tiñe. Tamaños en proporción a las fichas.
+        // 24-nov: el vaso es el torrente de Ulises a escala real (1 µm = 1 m, tronco de 30 m; PonerTorrente). Los
+        // tamaños de antes (glóbulo de 1.4 m en un tubo de 12 m) se multiplican para que el glóbulo mida 7.5 m como
+        // los de Ulises, con un tope para que los glóbulos blancos quepan entre la cabina y la pared.
+        const float EscalaTorrente = 7.5f / 1.4f, TamanoMaximo = 11f;
+        static float T(float antes) => Mathf.Min(antes * EscalaTorrente, TamanoMaximo);
         static readonly (string fbx, int ficha, int cuantos, float tamano, Color? tinte)[] Celulas =
         {
-            ("eritrocito.fbx", 1, 30, 1.4f, null),
-            ("plaquetas.fbx", 6, 6, 0.5f, null),
-            ("neutrofilo.fbx", 4, 2, 2.2f, null),
-            ("neutrofilo.fbx", 2, 1, 2.4f, new Color(1f, 0.55f, 0.35f)),   // eosinófilo: gránulos rojo anaranjado
-            ("neutrofilo.fbx", 3, 1, 2.0f, new Color(0.55f, 0.35f, 0.85f)), // basófilo: violeta
-            ("linfocito.fbx", 5, 1, 1.8f, null),
-            ("monocito.fbx", 7, 1, 2.8f, null),
+            ("eritrocito.fbx", 1, 45, T(1.4f), null),
+            ("plaquetas.fbx", 6, 10, T(0.5f), null),
+            ("neutrofilo.fbx", 4, 2, T(2.2f), null),
+            ("neutrofilo.fbx", 2, 1, T(2.4f), new Color(1f, 0.55f, 0.35f)),   // eosinófilo: gránulos rojo anaranjado
+            ("neutrofilo.fbx", 3, 1, T(2.0f), new Color(0.55f, 0.35f, 0.85f)), // basófilo: violeta
+            ("linfocito.fbx", 5, 1, T(1.8f), null),
+            ("monocito.fbx", 7, 1, T(2.8f), null),
         };
+
+        // Solo el torrente (lo usa PonerTorrente después de cambiar el vaso)
+        public static void SoloTorrente()
+        {
+            var fichas = CrearFichas();
+            Torrente(fichas, new HashSet<FichaPokedex>());
+            AssetDatabase.SaveAssets();
+        }
 
         static System.Random azar;
 
@@ -124,6 +147,7 @@ namespace BioVR.Pokedex.Editor
             var fichas = CrearFichas();
             var usadas = new HashSet<FichaPokedex>();
             Torrente(fichas, usadas);
+            Capilar(fichas, usadas);
             Celula(fichas, usadas);
             Escena(fichas.Values.Where(usadas.Contains).OrderBy(f => f.numero).ToArray());
             AssetDatabase.SaveAssets();
@@ -265,16 +289,46 @@ namespace BioVR.Pokedex.Editor
         {
             for (int i = 0; i < 200; i++)
             {
-                float ang = R(0, Mathf.PI * 2), r = R(1.2f, 5.2f - alcance);
-                var p = new Vector3(Mathf.Cos(ang) * r, 1 + Mathf.Sin(ang) * r, R(-8, 68));
+                // Hasta la pared del tronco de Ulises (radio 15 m) con medio metro de holgura
+                float ang = R(0, Mathf.PI * 2), r = R(1.2f, BioVR.Entornos.Editor.PonerTorrente.RadioVaso - 0.5f - alcance);
+                var p = new Vector3(Mathf.Cos(ang) * r, 1 + Mathf.Sin(ang) * r, R(BioVR.Entornos.Editor.PonerTorrente.FlujoZMin, BioVR.Entornos.Editor.PonerTorrente.FlujoZMax));
                 float m = alcance + 0.2f;
                 bool cruza = Mathf.Abs(p.x) < 2.1f + m && p.y > -0.1f - m && p.y < 2.7f + m;
                 if (!cruza) return p;
             }
-            return new Vector3(4f, 1f, R(-8, 68));
+            return new Vector3(2.4f + alcance, 1f, R(BioVR.Entornos.Editor.PonerTorrente.FlujoZMin, BioVR.Entornos.Editor.PonerTorrente.FlujoZMax)); // a un lado de la cabina, sin tocarla
         }
 
         static float R(float a, float b) => a + (float)azar.NextDouble() * (b - a);
+
+        // ---------------- Capilar ----------------
+        // Las proteínas del plasma que flotan en Capilar.prefab (GenerarEntornos): "Proteina" = albúmina, "Anticuerpo".
+        static void Capilar(Dictionary<int, FichaPokedex> fichas, HashSet<FichaPokedex> usadas)
+        {
+            if (AssetDatabase.LoadAssetAtPath<GameObject>(PrefabCapilar) == null) { Debug.LogWarning($"[Pokedex] No está {PrefabCapilar}."); return; }
+            var raiz = PrefabUtility.LoadPrefabContents(PrefabCapilar);
+            int marcadas = 0;
+            foreach (var t in raiz.GetComponentsInChildren<Transform>(true))
+            {
+                int n = t.name == "Proteina" ? 17 : t.name == "Anticuerpo" ? 18 : 0;
+                if (n == 0) continue;
+                var d = t.GetComponent<Descubrible>();
+                if (d == null) d = t.gameObject.AddComponent<Descubrible>();
+                d.ficha = fichas[n];
+                usadas.Add(fichas[n]);
+                // El colisionador de la primitiva sirve para el rayo; como trigger no estorba. Se mueven con el flujo.
+                foreach (var c in t.GetComponents<Collider>()) c.isTrigger = true;
+                if (t.GetComponent<Collider>() == null) t.gameObject.AddComponent<SphereCollider>().isTrigger = true;
+                var rb = t.GetComponent<Rigidbody>();
+                if (rb == null) rb = t.gameObject.AddComponent<Rigidbody>();
+                rb.isKinematic = true;
+                rb.useGravity = false;
+                marcadas++;
+            }
+            PrefabUtility.SaveAsPrefabAsset(raiz, PrefabCapilar);
+            PrefabUtility.UnloadPrefabContents(raiz);
+            Debug.Log($"[Pokedex] Capilar: {marcadas} proteínas se pueden registrar.");
+        }
 
         // ---------------- Célula ----------------
 
@@ -330,7 +384,9 @@ namespace BioVR.Pokedex.Editor
 
         // ---------------- Escena ----------------
 
-        static readonly Vector3 PosicionPanel = new Vector3(0.75f, 1.45f, 0.85f);
+        // Más arriba y a la derecha que antes (0.75, 1.45, 0.85): ASTRA, sobre la consola, tapaba la parte de abajo
+        // del panel (prueba del 23-nov)
+        static readonly Vector3 PosicionPanel = new Vector3(0.85f, 1.62f, 0.8f);
         static readonly Vector3 OjosPiloto = new Vector3(0f, 1.4f, 0f);
 
         static void Escena(FichaPokedex[] fichas)

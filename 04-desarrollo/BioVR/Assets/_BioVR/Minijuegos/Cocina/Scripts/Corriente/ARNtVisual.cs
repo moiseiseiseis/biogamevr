@@ -54,6 +54,18 @@ namespace BioVR.Minijuegos.Cocina
             if (factorEEF1A != null) factorEEF1A.SetActive(false);
         }
 
+        [Header("Legibilidad (prueba del 23-nov)")]
+        [Tooltip("Los letreros del ARNt siempre de pie y de frente al jugador, aunque el ARNt esté acostado o girado")]
+        [SerializeField] bool letrerosDeFrente = true;
+        [SerializeField] float escalaLetreros = 1.4f;
+        [Tooltip("El aminoácido cargado flota, late y brilla (en el HTML es una bolita llamativa)")]
+        [SerializeField] float escalaAminoacido = 1.5f;
+        [SerializeField] float flotarAmplitud = 0.012f;
+
+        Transform camara;
+        Vector3 posAminoacido, escAminoacido, escAnticodon, escTextoAa, posAnticodon;
+        bool medidas;
+
         void Update()
         {
             if (datos == null) return;
@@ -64,12 +76,75 @@ namespace BioVR.Minijuegos.Cocina
             ActualizarAlerta();
         }
 
+        void LateUpdate()
+        {
+            if (datos == null) return;
+            if (!medidas)
+            {
+                medidas = true;
+                if (contenedorAminoacido != null) { posAminoacido = contenedorAminoacido.transform.localPosition; escAminoacido = contenedorAminoacido.transform.localScale; }
+                if (textoAnticodon != null) { escAnticodon = textoAnticodon.transform.localScale; posAnticodon = textoAnticodon.transform.localPosition; }
+                if (textoAminoacido != null) escTextoAa = textoAminoacido.transform.localScale;
+            }
+
+            // Aminoácido cargado: flota y late
+            if (contenedorAminoacido != null && contenedorAminoacido.activeSelf)
+            {
+                float t = Time.time;
+                var c = contenedorAminoacido.transform;
+                c.localPosition = posAminoacido + Vector3.up * (Mathf.Sin(t * 3f) * flotarAmplitud / Mathf.Max(0.01f, transform.lossyScale.y));
+                c.localScale = escAminoacido * escalaAminoacido * (1f + 0.08f * Mathf.Sin(t * 6f));
+            }
+
+            // En la bandeja de salida (usado) no se muestra el anticodón: ya no importa cuál es (prueba del 23-nov)
+            if (textoAnticodon != null)
+            {
+                bool ver = !datos.Usado;
+                if (textoAnticodon.gameObject.activeSelf != ver) textoAnticodon.gameObject.SetActive(ver);
+            }
+
+            if (!letrerosDeFrente) return;
+            if (camara == null) camara = Camera.main != null ? Camera.main.transform : null;
+            if (camara == null) return;
+            // Flotando, el anticodón va arriba del ARNt (no a media figura, donde chocaba con el del vecino)
+            if (textoAnticodon != null)
+            {
+                if (datos.Lugar == LugarARNt.Corriente)
+                    textoAnticodon.transform.position = transform.position + Vector3.up * alturaLetreroFlotando * transform.lossyScale.y;
+                else
+                    textoAnticodon.transform.localPosition = posAnticodon;
+            }
+            DeFrente(textoAnticodon, escAnticodon);
+            DeFrente(textoAminoacido, escTextoAa);
+        }
+
+        // TextMeshPro se lee de frente cuando su +Z se aleja del que lo mira; "arriba" siempre es el del mundo
+        void DeFrente(TextMeshPro texto, Vector3 escalaBase)
+        {
+            if (texto == null || !texto.gameObject.activeInHierarchy) return;
+            var t = texto.transform;
+            var hacia = t.position - camara.position;
+            hacia.y *= 0.5f; // inclinación suave: que no se acueste al mirar desde arriba
+            if (hacia.sqrMagnitude < 1e-6f) return;
+            t.rotation = Quaternion.LookRotation(hacia, Vector3.up);
+            t.localScale = escalaBase * escalaLetreros;
+        }
+
+        [Header("Escalas desde la prueba del 23-nov")]
+        [Tooltip("Mientras flota en la corriente o espera en la bandeja: más chico para que no se encimen")]
+        [SerializeField] float escalaFlotando = 0.7f;
+        [Tooltip("Letrero del anticodón arriba del ARNt mientras flota (m sobre su centro, a escala 1)")]
+        [SerializeField] float alturaLetreroFlotando = 0.13f;
+
         void ActualizarEscala()
         {
+            // En la mano y volando conserva el tamaño de antes (escalaCorriente); flotando y en la bandeja, más chico
             float objetivo = (datos.Lugar == LugarARNt.Sintetasa ||
                               datos.Lugar == LugarARNt.Ribosoma ||
                               datos.Lugar == LugarARNt.Llave)
-                              ? escalaEstacion : escalaCorriente;
+                              ? escalaEstacion
+                              : (datos.Lugar == LugarARNt.Corriente || datos.Lugar == LugarARNt.Salida) ? escalaFlotando
+                              : escalaCorriente;
 
             transform.localScale = Vector3.Lerp(transform.localScale, Vector3.one * objetivo, Time.deltaTime * velocidadEscala);
         }
@@ -123,7 +198,16 @@ namespace BioVR.Minijuegos.Cocina
 
             if (cargado)
             {
-                if (matAminoacido != null) matAminoacido.color = datos.Carga.color;
+                if (matAminoacido != null)
+                {
+                    matAminoacido.color = datos.Carga.color;
+                    // Que brille con su propio color (URP Lit); en el visor la esfera café se perdía
+                    if (matAminoacido.HasProperty("_EmissionColor"))
+                    {
+                        matAminoacido.EnableKeyword("_EMISSION");
+                        matAminoacido.SetColor("_EmissionColor", datos.Carga.color * 1.6f);
+                    }
+                }
                 if (textoAminoacido != null) textoAminoacido.text = datos.Carga.abreviatura;
             }
 

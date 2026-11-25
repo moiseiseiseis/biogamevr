@@ -148,7 +148,8 @@ namespace BioVR.Entornos.Editor
             // Fuera de la cabina (en la raíz), para que el modo holograma de la cabina no le cambie el material
             var raiz = new GameObject("ASTRA");
             var b = consola != null ? Limites(consola.gameObject) : new Bounds(new Vector3(0f, 0.9f, 0.7f), Vector3.one * 0.6f);
-            raiz.transform.position = new Vector3(b.max.x - 0.12f, b.max.y + 0.14f, b.center.z);
+            // Abajo a la derecha del piloto, para no estorbar al tutorial ni al pokédex (prueba del 24-nov)
+            raiz.transform.position = new Vector3(b.max.x + 0.08f, b.max.y - 0.01f, b.center.z);
             var astra = (GameObject)PrefabUtility.InstantiatePrefab(fbx, raiz.transform);
             astra.transform.localPosition = Vector3.zero;
             astra.transform.localRotation = Quaternion.Euler(0f, 180f, 0f); // la lente hacia el piloto

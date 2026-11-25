@@ -6,6 +6,8 @@ namespace BioVR.Minijuegos.Cocina
 {
     // M10 · La BiP y el proteasoma solo aparecen después de encontrar la cuenta 20 (fases Decide, Final y Fin:
     // en Fin para que el proteasoma termine de deshacer la cadena aunque M1 ya haya llamado a Terminar).
+    // Fin es el final de TODOS los turnos: solo cuenta si este turno pasó por la fase B (antes salían al
+    // terminar el turno 1 y el jugador no sabía qué hacer con ellos; prueba de Marcos del 21-nov).
     // El objeto raíz se queda encendido para escuchar los eventos; se prende y apaga "visual" y se
     // habilita el toque (Senalable) solo mientras se ve.
     public class MostrarEnFaseB : MonoBehaviour
@@ -14,6 +16,7 @@ namespace BioVR.Minijuegos.Cocina
         [SerializeField] FaseCocina[] fases = { FaseCocina.Decide, FaseCocina.Final, FaseCocina.Fin };
 
         Senalable senalable;
+        bool huboFaseB; // este turno llegó a Decide (encontró la cuenta 20)
 
         void Awake() => senalable = GetComponent<Senalable>();
 
@@ -36,11 +39,16 @@ namespace BioVR.Minijuegos.Cocina
             Aplicar(control != null && control.NumeroTurno >= 0 ? control.Fase : FaseCocina.Armando);
         }
 
-        void AlIniciarTurno(TurnoData _) => Aplicar(FaseCocina.Armando);
+        void AlIniciarTurno(TurnoData _)
+        {
+            huboFaseB = false;
+            Aplicar(FaseCocina.Armando);
+        }
 
         void Aplicar(FaseCocina fase)
         {
-            bool ver = Array.IndexOf(fases, fase) >= 0;
+            if (fase == FaseCocina.Decide || fase == FaseCocina.Final) huboFaseB = true;
+            bool ver = Array.IndexOf(fases, fase) >= 0 && (fase != FaseCocina.Fin || huboFaseB);
             if (visual != null) visual.SetActive(ver);
             if (senalable != null) senalable.Habilitado = ver;
         }

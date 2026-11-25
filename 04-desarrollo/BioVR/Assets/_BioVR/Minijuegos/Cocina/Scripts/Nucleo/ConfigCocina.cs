@@ -28,7 +28,7 @@ namespace BioVR.Minijuegos.Cocina
         [Tooltip("Máximo de ARNt mientras hay codón raro")]
         public int maxEnCorrienteRaro = 9;
         [Tooltip("Vueltas por segundo del recorrido de la corriente")]
-        public float velocidadCorriente = 0.055f;
+        public float velocidadCorriente = 0.08f; // 24-nov: antes 0.055 (iba lenta); 0.08 ≈ 9 cm/s, 12.5 s por vuelta
         [Tooltip("Segundos sin avanzar antes de que brillen los ARNt que sirven")]
         public float esperaPista = 9f;
         [Tooltip("Cuántos codones manuales por ribosoma se adelantan en la corriente")]

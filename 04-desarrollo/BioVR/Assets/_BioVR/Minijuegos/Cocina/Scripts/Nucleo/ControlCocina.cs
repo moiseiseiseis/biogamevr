@@ -296,7 +296,8 @@ namespace BioVR.Minijuegos.Cocina
         }
 
         // Un señuelo para la corriente: un codón preferido que difiere en 2+ bases del que se pide.
-        public string Senuelo()
+        // "evitar": codones que ya van en la corriente; si queda alguna opción sin ellos, no se repiten (prueba del 24-nov).
+        public string Senuelo(ICollection<string> evitar = null)
         {
             var nec = Necesarios();
             string referencia = nec.Count > 0 ? nec[0].tripleta : "AUG";
@@ -304,6 +305,11 @@ namespace BioVR.Minijuegos.Cocina
             foreach (var e in codigo.aminoacidos)
                 if (!string.IsNullOrEmpty(e.preferido) && Codon.Diferencias(e.preferido, referencia) >= config.diferenciaSenuelo)
                     opciones.Add(e.preferido);
+            if (evitar != null && evitar.Count > 0)
+            {
+                var nuevas = opciones.FindAll(o => !evitar.Contains(o));
+                if (nuevas.Count > 0) opciones = nuevas;
+            }
             return opciones.Count > 0 ? opciones[azar.Next(opciones.Count)] : referencia;
         }
 
@@ -526,6 +532,20 @@ namespace BioVR.Minijuegos.Cocina
             salida.Remove(t);
             t.PonerLugar(LugarARNt.Corriente);
             Sonar("cae");
+        }
+
+        // Un ARNt usado que el jugador soltó donde no era (sobre el holograma, en el aire) regresa a la bandeja,
+        // no a la corriente: antes "desaparecía" (volvía al tubo marcado como usado y la guía ya no lo tomaba en
+        // cuenta). Prueba del 23-nov.
+        public void RegresarASalida(ARNtCocina t)
+        {
+            if (t == null) return;
+            if (Fase != FaseCocina.Armando) { DevolverACorriente(t); return; }
+            if (ARNtEnLlave == t) ARNtEnLlave = null;
+            t.PonerLugar(LugarARNt.Salida);
+            if (!salida.Contains(t)) salida.Add(t);
+            Sonar("cae");
+            EventosCocina.ARNtASalida(t);
         }
 
         // Llegó al regreso al citoplasma (HTML: colocar con 'recicla'). Si era usado, da puntos.

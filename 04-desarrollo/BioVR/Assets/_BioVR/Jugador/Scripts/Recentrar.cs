@@ -33,10 +33,19 @@ namespace BioVR.Jugador
 
         GameManager gm;
 
-        void Start()
+        System.Collections.IEnumerator Start()
         {
             gm = GameManager.Instance;
             if (gm != null) gm.OnEstadoCambiado += AlCambiarEstado;
+
+            // Al abrir, sentarlo en el asiento mirando al frente: el visor arranca mirando hacia donde quedó el
+            // límite del Quest (en la prueba del 21-nov, hacia la puerta del hangar). Donde hay una estación que
+            // se ancla a la cabeza (la Cocina), de eso se encarga AnclarAlJugador.
+            if (FindFirstObjectByType<AnclarAlJugador>() != null || xrOrigin == null) yield break;
+            float limite = Time.time + 2f;
+            while (xrOrigin.CameraInOriginSpaceHeight < 0.2f && Time.time < limite) yield return null; // el visor tarda en reportar la cabeza
+            yield return null;
+            Centrar();
         }
 
         void OnDestroy()

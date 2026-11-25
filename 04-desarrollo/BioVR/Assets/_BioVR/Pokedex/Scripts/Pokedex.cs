@@ -45,6 +45,7 @@ namespace BioVR.Pokedex
 
         public int Total => fichas.Length;
         public int Registradas => registro.Count;
+        public bool EstaRegistrada(FichaPokedex f) => f != null && registro.Contains(f);
 
         class Mano
         {
@@ -156,6 +157,7 @@ namespace BioVR.Pokedex
             Mostrar(ficha);
             Debug.Log($"[Pokedex] {(nueva ? "Registrada" : "Ya estaba")}: {ficha.numero} {ficha.nombre} ({registro.Count} de {Total}).");
             OnRegistrada?.Invoke(ficha, nueva);
+            BioVR.Comun.Tutorial.Notificar("pokedex"); // completa el paso del tutorial que enseña el pokédex
         }
 
         void Mostrar(FichaPokedex f)

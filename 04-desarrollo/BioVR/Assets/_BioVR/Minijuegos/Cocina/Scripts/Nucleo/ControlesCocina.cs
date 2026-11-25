@@ -7,9 +7,12 @@ namespace BioVR.Minijuegos.Cocina
     {
         // ---- Aventar (M2, M4, M5) ----
         // Soltar el grip con la mano a más de esta velocidad lanza el ARNt al destino que apunta.
-        public const float VelocidadLanzar = 1.2f;          // m/s
+        // Prueba del 23-nov: con 1.2 m/s y 25° casi nunca salía; se bajó la velocidad y se abrió el ángulo.
+        public const float VelocidadLanzar = 0.8f;          // m/s
         // Ángulo máximo entre la dirección del lanzamiento y el destino para que "le atine".
-        public const float AnguloAtinar = 25f;               // grados
+        public const float AnguloAtinar = 35f;               // grados
+        // Un ARNt usado solo tiene un destino (el embudo del regreso al citoplasma): más margen.
+        public const float AnguloAtinarUsado = 60f;          // grados
 
         // ---- Soltar en una estación (sockets) ----
         // Distancia a la que una estación (sintetasa, ribosoma de mesa, salida) acepta el ARNt.

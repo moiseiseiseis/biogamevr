@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d6256b339824d919b4e3cb0fa825b8b, type: 3}
+  m_Name: 12-UltimoSalto
+  m_EditorClassIdentifier: Assembly-CSharp::BioVR.Comun.PasoTutorial
+  titulo: "\xdaltimo salto: al ribosoma"
+  instruccion: "Ya est\xe1s dentro de la c\xe9lula. Toca <b>Salto Matrioska</b> una vez m\xe1s: la nave se reduce a 5 nm y entras a la <b>Cocina de prote\xednas</b>, el minijuego."
+  clave: salto:4
+  opcional: 0
+  resaltar:
+  - Boton Salto Matrioska
+  - Palanca

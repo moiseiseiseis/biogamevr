@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d6256b339824d919b4e3cb0fa825b8b, type: 3}
   m_Name: 11-Listo
   m_EditorClassIdentifier: Assembly-CSharp::BioVR.Comun.PasoTutorial
-  titulo: "\xA1Listo!"
-  instruccion: "Sigue saltando hasta llegar a la c\xE9lula. Ah\xED, un \xFAltimo Salto Matrioska
-    reduce la nave a 5 nm y te lleva al ribosoma."
-  clave: 
+  titulo: "Entra a la c\xe9lula"
+  instruccion: "Sigue con Salto Matrioska (bot\xf3n o palanca): pasas por un capilar y luego entras a la c\xe9lula."
+  clave: salto:3
   opcional: 0
+  resaltar:
+  - Boton Salto Matrioska
+  - Palanca

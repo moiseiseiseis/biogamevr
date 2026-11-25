@@ -12,12 +12,32 @@ namespace BioVR.Minijuegos.Cocina
         [SerializeField] GameObject prefabARNt;
         [SerializeField] GameObject visualTubo;
 
-        [Header("Geometría del tubo (Especificación 1.2 y 3.3)")]
-        [SerializeField] float anguloInicio = 66f;
-        [SerializeField] float anguloFin = 14f;
-        [SerializeField] float radioTubo = 0.72f;
-        [SerializeField] float alturaBase = 1.06f;
-        [SerializeField] float amplitudOnda = 0.035f;
+        // Prueba del 23-nov: en el tubo de la especificación (66° → 14°, 0.72 m, 1.06 m de alto; unos 65 cm) los ARNt
+        // se encimaban y pasaban sobre la sintetasa y junto al ribosoma. Ahora flotan en el aire por un camino más
+        // largo (unos 1.12 m), corrido a la izquierda y por encima del letrero de la sintetasa; termina antes del
+        // frente. Un hilo delgado marca el camino (TuboCorrienteVisual).
+        [Header("Camino de la corriente (en el aire)")]
+        [SerializeField] float anguloInicio = 115f;
+        [SerializeField] float anguloFin = 35f;
+        [SerializeField] float radioTubo = 0.80f;
+        [SerializeField] float alturaBase = 1.15f;
+        [SerializeField] float amplitudOnda = 0.02f;
+
+        // Punto a la mitad del camino: a dónde señala la flecha del tutorial cuando habla de la corriente
+        public Transform PuntoMedio { get; private set; }
+
+        void Awake()
+        {
+            PuntoMedio = new GameObject("Mitad de la corriente").transform;
+            PuntoMedio.SetParent(transform, false);
+        }
+
+        void Start()
+        {
+            if (anclaCocina != null) PuntoMedio.position = anclaCocina.TransformPoint(PosicionMesa.En((anguloInicio + anguloFin) * 0.5f, radioTubo, alturaBase));
+            var tubo = visualTubo != null ? visualTubo.GetComponent<TuboCorrienteVisual>() : null;
+            if (tubo != null) tubo.Configurar(anguloInicio, anguloFin, radioTubo, alturaBase);
+        }
 
         const int TOPE_ESCENA = 9;
 
@@ -28,6 +48,7 @@ namespace BioVR.Minijuegos.Cocina
             public XRGrabInteractable grab;
             public float u;
             public float fase;
+            public bool dioVuelta; // llegó al final del camino en este cuadro: se forma al final de la fila
         }
 
         readonly List<ItemARNt> activos = new List<ItemARNt>();
@@ -61,8 +82,14 @@ namespace BioVR.Minijuegos.Cocina
             for (int i = 0; i < iniciales; i++)
             {
                 string codon = (i < necesarios.Count) ? necesarios[i].tripleta : control.Senuelo();
-                float uInicial = (float)i / iniciales;
+                // Separados desde el principio (los que no caben esperan antes del inicio del tubo)
+                float uInicial = 1f - separacionMinima * 0.5f - i * separacionMinima;
                 CrearARNt(codon, uInicial);
+            }
+            foreach (var item in activos)
+            {
+                bool cabe = item.u >= 0f;
+                if (item.datos != null) item.datos.gameObject.SetActive(cabe);
             }
             relojRelleno = control.Config.intervaloRelleno;
         }
@@ -96,6 +123,33 @@ namespace BioVR.Minijuegos.Cocina
             var necesarios = control.Necesarios();
             bool mostrarPista = control.SegundosEspera > control.Config.esperaPista;
 
+            // Avanzar los que van en el camino y separarlos (prueba del 23-nov: se encimaban la forma y el texto)
+            enTubo.Clear();
+            int enCorriente = 0;
+            foreach (var item in activos)
+                if (item.datos != null && item.datos.Lugar == LugarARNt.Corriente) enCorriente++;
+            foreach (var item in activos)
+                if (item.datos != null && item.datos.Lugar == LugarARNt.Corriente)
+                {
+                    item.u += vel * dt;
+                    if (item.u > 1f)
+                    {
+                        // Prueba del 24-nov: los señuelos daban vueltas para siempre y los que pedían los ribosomas
+                        // se quedaban escondidos en la fila. Un señuelo que llega al final cuando sobran ARNt se retira.
+                        if (enCorriente > control.MaximoEnCorriente && !Sirve(item, necesarios) && !item.datos.Cargado)
+                        {
+                            Destroy(item.datos.gameObject);
+                            item.datos = null;
+                            enCorriente--;
+                            continue;
+                        }
+                        item.dioVuelta = true;
+                    }
+                    enTubo.Add(item);
+                }
+            activos.RemoveAll(x => x.datos == null);
+            Separar(necesarios);
+
             // Mover y actualizar visuales de los ARNt
             for (int i = 0; i < activos.Count; i++)
             {
@@ -104,8 +158,10 @@ namespace BioVR.Minijuegos.Cocina
 
                 if (item.datos.Lugar == LugarARNt.Corriente)
                 {
-                    item.u += vel * dt;
-                    if (item.u > 1f) item.u -= 1f;
+                    // El que no cabe todavía espera escondido antes del inicio del tubo
+                    bool cabe = item.u >= 0f;
+                    if (item.datos.gameObject.activeSelf != cabe) item.datos.gameObject.SetActive(cabe);
+                    if (!cabe) continue;
                     PosicionarEnCorriente(item);
 
                     bool sirve = !item.datos.Cargado && necesarios.Exists(c => c.tripleta == item.datos.CodonQueLee);
@@ -131,6 +187,52 @@ namespace BioVR.Minijuegos.Cocina
             }
         }
 
+        [Header("Separación entre ARNt (fracción del camino: 0.2 ≈ 22 cm; caben 5)")]
+        [SerializeField] float separacionMinima = 0.2f;
+        readonly List<ItemARNt> enTubo = new List<ItemARNt>();
+        readonly List<ItemARNt> visibles = new List<ItemARNt>();
+        readonly List<ItemARNt> fila = new List<ItemARNt>();
+
+        static bool Sirve(ItemARNt item, List<Codon> necesarios) =>
+            item.datos != null && necesarios.Exists(c => c.tripleta == item.datos.CodonQueLee);
+
+        // Cada uno queda al menos "separacionMinima" detrás del de adelante. Caben 5 a la vez en el camino (también
+        // en el codón raro: decisión del 23-nov); los demás esperan escondidos antes del inicio (u < 0), en una fila.
+        // Prueba del 24-nov: el que llegaba al final daba la vuelta y se metía DELANTE de la fila, así que los de la
+        // fila nunca entraban ("desaparecieron" CAA y UUG). Ahora la fila va primero, con prioridad para los ARNt
+        // que pide algún ribosoma, y el que da la vuelta se forma al final.
+        void Separar(List<Codon> necesarios)
+        {
+            visibles.Clear();
+            fila.Clear();
+            foreach (var item in enTubo)
+                if (item.u >= 0f && !item.dioVuelta) visibles.Add(item); else fila.Add(item);
+
+            visibles.Sort((a, b) => b.u.CompareTo(a.u));
+            fila.Sort((a, b) =>
+            {
+                int sa = Sirve(a, necesarios) ? 0 : 1, sb = Sirve(b, necesarios) ? 0 : 1;
+                if (sa != sb) return sa.CompareTo(sb);
+                // Dentro de cada grupo, por orden de llegada; los que acaban de dar la vuelta, al último
+                float ka = a.dioVuelta ? -1000f : a.u, kb = b.dioVuelta ? -1000f : b.u;
+                return kb.CompareTo(ka);
+            });
+
+            float tope = float.MaxValue;
+            foreach (var v in visibles)
+            {
+                if (v.u > tope) v.u = tope;
+                tope = v.u - separacionMinima;
+            }
+            // La fila va pegada detrás del último visible: el primero entra en cuanto hay lugar
+            foreach (var q in fila)
+            {
+                q.dioVuelta = false;
+                q.u = Mathf.Min(tope, 0f);
+                tope = q.u - separacionMinima;
+            }
+        }
+
         void PosicionarEnCorriente(ItemARNt item)
         {
             float angulo = Mathf.Lerp(anguloInicio, anguloFin, item.u);
@@ -144,9 +246,11 @@ namespace BioVR.Minijuegos.Cocina
                 dirJugador.y = 0f;
                 if (dirJugador.sqrMagnitude > 0.001f)
                 {
-                    float mecidoY = 0.4f * Mathf.Rad2Deg * Mathf.Sin(Time.time * 1.8f + item.fase);
+                    // El brazo del aminoácido (local −Z) apunta hacia atrás y arriba, no de lado hacia el vecino;
+                    // el anticodón queda abajo, de frente al jugador. Se mece poco (±9°) para no invadir al vecino.
+                    float mecidoY = 0.15f * Mathf.Rad2Deg * Mathf.Sin(Time.time * 1.8f + item.fase);
                     Quaternion baseRot = Quaternion.LookRotation(dirJugador, Vector3.up);
-                    tr.rotation = baseRot * Quaternion.Euler(-0.3f * Mathf.Rad2Deg, mecidoY, 0f);
+                    tr.rotation = baseRot * Quaternion.Euler(35f, mecidoY, 0f);
                 }
             }
         }
@@ -154,7 +258,6 @@ namespace BioVR.Minijuegos.Cocina
         void RevisarReposicion(ControlCocina control, List<Codon> necesarios)
         {
             activos.RemoveAll(x => x.datos == null);
-            if (activos.Count >= TOPE_ESCENA) return;
 
             // 1. Verificar si falta algún codón necesario (contando todos los ARNt en juego excepto los de Salida)
             foreach (var nec in necesarios)
@@ -164,17 +267,40 @@ namespace BioVR.Minijuegos.Cocina
 
                 if (enJuego < requeridos)
                 {
+                    // Prueba del 24-nov: con la escena llena (señuelos + bandeja + sintetasa) ya no se creaba el que
+                    // faltaba. Lo que pide un ribosoma va primero: se retira un señuelo de la corriente.
+                    if (activos.Count >= TOPE_ESCENA && !RetirarUnSenuelo(necesarios)) return;
                     CrearARNt(nec.tripleta, 0f);
                     return;
                 }
             }
 
-            // 2. Si no falta ninguno, rellenar señuelos hasta el máximo permitido (5 normal, 9 en codón raro)
+            if (activos.Count >= TOPE_ESCENA) return;
+
+            // 2. Si no falta ninguno, rellenar señuelos hasta el máximo permitido (5 normal, 9 en codón raro).
+            // El señuelo evita repetir codones que ya van en la corriente.
             int enCorriente = activos.FindAll(a => a.datos.Lugar == LugarARNt.Corriente).Count;
             if (enCorriente < control.MaximoEnCorriente)
             {
-                CrearARNt(control.Senuelo(), 0f);
+                var yaEstan = new HashSet<string>();
+                foreach (var a in activos) if (a.datos.Lugar == LugarARNt.Corriente) yaEstan.Add(a.datos.CodonQueLee);
+                CrearARNt(control.Senuelo(yaEstan), 0f);
             }
+        }
+
+        // Quita de la corriente un señuelo vacío (de preferencia uno que espera escondido). false si no hay ninguno.
+        bool RetirarUnSenuelo(List<Codon> necesarios)
+        {
+            ItemARNt elegido = null;
+            foreach (var a in activos)
+            {
+                if (a.datos == null || a.datos.Lugar != LugarARNt.Corriente || a.datos.Cargado || Sirve(a, necesarios)) continue;
+                if (elegido == null || a.u < elegido.u) elegido = a;
+            }
+            if (elegido == null) return false;
+            Destroy(elegido.datos.gameObject);
+            activos.Remove(elegido);
+            return true;
         }
 
         void CrearARNt(string tripleta, float uInicial)
@@ -250,6 +376,12 @@ namespace BioVR.Minijuegos.Cocina
 
         public void DevolverAlTubo(ARNtCocina datos)
         {
+            // Un ARNt usado no vuelve al tubo: regresa a la bandeja de salida (solo el embudo lo recicla)
+            if (datos != null && datos.Usado && ControlCocina.Instancia != null)
+            {
+                ControlCocina.Instancia.RegresarASalida(datos);
+                return;
+            }
             if (ControlCocina.Instancia != null)
                 ControlCocina.Instancia.DevolverACorriente(datos);
 

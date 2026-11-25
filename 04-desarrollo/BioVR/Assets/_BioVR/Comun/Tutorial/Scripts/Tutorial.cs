@@ -4,6 +4,7 @@ using BioVR.Jugador;
 using BioVR.Secuencia;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Movement;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Turning;
@@ -30,10 +31,16 @@ namespace BioVR.Comun
         [SerializeField] PasoTutorial[] pasos = new PasoTutorial[0];
         [SerializeField] GameObject panel;
         [SerializeField] TextMeshProUGUI progreso;
+        [Tooltip("Lo que dice arriba del panel antes de \"paso X de N\" (p. ej. Tutorial, Misión).")]
+        [SerializeField] string rotulo = "Tutorial";
         [SerializeField] TextMeshProUGUI titulo;
         [SerializeField] TextMeshProUGUI instruccion;
         [SerializeField] GameObject botonSiguiente;
         [SerializeField] TextMeshProUGUI textoSiguiente;
+
+        [Tooltip("El botón X (mando izquierdo) también hace de Siguiente. Lo usa la prueba de pilotaje, donde A es el piloto automático.")]
+        [SerializeField] bool avanzarConX;
+        InputAction botonX;
 
         [Tooltip("Segundos que se ve \"¡Bien!\" antes del siguiente paso (no se detiene con la pausa).")]
         [SerializeField] float pausaAlCompletar = 1f;
@@ -92,12 +99,70 @@ namespace BioVR.Comun
             if (mover != null) mover.locomotionStarted += AlCaminar;
             if (girar != null) girar.locomotionStarted += AlGirar;
 
+            // El panel sigue al jugador, de frente y un poco abajo de la mirada (prueba del 24-nov:
+            // a la izquierda se cargaba demasiado)
+            if (seguirAlJugador && panel.GetComponent<SeguirAlJugador>() == null)
+            {
+                var s = panel.AddComponent<SeguirAlJugador>();
+                s.distancia = 0.85f;
+                s.angulo = 0f;
+                s.altura = -0.12f;
+                s.anguloLibre = 30f;
+            }
+
+            if (avanzarConX)
+            {
+                botonX = new InputAction("Tutorial siguiente", InputActionType.Button, "<XRController>{LeftHand}/{PrimaryButton}");
+                botonX.performed += _ => { if (botonSiguiente != null && botonSiguiente.activeInHierarchy) Siguiente(); };
+                botonX.Enable();
+            }
+
             Mostrar(0);
+        }
+
+        [Tooltip("El panel sigue al jugador (a su izquierda) en vez de quedarse fijo junto a la consola.")]
+        [SerializeField] bool seguirAlJugador = true;
+
+        // Paso en el que iba el jugador cuando saltó el tutorial (para "Retomar tutorial" del menú de pausa)
+        int guardado;
+
+        // Menú de pausa → "Retomar tutorial": vuelve al paso donde se quedó (si lo saltó por error)
+        public static void Retomar()
+        {
+            if (instancia == null || instancia.pasos.Length == 0) return;
+            instancia.enabled = true;
+            int paso = instancia.Terminado ? Mathf.Clamp(instancia.guardado, 0, instancia.pasos.Length - 1) : instancia.indice;
+            instancia.StopAllCoroutines();
+            instancia.completando = false;
+            instancia.Mostrar(paso);
+            var s = instancia.panel.GetComponent<SeguirAlJugador>();
+            if (s != null) s.TraerAlFrente();
+            Debug.Log($"[Tutorial] Retomado en el paso {paso + 1}.");
+        }
+
+        public static bool HayTutorial => instancia != null;
+
+        // Abre el tutorial en ese paso si el jugador todavía no llega a él o si ya lo había cerrado (p. ej. la misión
+        // del pilotaje al llegar a la célula, aunque haya saltado el tutorial del hangar). Si va justo en el paso
+        // anterior, no hace nada: ese paso termina solo y pasa a este.
+        public static void MostrarDesde(PasoTutorial paso)
+        {
+            if (instancia == null || paso == null) return;
+            int i = System.Array.IndexOf(instancia.pasos, paso);
+            if (i < 0) return;
+            if (!instancia.Terminado && instancia.indice >= i - 1) return;
+            instancia.enabled = true;
+            instancia.StopAllCoroutines();
+            instancia.completando = false;
+            instancia.Mostrar(i);
+            var s = instancia.panel.GetComponent<SeguirAlJugador>();
+            if (s != null) s.TraerAlFrente();
         }
 
         void OnDestroy()
         {
             if (instancia == this) instancia = null;
+            botonX?.Dispose();
             Recentrar.OnRecentrado -= AlRecentrar;
             MenuPausa.OnMenu -= AlMenu;
             AlturaAsiento.OnAjuste -= AlAjustarAsiento;
@@ -150,12 +215,16 @@ namespace BioVR.Comun
             indice = i;
             if (Terminado) { Terminar(); return; }
             var paso = pasos[i];
-            if (progreso != null) progreso.text = $"Tutorial · paso {i + 1} de {pasos.Length}";
+            if (progreso != null) progreso.text = $"{rotulo} · paso {i + 1} de {pasos.Length}";
             titulo.text = paso.titulo;
             instruccion.text = paso.instruccion;
             bool conBoton = string.IsNullOrEmpty(paso.clave) || paso.opcional;
             botonSiguiente.SetActive(conBoton);
-            if (textoSiguiente != null) textoSiguiente.text = i == pasos.Length - 1 ? "Terminar" : "Siguiente";
+            if (textoSiguiente != null)
+            {
+                textoSiguiente.text = i == pasos.Length - 1 ? "Terminar" : "Siguiente";
+                if (avanzarConX) textoSiguiente.text += $" ({EtiquetasMandos.Colores.Etiqueta("X", EtiquetasMandos.Colores.X)})";
+            }
             panel.SetActive(true);
             OnPasoCambiado?.Invoke(paso);
         }
@@ -169,6 +238,7 @@ namespace BioVR.Comun
         // Botón "Saltar tutorial"
         public void Terminar()
         {
+            if (!Terminado) guardado = indice;
             StopAllCoroutines();
             completando = false;
             indice = pasos.Length;

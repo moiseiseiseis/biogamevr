@@ -28,6 +28,10 @@ namespace BioVR.Comun.Editor
         {
             ("01-Bienvenida", "¡Bienvenido, piloto!",
              "Aquí aprenderás a manejar la nave. Apunta al botón Siguiente con el mando y presiona el gatillo.", "", false),
+            // Prueba del 23-nov: primero los controles del Quest, luego los del juego
+            ("01b-ControlesQuest", "Tus mandos",
+             "<b>Gatillo</b> (dedo índice): apuntar y tocar botones.\n<b>Grip</b> (dedo medio, de lado): agarrar.\n" +
+             "<b>Stick izq.</b>: caminar · <b>Stick der.</b>: girar.\n<b>B / Y</b>: volver al asiento · <b>☰</b> (mando izq.): pausa.", "", false),
             ("02-Recentrar", "Vuelve a tu asiento",
              "Si te pierdes o quedas de lado, presiona B o Y: regresas al asiento mirando al frente.", "recentrar", false),
             ("03-Caminar", "Camina",
@@ -44,10 +48,15 @@ namespace BioVR.Comun.Editor
              "Toca el botón Iniciar inmersión en la consola.", "estado:Abordaje", false),
             ("09-Sumergirse", "Sumérgete",
              "Toca Iniciar inmersión otra vez para entrar al cuerpo humano.", "estado:Viaje", false),
+            ("09b-Pokedex", "Tu pokédex biológico",
+             "Apunta con el mando a una célula de la sangre y aprieta el gatillo: su ficha aparece en el panel de la derecha. ¡Registra todas las que puedas!", "pokedex", true),
             ("10-Salto", "Salto Matrioska",
              "Toca Salto Matrioska o empuja la palanca para reducir la nave otra vez.", "salto:2", false),
-            ("11-Listo", "¡Listo!",
-             "Sigue saltando hasta llegar a la célula. Ahí, un último Salto Matrioska reduce la nave a 5 nm y te lleva al ribosoma.", "", false),
+            // 23-nov: 11 y 12 llevan al jugador hasta el minijuego ("al llegar al último salto no se ven instrucciones")
+            ("11-Listo", "Entra a la célula",
+             "Sigue con Salto Matrioska (botón o palanca): pasas por un capilar y luego entras a la célula.", "salto:3", false),
+            ("12-UltimoSalto", "Último salto: al ribosoma",
+             "Ya estás dentro de la célula. Toca Salto Matrioska una vez más: la nave se reduce a 5 nm y entras a la Cocina de proteínas, el minijuego.", "salto:4", false),
         };
 
         [MenuItem("BioVR/Crear tutorial")]
@@ -64,27 +73,45 @@ namespace BioVR.Comun.Editor
                 .Select(AssetDatabase.LoadAssetAtPath<PasoTutorial>)
                 .ToArray();
 
+            if (ArmarEn(escena, NombreTutorial, pasos, "Tutorial") == null) return;
+            EditorSceneManager.MarkSceneDirty(escena);
+            EditorSceneManager.SaveScene(escena);
+            Debug.Log($"[Tutorial] Listo con {pasos.Length} pasos.");
+        }
+
+        // Arma en la escena un objeto "nombre" con el Tutorial, su panel (a la izquierda de la consola) y los pasos dados.
+        // Lo usan este menú y otros (p. ej. la misión de la prueba de pilotaje). "rotulo" va arriba del panel.
+        // "grande": letra grande y panel que crece con el texto (como la Cocina, prueba del 24-nov) y X = Siguiente.
+        public static Tutorial ArmarEn(UnityEngine.SceneManagement.Scene escena, string nombre, PasoTutorial[] pasos, string rotulo, bool grande = false)
+        {
             var origen = Object.FindFirstObjectByType<XROrigin>();
-            if (origen == null || origen.Camera == null) { Debug.LogError("[Tutorial] No hay XR Origin con cámara en la escena inicial."); return; }
+            if (origen == null || origen.Camera == null) { Debug.LogError("[Tutorial] No hay XR Origin con cámara en la escena."); return null; }
             UIVR.AsegurarEventSystem();
 
-            var viejo = escena.GetRootGameObjects().FirstOrDefault(g => g.name == NombreTutorial);
+            var viejo = escena.GetRootGameObjects().FirstOrDefault(g => g.name == nombre);
             if (viejo != null) Object.DestroyImmediate(viejo);
-            var raiz = new GameObject(NombreTutorial);
+            var raiz = new GameObject(nombre);
             var tutorial = raiz.AddComponent<Tutorial>();
 
-            var panel = UIVR.Panel("Panel", raiz.transform, new Vector2(460f, 440f), origen.Camera); // 0.46 × 0.44 m
+            var panel = UIVR.Panel("Panel", raiz.transform, grande ? new Vector2(620f, 440f) : new Vector2(460f, 440f), origen.Camera); // 0.46 × 0.44 m
             panel.transform.SetPositionAndRotation(PosicionPanel, Quaternion.LookRotation(PosicionPanel - OjosPiloto));
-            var progreso = UIVR.Texto(panel.transform, "Progreso", "Tutorial", 20f, FontStyles.Italic, 26f);
-            var titulo = UIVR.Texto(panel.transform, "Titulo", "Título", 38f, FontStyles.Bold, 50f);
-            var instruccion = UIVR.Texto(panel.transform, "Instruccion", "Instrucción", 26f, FontStyles.Normal, 150f);
-            var fila = UIVR.Fila("Botones", panel.transform, 70f);
+            var progreso = UIVR.Texto(panel.transform, "Progreso", rotulo, grande ? 24f : 20f, FontStyles.Italic, grande ? 30f : 26f);
+            var titulo = UIVR.Texto(panel.transform, "Titulo", "Título", grande ? 48f : 38f, FontStyles.Bold, grande ? 60f : 50f);
+            var instruccion = UIVR.Texto(panel.transform, "Instruccion", "Instrucción", grande ? 36f : 26f, FontStyles.Normal, 150f);
+            if (grande)
+            {
+                // El alto sale del texto: el panel crece o se encoge con cada paso, sin achicar la letra
+                instruccion.GetComponent<UnityEngine.UI.LayoutElement>().preferredHeight = -1f;
+                instruccion.textWrappingMode = TextWrappingModes.Normal;
+                panel.AddComponent<UnityEngine.UI.ContentSizeFitter>().verticalFit = UnityEngine.UI.ContentSizeFitter.FitMode.PreferredSize;
+            }
+            var fila = UIVR.Fila("Botones", panel.transform, grande ? 80f : 70f);
             var saltar = UIVR.Boton(fila, "Boton Saltar", "Saltar tutorial", UIVR.ColorSalir, tutorial.Terminar);
             var siguiente = UIVR.Boton(fila, "Boton Siguiente", "Siguiente", UIVR.ColorBoton, tutorial.Siguiente);
             foreach (var b in new[] { saltar, siguiente })
             {
                 b.GetComponent<UnityEngine.UI.LayoutElement>().flexibleWidth = 1f;
-                b.GetComponentInChildren<TextMeshProUGUI>().fontSize = 28f;
+                b.GetComponentInChildren<TextMeshProUGUI>().fontSize = grande ? 32f : 28f;
             }
             UIVR.CapaDeUI(panel);
 
@@ -98,11 +125,10 @@ namespace BioVR.Comun.Editor
             so.FindProperty("instruccion").objectReferenceValue = instruccion;
             so.FindProperty("botonSiguiente").objectReferenceValue = siguiente;
             so.FindProperty("textoSiguiente").objectReferenceValue = siguiente.GetComponentInChildren<TextMeshProUGUI>();
+            so.FindProperty("rotulo").stringValue = rotulo;
+            so.FindProperty("avanzarConX").boolValue = grande;
             so.ApplyModifiedPropertiesWithoutUndo();
-
-            EditorSceneManager.MarkSceneDirty(escena);
-            EditorSceneManager.SaveScene(escena);
-            Debug.Log($"[Tutorial] Listo con {pasos.Length} pasos.");
+            return tutorial;
         }
 
         static void CrearPasosQueFalten()

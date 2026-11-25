@@ -62,6 +62,7 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             // los Renderer.bounds del escenario sean válidos
             ancla.SetActive(true);
             var a = ancla.transform;
+            Redistribuir(a);
             var lejano = Ribosomas(a);
             var vuelo = Corriente(a, lejano);
             Sintetasa(a);
@@ -86,6 +87,32 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             EditorSceneManager.SaveScene(escena);
             AssetDatabase.SaveAssets();
             Debug.Log($"[Cocina] Listo: {Escena}.");
+        }
+
+        // Prueba del 24-nov: en el turno 2 el ribosoma lejano quedaba encimado con la tele y lo de la mesa estaba
+        // amontonado (el ribosoma de mesa ocupa ±20° y la bandeja de salida casi lo tocaba). Se mueven solo estas
+        // marcas de Cocina_Base (las pruebas de cada módulo siguen con las de la especificación):
+        //   (marca, ángulo° [+ = izquierda], radio m, altura m, inclinación° hacia el jugador)
+        static readonly (string marca, float angulo, float radio, float altura, float inclinacion)[] Distribucion =
+        {
+            ("Ribosoma lejano",       -28f, 1.75f, 1.25f, 31.5f), // antes −17°, 1.9 m, 1.30 m: al hueco del centro-derecha
+            ("Regreso al citoplasma", -88f, 1.35f, 1.70f, 0f),    // antes −36°, 1.6 m, 1.68 m: a la derecha del jugador (a −58° caía dentro del cono del holograma)
+            ("Salida",                -42f, 0.62f, 0.78f, 0f),    // antes −30°, 0.52 m: se separa del ribosoma de mesa
+            ("Proteasoma (26S)",      -42f, 0.60f, 0.78f, 0f),    // fase B, donde está la salida
+            ("Holograma",             -62f, 0.85f, 0.78f, 0f),    // antes −47°: se aleja de la bandeja de salida
+        };
+
+        static void Redistribuir(Transform ancla)
+        {
+            foreach (var (marca, angulo, radio, altura, inclinacion) in Distribucion)
+            {
+                var t = Marca(ancla, marca);
+                if (t == null) continue;
+                PosicionMesa.Colocar(t, angulo, radio, altura);
+                if (inclinacion != 0f) t.localRotation *= Quaternion.Euler(inclinacion, 0f, 0f);
+                var punto = t.GetComponent<PuntoCocina>();
+                if (punto != null) punto.nota = $"{angulo}° · {radio} m · {altura} m de alto (distribución del 24-nov). " + punto.nota;
+            }
         }
 
         // ---------------- Módulos ----------------
@@ -212,7 +239,9 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
             ("Cocina_Sonidos", Vector3.zero),
             ("CocinaMarcaTutorial", Vector3.zero),
             ("Cocina_PanelMensajes", new Vector3(-0.9f, 1.4f, 1.3f)),
-            ("Cocina_TableroPedido", new Vector3(0f, 1.6f, 1.5f)),
+            // Prueba del 23-nov: "la tele está al revés y hace falta subirla": más arriba e inclinada hacia los ojos
+            // 24-nov: 25 cm más arriba y un poco más atrás, para dejar libre el centro al ribosoma lejano
+            ("Cocina_TableroPedido", new Vector3(0f, 2.15f, 1.7f)),
             ("CocinaTutorial", new Vector3(0.3f, 1.3f, 1.1f)),
             ("Cocina_PantallaFinal", new Vector3(0f, 1.4f, 1.2f)),
         };
@@ -241,6 +270,7 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
                 go.transform.localRotation = horizontal.sqrMagnitude > 1e-4f ? Quaternion.LookRotation(horizontal) : Quaternion.identity;
                 if (nombre == "CocinaTutorial") tutorial = go;
                 if (nombre == "CocinaMarcaTutorial") marca = go;
+                if (nombre == "Cocina_TableroPedido") AcomodarTele(go.transform, posicion);
             }
             OcultarMarca(ancla, "Panel de mensajes");
             OcultarMarca(ancla, "Tablero del pedido");
@@ -257,6 +287,62 @@ namespace BioVR.Minijuegos.Cocina.Herramientas
                 e.FindPropertyRelative("objetivo").objectReferenceValue = Marca(ancla, ObjetivosTutorial[i].marca);
             }
             so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        // El modelo del tablero (tablero-pedido.fbx, de Uli) venía de espaldas: el jugador veía la parte de atrás
+        // del monitor con el letrero abajo. Se voltea, se ajusta al ancho del letrero y se pone detrás de él;
+        // todo el tablero se inclina hacia los ojos (1.2 m) para leerse sin torcer el cuello.
+        static void AcomodarTele(Transform tele, Vector3 posicion)
+        {
+            var ojos = new Vector3(0f, 1.2f, 0f);
+            tele.localRotation = Quaternion.LookRotation(posicion - ojos, Vector3.up); // un Canvas se lee con su +Z alejándose
+
+            Transform modelo = null;
+            foreach (var t in tele.GetComponentsInChildren<Transform>(true)) if (t.name == "tablero-pedido") { modelo = t; break; }
+            RectTransform fondo = null;
+            foreach (var t in tele.GetComponentsInChildren<RectTransform>(true)) if (t.name == "Fondo") { fondo = t; break; }
+            if (modelo == null || fondo == null) { Debug.LogWarning("[Cocina] Tablero: no encontré el modelo o el Fondo del letrero."); return; }
+
+            modelo.localRotation = Quaternion.Euler(0f, 180f, 0f) * modelo.localRotation;
+
+            var esquinas = new Vector3[4];
+            fondo.GetWorldCorners(esquinas);
+            var letrero = new Bounds(tele.InverseTransformPoint(esquinas[0]), Vector3.zero);
+            foreach (var e in esquinas) letrero.Encapsulate(tele.InverseTransformPoint(e));
+
+            var caja = LimitesLocales(tele, modelo);
+            if (caja.size.x > 1e-3f)
+            {
+                float factor = letrero.size.x * 1.15f / caja.size.x;
+                modelo.localScale *= factor;
+                caja = LimitesLocales(tele, modelo);
+            }
+            // El letrero en la parte alta de la caja (la de abajo es el pie del monitor), justo delante de la pantalla
+            var centroPantalla = new Vector3(caja.center.x, caja.center.y + caja.size.y * 0.12f, caja.min.z);
+            var destino = new Vector3(letrero.center.x, letrero.center.y, letrero.center.z + 0.01f);
+            modelo.position += tele.TransformVector(destino - centroPantalla);
+            var final = LimitesLocales(tele, modelo);
+            Debug.Log($"[Cocina] Tablero: modelo volteado, ×{modelo.localScale.x:F2}, caja {final.size:F2} (letrero {letrero.size:F2}).");
+        }
+
+        static Bounds LimitesLocales(Transform referencia, Transform modelo)
+        {
+            bool hay = false;
+            var b = new Bounds();
+            foreach (var r in modelo.GetComponentsInChildren<Renderer>(true))
+            {
+                var mf = r.GetComponent<MeshFilter>();
+                if (mf == null || mf.sharedMesh == null) continue;
+                var m = mf.sharedMesh.bounds;
+                for (int i = 0; i < 8; i++)
+                {
+                    var p = new Vector3(i % 2 == 0 ? m.min.x : m.max.x, (i / 2) % 2 == 0 ? m.min.y : m.max.y, i / 4 == 0 ? m.min.z : m.max.z);
+                    var local = referencia.InverseTransformPoint(r.transform.TransformPoint(p));
+                    if (!hay) { b = new Bounds(local, Vector3.zero); hay = true; }
+                    else b.Encapsulate(local);
+                }
+            }
+            return b;
         }
 
         // Música del minijuego y ambiente celular en loop, en 2D. El ambiente va 6 dB abajo (fila AMB-MIN-01 de

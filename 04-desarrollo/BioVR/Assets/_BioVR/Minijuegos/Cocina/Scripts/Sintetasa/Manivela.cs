@@ -34,6 +34,9 @@ namespace BioVR.Minijuegos.Cocina
             grab.selectExited.AddListener(AlSoltar);
         }
 
+        // EstacionSintetasa la cuelga de otro padre al ponerla de frente (24-nov): la posición de reposo cambia
+        public void RecordarPosicion() => posInicialManivela = transform.localPosition;
+
         void AlAgarrar(SelectEnterEventArgs args)
         {
             manoActual = args.interactorObject?.transform;
