@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Build;
@@ -12,9 +14,22 @@ namespace BioVR.Comun.Editor
     // BioVR → Build APK Expresión Genética genera solo la escena del minijuego, con otro nombre de paquete
     // para que se instale junto a BioVR sin reemplazarlo. BioVR → Build APK Fase A hace lo mismo con la escena de traducción,
     // y BioVR → Build APK Cocina con la escena integrada de la Cocina de proteínas.
+    // BioVR → Build APK Tienda (CellVerse) genera el juego completo firmado para el canal privado de la tienda de Meta.
     public static class BuildAndroid
     {
         const string RutaApk = "Builds/BioVR.apk";
+        const string PaqueteJuego = "com.biogamevr.biovr";
+        const string NombreJuego = "BioVR";
+
+        // Tienda de Meta (canal privado). El paquete queda fijo para siempre tras la primera subida aceptada.
+        // VersionTienda debe subir en cada APK que se mande a Meta (la última subida aceptada debe ser menor).
+        const string RutaApkTienda = "Builds/CellVerse.apk";
+        const string PaqueteTienda = "biogame.cellverse";
+        const string NombreTienda = "CellVerse";
+        const int VersionTienda = 3;
+        // La llave vive fuera del repo, en la laptop de Moisés (ver firma.txt en esa carpeta).
+        static string ArchivoFirma =>
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "cellverse-keystore", "firma.txt");
         const string RutaApkExpresion = "Builds/ExpresionGenetica.apk";
         const string PaqueteExpresion = "com.biogamevr.expresiongenetica";
         const string NombreExpresion = "BioVR Expresión Genética";
@@ -37,12 +52,101 @@ namespace BioVR.Comun.Editor
                     BioVR.Minijuegos.Cocina.Herramientas.ArmarEscenaCocina.Escena },
                 "BioVR → Pilotaje → Armar prueba de pilotaje", PaquetePilotaje, NombrePilotaje, RutaApkPilotaje));
 
+        // El paquete y el nombre se fijan aquí porque, si Unity se cierra a media build aparte (apagón del 24-nov),
+        // ProjectSettings se queda con los del pilotaje y todas las builds siguientes salen con ese nombre.
         [MenuItem("BioVR/Build APK")]
         public static void Construir()
         {
-            var escenas = EditorBuildSettings.scenes.Where(e => e.enabled).Select(e => e.path).ToArray();
-            Terminar(Generar(escenas, RutaApk));
+            var android = NamedBuildTarget.Android;
+            PlayerSettings.SetApplicationIdentifier(android, PaqueteJuego);
+            PlayerSettings.productName = NombreJuego;
+            Terminar(Generar(EscenasActivas(), RutaApk, BuildOptions.Development));
         }
+
+        // El juego completo con lo que pide la tienda de Meta: Target SDK 34, instalación "auto", orientación
+        // horizontal, sin Development Build y firmado con la llave propia. Todo se regresa al terminar.
+        [MenuItem("BioVR/Build APK Tienda (CellVerse)")]
+        public static void ConstruirTienda()
+        {
+            if (!LeerFirma(out var keystore, out var alias, out var contrasena))
+            {
+                Terminar(false);
+                return;
+            }
+
+            var android = NamedBuildTarget.Android;
+            var paquete = PlayerSettings.GetApplicationIdentifier(android);
+            var nombre = PlayerSettings.productName;
+            var version = PlayerSettings.Android.bundleVersionCode;
+            var sdk = PlayerSettings.Android.targetSdkVersion;
+            var instalacion = PlayerSettings.Android.preferredInstallLocation;
+            var orientacion = PlayerSettings.defaultInterfaceOrientation;
+            var llavePropia = PlayerSettings.Android.useCustomKeystore;
+            var keystoreAntes = PlayerSettings.Android.keystoreName;
+            var aliasAntes = PlayerSettings.Android.keyaliasName;
+            var ok = false;
+            try
+            {
+                PlayerSettings.SetApplicationIdentifier(android, PaqueteTienda);
+                PlayerSettings.productName = NombreTienda;
+                PlayerSettings.Android.bundleVersionCode = VersionTienda;
+                PlayerSettings.Android.targetSdkVersion = AndroidSdkVersions.AndroidApiLevel34;
+                PlayerSettings.Android.preferredInstallLocation = AndroidPreferredInstallLocation.Auto;
+                PlayerSettings.defaultInterfaceOrientation = UIOrientation.LandscapeLeft;
+                PlayerSettings.Android.useCustomKeystore = true;
+                PlayerSettings.Android.keystoreName = keystore;
+                PlayerSettings.Android.keystorePass = contrasena;
+                PlayerSettings.Android.keyaliasName = alias;
+                PlayerSettings.Android.keyaliasPass = contrasena;
+                ok = Generar(EscenasActivas(), RutaApkTienda, BuildOptions.None);
+            }
+            finally
+            {
+                PlayerSettings.SetApplicationIdentifier(android, paquete);
+                PlayerSettings.productName = nombre;
+                PlayerSettings.Android.bundleVersionCode = version;
+                PlayerSettings.Android.targetSdkVersion = sdk;
+                PlayerSettings.Android.preferredInstallLocation = instalacion;
+                PlayerSettings.defaultInterfaceOrientation = orientacion;
+                PlayerSettings.Android.useCustomKeystore = llavePropia;
+                PlayerSettings.Android.keystoreName = keystoreAntes;
+                PlayerSettings.Android.keyaliasName = aliasAntes;
+                PlayerSettings.Android.keystorePass = "";
+                PlayerSettings.Android.keyaliasPass = "";
+            }
+            if (ok) Debug.Log($"[BuildAndroid] Tienda: {PaqueteTienda} versionCode {VersionTienda}. Antes de la próxima subida, sube VersionTienda.");
+            Terminar(ok);
+        }
+
+        // firma.txt: líneas clave=valor con keystore, alias y contrasena
+        static bool LeerFirma(out string keystore, out string alias, out string contrasena)
+        {
+            keystore = alias = contrasena = null;
+            if (!File.Exists(ArchivoFirma))
+            {
+                Debug.LogError($"[BuildAndroid] No encuentro {ArchivoFirma}. La build de la tienda solo se genera en la laptop que tiene la llave.");
+                return false;
+            }
+            foreach (var linea in File.ReadAllLines(ArchivoFirma))
+            {
+                var i = linea.IndexOf('=');
+                if (linea.StartsWith("#") || i < 0) continue;
+                var clave = linea.Substring(0, i).Trim();
+                var valor = linea.Substring(i + 1).Trim();
+                if (clave == "keystore") keystore = valor;
+                else if (clave == "alias") alias = valor;
+                else if (clave == "contrasena") contrasena = valor;
+            }
+            if (string.IsNullOrEmpty(keystore) || !File.Exists(keystore) || string.IsNullOrEmpty(alias) || string.IsNullOrEmpty(contrasena))
+            {
+                Debug.LogError($"[BuildAndroid] {ArchivoFirma} está incompleto o el keystore no existe.");
+                return false;
+            }
+            return true;
+        }
+
+        static string[] EscenasActivas() =>
+            EditorBuildSettings.scenes.Where(e => e.enabled).Select(e => e.path).ToArray();
 
         [MenuItem("BioVR/Build APK Expresión Genética")]
         public static void ConstruirExpresion() =>
@@ -83,7 +187,7 @@ namespace BioVR.Comun.Editor
             {
                 PlayerSettings.SetApplicationIdentifier(android, paqueteNuevo);
                 PlayerSettings.productName = nombreNuevo;
-                return Generar(escenas, ruta);
+                return Generar(escenas, ruta, BuildOptions.Development);
             }
             finally
             {
@@ -92,7 +196,8 @@ namespace BioVR.Comun.Editor
             }
         }
 
-        static bool Generar(string[] escenas, string ruta)
+        // Development permite ver los logs del visor con adb logcat; la tienda no acepta APK depurables
+        static bool Generar(string[] escenas, string ruta, BuildOptions modo)
         {
             if (EditorUserBuildSettings.activeBuildTarget != BuildTarget.Android)
                 EditorUserBuildSettings.SwitchActiveBuildTarget(BuildTargetGroup.Android, BuildTarget.Android);
@@ -102,7 +207,7 @@ namespace BioVR.Comun.Editor
                 scenes = escenas,
                 locationPathName = ruta,
                 target = BuildTarget.Android,
-                options = BuildOptions.Development // permite ver los logs del visor con adb logcat
+                options = modo
             };
 
             var resumen = BuildPipeline.BuildPlayer(opciones).summary;
