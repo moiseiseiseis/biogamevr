@@ -66,3 +66,12 @@ Personaje nuevo sobre un avatar de VRoid Studio, según la lámina «Mecha Opera
 - [Vistas](vistas/personajes/operador-mecha/operador-mecha-vistas.png) y [verificación de exportaciones](validacion/personajes/operador-mecha-verificacion.json).
 
 El FBX sale sin *Apply Transform*, como el del Neo Investigador. La guía recomienda los materiales de Unity (URP) y falta confirmar con Desarrollo el shader toon. Quedan pendientes la prueba en el visor, las animaciones y la sujeción del panel a la mano.
+
+## Llaveros — 25 de noviembre de 2026
+
+Cuatro llaveros con volumen, tipo juguete, para imprimir en la Bambu Lab A1 mini: **Operadora del Mecha**, **Seraphim Mecha**, **ASTRA** y el **ARNm AUG–GGC–UUU–UAG** de la fase A. Miden entre 42 y 74 mm de alto, están en milímetros y llevan argolla con orificio de Ø 3,8 mm.
+
+- [STL para imprimir](exports/llaveros/) y [fuente editable](fuentes/llaveros.blend).
+- [Guía para el estudio de impresión](documentacion/llaveros/LEEME.md), [vistas](vistas/llaveros/llaveros.png) y [comprobación de las mallas](validacion/llaveros/llaveros-verificacion.json).
+
+Se imprimen de pie con soportes de árbol. Todavía no se ha hecho una impresión de prueba.
