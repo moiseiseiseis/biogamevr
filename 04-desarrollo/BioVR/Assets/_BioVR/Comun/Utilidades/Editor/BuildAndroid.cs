@@ -26,7 +26,7 @@ namespace BioVR.Comun.Editor
         const string RutaApkTienda = "Builds/CellVerse.apk";
         const string PaqueteTienda = "biogame.cellverse";
         const string NombreTienda = "CellVerse";
-        const int VersionTienda = 3;
+        const int VersionTienda = 4;
         // La llave vive fuera del repo, en la laptop de Moisés (ver firma.txt en esa carpeta).
         static string ArchivoFirma =>
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "cellverse-keystore", "firma.txt");
