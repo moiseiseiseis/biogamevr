@@ -1,0 +1,58 @@
+{
+  "operador-mecha": {
+    "titulo": "Operadora del Mecha",
+    "archivo": "exports/llaveros/llavero-operador-mecha.stl",
+    "ancho_mm": 21.7,
+    "fondo_mm": 13.9,
+    "alto_mm": 68.7,
+    "triangulos": 250000,
+    "aristas_abiertas_o_repetidas": 0,
+    "volumen_cm3": 5.18,
+    "z_min_mm": 0.0,
+    "grosor_pared_min_mm": 0.48,
+    "grosor_pared_p1_mm": 1.15,
+    "cabe_en_a1_mini": true
+  },
+  "seraphim-mecha": {
+    "titulo": "Seraphim Mecha",
+    "archivo": "exports/llaveros/llavero-seraphim-mecha.stl",
+    "ancho_mm": 45.2,
+    "fondo_mm": 41.6,
+    "alto_mm": 44.0,
+    "triangulos": 250000,
+    "aristas_abiertas_o_repetidas": 0,
+    "volumen_cm3": 7.04,
+    "z_min_mm": 0.0,
+    "grosor_pared_min_mm": 0.68,
+    "grosor_pared_p1_mm": 1.24,
+    "cabe_en_a1_mini": true
+  },
+  "astra": {
+    "titulo": "ASTRA",
+    "archivo": "exports/llaveros/llavero-astra.stl",
+    "ancho_mm": 37.0,
+    "fondo_mm": 32.7,
+    "alto_mm": 42.0,
+    "triangulos": 250000,
+    "aristas_abiertas_o_repetidas": 0,
+    "volumen_cm3": 23.75,
+    "z_min_mm": 0.0,
+    "grosor_pared_min_mm": 2.59,
+    "grosor_pared_p1_mm": 2.62,
+    "cabe_en_a1_mini": true
+  },
+  "arnm-aug-uag": {
+    "titulo": "ARNm AUG–GGC–UUU–UAG",
+    "archivo": "exports/llaveros/llavero-arnm-aug-uag.stl",
+    "ancho_mm": 19.2,
+    "fondo_mm": 9.2,
+    "alto_mm": 74.1,
+    "triangulos": 249958,
+    "aristas_abiertas_o_repetidas": 0,
+    "volumen_cm3": 5.78,
+    "z_min_mm": 0.0,
+    "grosor_pared_min_mm": 0.34,
+    "grosor_pared_p1_mm": 0.97,
+    "cabe_en_a1_mini": true
+  }
+}
