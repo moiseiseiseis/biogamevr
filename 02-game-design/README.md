@@ -5,6 +5,7 @@ Sketches, storyboards y el cartel para la feria de ciencias.
 - `storyboards/` — una carpeta por minijuego
 - `cartel-feria/` — fuentes editables y versión final para imprimir
 - `narrativa/` — historia del juego: prólogo y guion de cada escena ([`historia-del-juego.md`](narrativa/historia-del-juego.md))
+- `animacion-pixel-art/` — video en bucle de la narrativa en pixel art, para proyectar en la presentación ([`README.md`](animacion-pixel-art/README.md))
 - `sonido/` — dónde está la música y el sonido del juego (carpeta de Drive) y cómo se organiza ([`musica-y-sonido.md`](sonido/musica-y-sonido.md))
 
 ## Minijuegos propuestos (por validar)

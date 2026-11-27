@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CELLVERSE · animación pixel art</title>
+<style>
+  html,body{margin:0;height:100%;background:#000;overflow:hidden}
+  body.play{cursor:none}
+  canvas{position:absolute;inset:0;margin:auto;image-rendering:pixelated;image-rendering:crisp-edges}
+</style>
+</head>
+<body class="play">
+<canvas id="v"></canvas>
+<script>
+'use strict';
+/* ==========================================================
+   CELLVERSE — animación pixel art en bucle para la feria.
+   Lienzo interno de 320×180 escalado sin suavizado.
+   Barra espaciadora: pausa · ←/→: escena anterior/siguiente
+   ========================================================== */
+const GAME = 'CELLVERSE';
+const CODENAME = 'SCHOOL REDEMPTION GAME';
+
+const W = 320, H = 180;
+const out = document.getElementById('v'), octx = out.getContext('2d');
+const buf = document.createElement('canvas'); buf.width = W; buf.height = H;
+let g = buf.getContext('2d', { willReadFrequently: true });
+const G0 = g;
+
+/* ---------- utilidades ---------- */
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const seg = (t, a, b) => clamp((t - a) / (b - a), 0, 1);
+const ease = p => p * p * (3 - 2 * p);
+const lerp = (a, b, p) => a + (b - a) * p;
+function hash(x, y) { let h = Math.imul(x | 0, 374761393) + Math.imul(y | 0, 668265263); h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; }
+function vnoise(x, y) { const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi, s = q => q * q * (3 - 2 * q); const a = hash(xi, yi), b = hash(xi + 1, yi), c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1), u = s(xf), v = s(yf); return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v; }
+function fbm(x, y) { return vnoise(x, y) * 0.6 + vnoise(x * 2.1 + 7, y * 2.1) * 0.3 + vnoise(x * 4.3, y * 4.3 + 3) * 0.1; }
+const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+const bay = (x, y) => BAYER[((y & 3) << 2) | (x & 3)];
+
+/* ---------- primitivas de pixel ---------- */
+let _c = null;
+function col(c) { if (c !== _c) { g.fillStyle = c; _c = c; } }
+function R(x, y, w, h, c) { if (!c) return; const x0 = Math.round(x), y0 = Math.round(y), x1 = Math.round(x + w), y1 = Math.round(y + h); if (x1 <= x0 || y1 <= y0) return; col(c); g.fillRect(x0, y0, x1 - x0, y1 - y0); }
+function P(x, y, c) { if (!c) return; col(c); g.fillRect(Math.round(x), Math.round(y), 1, 1); }
+const _pat = new Map();
+function D(c, lv) { lv = Math.round(clamp(lv, 0, 16)); if (lv <= 0) return null; if (lv >= 16) return c; const k = c + '|' + lv; let p = _pat.get(k); if (!p) { const cv = document.createElement('canvas'); cv.width = cv.height = 4; const cx = cv.getContext('2d'); cx.fillStyle = c; for (let i = 0; i < 16; i++) if (BAYER[i] < lv) cx.fillRect(i & 3, i >> 2, 1, 1); p = G0.createPattern(cv, 'repeat'); _pat.set(k, p); } return p; }
+function E(cx, cy, rx, ry, c) { if (!c || rx <= 0 || ry <= 0) return; col(c); const r = Math.ceil(ry), yc = Math.round(cy); for (let y = -r; y <= r; y++) { const dy = y / (ry + 0.5); if (Math.abs(dy) > 1) continue; const w = rx * Math.sqrt(1 - dy * dy) + 0.5; const x0 = Math.round(cx - w), x1 = Math.round(cx + w); if (x1 > x0) g.fillRect(x0, yc + y, x1 - x0, 1); } }
+function EO(cx, cy, rx, ry, c, o = '#14161f') { E(cx, cy, rx + 1, ry + 1, o); E(cx, cy, rx, ry, c); }
+function LL(x0, y0, x1, y1, c, s = 1) { if (!c) return; col(c); x0 = Math.round(x0); y0 = Math.round(y0); x1 = Math.round(x1); y1 = Math.round(y1); const dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1, dy = -Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1; let e = dx + dy; for (let n = 0; n < 2000; n++) { g.fillRect(x0, y0, s, s); if (x0 === x1 && y0 === y1) break; const e2 = 2 * e; if (e2 >= dy) { e += dy; x0 += sx; } if (e2 <= dx) { e += dx; y0 += sy; } } }
+function arc(cx, cy, rx, ry, c, a0 = 0, a1 = Math.PI * 2, s = 1) { if (!c) return; col(c); const n = Math.max(12, Math.ceil((rx + ry) * 3.2 * Math.abs(a1 - a0) / 6.283) * 2); let px = 1e9, py = 1e9; for (let i = 0; i <= n; i++) { const a = a0 + (a1 - a0) * i / n; const x = Math.round(cx + Math.cos(a) * rx), y = Math.round(cy + Math.sin(a) * ry); if (x !== px || y !== py) { g.fillRect(x, y, s, s); px = x; py = y; } } }
+function poly(pts, c) { if (!c) return; col(c); let y0 = 1e9, y1 = -1e9; for (const p of pts) { y0 = Math.min(y0, p[1]); y1 = Math.max(y1, p[1]); } y0 = Math.floor(y0); y1 = Math.ceil(y1); for (let y = y0; y <= y1; y++) { const yc = y + 0.5, xs = []; for (let i = 0; i < pts.length; i++) { const a = pts[i], b = pts[(i + 1) % pts.length]; if ((a[1] <= yc && b[1] > yc) || (b[1] <= yc && a[1] > yc)) xs.push(a[0] + (yc - a[1]) / (b[1] - a[1]) * (b[0] - a[0])); } xs.sort((a, b) => a - b); for (let i = 0; i + 1 < xs.length; i += 2) { const xa = Math.round(xs[i]), xb = Math.round(xs[i + 1]); if (xb > xa) g.fillRect(xa, y, xb - xa, 1); } } }
+function polyO(pts, c, o = '#14161f') { poly(pts, c); for (let i = 0; i < pts.length; i++) { const a = pts[i], b = pts[(i + 1) % pts.length]; LL(a[0], a[1], b[0], b[1], o); } }
+function bands(y0, y1, cols) { const h = (y1 - y0) / cols.length; cols.forEach((c, i) => R(0, y0 + i * h, W, h + 1, c)); for (let i = 1; i < cols.length; i++) R(0, Math.round(y0 + i * h) - 2, W, 2, D(cols[i], 8)); }
+function withCtx(c2, fn) { const og = g, oc = _c; g = c2; _c = null; fn(); g = og; _c = null; }
+function clipRect(x, y, w, h, fn) { g.save(); g.beginPath(); g.rect(x, y, w, h); g.clip(); _c = null; fn(); g.restore(); _c = null; }
+
+/* ---------- fuente pixel 5×7 ---------- */
+const FD = {
+  'A': '01110 10001 10001 11111 10001 10001 10001', 'B': '11110 10001 10001 11110 10001 10001 11110', 'C': '01110 10001 10000 10000 10000 10001 01110',
+  'D': '11110 10001 10001 10001 10001 10001 11110', 'E': '11111 10000 10000 11110 10000 10000 11111', 'F': '11111 10000 10000 11110 10000 10000 10000',
+  'G': '01110 10001 10000 10111 10001 10001 01111', 'H': '10001 10001 10001 11111 10001 10001 10001', 'I': '01110 00100 00100 00100 00100 00100 01110',
+  'J': '00111 00010 00010 00010 10010 10010 01100', 'K': '10001 10010 10100 11000 10100 10010 10001', 'L': '10000 10000 10000 10000 10000 10000 11111',
+  'M': '10001 11011 10101 10101 10001 10001 10001', 'N': '10001 10001 11001 10101 10011 10001 10001', 'O': '01110 10001 10001 10001 10001 10001 01110',
+  'P': '11110 10001 10001 11110 10000 10000 10000', 'Q': '01110 10001 10001 10001 10101 10010 01101', 'R': '11110 10001 10001 11110 10100 10010 10001',
+  'S': '01111 10000 10000 01110 00001 00001 11110', 'T': '11111 00100 00100 00100 00100 00100 00100', 'U': '10001 10001 10001 10001 10001 10001 01110',
+  'V': '10001 10001 10001 10001 10001 01010 00100', 'W': '10001 10001 10001 10101 10101 10101 01010', 'X': '10001 10001 01010 00100 01010 10001 10001',
+  'Y': '10001 10001 01010 00100 00100 00100 00100', 'Z': '11111 00001 00010 00100 01000 10000 11111',
+  '0': '01110 10001 10011 10101 11001 10001 01110', '1': '00100 01100 00100 00100 00100 00100 01110', '2': '01110 10001 00001 00010 00100 01000 11111',
+  '3': '11110 00001 00001 01110 00001 00001 11110', '4': '00010 00110 01010 10010 11111 00010 00010', '5': '11111 10000 11110 00001 00001 10001 01110',
+  '6': '01110 10000 10000 11110 10001 10001 01110', '7': '11111 00001 00010 00100 01000 01000 01000', '8': '01110 10001 10001 01110 10001 10001 01110',
+  '9': '01110 10001 10001 01111 00001 00001 01110',
+  '.': '00000 00000 00000 00000 00000 01100 01100', ',': '00000 00000 00000 00000 01100 00100 01000', '!': '00100 00100 00100 00100 00100 00000 00100',
+  '¡': '00100 00000 00100 00100 00100 00100 00100', '?': '01110 10001 00001 00010 00100 00000 00100', '¿': '00100 00000 00100 01000 10000 10001 01110',
+  ':': '00000 01100 01100 00000 01100 01100 00000', ';': '00000 01100 01100 00000 01100 00100 01000', '-': '00000 00000 00000 01110 00000 00000 00000',
+  '—': '00000 00000 00000 11111 00000 00000 00000', '(': '00010 00100 01000 01000 01000 00100 00010', ')': '01000 00100 00010 00010 00010 00100 01000',
+  '/': '00001 00001 00010 00100 01000 10000 10000', '%': '11001 11001 00010 00100 01000 10011 10011', 'µ': '00000 10001 10001 10001 10011 11101 10000',
+  '>': '01000 00100 00010 00001 00010 00100 01000', '<': '00010 00100 01000 10000 01000 00100 00010', '+': '00000 00100 00100 11111 00100 00100 00000',
+  '=': '00000 00000 11111 00000 11111 00000 00000', '·': '00000 00000 00000 01100 01100 00000 00000', "'": '00100 00100 00000 00000 00000 00000 00000',
+  '′': '00100 00100 01000 00000 00000 00000 00000', '→': '00000 00100 00010 11111 00010 00100 00000', '▶': '01000 01100 01110 01111 01110 01100 01000',
+  'Ø': '01111 10011 10101 10101 10101 11001 11110', '°': '01100 10010 01100 00000 00000 00000 00000', '#': '01010 11111 01010 01010 11111 01010 00000'
+};
+const GLY = {}; for (const k in FD) GLY[k] = FD[k].split(' ').map(r => [...r].map(Number));
+const ACC = { 'Á': ['A', 1], 'É': ['E', 1], 'Í': ['I', 1], 'Ó': ['O', 1], 'Ú': ['U', 1], 'Ñ': ['N', 2], 'Ü': ['U', 3] };
+function up(s) { return s.replace(/µ/g, '\u0001').toUpperCase().replace(/\u0001/g, 'µ'); }
+function glyph(ch, x, y, s) {
+  let acc = 0; if (ACC[ch]) { acc = ACC[ch][1]; ch = ACC[ch][0]; }
+  const gl = GLY[ch]; if (!gl) return;
+  for (let r = 0; r < 7; r++) for (let c = 0; c < 5; c++) if (gl[r][c]) g.fillRect(x + c * s, y + r * s, s, s);
+  if (acc === 1) { g.fillRect(x + 3 * s, y - 3 * s, s, s); g.fillRect(x + 2 * s, y - 2 * s, s, s); }
+  if (acc === 2) { g.fillRect(x + 1 * s, y - 2 * s, s, s); g.fillRect(x + 2 * s, y - 3 * s, s, s); g.fillRect(x + 3 * s, y - 2 * s, s, s); g.fillRect(x + 4 * s, y - 3 * s, s, s); }
+  if (acc === 3) { g.fillRect(x + 1 * s, y - 2 * s, s, s); g.fillRect(x + 3 * s, y - 2 * s, s, s); }
+}
+function text(str, x, y, c, s = 1, shadow = null) {
+  str = up(str); x = Math.round(x); y = Math.round(y);
+  if (shadow) { col(shadow); let xx = x; for (const ch of str) { glyph(ch, xx + s, y + s, s); xx += 6 * s; } }
+  col(c); for (const ch of str) { glyph(ch, x, y, s); x += 6 * s; }
+}
+function textO(str, x, y, c, o, s = 1) { str = up(str); for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [1, -1], [-1, 1], [1, 1]]) text(str, x + dx * s, y + dy * s, o, s); text(str, x, y, c, s); }
+const tw = (str, s = 1) => [...up(str)].length * 6 * s - s;
+function textC(str, cx, y, c, s = 1, sh = null) { text(str, Math.round(cx - tw(str, s) / 2), y, c, s, sh); }
+function wrap(str, n) { const words = up(str).split(' '), lines = []; let cur = ''; for (const w of words) { if (!cur.length) cur = w; else if ([...cur].length + 1 + [...w].length <= n) cur += ' ' + w; else { lines.push(cur); cur = w; } } if (cur) lines.push(cur); return lines; }
+
+/* ---------- sprites ---------- */
+function spr(rows, x, y, pal, flip = false, s = 1) {
+  x = Math.round(x); y = Math.round(y); const w = rows[0].length;
+  for (let j = 0; j < rows.length; j++) { const r = rows[j]; for (let i = 0; i < w; i++) { const c = pal[r[i]]; if (!c) continue; col(c); g.fillRect(x + (flip ? w - 1 - i : i) * s, y + j * s, s, s); } }
+}
+const K = '#14161f';
+const OPER_TOP = [
+  "....kkkkkk....", "...khhhhhhk...", "..khhHHhhhhk..", ".okhhhhhhhhko.", ".gkhhsshhhhkg.", ".gkhssssshhkg.", ".gkhsesseshkg.",
+  "..khsSsssShk..", "...khssssshk..", "....kkSSkk....", "...kDkbbkDk...", "..kOObOObOOk..", ".kOOObOObOOOk.", ".kOOObbbbOOOk.",
+  ".kbOObOObOObk.", ".kbOObbbbOObk.", ".klODOOOODOlk.", "..kOOOOOOOOk.."];
+const LEGS_A = ["..kppppppppk..", "..kpppkkpppk..", "..kppk..kppk..", "..kbok..kobk..", "..kkkk..kkkk.."];
+const LEGS_B = ["..kppppppppk..", "...kppkkppk...", "...kppkkppk...", "...kbokkobk...", "...kkkkkkkk..."];
+const OPER_BACK = [
+  "....kkkkkk....", "...khhhhhhk...", "..khhHHhhhhk..", ".okhhhhhhhhko.", ".gkhhhhhhhhkg.", ".gkhhhHhhhhkg.", ".gkhhhhhhhhkg.",
+  "..khhhhhhhhk..", "...khhhhhhk...", "....kSSSSk....", "..kkObOObOkk..", ".kOOObOObOOOk.", ".kOOObOObOOOk.", ".kbOObbbbOObk.",
+  ".kbOObOObOObk.", ".kbOObOObOObk."];
+const INV_ROWS = [
+  ".....krrk.....", "....krRrrk....", "...krrrrrrk...", "..krRrrrrRrk..", "..krssssssrk..", ".rkvvvvvvvvkr.", "..kvvvvvvvvk..",
+  "..krssssssrk..", "...krsSSsrk...", "....kkssk.....", "...kcDDDck....", "..kccODOcck...", ".kcccODOccck..", ".kccCODOtTTtk.",
+  ".kccCODOtTTtk.", ".kccCODOtttsk.", ".kccCODDCcck..", ".kcccODDcccck.", ".kccCODDCccck.", "..kcDDkDDck...", "...kDDkDDk....",
+  "...kwwkwwk....", "...kkkkkkk...."];
+const PAL = {
+  OPERADORA: { k: K, h: '#1e2430', H: '#3a4560', s: '#e9b896', S: '#c48a6a', e: K, g: '#a7b0bf', o: '#e8742a', O: '#6f7d55', D: '#4b5639', b: '#22252b', p: '#34373f', l: '#a7b0bf', w: '#f4f4f4' },
+  INVESTIGADORA: { k: K, r: '#4a2e22', R: '#6b4433', s: '#e2ad8a', S: '#bf8566', v: '#4d5560', c: '#ece6da', C: '#bdb5a5', O: '#5d6b47', D: '#3f4a30', t: '#3a4466', T: '#5ff0e6', w: '#f4f4f4' },
+};
+PAL['TÉCNICO'] = Object.assign({}, PAL.OPERADORA, { h: '#6b4433', H: '#8a5a40', s: '#d9a07c', S: '#b07a5c', O: '#5a7fa8', D: '#3e5d80', g: '#5a6988', o: '#f7b32b', p: '#2e3d55', l: '#e8c24a' });
+PAL.ENFERMERA = Object.assign({}, PAL.OPERADORA, { h: '#2a2018', H: '#4a3a2a', s: '#c98d6a', S: '#a26c50', O: '#7fc8c0', D: '#4f9a92', g: '#e0e6ee', o: '#e0e6ee', b: '#4f9a92', p: '#5f9e98', l: '#e0e6ee' });
+
+function person(who, x, feet, o = {}) {
+  const pal = PAL[who], top = feet - 23 + (o.bob || 0);
+  if (who === 'INVESTIGADORA') { spr(INV_ROWS, x, top, pal, o.flip); return; }
+  spr(OPER_TOP, x, top, pal, o.flip);
+  spr(o.step ? LEGS_B : LEGS_A, x, top + 18, pal, o.flip);
+}
+
+/* ---------- ASTRA ---------- */
+function astra(x, y, r, st, t) {
+  x = Math.round(x); y = Math.round(y);
+  arc(x - r * 0.2, y + r * 0.55, r * 0.95, r * 0.75, '#3a3d46', 0.2, 2.4, 2);
+  E(x, y, r + 1, r + 1, K); E(x, y, r, r, '#c9c1b1'); E(x - r * 0.12, y - r * 0.12, r * 0.86, r * 0.86, '#efe9dc');
+  R(x - r * 0.72, y - r * 0.72, r * 0.38, Math.max(1, r * 0.16), '#e8742a'); R(x - r * 0.96, y - r * 0.18, Math.max(1, r * 0.16), r * 0.42, '#e8742a'); R(x + r * 0.05, y - r * 0.96, r * 0.4, Math.max(1, r * 0.15), '#e8742a');
+  const lx = x + Math.round(r * 0.22), ly = y + Math.round(r * 0.05);
+  E(lx, ly, r * 0.66, r * 0.66, K); E(lx, ly, r * 0.56, r * 0.56, '#2d313b');
+  const al = st === 'alert', cc = al ? (Math.floor(t * 5) % 2 ? '#ff4a3a' : '#a8241c') : st === 'scan' ? '#f7b32b' : '#f7b32b';
+  arc(lx, ly, r * 0.42, r * 0.42, cc); if (r > 8) arc(lx, ly, r * 0.36, r * 0.36, cc);
+  if (st === 'scan') { const k = Math.floor(r * 0.34); for (let i = -k; i <= k; i += 2) { LL(lx - k, ly + i, lx + k, ly + i, D(cc, 8)); LL(lx + i, ly - k, lx + i, ly + k, D(cc, 8)); } }
+  const glow = 0.5 + 0.5 * Math.sin(t * 3);
+  E(lx, ly, Math.max(1, r * 0.17), Math.max(1, r * 0.17), al ? '#ffd0c0' : glow > 0.5 ? '#fff3a0' : '#ffd25a');
+  if (r > 8) E(lx, ly, r * 0.3, r * 0.3, D(al ? '#ff4a3a' : '#f7b32b', 3));
+  P(lx - r * 0.3, ly - r * 0.32, '#ffffff');
+}
+
+/* ---------- Mecha Seraphim ---------- */
+const MP = { w: '#f4f6f8', s: '#c3cbd8', k: K, v: '#16182a', vh: '#5ff0e6', leg: '#a9b3c4', jt: '#5a6377', cab: '#2a2a34', fin: '#dcefff', ring: '#2a2d36', ring2: '#4a5060' };
+const MP_BLUE = { w: '#0e2a52', s: '#0e2a52', k: '#5ff0e6', v: '#123a6e', vh: '#d6fffb', leg: '#5ff0e6', jt: '#d6fffb', cab: '#3fb7c9', fin: '#0e2a52', ring: '#5ff0e6', ring2: '#0e2a52' };
+function mecha(cx, cy, L, t, o = {}) {
+  const pal = o.pal || MP, dir = o.dir || 1, u = L / 100, X = v => cx + dir * v * u, Y = v => cy + v * u, th = L >= 90 ? 2 : 1;
+  if (L < 10) { const r = Math.max(1, L * 0.45); E(cx, cy, r + 1, r * 0.6 + 1, pal.k); E(cx, cy, r, r * 0.6, pal.w); P(cx + dir * Math.round(r * 0.6), cy - 1, pal.v); return; }
+  const wk = o.walk ? t * 6 : 0;
+  // cables de la espalda
+  if (L >= 22) for (let i = 0; i < 5; i++) { let px = X(-16), py = Y(-15 + i * 2); for (let j = 1; j <= 7; j++) { const nx = X(-16 - j * 7 - i * 2), ny = Y(-15 + i * 2 - j * 4.2 + Math.sin(t * 2.5 + j * 0.9 + i * 1.7) * 2.5); LL(px, py, nx, ny, pal.cab); px = nx; py = ny; } }
+  // placas superiores (alas plegadas)
+  polyO([[X(-2), Y(-13)], [X(-36), Y(-45)], [X(-27), Y(-47)], [X(8), Y(-15)]], pal.s, pal.k);
+  polyO([[X(4), Y(-14)], [X(-26), Y(-40)], [X(-18), Y(-42)], [X(14), Y(-14)]], pal.w, pal.k);
+  // patas del lado lejano
+  const leg = (ax, near, ph) => { const lift = Math.max(0, Math.sin(wk + ph)) * 4, sw = Math.sin(wk + ph) * 3; const c = near ? pal.leg : pal.jt; const kx = X(ax + 8 + sw), ky = Y(22 - lift), fx = X(ax + 3 + sw * 1.5), fy = Y(34 - lift * 0.6); LL(X(ax), Y(8), kx, ky, c, th); LL(kx, ky, fx, fy, c, th); P(kx, ky, pal.k); LL(fx, fy, fx - dir * 2 * u, fy + 1, pal.k); LL(fx, fy, fx + dir * 2 * u, fy + 1, pal.k); };
+  if (o.legs !== false) { leg(-10, false, 1.6); leg(4, false, 3.2); }
+  // aleta-cuchilla
+  polyO([[X(-8), Y(6)], [X(-64), Y(40)], [X(-68), Y(36)], [X(-46), Y(22)], [X(-48), Y(18)], [X(-16), Y(-1)]], pal.fin, pal.k);
+  // vaina lejana
+  E(X(6), Y(-4), 13 * u + 1, 13 * u + 1, pal.k); E(X(6), Y(-4), 13 * u, 13 * u, pal.s);
+  // cuerpo
+  E(X(0), Y(0), 39 * u + 1, 17 * u + 1, pal.k); E(X(0), Y(0), 39 * u, 17 * u, pal.s); E(X(-2), Y(-3), 35 * u, 12 * u, pal.w);
+  // cabeza y visor
+  E(X(30), Y(0), 13 * u + 1, 11 * u + 1, pal.k); E(X(30), Y(0), 13 * u, 11 * u, pal.w);
+  poly([[X(14), Y(-12)], [X(33), Y(-9)], [X(42), Y(-1)], [X(40), Y(5)], [X(26), Y(0)], [X(16), Y(-4)]], pal.v);
+  LL(X(20), Y(-9), X(33), Y(-6), pal.vh);
+  E(X(42), Y(4), 4 * u, 4 * u, pal.k);
+  // filamentos sensores
+  if (L >= 20) for (let i = 0; i < 3; i++) { let px = X(44), py = Y(5); for (let j = 1; j <= 4; j++) { const nx = X(44 + j * 3.5), ny = Y(5 + j * (2 + i) + Math.sin(t * 3 + i + j) * 1.2); LL(px, py, nx, ny, pal.cab); px = nx; py = ny; } }
+  // patas cercanas
+  if (o.legs !== false) { leg(-16, true, 0); leg(-2, true, 2.2); leg(10, true, 4.1); }
+  // brazos manipuladores
+  const arm = (ax, ay, tx, ty) => { const ex = (ax + tx) / 2 + dir * 3 * u, ey = Math.min(ay, ty) - 6 * u; LL(ax, ay, ex, ey, pal.leg, th); LL(ex, ey, tx, ty, pal.leg, th); P(ex, ey, pal.k); LL(tx, ty, tx + dir * 2, ty - 2, pal.k); LL(tx, ty, tx + dir * 2, ty + 2, pal.k); };
+  if (o.legs !== false) {
+    arm(X(22), Y(10), X(48 + Math.sin(t * 1.3) * 2), Y(28));
+    if (o.arm) arm(X(26), Y(8), o.arm[0], o.arm[1]); else arm(X(26), Y(8), X(54 + Math.sin(t * 1.1 + 1) * 2), Y(24));
+  }
+  // vaina cercana (élitro)
+  const pr = 16 * u;
+  E(X(-6), Y(6), pr + 1, pr + 1, pal.k); E(X(-6), Y(6), pr, pr, pal.s); E(X(-7), Y(5), pr * 0.9, pr * 0.9, pal.w);
+  E(X(-4), Y(6), pr * 0.62, pr * 0.62, pal.ring); E(X(-4), Y(6), pr * 0.44, pr * 0.44, pal.ring2); E(X(-4), Y(6), pr * 0.22, pr * 0.22, pal.ring);
+  if (L > 30) P(X(-7), Y(2), '#ffffff');
+  if (o.glow) E(X(-4), Y(6), pr * 0.2, pr * 0.2, o.glow);
+}
+
+/* ---------- silueta holográfica (estilo ASTRA) ---------- */
+const _holo = new Map();
+function holoBody(h, c = '#f7b32b', fill = '#7a4f0c') {
+  const k = h + c + fill; if (_holo.has(k)) return _holo.get(k);
+  const u = h / 100, w = Math.ceil(44 * u) + 2, cv = document.createElement('canvas'); cv.width = w; cv.height = h + 2;
+  const cx = w / 2, cc = cv.getContext('2d');
+  withCtx(cc, () => {
+    const f = '#ffffff';
+    E(cx, 7 * u, 6 * u, 7 * u, f); R(cx - 2.5 * u, 12 * u, 5 * u, 5 * u, f);
+    poly([[cx - 12 * u, 16 * u], [cx + 12 * u, 16 * u], [cx + 9 * u, 50 * u], [cx - 9 * u, 50 * u]], f);
+    poly([[cx - 9 * u, 48 * u], [cx + 9 * u, 48 * u], [cx + 10 * u, 57 * u], [cx - 10 * u, 57 * u]], f);
+    for (const s of [-1, 1]) {
+      poly([[cx + s * 11 * u, 16 * u], [cx + s * 16 * u, 18 * u], [cx + s * 20 * u, 52 * u], [cx + s * 16 * u, 53 * u], [cx + s * 12.5 * u, 27 * u]], f);
+      E(cx + s * 18 * u, 55 * u, 2.6 * u, 3 * u, f);
+      poly([[cx + s * 10 * u, 55 * u], [cx + s * 1.2 * u, 55 * u], [cx + s * 2.5 * u, 97 * u], [cx + s * 7.5 * u, 97 * u]], f);
+      R(cx + s * 5 * u - 3 * u, 96 * u, 6 * u, 3 * u, f);
+    }
+  });
+  const id = cc.getImageData(0, 0, w, h + 2), d = id.data, m = new Uint8Array(w * (h + 2));
+  for (let i = 0; i < m.length; i++) m[i] = d[i * 4 + 3] > 0 ? 1 : 0;
+  const hex = s => [parseInt(s.slice(1, 3), 16), parseInt(s.slice(3, 5), 16), parseInt(s.slice(5, 7), 16)];
+  const C1 = hex(c), C2 = hex(fill);
+  for (let y = 0; y < h + 2; y++) for (let x = 0; x < w; x++) {
+    const i = y * w + x; if (!m[i]) continue;
+    const edge = x === 0 || y === 0 || x === w - 1 || y === h + 1 || !m[i - 1] || !m[i + 1] || !m[i - w] || !m[i + w];
+    let C = null; if (edge) C = C1; else if (y % 3 === 0 || bay(x, y) < 5) C = C2;
+    if (C) { d[i * 4] = C[0]; d[i * 4 + 1] = C[1]; d[i * 4 + 2] = C[2]; d[i * 4 + 3] = 255; } else d[i * 4 + 3] = 0;
+  }
+  cc.putImageData(id, 0, 0); _holo.set(k, cv); return cv;
+}
+
+/* ---------- fondos y piezas reutilizables ---------- */
+function stars(t, n = 70, h = H) { for (let i = 0; i < n; i++) { const x = hash(i, 1) * W, y = hash(i, 2) * h, b = Math.sin(t * (1 + hash(i, 3) * 2) + i) > 0.7; P(x, y, b ? '#ffffff' : hash(i, 4) > 0.5 ? '#6b7393' : '#3a4466'); if (b && hash(i, 5) > 0.75) { P(x - 1, y, '#6b7393'); P(x + 1, y, '#6b7393'); P(x, y - 1, '#6b7393'); P(x, y + 1, '#6b7393'); } } }
+function rbc(x, y, r, tilt, dark) {
+  const o = dark ? '#3e0910' : '#6e0f17', a = dark ? '#7e1820' : '#c4282f', b = dark ? '#5e1018' : '#9e1c25', hi = dark ? '#a4303a' : '#ff6a5e';
+  const ry = Math.max(1.5, r * tilt);
+  E(x, y, r + 1, ry + 1, o); E(x, y, r, ry, a);
+  if (tilt > 0.5) { E(x, y, r * 0.55, ry * 0.5, b); P(x - r * 0.5, y - ry * 0.55, hi); P(x - r * 0.35, y - ry * 0.7, hi); }
+  else { R(x - r * 0.6, y - ry * 0.3, r * 1.2, 1, hi); }
+}
+function heartShape(cx, cy, s, c) { E(cx - s * 0.5, cy - s * 0.25, s * 0.56, s * 0.5, c); E(cx + s * 0.5, cy - s * 0.25, s * 0.56, s * 0.5, c); poly([[cx - s * 1.05, cy - 0.1 * s], [cx + s * 1.05, cy - 0.1 * s], [cx, cy + s * 1.1]], c); }
+function trna(x, y, aa, anti = '#5ff0e6', flip = false) {
+  spr(["...m...", "..mmm..", "m.mmm.m", "mmmmmmm", "m.mmm.m", "..mmm..", "..mmm..", "..aaa..", "..a.a.."], x - 3, y, { m: '#e05fb0', a: anti }, flip);
+  LL(x, y - 1, x, y - 3, '#e05fb0');
+  if (aa) { EO(x, y - 5, 2, 2, aa); }
+}
+const AA_COL = { K: '#5aa9ff', R: '#5aa9ff', H: '#5aa9ff', D: '#ff5a5a', E: '#ff5a5a', S: '#7ee07e', T: '#7ee07e', N: '#7ee07e', Q: '#7ee07e', C: '#ffe066', G: '#e8e8e8', A: '#f7b32b', V: '#f7b32b', L: '#f7b32b', I: '#f7b32b', F: '#e05fb0', Y: '#e05fb0', M: '#f7b32b', W: '#e05fb0', P: '#c0a0ff' };
+const AMILINA = 'KCNTATCATQRLANFLVHSSNNFGAILSSTNVGSNTY';
+const CODONES = 'AAATGCAACACTGCCACATGTGCAACGCAGCGCCTGGCAAATTTTTTAGTTCATTCCAGCAACAACTTTGGTGCCATTCTCTCATCTACCAACGTGGGATCCAATACATAT'.replace(/T/g, 'U');
+const BASE_COL = { A: '#7ee07e', U: '#ff6a5e', G: '#ffe066', C: '#5aa9ff' };
+
+/* ---------- caja de diálogo estilo RPG de bolsillo ---------- */
+const CPS = 34;
+const lineDur = s => 0.25 + [...s].length / CPS + 1.25 + [...s].length * 0.02;
+const TAG = { ASTRA: '#c97a12', OPERADORA: '#4b5639', INVESTIGADORA: '#8a6a3a', 'TÉCNICO': '#3e5d80', ENFERMERA: '#2f7d76' };
+const ACCENT = { ASTRA: '#f7b32b', OPERADORA: '#8d9a6e', INVESTIGADORA: '#c9a46a', 'TÉCNICO': '#7fa3c9', ENFERMERA: '#7fc8c0' };
+function portrait(who, x, y, t, talking) {
+  R(x, y, 30, 30, K); R(x + 1, y + 1, 28, 28, who === 'ASTRA' ? '#1b1f33' : '#c9d3e0');
+  if (who === 'ASTRA') { astra(x + 14, y + 15, 11, talking && Math.floor(t * 6) % 2 ? 'scan' : 'idle', t); return; }
+  const rows = who === 'INVESTIGADORA' ? INV_ROWS.slice(0, 14) : OPER_TOP.slice(0, 14);
+  const bob = talking ? (Math.floor(t * 7) % 2) : 0;
+  clipRect(x + 1, y + 1, 28, 28, () => {
+    spr(rows, x + 1, y + 1 + bob, PAL[who], false, 2);
+    if (talking && Math.floor(t * 9) % 2) R(x + 1 + (who === 'INVESTIGADORA' ? 12 : 14), y + 1 + bob + 16, 2, 2, '#8c3a3a');
+    if (who !== 'INVESTIGADORA' && (t % 3.7) < 0.12) R(x + 1 + 8, y + 1 + bob + 12, 12, 2, PAL[who].s);
+  });
+}
+function rpgBox(who, txt, n, t, done) {
+  const x = 4, y = 130, w = 312, h = 48, acc = ACCENT[who] || '#c0cbdc';
+  R(x + 2, y, w - 4, h, K); R(x, y + 2, w, h - 4, K); R(x + 1, y + 1, w - 2, h - 2, K);
+  R(x + 2, y + 2, w - 4, h - 4, acc); R(x + 3, y + 3, w - 6, h - 6, '#f8f8f0');
+  R(x + 3, y + h - 6, w - 6, 3, '#e6e6dc');
+  portrait(who, x + 7, y + 9, t, !done);
+  // etiqueta con el nombre
+  const nm = who, nw = tw(nm) + 12;
+  R(x + 8, y - 11, nw, 13, K); R(x + 9, y - 10, nw - 2, 11, TAG[who] || '#3a4466');
+  text(nm, x + 14, y - 8, '#f8f8f0');
+  const lines = wrap(txt, 43); let left = n;
+  for (let i = 0; i < lines.length && left > 0; i++) { const s = [...lines[i]].slice(0, left).join(''); text(s, x + 44, y + 9 + i * 12, '#283040', 1, '#c8ccd4'); left -= [...lines[i]].length + 1; }
+  if (done && Math.floor(t * 3) % 2 === 0) { const ax = x + w - 14, ay = y + h - 11; R(ax, ay, 5, 1, '#e8742a'); R(ax + 1, ay + 1, 3, 1, '#e8742a'); P(ax + 2, ay + 2, '#e8742a'); }
+}
+function narrBox(txt, n, t, done) {
+  const x = 10, y = 132, w = 300, h = 44;
+  R(x, y, w, h, '#0b0d18'); R(x, y, w, 1, '#3a4466'); R(x, y + h - 1, w, 1, '#3a4466'); R(x, y, 1, h, '#3a4466'); R(x + w - 1, y, 1, h, '#3a4466');
+  R(x + 2, y + 2, w - 4, 1, '#232a45'); R(x + 2, y + h - 3, w - 4, 1, '#232a45');
+  const lines = wrap(txt, 46), y0 = y + 22 - lines.length * 6 + 1; let left = n;
+  for (let i = 0; i < lines.length; i++) { const full = lines[i], s = [...full].slice(0, Math.max(0, left)).join(''); const cx = Math.round(160 - tw(full) / 2); text(s, cx, y0 + i * 12, '#e8e8f0', 1, '#2a2f48'); left -= [...full].length + 1; }
+  if (done && Math.floor(t * 2) % 2 === 0) text('▶', x + w - 12, y + h - 11, '#f7b32b');
+}
+function drawDialog(S, t) {
+  if (!S.lines.length) return;
+  let i = -1; for (let k = 0; k < S.lines.length; k++) if (t >= S.L[k]) i = k;
+  if (i < 0 || t > S.E[S.lines.length - 1]) return;
+  const [who, txt] = S.lines[i], lt = t - S.L[i], n = Math.floor(Math.max(0, lt - 0.12) * CPS), done = n >= [...txt].length;
+  if (who === null) narrBox(txt, n, t, done); else rpgBox(who, txt, n, t, done);
+}
+function talking(S, t, who) { for (let k = 0; k < S.lines.length; k++) { if (S.lines[k][0] !== who) continue; const a = S.L[k], b = a + 0.12 + [...S.lines[k][1]].length / CPS; if (t >= a && t < b) return true; } return false; }
+function banner(txt, t) {
+  if (t < 0.3 || t > 4.2) return; const w = tw(txt) + 18, p = ease(seg(t, 0.3, 0.8)) - ease(seg(t, 3.6, 4.1)), x = Math.round(-w + p * (w + 6));
+  R(x, 8, w, 13, '#0b0d18'); R(x, 8, 3, 13, '#f7b32b'); R(x, 20, w, 1, '#3a4466'); text(txt, x + 10, 11, '#f4f4f4');
+}
+function hudPanel(x, y, w, h, c = '#f7b32b', bg = '#0b0d18') { R(x, y, w, h, bg); R(x, y, w, 1, c); R(x, y + h - 1, w, 1, c); R(x, y, 1, h, c); R(x + w - 1, y, 1, h, c); R(x + 2, y + 2, 4, 1, c); R(x + 2, y + 2, 1, 4, c); R(x + w - 6, y + h - 3, 4, 1, c); R(x + w - 3, y + h - 6, 1, 4, c); }
+
+/* ==========================================================
+   ESCENAS
+   ========================================================== */
+function cabin(t, screenFn, astraSt) {
+  R(0, 0, W, H, '#0f111a');
+  for (let x = 0; x < W; x += 40) R(x, 0, 1, 100, '#171b2b');
+  // pared-pantalla
+  R(22, 4, 276, 92, '#2a3150'); R(24, 6, 272, 88, K);
+  clipRect(26, 8, 268, 84, () => { R(26, 8, 268, 84, '#0d1018'); for (let x = 26; x < 294; x += 12) R(x, 8, 1, 84, '#1a1608'); for (let y = 8; y < 92; y += 12) R(26, y, 268, 1, '#1a1608'); screenFn(t); R(26, 8 + ((t * 30) % 84), 268, 1, D('#f7b32b', 2)); });
+  // proyectores holográficos
+  for (const px of [40, 280]) { R(px - 4, 96, 8, 4, '#3a4466'); poly([[px - 3, 96], [px + 3, 96], [px + 12 * Math.sign(160 - px), 60], [px + 4 * Math.sign(160 - px), 60]], D('#f7b32b', 2)); }
+  // consola
+  poly([[30, 100], [290, 100], [310, 130], [10, 130]], '#2a3150'); R(30, 100, 260, 2, '#5a6988');
+  for (let i = 0; i < 26; i++) { const bx = 40 + i * 9.6, on = hash(i, Math.floor(t * 2 + i)) > 0.45; R(bx, 106 + (i % 2) * 6, 4, 2, on ? ['#f7b32b', '#5ff0e6', '#e8742a', '#7ee07e'][i % 4] : '#3a4466'); }
+  R(120, 104, 80, 10, '#1b1f33'); R(122, 106, 76, 6, '#0d1018'); for (let i = 0; i < 12; i++) R(124 + i * 6, 107 + (hash(i, Math.floor(t * 4)) * 4 | 0), 3, 1, '#5ff0e6');
+  // Operadora de espaldas (respira)
+  const br = Math.floor(t * 1.2) % 2;
+  spr(OPER_BACK, 146, 66 + br, PAL.OPERADORA, false, 2);
+  R(138, 96, 44, 34, '#22252b'); R(138, 96, 44, 2, '#3a3f4c'); R(156, 128, 8, 2, '#22252b');
+  // ASTRA abajo a la derecha de la consola
+  astra(270, 84 + Math.sin(t * 2) * 2, 12, astraSt, t);
+}
+
+const SCENES = [
+  /* 0 · Título */
+  { lead: 7.5, lines: [], draw(t) {
+    bands(0, H, ['#07080f', '#0b0d18', '#11142a', '#171b36']); stars(t, 90);
+    for (let i = 0; i < 9; i++) { const x = ((hash(i, 9) * 400 + t * (6 + i)) % 400) - 40, y = 20 + hash(i, 8) * 140; E(x, y, 6 + i % 3 * 2, 3 + i % 2, D('#5c0f1a', 6)); }
+    const cx = 160, cy = 72, rr = 40, p = ease(seg(t, 0.3, 1.6));
+    const hex = (r, o = 0) => [...Array(6)].map((_, k) => { const a = -Math.PI / 2 + k * Math.PI / 3; return [cx + Math.cos(a) * r * 0.92 + o, cy + Math.sin(a) * r]; });
+    if (p > 0) { poly(hex(rr * p), '#ff7ce8'); poly(hex((rr - 3) * p), '#fff3a0'); poly(hex((rr - 4) * p), '#2b2040'); E(cx, cy, (rr - 12) * p, (rr - 12) * p, '#3a2a52'); }
+    const letters = [...GAME], s = 3, total = tw(GAME, s), x0 = Math.round(cx - total / 2);
+    letters.forEach((ch, i) => { const lt = seg(t, 1.4 + i * 0.12, 1.75 + i * 0.12); if (lt <= 0) return; const dy = Math.round((1 - ease(lt)) * -30 + Math.sin(lt * Math.PI) * -3); textO(ch, x0 + i * 6 * s, cy - 10 + dy, '#ff7ce8', '#fff3a0', s); text(ch, x0 + i * 6 * s + 1, cy - 10 + dy + 1, D('#b23fa8', 8), s); });
+    if (t > 3) { textC('UN VIAJE AL INTERIOR DEL CUERPO HUMANO', 160, 124, '#e8e8f0', 1, '#2a2f48'); }
+    if (t > 3.6 && Math.floor(t * 2) % 2 === 0) textC('▶ INICIANDO EXPEDICIÓN', 160, 142, '#f7b32b');
+    if (t > 2.4) textC('NOMBRE CLAVE: ' + CODENAME, 160, 166, '#5a6988');
+    mecha(((t * 46) % 420) - 60, 24 + Math.sin(t * 2) * 3, 16, t, { legs: false });
+  } },
+  /* 1 · Prólogo: la Tierra */
+  { banner: 'PRÓLOGO · EL ORIGEN DEL PROYECTO', lead: 1.6, tail: 1.2, lines: [
+    [null, 'HUBO UN TIEMPO EN QUE LA HUMANIDAD CREYÓ QUE PODÍA COMPRENDERLO TODO.'],
+    [null, 'DOMINÓ EL FUEGO, CRUZÓ OCÉANOS, LEVANTÓ CIUDADES Y DESCIFRÓ EL CÓDIGO DE LA VIDA.'],
+    [null, 'PERO EL CLIMA CAMBIÓ. EL AGUA SE VOLVIÓ ESCASA Y ALGUNOS ECOSISTEMAS DESAPARECIERON.'],
+    [null, 'EL PLANETA YA NO ERA UN LUGAR DONDE LOS HUMANOS PUDIERAN VIVIR TAL COMO ERAN.']],
+    draw(t, S) {
+      R(0, 0, W, H, '#05060c'); stars(t, 110);
+      const dry = ease(seg(t, S.L[2] + 0.5, S.L[2] + 5));
+      E(268, 30, 14, 14, D('#fff3a0', 3)); E(268, 30, 9, 9, '#fff3a0'); E(268, 30, 7, 7, '#ffffff');
+      const r = 44, cx = 150, cy = 66, rot = t * 0.25;
+      for (let y = -r; y <= r; y++) for (let x = -r; x <= r; x++) {
+        const d2 = (x * x + y * y) / (r * r); if (d2 > 1) continue;
+        const nx = x / r, ny = y / r, nz = Math.sqrt(1 - d2), lat = Math.asin(ny), lon = Math.atan2(nx, nz) + rot;
+        const n = fbm(Math.cos(lon) * 1.6 + 5, Math.sin(lon) * 1.6 + lat * 1.8 + 3), sea = 0.52 - dry * 0.1, px = x + 200, py = y + 200, d = bay(px, py) < dry * 16;
+        let c, land = n > sea;
+        if (Math.abs(ny) > 0.9 - dry * 0.25 * 0 && dry < 0.5 && Math.abs(ny) > 0.9) c = '#e8f4ff';
+        else if (land) { const e = n - sea; c = d ? (e > 0.07 ? '#8f6235' : '#c99a5b') : (e > 0.07 ? '#2f7d3a' : '#3fa34d'); }
+        else c = d ? (n > sea - 0.04 ? '#5a6a6a' : '#3a4a5a') : (n > sea - 0.04 ? '#2c6bc4' : '#1d3f8a');
+        if (dry < 0.7 && fbm(Math.cos(lon + t * 0.08) * 2.4 + 20, Math.sin(lon + t * 0.08) * 2.4 + lat * 3) > 0.62 + dry * 0.3) c = '#f4f4f4';
+        const l = nx * 0.62 - ny * 0.42 + nz * 0.66;
+        if (l < -0.05) { c = land ? (hash(Math.floor(lon * 40), Math.floor(lat * 40)) > 0.82 ? '#ffcf5e' : (d ? '#24160c' : '#10200f')) : '#0b1530'; }
+        else if (l < 0.15 && bay(px, py) < 8) c = land ? (d ? '#5c3a1f' : '#1d4f26') : '#14295c';
+        P(cx + x, cy + y, c);
+      }
+      arc(cx, cy, r + 1, r + 1, dry < 0.5 ? '#5ff0e6' : '#e8742a', -1.9, 0.9);
+      arc(cx, cy, r + 2, r + 2, D(dry < 0.5 ? '#5ff0e6' : '#e8742a', 6), -1.6, 0.6);
+      if (dry > 0.2) for (let i = 0; i < 30; i++) { const a = hash(i, 7) * 6.28 + t * 0.2, rr = r + 3 + hash(i, 8) * 8; P(cx + Math.cos(a) * rr, cy + Math.sin(a) * rr, D('#e8742a', dry * 16)); }
+    } },
+  /* 2 · Ciudad bajo el domo */
+  { lead: 1.2, tail: 1.4, lines: [
+    [null, 'LAS CIUDADES APRENDIERON A PROTEGERSE. LA TECNOLOGÍA PERMITIÓ RESISTIR LO IMPOSIBLE.'],
+    [null, 'ENTONCES SURGIÓ UNA IDEA: ¿HASTA DÓNDE PUEDE ADAPTARSE EL PROPIO CUERPO HUMANO?'],
+    [null, 'ASÍ NACIÓ EL PROYECTO ' + GAME + '.']],
+    draw(t, S) {
+      bands(0, 104, ['#5c1f1a', '#7a2a1e', '#a8402a', '#d0602e', '#e8742a', '#f2a050']);
+      E(250, 40, 22, 22, D('#fff3a0', 4)); E(250, 40, 15, 15, '#ffe9a0'); E(250, 40, 12, 12, '#fff8d8');
+      for (let i = 0; i < 5; i++) { const y = 60 + i * 9; for (let x = 0; x < W; x += 8) if (Math.sin(x * 0.2 + t * 3 + i) > 0.6) R(x, y, 4, 1, D('#ffd09a', 6)); }
+      const cx = 160, cy = 104, rx = 96, ry = 76;
+      clipRect(0, 0, W, 104, () => {
+        E(cx, cy, rx, ry, '#2a5d78'); E(cx, cy, rx - 4, ry - 4, '#3d7d96'); E(cx, cy - 10, rx - 20, ry - 26, '#5aa0b4');
+        const bl = [[76, 34, '#1d3557'], [88, 52, '#24406a'], [100, 40, '#1d3557'], [110, 66, '#2c4f7a'], [124, 48, '#24406a'], [136, 78, '#1d3557'], [150, 58, '#2c4f7a'], [162, 88, '#24406a'], [176, 62, '#1d3557'], [188, 70, '#2c4f7a'], [200, 44, '#24406a'], [212, 54, '#1d3557'], [224, 36, '#2c4f7a']];
+        bl.forEach(([x, h, c], i) => { R(x, 104 - h, 11, h, c); R(x, 104 - h, 11, 1, '#5ff0e6'); for (let yy = 104 - h + 4; yy < 100; yy += 5) for (let xx = x + 2; xx < x + 10; xx += 3) if (hash(xx * 7 + i, yy + Math.floor(t * 0.7 + i)) > 0.45) P(xx, yy, hash(xx, yy) > 0.6 ? '#ffe08a' : '#9ff7f0'); });
+        for (let i = 0; i < 14; i++) { const x = 78 + i * 12 + (i % 2) * 4; E(x, 101, 4, 3, '#2f7d3a'); E(x - 1, 100, 2, 2, '#3fa34d'); }
+        arc(cx, cy, rx * 0.36, ry, D('#9ff7f0', 6), Math.PI, Math.PI * 2); arc(cx, cy, rx * 0.72, ry, D('#9ff7f0', 6), Math.PI, Math.PI * 2);
+        arc(cx, cy - ry * 0.5, rx * 0.87, 6, D('#9ff7f0', 6), Math.PI, Math.PI * 2);
+        arc(cx, cy, rx, ry, '#c8fffa', Math.PI, Math.PI * 2); arc(cx, cy, rx - 1, ry - 1, '#5ff0e6', Math.PI, Math.PI * 2);
+        arc(cx, cy, rx - 6, ry - 6, '#ffffff', Math.PI * 1.15, Math.PI * 1.35);
+        if (t > S.L[2]) { const p = ease(seg(t, S.L[2], S.L[2] + 1)); const hx = 160, hy = 22, r = 9 * p; poly([...Array(6)].map((_, k) => { const a = -Math.PI / 2 + k * Math.PI / 3; return [hx + Math.cos(a) * r, hy + Math.sin(a) * r]; }), '#ff7ce8'); if (p > 0.9) textC(GAME, 160, 34, '#fff3a0', 1, '#b23fa8'); }
+      });
+      R(0, 104, W, 76, '#8f6235'); R(0, 104, W, 2, '#c99a5b'); bands; for (let i = 0; i < 18; i++) { const x = hash(i, 11) * W, y = 110 + hash(i, 12) * 16; LL(x, y, x + 8, y + 2, '#5c3a1f'); LL(x + 8, y + 2, x + 12, y - 1, '#5c3a1f'); }
+      R(24, 90, 2, 14, '#3a2414'); LL(25, 94, 19, 88, '#3a2414'); LL(25, 92, 31, 86, '#3a2414');
+      for (let i = 0; i < 40; i++) { const x = ((hash(i, 21) * 340 + t * (20 + hash(i, 22) * 30)) % 340) - 10, y = 40 + hash(i, 23) * 80; if (x < 60 || x > 260 || y > 104) P(x, y, '#ffd09a'); }
+    } },
+  /* 3 · La anomalía */
+  { lead: 1.0, tail: 1.2, lines: [
+    [null, 'PERO EN LA COMPLEJIDAD DEL CUERPO APARECIERON LAS PRIMERAS SEÑALES DE INCERTIDUMBRE.'],
+    [null, 'ALGUNAS PROTEÍNAS SE PLEGABAN DE FORMA DISTINTA... Y TENDÍAN A AGRUPARSE.'],
+    [null, 'ERA DEMASIADO PEQUEÑO PARA OBSERVARLO. HASTA QUE SE CONSTRUYÓ EL MECHA.']],
+    draw(t, S) {
+      R(0, 0, W, H, '#11131f'); for (let x = 0; x < W; x += 20) R(x, 0, 1, 130, '#161a29');
+      R(30, 6, 260, 110, '#3a4466'); R(32, 8, 256, 106, K);
+      const sx = 34, sy = 10, sw = 252, sh = 102, blue = t > S.L[2];
+      clipRect(sx, sy, sw, sh, () => {
+        if (!blue) {
+          R(sx, sy, sw, sh, '#0d1f24'); for (let x = sx; x < sx + sw; x += 8) R(x, sy, 1, sh, '#16343a'); for (let y = sy; y < sy + sh; y += 8) R(sx, y, sw, 1, '#16343a');
+          const pa = ease(seg(t, S.L[1] + 0.3, S.L[1] + 4.5));
+          for (let i = 0; i < 14; i++) {
+            const fx = sx + 20 + hash(i, 31) * (sw - 40) + Math.sin(t * 0.8 + i) * 6, fy = sy + 14 + hash(i, 32) * (sh - 28) + Math.cos(t * 0.9 + i * 2) * 5;
+            const tx = 140 + (i % 2) * 3, ty = 22 + i * 5.5, x = lerp(fx, tx, pa), y = lerp(fy, ty, pa);
+            for (let b = 0; b < 6; b++) { const bx = x + b * 5 - 12, by = y + ((b % 2) ? 2 : -1) * (1 - pa * 0.6) + Math.sin(t * 4 + b + i) * (1 - pa); E(bx, by, 2, 2, AA_COL[AMILINA[(i * 3 + b) % 37]]); }
+          }
+          text('AMILINA (IAPP) · CÉLULA BETA', sx + 6, sy + 4, '#5ff0e6');
+          if (t > S.L[1] + 0.6 && Math.floor(t * 3) % 2) { R(sx, sy, sw, 2, '#d93a2b'); R(sx, sy + sh - 2, sw, 2, '#d93a2b'); R(sx, sy, 2, sh, '#d93a2b'); R(sx + sw - 2, sy, 2, sh, '#d93a2b'); poly([[sx + sw - 22, sy + 18], [sx + sw - 8, sy + 18], [sx + sw - 15, sy + 5]], '#d93a2b'); R(sx + sw - 16, sy + 9, 2, 5, '#fff'); R(sx + sw - 16, sy + 15, 2, 2, '#fff'); text('ALERTA: AGREGACIÓN', sx + 6, sy + sh - 12, '#ff6a5e'); }
+        } else {
+          const wp = seg(t, S.L[2], S.L[2] + 0.8);
+          R(sx, sy, sw, sh, '#0e2a52'); for (let x = sx; x < sx + sw; x += 8) R(x, sy, 1, sh, '#1b3f73'); for (let y = sy; y < sy + sh; y += 8) R(sx, y, sw, 1, '#1b3f73');
+          mecha(170, 58, 92, t, { pal: MP_BLUE });
+          text('PROTOTIPO · MECHA SERAPHIM', sx + 6, sy + 4, '#d6fffb');
+          text('LARGO 5 M  ·  ESCALA VARIABLE', sx + 6, sy + sh - 12, '#5ff0e6');
+          if (wp < 1) R(sx, sy + sh * wp, sw, sh * (1 - wp), '#0d1f24');
+        }
+      });
+      R(150, 116, 20, 6, '#3a4466'); R(130, 122, 60, 3, '#3a4466');
+    } },
+  /* 4 · El hangar */
+  { banner: 'ESCENA 1 · EL HANGAR', lead: 3.4, tail: 1.2, lines: [
+    ['INVESTIGADORA', '¿LISTA PARA COMENZAR?'],
+    ['OPERADORA', 'CASI. ¿TENEMOS CONFIRMADA LA UBICACIÓN DE LA PRIMERA ANOMALÍA?'],
+    ['INVESTIGADORA', 'UNA CÉLULA BETA DE LOS ISLOTES DEL PÁNCREAS. PRODUCE INSULINA Y AMILINA (IAPP).'],
+    ['INVESTIGADORA', 'BUSCAMOS UN RIBOSOMA: AHÍ SE ENSAMBLAN LAS PROTEÍNAS SIGUIENDO AL ARN MENSAJERO.'],
+    ['OPERADORA', 'ENTONCES, ¿TENDRÉ QUE AVERIGUAR QUÉ PASA CON ESA PROTEÍNA?'],
+    ['INVESTIGADORA', 'PRIMERO OBSERVA CÓMO SE CONSTRUYE. ESA SERÁ TU PRIMERA TAREA.'],
+    ['OPERADORA', 'DE ACUERDO. ¿COMENZAMOS?']],
+    draw(t, S) {
+      R(0, 0, W, 92, '#2a3150'); for (let x = 0; x < W; x += 32) R(x, 0, 1, 92, '#232a45');
+      for (const wx of [24, 124, 224]) { R(wx, 6, 72, 52, K); R(wx + 2, 8, 68, 48, '#9fd8ef'); R(wx + 2, 8, 68, 16, '#c9ecf8'); R(wx + 2, 40, 68, 16, '#7cc2e0'); R(wx + 35, 8, 2, 48, K); R(wx + 2, 31, 68, 2, K); }
+      for (const wx of [24, 124, 224]) { poly([[wx + 6, 58], [wx + 40, 58], [wx + 96, 132], [wx + 50, 132]], D('#9ff7f0', 2)); poly([[wx + 40, 58], [wx + 66, 58], [wx + 120, 132], [wx + 96, 132]], D('#ff7ce8', 1)); }
+      for (const px of [6, 106, 206, 306]) { R(px, 0, 10, 94, '#3a4466'); R(px + 1, 0, 2, 94, '#5a6988'); R(px, 86, 10, 8, '#232a45'); }
+      R(0, 92, W, 88, '#4b5675'); for (let i = -10; i <= 10; i++) LL(160 + i * 14, 92, 160 + i * 40, 180, '#434c6a'); for (const y of [100, 112, 128, 150]) R(0, y, W, 1, '#434c6a');
+      E(212, 104, 74, 13, '#3a4466'); E(212, 103, 70, 11, '#5a6988'); for (let a = 0; a < 24; a++) { const an = a / 24 * 6.283; P(212 + Math.cos(an) * 72, 104 + Math.sin(an) * 12, (a + Math.floor(t * 4)) % 3 === 0 ? '#f7b32b' : '#2a3150'); }
+      mecha(212, 66, 104, t);
+      for (let i = 0; i < 6; i++) if (hash(i, Math.floor(t * 12)) > 0.5) P(250 + hash(i, Math.floor(t * 12) + 1) * 8, 92 + hash(i + 3, Math.floor(t * 12)) * 6, i % 2 ? '#fff3a0' : '#f7b32b');
+      const tx = 250 + Math.sin(t * 0.4) * 46; person('TÉCNICO', tx, 96, { flip: Math.cos(t * 0.4) < 0, step: Math.floor(t * 4) % 2 });
+      person('TÉCNICO', 262, 102, { flip: true });
+      const wp = seg(t, 0, 3.0), ox = lerp(-18, 74, ease(wp)), walking = wp > 0 && wp < 1;
+      person('OPERADORA', ox, 118, { step: walking && Math.floor(t * 6) % 2, bob: walking ? -(Math.floor(t * 6) % 2) : (talking(S, t, 'OPERADORA') ? -(Math.floor(t * 6) % 2) : 0) });
+      person('INVESTIGADORA', 108, 118, { flip: true, bob: talking(S, t, 'INVESTIGADORA') ? -(Math.floor(t * 6) % 2) : 0 });
+      if (t > S.L[2] && t < S.L[4]) { hudPanel(110, 66, 54, 22, '#5ff0e6'); E(124, 77, 7, 7, '#2a9d9a'); E(124, 77, 3, 3, '#5ff0e6'); text('IAPP', 134, 74, '#5ff0e6'); LL(116, 88, 112, 95, D('#5ff0e6', 8)); }
+    } },
+  /* 5 · Sala de enlace: ASTRA */
+  { lead: 1.4, tail: 1.0, lines: [
+    ['ASTRA', 'ENLACE DE TELEMETRÍA ESTABLECIDO. SENSORES Y SISTEMAS DE DESPLAZAMIENTO PREPARADOS.'],
+    ['ASTRA', 'SOY ASTRA, TU IA DE NAVEGACIÓN. NO ESTÁS SOLA: YO VEO LO QUE TÚ NO VES.'],
+    ['ASTRA', 'RUTA CARGADA: SISTEMA CIRCULATORIO, PÁNCREAS, CÉLULA BETA Y DESCENSO AL CITOSOL.'],
+    ['INVESTIGADORA', 'TE HABLO POR EL COMUNICADOR. TRASLADEN EL MECHA A LA SALA DE REDUCCIÓN.']],
+    draw(t, S) {
+      cabin(t, tt => {
+        const on = ease(seg(tt, 0.2, 1.2)); if (on <= 0) return;
+        const hb = holoBody(78); if (Math.floor(tt * 7) % 23 !== 0) g.drawImage(hb, 146 - (hb.width >> 1), 11);
+        const u = 0.78, cx = 146, top = 11;
+        const pts = [[cx - 15 * u, top + 46 * u], [cx - 13 * u, top + 30 * u], [cx - 8 * u, top + 18 * u], [cx + 2 * u, top + 24 * u], [cx - 4 * u, top + 20 * u], [cx + 6 * u, top + 20 * u], [cx + 2 * u, top + 25 * u], [cx, top + 34 * u], [cx + 4 * u, top + 39 * u], [cx + 4.5 * u, top + 40 * u]];
+        const pr = seg(tt, S.L[2], S.L[2] + 4) * (pts.length - 1);
+        for (let i = 0; i < pts.length - 1; i++) { if (pr <= i) break; const f = Math.min(1, pr - i); LL(pts[i][0], pts[i][1], lerp(pts[i][0], pts[i + 1][0], f), lerp(pts[i][1], pts[i + 1][1], f), '#ff4a3a'); }
+        if (pr > 0) { const i = Math.min(pts.length - 2, Math.floor(pr)), f = Math.min(1, pr - i); E(lerp(pts[i][0], pts[i + 1][0], f), lerp(pts[i][1], pts[i + 1][1], f), 2, 2, '#fff3a0'); }
+        hudPanel(32, 14, 74, 40); text('ASTRA', 38, 18, '#f7b32b'); text('ENLACE  OK', 38, 30, '#f7b32b'); text('PILOTO  OK', 38, 40, Math.floor(tt * 2) % 2 ? '#f7b32b' : '#c97a12');
+        hudPanel(214, 14, 74, 74); text('MECHA', 220, 18, '#f7b32b'); mecha(250, 48, 40, tt, { pal: { ...MP_BLUE, k: '#f7b32b', jt: '#fff3a0', leg: '#f7b32b', cab: '#c97a12', ring: '#f7b32b', vh: '#fff3a0' } });
+        text('5 M', 220, 76, '#f7b32b');
+        for (let i = 0; i < 30; i++) R(36 + i * 2, 74 - Math.abs(Math.sin(tt * 6 + i * 0.7)) * 10 * (talking(S, tt, 'ASTRA') ? 1 : 0.2), 1, 1 + Math.abs(Math.sin(tt * 6 + i * 0.7)) * 20 * (talking(S, tt, 'ASTRA') ? 1 : 0.2), '#f7b32b');
+      }, talking(S, t, 'ASTRA') ? 'scan' : 'idle');
+    } },
+  /* 6 · Sala de reducción */
+  { banner: 'ESCENA 2 · REDUCCIÓN', lead: 1.6, tail: 1.4, lines: [
+    ['TÉCNICO', 'TRASLADO COMPLETADO. EL MECHA SE ENCUENTRA EN POSICIÓN.'],
+    ['INVESTIGADORA', 'PERFECTO. COMIENCEN LA CALIBRACIÓN DEL SISTEMA.'],
+    ['INVESTIGADORA', 'DIMENSIÓN INICIAL: 3 MICRÓMETROS, COMO UNA PLAQUETA. ASÍ PODREMOS ENTRAR A LA SANGRE.'],
+    ['ASTRA', 'REDUCCIÓN COMPLETADA. DIMENSIÓN ACTUAL: 3 µM. SISTEMAS DE NAVEGACIÓN PREPARADOS.']],
+    draw(t, S) {
+      R(0, 0, W, H, '#11142a'); for (let x = 0; x < W; x += 24) R(x, 0, 1, 96, '#171b36'); R(0, 96, W, 84, '#1b1f33');
+      for (const px of [20, 284]) { R(px, 30, 16, 66, '#2a3150'); for (let i = 0; i < 6; i++) R(px + 3, 36 + i * 9, 10, 4, hash(i + px, Math.floor(t * 3)) > 0.5 ? '#5ff0e6' : '#232a45'); }
+      const sp = 0.5 + seg(t, S.L[1], S.L[1] + 2) * 1.8 + seg(t, S.L[2] + 0.8, S.L[2] + 2) * 3 - seg(t, S.L[3] + 0.6, S.L[3] + 2.5) * 4.6;
+      const ang = (S._a = (S._a || 0)), a0 = t * sp; // giro determinista aproximado
+      E(160, 100, 78, 15, '#2a3150'); E(160, 99, 72, 12, '#3a4466'); E(160, 98, 60, 9, '#4b5675');
+      for (let a = 0; a < 32; a++) { const an = a / 32 * 6.283; P(160 + Math.cos(an) * 76, 100 + Math.sin(an) * 14, (a + Math.floor(t * 6 * Math.max(0.3, sp))) % 4 === 0 ? '#f7b32b' : '#1b1f33'); }
+      const rings = k => { for (let i = 0; i < 3; i++) { const a = a0 * (1 + i * 0.3) + i * 1.05, rx = 78 * Math.abs(Math.cos(a)) + 3, cs = Math.sin(a) > 0; if (cs !== k) continue; arc(160, 62, rx, 46, '#8b9bb4', 0, 6.283, 2); arc(160, 62, rx + 2, 48, '#5a6988'); } };
+      rings(false);
+      const shrink = ease(seg(t, S.L[2] + 1.2, S.L[3] + 0.2)), Lm = lerp(70, 2, shrink);
+      if (shrink > 0 && shrink < 1) for (let i = 0; i < 18; i++) { const y = 96 - ((t * 30 + hash(i, 5) * 80) % 80); P(160 + (hash(i, 6) - 0.5) * 90, y, i % 2 ? '#5ff0e6' : '#ffffff'); }
+      if (Lm > 3) mecha(160, 80 - (1 - shrink) * 6, Lm, t); else { E(160, 88, 3, 3, D('#5ff0e6', 6)); P(160, 88, '#ffffff'); if (Math.floor(t * 4) % 2) { P(158, 88, '#5ff0e6'); P(162, 88, '#5ff0e6'); P(160, 86, '#5ff0e6'); P(160, 90, '#5ff0e6'); } }
+      rings(true);
+      const sz = 5 * Math.pow(10, -shrink * Math.log10(5 / 3e-6)); let lab;
+      if (sz >= 1) lab = sz.toFixed(1) + ' M'; else if (sz >= 0.01) lab = Math.round(sz * 100) + ' CM'; else if (sz >= 0.001) lab = Math.round(sz * 1000) + ' MM'; else lab = Math.max(3, Math.round(sz * 1e6)) + ' µM';
+      hudPanel(232, 6, 82, 24, '#5ff0e6'); text('ESCALA', 238, 10, '#5ff0e6'); text(lab, 238, 20, '#ffffff');
+      person('INVESTIGADORA', 48, 122, { bob: talking(S, t, 'INVESTIGADORA') ? -(Math.floor(t * 6) % 2) : 0 });
+      person('TÉCNICO', 258, 122, { flip: true, bob: talking(S, t, 'TÉCNICO') ? -(Math.floor(t * 6) % 2) : 0 });
+    } },
+  /* 7 · El paciente: ingreso intravenoso */
+  { lead: 1.6, tail: 2.2, lines: [
+    ['INVESTIGADORA', 'ENTRAREMOS POR LA VENA MEDIANA CUBITAL DEL ANTEBRAZO. ES RECTA, ACCESIBLE Y SEGURA.'],
+    ['ENFERMERA', 'CATÉTER LISTO, SIN BURBUJAS. CIRCUITO PURGADO, HÚMEDO A HÚMEDO.'],
+    ['INVESTIGADORA', 'FLASHBACK CONFIRMADO. RETIREN LA AGUJA METÁLICA.'],
+    ['ASTRA', 'CUBIERTA BIOMIMÉTICA ACTIVA. INGRESO AL TORRENTE SANGUÍNEO INICIADO.']],
+    draw(t, S) {
+      R(0, 0, W, 98, '#c9d3e0'); R(0, 90, W, 8, '#8b9bb4'); R(0, 98, W, 82, '#9aa6b8'); for (let x = 0; x < W; x += 20) R(x, 98, 1, 82, '#8b97aa'); R(0, 120, W, 1, '#8b97aa');
+      R(232, 12, 76, 56, K); R(234, 14, 72, 52, '#0b1a1c');
+      clipRect(234, 14, 72, 52, () => { const off = t * 40; for (let x = 0; x < 72; x++) { const p = (x + off) % 36, y = p > 14 && p < 16 ? -9 : p > 16 && p < 18 ? 5 : p > 18 && p < 19 ? -2 : 0; P(234 + x, 34 + y, x > 64 ? '#d6fffb' : '#3fe07a'); } text('ULISES', 238, 17, '#9ff7f0'); text('FC 72', 238, 46, '#3fe07a'); text('SPO2 98%', 238, 56, '#5ff0e6'); });
+      R(36, 98, 4, 22, '#3a4466'); R(186, 98, 4, 22, '#3a4466'); R(30, 88, 164, 10, '#5a6988'); R(30, 88, 164, 2, '#8b9bb4'); for (const ox of [40, 120, 180]) R(ox, 92, 6, 2, '#e8742a');
+      R(32, 80, 160, 9, '#eef2f6'); R(32, 80, 160, 1, '#ffffff');
+      // Ulises acostado
+      E(46, 76, 9, 6, '#24324d'); E(44, 74, 6, 3, '#34466a'); R(50, 74, 8, 6, '#e2ad8a'); R(52, 76, 6, 4, '#8b9bb4'); P(51, 75, K);
+      R(58, 71, 40, 10, '#5f6b5c'); R(64, 73, 26, 7, '#e8e4dc'); R(98, 72, 56, 9, '#c9c4b8'); for (let x = 104; x < 150; x += 10) R(x, 72, 1, 9, '#b3ad9f'); R(154, 72, 10, 8, '#f4f4f4');
+      R(72, 80, 22, 4, '#e2ad8a'); R(84, 80, 4, 4, '#ffffff'); R(85, 81, 2, 2, '#5ff0e6');
+      // bomba de jeringa
+      R(214, 20, 2, 98, '#5a6988'); R(204, 40, 24, 18, '#e0e6ee'); R(204, 40, 24, 1, '#ffffff'); R(207, 43, 12, 5, '#0b1a1c'); text('', 0, 0, '#000'); for (let i = 0; i < 4; i++) P(209 + i * 2, 45, '#3fe07a');
+      const push = seg(t, S.L[2] + 1, S.E[3]);
+      R(148, 42, 56, 12, K); R(149, 43, 54, 10, '#bfeff0'); R(149, 43, 54, 3, '#e6ffff');
+      R(196 - push * 30, 41, 3, 14, '#5a6988'); R(199 - push * 30, 47, 8 + push * 30, 2, '#5a6988');
+      const tubeP = s => { const x0 = 148, y0 = 48, x3 = 86, y3 = 82; const cx1 = 120, cy1 = 30, cx2 = 90, cy2 = 60; const u = 1 - s; return [u * u * u * x0 + 3 * u * u * s * cx1 + 3 * u * s * s * cx2 + s * s * s * x3, u * u * u * y0 + 3 * u * u * s * cy1 + 3 * u * s * s * cy2 + s * s * s * y3]; };
+      let pp = tubeP(0); for (let i = 1; i <= 24; i++) { const q = tubeP(i / 24); LL(pp[0], pp[1], q[0], q[1], '#e6ffff'); pp = q; }
+      if (t > S.L[2] + 0.2) P(86, 81, '#c4282f');
+      const trip = seg(t, S.L[3] + 0.6, S.L[3] + 3.4);
+      if (trip <= 0) { mecha(176 + Math.sin(t * 2) * 6, 48, 9, t); } else if (trip < 1) { const q = tubeP(trip); E(q[0], q[1], 2, 2, '#ffffff'); P(q[0], q[1], '#5ff0e6'); }
+      person('INVESTIGADORA', 252, 122, { flip: true, bob: talking(S, t, 'INVESTIGADORA') ? -(Math.floor(t * 6) % 2) : 0 });
+      person('ENFERMERA', 10, 122, { bob: talking(S, t, 'ENFERMERA') ? -(Math.floor(t * 6) % 2) : 0 });
+      if (t > S.L[3] && t < S.L[3] + 2.4) astra(222, 80 + Math.sin(t * 3) * 2, 7, 'idle', t);
+      const fl = seg(t, S.E[3] - 0.2, S.E[3] + 0.9); if (fl > 0) R(0, 0, W, H, D('#ffffff', fl * 16));
+    } },
+  /* 8 · Torrente sanguíneo */
+  { banner: 'ESCENA 3 · TORRENTE SANGUÍNEO', lead: 1.8, tail: 1.2, lines: [
+    ['ASTRA', 'INGRESO CONFIRMADO. ESTAMOS EN UNA VENA DEL ANTEBRAZO. LA CORRIENTE NOS LLEVA AL CORAZÓN.'],
+    ['OPERADORA', '¿QUÉ ES ESA ESTRUCTURA REDONDA CON UNA DEPRESIÓN EN EL CENTRO?'],
+    ['ASTRA', 'REGISTRO BIOLÓGICO: ERITROCITO. TRANSPORTA OXÍGENO Y CARECE DE NÚCLEO.'],
+    ['ASTRA', 'ADVERTENCIA: PROTEÍNAS DEL PLASMA SE ADHIEREN A LA CUBIERTA. SE FORMA UNA CORONA.'],
+    ['OPERADORA', '¿ESO SIGNIFICA QUE PODRÍAN ATACARNOS?'],
+    ['ASTRA', 'ES POSIBLE. LEUCOCITO DETECTADO: DEFIENDE AL ORGANISMO. MANTENGAMOS EL RUMBO.']],
+    draw(t, S) {
+      const wh = seg(t, 0, 1.2);
+      R(0, 0, W, H, '#4a0b14');
+      for (let i = 0; i < 16; i++) { const y = 6 + i * 8 + Math.sin(t + i) * 2, x = ((hash(i, 41) * 400 - t * (60 + i * 6)) % 400 + 400) % 400 - 60; R(x, y, 50 + hash(i, 42) * 40, 1, '#5c0f1a'); R(x + 10, y + 3, 20, 1, D('#7a1a26', 8)); }
+      for (let x = 0; x < W; x += 2) { const y1 = 8 + Math.sin(x * 0.05 + t * 0.6) * 3; R(x, 0, 2, y1, '#7a2a3a'); P(x, y1, '#b0566a'); const y2 = 112 + Math.sin(x * 0.04 - t * 0.5) * 3; R(x, y2, 2, H - y2, '#7a2a3a'); P(x, y2, '#b0566a'); }
+      const cells = [...Array(26)].map((_, i) => ({ i, r: 4 + hash(i, 5) * 7, y: 14 + hash(i, 3) * 96, sp: 30 + hash(i, 4) * 40, ph: hash(i, 6) * 420, tl: 0.3 + hash(i, 7) * 0.7 })).sort((a, b) => a.r - b.r);
+      for (const c of cells) { const x = ((c.ph - t * c.sp * (0.5 + c.r / 12)) % 420 + 420) % 420 - 50; rbc(x, c.y + Math.sin(t * 1.5 + c.i) * 2, c.r, Math.abs(Math.sin(t * 0.7 + c.i)) * 0.7 + 0.3, c.r < 7); }
+      for (let i = 0; i < 7; i++) { const x = ((hash(i, 51) * 420 - t * 70) % 420 + 420) % 420 - 50, y = 20 + hash(i, 52) * 86; E(x, y, 2, 1, '#e8b15a'); P(x + 2, y + 1, '#ffd98a'); P(x - 2, y, '#c48a3a'); }
+      // eritrocito objetivo
+      const tg = t > S.L[1] && t < S.E[2]; if (tg) { const x = 168 - (t - S.L[1]) * 3, y = 54; rbc(x, y, 11, 0.95); const b = Math.floor(t * 4) % 2 ? '#f7b32b' : '#fff3a0'; for (const [dx, dy] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) { R(x + dx * 15 - (dx > 0 ? 3 : 0), y + dy * 15 - (dy > 0 ? 0 : 0), 4, 1, b); R(x + dx * 15 - (dx > 0 ? 0 : 0), y + dy * 15 - (dy > 0 ? 3 : 0), 1, 4, b); } }
+      // leucocito
+      if (t > S.L[5] - 0.5) { const x = lerp(360, 196, ease(seg(t, S.L[5] - 0.5, S.L[5] + 3))), y = 66; for (let k = 0; k < 7; k++) { const a = k / 7 * 6.28 + t; E(x + Math.cos(a) * 18, y + Math.sin(a) * 16, 8 + Math.sin(t * 3 + k) * 2, 8, '#8f86a8'); } E(x, y, 22, 20, '#8f86a8'); E(x, y, 21, 19, '#e9e4f2'); for (let k = 0; k < 7; k++) { const a = k / 7 * 6.28 + t; E(x + Math.cos(a) * 17, y + Math.sin(a) * 15, 6 + Math.sin(t * 3 + k) * 2, 6, '#e9e4f2'); } E(x - 7, y - 4, 6, 5, '#7b4fa8'); E(x + 4, y - 6, 6, 5, '#7b4fa8'); E(x + 1, y + 6, 7, 5, '#7b4fa8'); E(x - 8, y - 5, 2, 2, '#9b6fc8'); }
+      // mecha
+      const mx = 92 + Math.sin(t * 0.9) * 6, my = 62 + Math.sin(t * 1.4) * 3;
+      for (let i = 0; i < 5; i++) P(mx - 26 - ((t * 40 + i * 9) % 40), my + Math.sin(t * 5 + i) * 3, '#ff8a80');
+      mecha(mx, my, 38, t, { legs: true });
+      const cor = Math.floor(clamp((t - S.L[3]) * 6, 0, 22)); for (let i = 0; i < cor; i++) { const a = hash(i, 61) * 6.28; P(mx + Math.cos(a) * (16 + hash(i, 62) * 3), my + Math.sin(a) * (8 + hash(i, 63) * 3), i % 3 ? '#f2d45c' : '#9be37a'); }
+      const al = t > S.L[3] && t < S.L[5]; astra(304, 18, 8, al ? 'alert' : 'idle', t); if (al && Math.floor(t * 4) % 2) text('ALERTA', 260, 15, '#ff6a5e');
+      // ficha tipo enciclopedia
+      const card = (tt, title, art, data) => { const p = ease(seg(tt, 0, 0.4)) - ease(seg(tt, 4.6, 5.0)); if (p <= 0) return; const x = Math.round(lerp(330, 194, p)); R(x, 26, 122, 86, K); R(x + 2, 28, 118, 82, '#d93a2b'); R(x + 3, 38, 116, 71, '#f8f8f0'); text('REGISTRO BIOLÓGICO', x + 6, 30, '#ffffff'); R(x + 6, 42, 34, 34, '#1b1f33'); clipRect(x + 6, 42, 34, 34, () => art(x + 23, 59)); text(title, x + 44, 43, '#d93a2b'); data.forEach((d, i) => text(d, x + 44, 55 + i * 10, '#283040')); R(x + 6, 80, 108, 1, '#c0cbdc'); for (let i = 0; i < 18; i++) R(x + 6 + i * 6, 84 + (hash(i, Math.floor(t * 3)) * 3 | 0), 3, 1, '#c0cbdc'); text('GUARDADO ✓'.replace('✓', ''), x + 6, 96, '#3fa34d'); };
+      card(t - S.L[2], 'ERITROCITO', (cx, cy) => rbc(cx, cy, 12, 0.9), ['Ø 6-8 µM', 'SIN NÚCLEO', 'O2 Y CO2']);
+      card(t - S.L[5] - 1.6, 'LEUCOCITO', (cx, cy) => { E(cx, cy, 14, 13, '#e9e4f2'); E(cx - 4, cy - 2, 5, 4, '#7b4fa8'); E(cx + 4, cy - 3, 4, 4, '#7b4fa8'); E(cx, cy + 4, 5, 4, '#7b4fa8'); }, ['GLÓBULO', 'BLANCO', 'DEFENSA']);
+      if (wh < 1) R(0, 0, W, H, D('#ffffff', (1 - wh) * 16));
+    } },
+  /* 9 · Ruta por el cuerpo */
+  { lead: 1.0, tail: 1.2, lines: [
+    ['ASTRA', 'CORAZÓN DERECHO. CADA LATIDO NOS EMPUJA HACIA EL VENTRÍCULO Y LA ARTERIA PULMONAR.'],
+    ['ASTRA', 'PULMONES: INTERCAMBIO GASEOSO. LA SANGRE PASA DE ROJO OSCURO A ROJO BRILLANTE.'],
+    ['ASTRA', 'AORTA. TOMAREMOS EL TRONCO CELÍACO Y LA ARTERIA ESPLÉNICA RUMBO AL PÁNCREAS.'],
+    ['ASTRA', 'SEGUNDO AJUSTE DE DIMENSIÓN... REDUCCIÓN COMPLETADA: 1 MICRÓMETRO.']],
+    draw(t, S) {
+      R(0, 0, W, H, '#0b0c12'); for (let x = 0; x < W; x += 10) R(x, 0, 1, 128, '#1a1608'); for (let y = 0; y < 128; y += 10) R(0, y, W, 1, '#1a1608');
+      const hb = holoBody(112), bx = 84 - (hb.width >> 1), top = 6; g.drawImage(hb, bx, top);
+      const u = 1.12, cx = 84;
+      const P0 = [[cx - 16 * u, top + 46 * u], [cx - 13.5 * u, top + 30 * u], [cx - 8 * u, top + 18 * u], [cx + 1 * u, top + 25 * u]];
+      const P1 = [[cx + 1 * u, top + 25 * u], [cx - 5 * u, top + 21 * u], [cx - 7 * u, top + 26 * u], [cx - 3 * u, top + 23 * u], [cx + 6 * u, top + 21 * u], [cx + 7 * u, top + 26 * u], [cx + 2 * u, top + 26 * u]];
+      const P2 = [[cx + 2 * u, top + 26 * u], [cx + 1 * u, top + 34 * u], [cx + 1 * u, top + 37 * u], [cx + 5 * u, top + 38 * u], [cx + 7 * u, top + 39 * u]];
+      const path = (pts, p, c) => { const n = pts.length - 1, pr = p * n; let head = pts[0]; for (let i = 0; i < n; i++) { if (pr <= i) break; const f = Math.min(1, pr - i), x = lerp(pts[i][0], pts[i + 1][0], f), y = lerp(pts[i][1], pts[i + 1][1], f); LL(pts[i][0], pts[i][1], x, y, c); head = [x, y]; } return head; };
+      path(P0, 1, '#ff4a3a'); let hd = P0[3];
+      const p1 = seg(t, S.L[1], S.L[1] + 3), p2 = seg(t, S.L[2], S.L[2] + 3.5);
+      if (p1 > 0) hd = path(P1, p1, '#ff7ce8'); if (p2 > 0) hd = path(P2, p2, '#ff4a3a');
+      E(hd[0], hd[1], 2, 2, Math.floor(t * 6) % 2 ? '#ffffff' : '#fff3a0');
+      const beat = Math.pow(Math.max(0, Math.sin(t * 7.5)), 8);
+      heartShape(cx + 1 * u, top + 25 * u, 2 + beat, '#d93a2b');
+      hudPanel(170, 8, 144, 110);
+      const st = t < S.L[1] ? 0 : t < S.L[2] ? 1 : t < S.L[3] ? 2 : 3;
+      const hdr = ['CORAZÓN', 'PULMONES', 'AORTA > PÁNCREAS', 'AJUSTE DE ESCALA'][st]; text(hdr, 178, 14, '#f7b32b');
+      clipRect(172, 24, 140, 92, () => {
+        if (st === 0) { const s = 22 + beat * 6; heartShape(242, 64, s, '#8c1c21'); heartShape(242, 63, s - 3, '#d93a2b'); E(232, 52, 5, 3, '#ff6a5e'); R(238, 26, 8, 18, '#5c3a8a'); R(250, 30, 8, 16, '#d93a2b'); text('LATIDO', 178, 104, '#c97a12'); }
+        else if (st === 1) { for (const s of [-1, 1]) { E(242 + s * 26, 66, 22, 34, '#c96a82'); E(242 + s * 26, 64, 19, 31, '#e79aae'); } R(240, 28, 4, 30, '#c9c1b1'); for (let i = 0; i < 14; i++) { const pth = ((t * 0.5 + i / 14) % 1), x = 182 + pth * 120, y = 70 + Math.sin(pth * 9 + i) * 26; rbc(x, y, 3, 0.8, pth < 0.5); } text('O2 IN · CO2 OUT', 178, 104, '#c97a12'); }
+        else if (st === 2) { R(196, 26, 8, 60, '#d93a2b'); R(200, 56, 40, 5, '#d93a2b'); poly([[222, 60], [300, 66], [304, 78], [288, 84], [226, 76]], '#e8b07a'); for (let i = 0; i < 9; i++) { const x = 232 + i * 7.5, y = 70 + Math.sin(i * 2) * 4; E(x, y, 2, 2, Math.floor(t * 3 + i) % 3 ? '#ffcf5e' : '#fff3a0'); } text('ISLOTES', 254, 88, '#fff3a0'); const q = seg(t, S.L[2], S.L[2] + 4); E(lerp(200, 270, q), q < 0.5 ? lerp(30, 58, q * 2) : lerp(58, 72, q * 2 - 1), 2, 2, '#ffffff'); }
+        else { const sh = ease(seg(t, S.L[3] + 0.5, S.L[3] + 2.5)); mecha(242, 60, lerp(50, 18, sh), t, { pal: { ...MP_BLUE, k: '#f7b32b', leg: '#f7b32b', jt: '#fff3a0', cab: '#c97a12', ring: '#f7b32b', vh: '#fff3a0' } }); textC(sh < 1 ? '3 µM' : '1 µM', 242, 92, '#ffffff', 2); }
+      });
+    } },
+  /* 10 · Célula beta: endocitosis y escape */
+  { banner: 'ESCENA 4 · LA CÉLULA BETA', lead: 1.4, tail: 1.0, lines: [
+    ['ASTRA', 'SALIMOS DEL CAPILAR. FRENTE A NOSOTROS: LA MEMBRANA PLASMÁTICA DE UNA CÉLULA BETA.'],
+    ['ASTRA', 'RECEPTOR DETECTADO. NO ABRIMOS LA PUERTA: LA CÉLULA CREE QUE SOMOS ALGO QUE NECESITA... Y NOS TRAGA.'],
+    ['ASTRA', 'ESTAMOS EN UN ENDOSOMA. EL PH BAJA: SI LLEGAMOS AL LISOSOMA, SEREMOS DEGRADADOS.'],
+    ['OPERADORA', '¡ACTIVA EL MECANISMO DE ESCAPE!'],
+    ['ASTRA', 'ESCAPE ENDOSOMAL COMPLETADO. NOS ENCONTRAMOS EN EL CITOSOL.']],
+    draw(t, S) {
+      const base = 44, depth = 40 * ease(seg(t, S.L[1] + 0.5, S.L[2] - 0.6)), pinch = t > S.L[2] - 0.6;
+      const my = (x) => base + (pinch ? 0 : depth * Math.exp(-Math.pow((x - 160) / 20, 2)));
+      R(0, 0, W, H, '#123038'); for (let i = 0; i < 40; i++) P(hash(i, 71) * W, base + 10 + hash(i, 72) * 80, '#1d4a54');
+      for (let x = 0; x < W; x++) R(x, 0, 1, my(x), '#2a1f3a');
+      for (let i = 0; i < 6; i++) { let px = -10, py = 8 + i * 6; for (let x = 0; x <= W; x += 16) { const ny = 8 + i * 6 + Math.sin(x * 0.03 + i) * 3; LL(px, py, x, Math.min(ny, my(x) - 3), '#3a2c52'); px = x; py = Math.min(ny, my(x) - 3); } }
+      for (let x = 0; x < W; x++) { const y = my(x); R(x, y, 1, 6, '#6b3a5a'); if (x % 2 === 0) { P(x, y, '#ff8fb8'); P(x, y + 5, '#ff8fb8'); } }
+      if (!pinch) for (let i = 0; i < 7; i++) { const rx = lerp(110 + i * 16, 150 + i * 3.5, ease(seg(t, S.L[1], S.L[1] + 1.2))), ry = my(rx); LL(rx, ry, rx, ry - 3, '#7ee07e'); P(rx - 1, ry - 4, '#7ee07e'); P(rx + 1, ry - 4, '#7ee07e'); if (depth > 4) P(rx, ry + 7, '#f7b32b'); }
+      const ap = ease(seg(t, 0, S.L[1])); let mx = lerp(40, 160, ap), mY = lerp(14, base - 12, ap);
+      if (!pinch) mY = base - 12 + depth * 0.9; else mY = base + 40;
+      const ph = seg(t, S.L[2], S.L[3] + 0.5), esc = seg(t, S.L[3] + 0.6, S.L[3] + 1.4);
+      if (pinch && esc < 1) { const vr = 22, vc = esc > 0 ? '#ff4a3a' : `rgb(${Math.round(lerp(255, 255, ph))},${Math.round(lerp(143, 80, ph))},${Math.round(lerp(184, 70, ph))})`; const c2 = ph > 0.6 ? '#ff6a5e' : ph > 0.3 ? '#ff8fa0' : '#ff8fb8'; E(160, mY, vr, vr * 0.8, D(ph > 0.5 ? '#5c0f1a' : '#3a2c52', 8 + ph * 6)); if (esc <= 0) { arc(160, mY, vr, vr * 0.8, c2); arc(160, mY, vr - 4, vr * 0.8 - 4, c2); } else { for (let k = 0; k < 12; k++) { if (k % 3 === 0) continue; const a0 = k / 12 * 6.283, d = esc * 14; arc(160 + Math.cos(a0 + 0.26) * d, mY + Math.sin(a0 + 0.26) * d, vr, vr * 0.8, c2, a0, a0 + 0.4); } } }
+      if (pinch && esc >= 1) for (let k = 0; k < 8; k++) { const a = k / 8 * 6.283, d = 30 + (t - S.L[3] - 1.4) * 8; arc(160 + Math.cos(a) * d, mY + Math.sin(a) * d * 0.8, 3, 2, '#ff8fb8', a, a + 2); }
+      if (esc > 0 && esc < 1) E(160, mY, 30 * esc, 24 * esc, D('#ffffff', (1 - esc) * 10));
+      mecha(mx, mY + Math.sin(t * 2) * 1.5, 26, t);
+      if (pinch) { hudPanel(268, 54, 44, 60, ph > 0.5 ? '#ff4a3a' : '#f7b32b'); const v = esc > 0 ? 7.2 : lerp(7.4, 5.0, ph); text('PH', 284, 58, '#ffffff'); R(274, 70, 8, 40, '#1b1f33'); const hh = (v - 4) / 3.5 * 38; R(275, 109 - hh, 6, hh, v < 6 ? '#ff4a3a' : v < 6.6 ? '#f7b32b' : '#7ee07e'); text(v.toFixed(1), 286, 86, '#ffffff'); }
+      for (let i = 0; i < 6; i++) { const gx = 30 + i * 40 + (i > 2 ? 30 : 0), gy = 96 + Math.sin(t + i) * 3 + (i % 2) * 8; if (gx > 250) continue; E(gx, gy, 6, 6, '#1d4a54'); arc(gx, gy, 6, 6, '#3f8a8a'); E(gx, gy, 3, 3, '#c9a46a'); }
+      E(60, 70, 18, 7, '#3a5a2a'); arc(60, 70, 18, 7, '#7ea05a'); for (let k = -12; k <= 12; k += 4) LL(60 + k, 66, 60 + k + 2, 74, '#7ea05a');
+      text('EXTERIOR', 6, base - 10, D('#c0a0ff', 12) ? '#8a78b8' : '#8a78b8'); text('CITOSOL', 6, base + 12, '#5fa0a8');
+    } },
+  /* 11 · Citosol: ribosoma, ARNt y sintetasa */
+  { lead: 1.2, tail: 1.6, lines: [
+    ['ASTRA', 'RIBOSOMA ADHERIDO AL RETÍCULO ENDOPLÁSMICO RUGOSO. AJUSTE DE ESCALA: 50 NANÓMETROS.'],
+    ['ASTRA', 'ESTA CORRIENTE ES DE ARN DE TRANSFERENCIA. CADA UNO DEBE CARGARSE CON SU AMINOÁCIDO.'],
+    ['OPERADORA', 'ATRAPO UN ARNT, LO LLEVO A LA SINTETASA... Y GIRO LA MANIVELA. ¡DOS VUELTAS!'],
+    ['ASTRA', 'CARGA COMPLETADA. CODÓN DE INICIO: AUG. EL RIBOSOMA COMIENZA A TRADUCIR.'],
+    ['ASTRA', 'INCORPORACIÓN CONFIRMADA. LA CADENA DE AMILINA CRECE, AMINOÁCIDO POR AMINOÁCIDO.']],
+    draw(t, S) {
+      R(0, 0, W, H, '#10262e'); for (let i = 0; i < 50; i++) { const x = (hash(i, 81) * 340 + t * 4 * (1 + hash(i, 82))) % 340 - 10, y = 26 + hash(i, 83) * 100; P(x, y, i % 4 ? '#1d4a54' : '#2f6a6a'); }
+      // retículo endoplásmico
+      R(0, 0, W, 16, '#2a4a7e'); for (let x = 0; x < W; x++) { const y = 16 + Math.sin(x * 0.06 + t * 0.4) * 2; R(x, 0, 1, y, '#2a4a7e'); P(x, y, '#5a86c8'); P(x, y - 1, '#3a5f9e'); } R(0, 3, W, 7, '#1f3a66');
+      for (let i = 0; i < 8; i++) { const x = 20 + i * 36; if (Math.abs(x - 196) > 30) { E(x, 20, 4, 3, '#5d48a0'); E(x, 24, 3, 2, '#8d78d0'); } }
+      // agenda de cargas
+      const c0 = S.L[2], firstD = S.L[3] + 1.0, CT1 = (firstD - c0) / 0.85, CT = 2.6;
+      const cyc = []; cyc.push([c0, CT1]); let st = c0 + CT1; while (st < S.dur + 4) { cyc.push([st, CT]); st += CT; }
+      let chain = 0, cur = null; for (const [s0, d] of cyc) { if (t >= s0 + d * 0.85) chain++; if (t >= s0 && t < s0 + d) cur = [(t - s0) / d, cyc.indexOf(cyc.find(c => c[0] === s0))]; }
+      // ARNm desplazándose
+      const ribX = 196, off = chain * 18, seq = 'AUG' + CODONES;
+      // ribosoma (el ARNm pasa por delante de la subunidad menor)
+      E(ribX, 30, 21, 13, K); E(ribX, 30, 20, 12, '#7a5cc7'); E(ribX - 4, 27, 14, 7, '#8f74dc'); E(ribX, 52, 17, 8, K); E(ribX, 52, 16, 7, '#b09ae8'); E(ribX - 3, 50, 9, 3, '#c6b6f2');
+      R(110, 47, 210, 1, '#e0e0e0');
+      clipRect(110, 40, 210, 20, () => { for (let i = 0; i < 60; i++) { const x = ribX - 9 + i * 6 - off; if (x < 100 || x > 320) continue; const b = seq[i] || 'A'; R(x + 1, 44, 4, 3, BASE_COL[b]); text(b, x, 50, BASE_COL[b], 1, '#10262e'); } });
+      text('ARNM 5′', 112, 36, '#99aabb');
+      const hl = t > S.L[3] && t < S.L[4] + 1 && Math.floor(t * 3) % 2; R(ribX - 10, 41, 20, 1, hl ? '#f7b32b' : D('#f7b32b', 6)); R(ribX - 10, 58, 20, 1, hl ? '#f7b32b' : D('#f7b32b', 6)); if (hl) text('AUG', ribX - 8, 62, '#f7b32b');
+      // cadena naciente hacia el retículo
+      for (let i = 0; i < Math.min(chain, 37); i++) { const x = ribX - 8 - i * 4.5, y = 9 + Math.sin(i * 0.9 + t * 1.5) * 2; E(x, y, 2, 2, AA_COL[AMILINA[i]]); if (i === 0) LL(ribX - 6, 18, x + 1, y + 1, '#e0e0e0'); }
+      // sintetasa con manivela
+      const sx = 56, sy = 76; E(sx, sy, 17, 14, K); E(sx, sy, 16, 13, '#e8742a'); E(sx - 4, sy - 4, 10, 7, '#f29a52'); E(sx + 6, sy + 2, 4, 4, '#a84a14');
+      let crank = 0; if (cur && cur[0] > 0.25 && cur[0] < 0.5) crank = (cur[0] - 0.25) / 0.25 * Math.PI * 4;
+      const kx = sx + 18, ky = sy - 6; R(sx + 12, ky - 1, 6, 2, '#5a6377'); LL(kx, ky, kx + Math.cos(crank) * 7, ky + Math.sin(crank) * 7, '#c3cbd8', 2); E(kx + Math.cos(crank) * 7, ky + Math.sin(crank) * 7, 2, 2, '#f7b32b');
+      text('SINTETASA', 28, 94, '#f29a52');
+      // estación de recarga
+      R(276, 82, 34, 26, '#1d5e66'); R(278, 84, 30, 22, '#0d3a40'); for (let i = 0; i < 3; i++) trna(285 + i * 8, 92, null, '#8b9bb4'); text('RECARGA', 274, 110, '#5fa0a8');
+      // corriente de ARNt
+      for (let i = 0; i < 9; i++) { const x = ((hash(i, 91) * 380 + t * 26) % 380) - 30, y = 98 + Math.sin(t * 1.5 + i) * 4 + hash(i, 92) * 8; if (x > 250) continue; trna(x, y, null, ['#5ff0e6', '#ffe066', '#7ee07e', '#ff6a5e'][i % 4]); }
+      // mecha y brazo
+      const mx = 120, mY = 78; let arm = null, held = null;
+      if (cur) { const p = cur[0], A = [108, 100], Bp = [sx + 6, sy - 15], C = [ribX - 2, 62]; let pt;
+        if (p < 0.12) pt = [lerp(150, A[0], p / 0.12), lerp(92, A[1], p / 0.12)];
+        else if (p < 0.25) pt = [lerp(A[0], Bp[0], (p - 0.12) / 0.13), lerp(A[1], Bp[1], (p - 0.12) / 0.13)];
+        else if (p < 0.5) pt = Bp;
+        else if (p < 0.85) { const q = ease((p - 0.5) / 0.35); pt = [lerp(Bp[0], C[0], q), lerp(Bp[1], C[1], q) - Math.sin(q * Math.PI) * 12]; }
+        else pt = [lerp(C[0], 150, (p - 0.85) / 0.15), lerp(C[1], 92, (p - 0.85) / 0.15)];
+        arm = pt; if (p >= 0.12 && p < 0.85) held = [pt[0], pt[1] + 2, p >= 0.5 ? AA_COL[AMILINA[Math.min(36, cur[1])]] : null]; }
+      mecha(mx, mY, 30, t, { arm: arm || undefined });
+      if (held) trna(held[0], held[1], held[2], '#5ff0e6');
+      if (cur && cur[0] > 0.84 && cur[0] < 0.9) { E(ribX, 56, 8, 6, D('#ffffff', 8)); text('CLIC', ribX + 12, 64, '#ffffff'); }
+      text('CADENA ' + Math.min(chain, 37) + '/37', 238, 28, '#c6b6f2');
+    } },
+  /* 12 · La variante S20G */
+  { lead: 1.0, tail: 1.6, lines: [
+    ['OPERADORA', 'ESPERA... ESTA SECUENCIA NO COINCIDE CON LA QUE ESTÁBAMOS PROCESANDO.'],
+    ['ASTRA', 'SUSTITUCIÓN EN LA POSICIÓN 20: LA SERINA FUE REEMPLAZADA POR GLICINA. VARIANTE S20G.'],
+    ['ASTRA', 'UN SOLO CAMBIO DE BASE EN EL GEN DEL IAPP: EL CODÓN AGC SE CONVIERTE EN GGC.'],
+    ['ASTRA', 'ACELERANDO EL TIEMPO... LA VARIANTE FORMA FIBRAS AMILOIDES MÁS RÁPIDO QUE LA ORIGINAL.']],
+    draw(t, S) {
+      R(0, 0, W, H, '#0b0c12'); for (let x = 0; x < W; x += 10) R(x, 0, 1, 128, '#14110a');
+      hudPanel(6, 6, 308, 112);
+      const x0 = 12, step = 8, rowA = 22, rowB = 42, mark = t > S.L[1] - 0.4;
+      text('ORIGINAL', x0, 13, '#f7b32b'); text('VARIANTE', x0, 33, '#ff7ce8');
+      for (let i = 0; i < 37; i++) {
+        const a = AMILINA[i], b = i === 19 ? 'G' : a, rev = seg(t, 0.2 + i * 0.03, 0.4 + i * 0.03);
+        if (rev <= 0) continue;
+        text(a, x0 + i * step, rowA, AA_COL[a]);
+        const bc = i === 19 && mark ? (Math.floor(t * 4) % 2 ? '#ff4a3a' : '#ffffff') : AA_COL[b]; text(b, x0 + i * step, rowB, bc);
+      }
+      if (mark) { const bx = x0 + 19 * step - 2, c = Math.floor(t * 4) % 2 ? '#ff4a3a' : '#f7b32b'; R(bx, rowA - 3, 9, 1, c); R(bx, rowB + 9, 9, 1, c); R(bx, rowA - 3, 1, rowB - rowA + 13, c); R(bx + 8, rowA - 3, 1, rowB - rowA + 13, c); text('20', bx - 1, rowB + 12, c); }
+      if (t > S.L[2] && t < S.L[3]) { const p = ease(seg(t, S.L[2], S.L[2] + 0.6)); clipRect(0, 64, W * p, 40, () => { textC('SERINA (S20)  →  GLICINA (G20)', 160, 70, '#ffffff'); text('AGC', 112, 86, '#ffffff', 2); text('→', 152, 86, '#f7b32b', 2); text('GGC', 172, 86, '#ffffff', 2); R(112, 86, 10, 14, D('#ff4a3a', 6)); R(172, 86, 10, 14, D('#ff4a3a', 6)); }); }
+      if (t >= S.L[3]) {
+        const tt = t - S.L[3];
+        for (const [side, cx, rate, label, c] of [[0, 84, 0.9, 'ORIGINAL', '#f7b32b'], [1, 236, 2.6, 'S20G', '#ff7ce8']]) {
+          R(cx - 68, 62, 136, 1, D(c, 6)); text(label, cx - tw(label) / 2, 104, c);
+          const n = Math.min(10, Math.floor(tt * rate));
+          for (let i = 0; i < n; i++) { const y = 96 - i * 4; for (let k = 0; k < 12; k++) { R(cx - 18 + k * 3, y + (k % 2), 2, 1, c); } R(cx - 18, y + 2, 36, 1, D(c, 5)); }
+          for (let i = n; i < 10; i++) { const a = i * 2.1 + tt * 0.8, r = 26 + (i % 3) * 8; const x = cx + Math.cos(a) * r * 1.9, y = 82 + Math.sin(a) * r * 0.5; for (let k = 0; k < 5; k++) R(x + k * 3, y + ((k + Math.floor(tt * 4)) % 2), 2, 1, c); }
+        }
+        textC('FIBRAS AMILOIDES', 160, 70, '#ffffff');
+      }
+    } },
+  /* 13 · Cierre */
+  { lead: 1.2, tail: 1.4, lines: [
+    ['OPERADORA', 'ASTRA, ¿HEMOS ENCONTRADO LA CAUSA DE LA ANOMALÍA?'],
+    ['ASTRA', 'IDENTIFICAMOS UNA VARIACIÓN EN LA AMILINA Y SU AGREGACIÓN. PRIMERA ETAPA DE EXPLORACIÓN COMPLETADA.'],
+    [null, 'SI UN SOLO AMINOÁCIDO PUEDE CAMBIARLO TODO... ¿QUÉ OTRAS SEÑALES NOS ESPERAN MÁS ALLÁ DE ESTA CÉLULA?']],
+    draw(t, S) {
+      cabin(t, tt => {
+        E(160, 50, 56, 36, '#3a2a10'); arc(160, 50, 56, 36, '#f7b32b'); arc(160, 50, 54, 34, D('#f7b32b', 6)); E(176, 44, 14, 11, '#5c3f12'); arc(176, 44, 14, 11, '#c97a12');
+        for (const [x, n, c] of [[132, 4, '#f7b32b'], [190, 10, '#ff7ce8']]) for (let i = 0; i < n; i++) { const y = 70 - i * 3; for (let k = 0; k < 6; k++) P(x - 8 + k * 3, y + (k % 2), c); }
+        hudPanel(32, 14, 70, 34); text('REGISTRO', 38, 18, '#f7b32b'); const p = seg(tt, S.L[1], S.L[1] + 3.5); R(38, 30, 58, 6, '#1b1f33'); R(39, 31, 56 * p, 4, '#f7b32b'); text(p < 1 ? Math.round(p * 100) + '%' : 'GUARDADO', 38, 38, '#fff3a0');
+        hudPanel(222, 14, 66, 34); text('ETAPA 1', 228, 18, '#f7b32b'); text(p < 1 ? '...' : 'OK', 228, 30, p < 1 ? '#c97a12' : '#7ee07e');
+      }, talking(S, t, 'ASTRA') ? 'scan' : 'idle');
+    } },
+  /* 14 · Continuará */
+  { lead: 6.0, lines: [], draw(t) {
+    R(0, 0, W, H, '#05060c'); stars(t, 120);
+    const x = lerp(-40, 360, seg(t, 0, 5.5)), y = 70 + Math.sin(t * 2) * 8; for (let i = 0; i < 18; i++) P(x - 22 - i * 4, y + Math.sin(t * 6 + i) * 2, i % 2 ? '#5ff0e6' : '#ff7ce8'); mecha(x, y, 28, t, { legs: false });
+    if (t > 0.8) { const s = 'CONTINUARÁ...', n = Math.floor((t - 0.8) * 10); textC([...s].slice(0, n).join(''), 160, 104, '#ffffff', 2, '#2a2f48'); }
+    if (t > 2.4) textC(GAME + '  ·  ' + CODENAME, 160, 140, '#5a6988');
+  } }
+];
+
+/* ---------- línea de tiempo ---------- */
+let TOTAL = 0;
+for (const S of SCENES) {
+  S.L = []; S.E = []; let t = S.lead || 0;
+  for (const [, txt] of S.lines) { S.L.push(t); t += lineDur(txt); S.E.push(t); }
+  S.dur = t + (S.tail || 0); S.start = TOTAL; TOTAL += S.dur;
+}
+function render(T) {
+  T = ((T % TOTAL) + TOTAL) % TOTAL;
+  let S = SCENES[0]; for (const s of SCENES) if (T >= s.start) S = s;
+  const t = T - S.start; _c = null; g.imageSmoothingEnabled = false;
+  R(0, 0, W, H, '#000');
+  S.draw(t, S);
+  if (S.banner) banner(S.banner, t);
+  drawDialog(S, t);
+  const a = Math.min(1, t / 0.5, (S.dur - t) / 0.5); if (a < 1) R(0, 0, W, H, D('#000000', (1 - a) * 16));
+  return T;
+}
+
+/* ---------- presentación ---------- */
+const params = new URLSearchParams(location.search);
+function blit(scale) { octx.imageSmoothingEnabled = false; octx.drawImage(buf, 0, 0, W * scale, H * scale); }
+if (params.has('export')) {
+  // Modo de exportación: entrega cuadros 320×180 RGBA al servidor local.
+  out.width = W; out.height = H; document.body.classList.remove('play');
+  (async () => {
+    const fps = +(params.get('fps') || 30), N = Math.ceil(TOTAL * fps), B = 15;
+    await fetch('/info', { method: 'POST', body: JSON.stringify({ frames: N, fps, total: TOTAL }) });
+    for (let f = 0; f < N; f += B) {
+      const n = Math.min(B, N - f), chunk = new Uint8Array(W * H * 4 * n);
+      for (let k = 0; k < n; k++) { render((f + k) / fps); chunk.set(g.getImageData(0, 0, W, H).data, k * W * H * 4); }
+      await fetch('/frames', { method: 'POST', body: chunk });
+    }
+    await fetch('/done', { method: 'POST' });
+  })();
+} else {
+  let scale = 1;
+  function fit() { const dpr = window.devicePixelRatio || 1, ww = innerWidth * dpr, wh = innerHeight * dpr; let s = Math.min(ww / W, wh / H); if (s >= 2) s = Math.floor(s); scale = s; out.width = Math.round(W * s); out.height = Math.round(H * s); out.style.width = out.width / dpr + 'px'; out.style.height = out.height / dpr + 'px'; }
+  addEventListener('resize', fit); fit();
+  let T0 = performance.now(), paused = false, pT = 0;
+  if (params.has('t')) T0 -= +params.get('t') * 1000;
+  addEventListener('keydown', e => {
+    if (e.code === 'Space') { paused = !paused; if (paused) pT = (performance.now() - T0) / 1000; else T0 = performance.now() - pT * 1000; }
+    if (e.code === 'ArrowRight' || e.code === 'ArrowLeft') { const now = paused ? pT : (performance.now() - T0) / 1000, T = ((now % TOTAL) + TOTAL) % TOTAL; let i = SCENES.findIndex(s => T >= s.start && T < s.start + s.dur); i = (i + (e.code === 'ArrowRight' ? 1 : SCENES.length - 1)) % SCENES.length; const nt = SCENES[i].start + 0.01 + Math.floor(now / TOTAL) * TOTAL; if (paused) pT = nt; else T0 = performance.now() - nt * 1000; }
+    if (e.code === 'KeyF') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+  });
+  addEventListener('dblclick', () => { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); });
+  (function loop() { const now = window.__fixedT != null ? window.__fixedT : paused ? pT : (performance.now() - T0) / 1000; render(now); blit(scale); requestAnimationFrame(loop); })();
+  window.__seek = s => { T0 = performance.now() - s * 1000; };
+  window.__scenes = () => SCENES.map((s, i) => [i, +s.start.toFixed(2), +s.dur.toFixed(2)]);
+}
+</script>
+</body>
+</html>
